@@ -55,7 +55,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=delt',
 			'emulatePrepare' => true,
 			'username' => 'delt',
-			'password' => 'QRdaSbLJXv9VZjej',
+			'password' => 'secretpassword',
 			'charset' => 'utf8',
       'tablePrefix' => 'tbl_',
 		),

@@ -7,7 +7,7 @@
 // CWebApplication properties can be configured here.
 return array(
 	'basePath'=>dirname(__FILE__).DIRECTORY_SEPARATOR.'..',
-	'name'=>'My Web Application',
+	'name'=>'DELT - Double Entry Learning Tool',
 
 	// preloading 'log' component
 	'preload'=>array('log'),
@@ -92,7 +92,7 @@ return array(
 			'connectionString' => 'mysql:host=localhost;dbname=delt',
 			'emulatePrepare' => true,
 			'username' => 'delt',
-			'password' => 'QRdaSbLJXv9VZjej',
+			'password' => 'secretpassword',
 			'charset' => 'utf8',
       'tablePrefix' => 'tbl_',
 		),
