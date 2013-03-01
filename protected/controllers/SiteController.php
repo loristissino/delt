@@ -33,6 +33,15 @@ class SiteController extends Controller
 	}
 
 	/**
+	 * This is a 'test' action used for experiments during development.
+	 */
+	public function actionTest()
+	{
+		$this->render('test');
+	}
+
+
+	/**
 	 * This is the action to handle external exceptions.
 	 */
 	public function actionError()

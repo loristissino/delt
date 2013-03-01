@@ -10,6 +10,8 @@
  * @property integer $level
  * @property string $code
  * @property integer $is_selectable
+ * @property integer $is_economic
+ * @property string $outstanding_balance
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -45,11 +47,12 @@ class Account extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('firm_id, code', 'required'),
-			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
+			array('account_parent_id, firm_id, level, is_selectable, is_economic', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
+			array('outstanding_balance', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_parent_id, firm_id, level, code, is_selectable', 'safe', 'on'=>'search'),
+			array('id, account_parent_id, firm_id, level, code, is_selectable, is_economic, outstanding_balance', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -64,6 +67,7 @@ class Account extends CActiveRecord
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 			'tblLanguages' => array(self::MANY_MANY, 'Language', '{{account_name}}(account_id, language_id)'),
 			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
+      'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
 		);
 	}
 
@@ -79,6 +83,8 @@ class Account extends CActiveRecord
 			'level' => 'Level',
 			'code' => 'Code',
 			'is_selectable' => 'Is Selectable',
+			'is_economic' => 'Is Economic',
+			'outstanding_balance' => 'Outstanding Balance',
 		);
 	}
 
@@ -99,9 +105,37 @@ class Account extends CActiveRecord
 		$criteria->compare('level',$this->level);
 		$criteria->compare('code',$this->code,true);
 		$criteria->compare('is_selectable',$this->is_selectable);
+		$criteria->compare('is_economic',$this->is_economic);
+		$criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+  
+	/**
+   * Retrieves the name of the account in the language of the firm (if available)
+	 * @return string the name of the account
+	 */
+	public function getName()
+	{
+    //Yii::trace('getName() called, account ' . $this->id, 'delt.debug');
+    if($record = AccountName::model()->findByAttributes(array('account_id'=>$this->id, 'language_id'=>$this->firm->language_id)))
+    {
+      return $record->name;
+    }
+    else
+    {
+      $records = AccountName::model()->findAllByAttributes(array('account_id'=>$this->id));
+      if(sizeof($records))
+      {
+        return $records[0]->name;
+      }
+      else
+      {
+        return '[unnamed]';
+      }
+    }
+	}
+  
 }

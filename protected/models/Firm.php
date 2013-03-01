@@ -7,10 +7,12 @@
  * @property integer $id
  * @property string $name
  * @property string $slug
- * @property integer $is_public
+ * @property integer $status
  * @property string $currency
  * @property string $csymbol
  * @property integer $language_id
+ * @property integer $firm_parent_id
+ * @property string $create_date
  *
  * The followings are the available model relations:
  * @property Account[] $accounts
@@ -36,7 +38,7 @@ class Firm extends CActiveRecord
 	{
 		return '{{firm}}';
 	}
-
+  
 	/**
 	 * @return array validation rules for model attributes.
 	 */
@@ -45,15 +47,15 @@ class Firm extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, slug, currency, csymbol, language_id', 'required'),
-			array('is_public, language_id', 'numerical', 'integerOnly'=>true),
+			array('name, slug, currency, csymbol, language_id, firm_parent_id, create_date', 'required'),
+			array('status, language_id, firm_parent_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
 			array('slug', 'length', 'max'=>32),
 			array('currency', 'length', 'max'=>5),
 			array('csymbol', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, slug, is_public, currency, csymbol, language_id', 'safe', 'on'=>'search'),
+			array('id, name, slug, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -65,7 +67,7 @@ class Firm extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id'),
+			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'Users', '{{firm_user}}(firm_id, user_id)'),
 			'posts' => array(self::HAS_MANY, 'Post', 'firm_id'),
 		);
@@ -80,10 +82,12 @@ class Firm extends CActiveRecord
 			'id' => 'ID',
 			'name' => 'Name',
 			'slug' => 'Slug',
-			'is_public' => 'Is Public',
+			'status' => 'Status',
 			'currency' => 'Currency',
 			'csymbol' => 'Csymbol',
 			'language_id' => 'Language',
+			'firm_parent_id' => 'Firm Parent',
+			'create_date' => 'Create Date',
 		);
 	}
 
@@ -101,13 +105,25 @@ class Firm extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('slug',$this->slug,true);
-		$criteria->compare('is_public',$this->is_public);
+		$criteria->compare('status',$this->status);
 		$criteria->compare('currency',$this->currency,true);
 		$criteria->compare('csymbol',$this->csymbol,true);
 		$criteria->compare('language_id',$this->language_id);
+		$criteria->compare('firm_parent_id',$this->firm_parent_id);
+		$criteria->compare('create_date',$this->create_date,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+	/**
+	 * @return string a textual description of the firm
+	 */
+	public function __toString()
+	{
+		return $this->name;
+	}
+
+
 }
