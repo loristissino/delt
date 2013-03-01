@@ -3,13 +3,11 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 24 feb, 2013 at 09:21 PM
+-- Generato il: 01 mar, 2013 at 10:43 PM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT=0;
-START TRANSACTION;
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -32,30 +30,36 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `account_parent_id` int(11) DEFAULT NULL,
   `firm_id` int(11) NOT NULL,
   `level` int(11) NOT NULL DEFAULT '1',
-  `code` varchar(16) CHARACTER SET utf8 NOT NULL,
-  `is_selectable` tinyint(1) NOT NULL DEFAULT '1',
+  `code` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'the code to be used in searching and sorting',
+  `is_selectable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, it will be possibile to post amounts in this account',
+  `is_economic` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'if true, it is a revenue or an expense',
+  `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   PRIMARY KEY (`id`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=18 ;
 
 --
 -- Dump dei dati per la tabella `tbl_account`
 --
 
-INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`) VALUES
-(1, NULL, 1, 1, '01', 0),
-(2, NULL, 1, 1, '02', 0),
-(3, NULL, 1, 1, '03', 0),
-(4, 1, 1, 2, '01.01', 1),
-(5, 1, 1, 2, '01.02', 1),
-(6, 1, 1, 2, '01.10', 0),
-(7, 2, 1, 2, '02.01', 0),
-(8, 3, 1, 2, '03.01', 1),
-(9, 6, 1, 3, 'CUST01', 1),
-(10, 6, 1, 3, 'CUST02', 1),
-(11, 7, 1, 1, 'SUPPL01', 1),
-(12, 7, 1, 1, 'SUPPL02', 1);
+INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `is_economic`, `outstanding_balance`) VALUES
+(1, NULL, 1, 1, '01', 0, 0, NULL),
+(2, NULL, 1, 1, '02', 0, 0, NULL),
+(3, NULL, 1, 1, '03', 0, 0, NULL),
+(4, 1, 1, 2, '01.01', 1, 0, 'D'),
+(5, 1, 1, 2, '01.02', 1, 0, NULL),
+(6, 1, 1, 2, '01.10', 0, 0, 'D'),
+(7, 2, 1, 2, '02.01', 0, 0, NULL),
+(8, 3, 1, 2, '03.01', 1, 0, 'C'),
+(9, 6, 1, 3, '01.10.C01', 1, 0, 'D'),
+(10, 6, 1, 3, '01.10.C02', 1, 0, 'D'),
+(11, 7, 1, 3, '02.01.S01', 1, 0, 'C'),
+(12, 7, 1, 3, '02.02.S02', 1, 0, 'C'),
+(13, NULL, 1, 1, '11', 0, 1, NULL),
+(14, NULL, 1, 1, '21', 1, 1, NULL),
+(15, 13, 1, 2, '11.01', 1, 1, 'D'),
+(16, 14, 1, 1, '21.01', 1, 1, 'C');
 
 -- --------------------------------------------------------
 
@@ -96,7 +100,15 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (9, 1, 'Customer One'),
 (10, 1, 'Customer Two'),
 (11, 1, 'Supplier One'),
-(12, 1, 'Supplier Two');
+(12, 1, 'Supplier Two'),
+(13, 1, 'Expenses'),
+(13, 2, 'Costi'),
+(14, 1, 'Revenues'),
+(14, 2, 'Ricavi'),
+(15, 1, 'Purchases'),
+(15, 2, 'Merci c/acquisti'),
+(16, 1, 'Sales'),
+(16, 2, 'Merci c/vendite');
 
 -- --------------------------------------------------------
 
@@ -108,12 +120,12 @@ CREATE TABLE IF NOT EXISTS `tbl_debitcredit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
-  `amount` decimal(10,2) NOT NULL,
+  `amount` decimal(10,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `account_id` (`account_id`),
   KEY `post_id` (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
 
 --
 -- Dump dei dati per la tabella `tbl_debitcredit`
@@ -130,23 +142,26 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) CHARACTER SET utf8 NOT NULL,
   `slug` varchar(32) CHARACTER SET utf8 NOT NULL,
-  `is_public` tinyint(1) NOT NULL DEFAULT '0',
+  `status` smallint(1) NOT NULL DEFAULT '0',
   `currency` varchar(5) CHARACTER SET utf8 NOT NULL,
   `csymbol` char(1) COLLATE utf8_bin NOT NULL,
   `language_id` int(11) NOT NULL,
+  `firm_parent_id` int(11) NOT NULL,
+  `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  KEY `language_id` (`language_id`)
+  KEY `language_id` (`language_id`),
+  KEY `parent_firm_id` (`firm_parent_id`,`create_date`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Dump dei dati per la tabella `tbl_firm`
 --
 
-INSERT INTO `tbl_firm` (`id`, `name`, `slug`, `is_public`, `currency`, `csymbol`, `language_id`) VALUES
-(1, 'Test One Inc.', 'test-one', 1, 'USD', '$', 1),
-(2, 'Test Two Inc.', 'test-two', 0, 'USD', '$', 1),
-(3, 'Test Three Ltd', 'test-three', 0, 'GBP', '£', 1),
-(4, 'Test Four SpA', 'test-four', 0, 'EUR', '€', 2);
+INSERT INTO `tbl_firm` (`id`, `name`, `slug`, `status`, `currency`, `csymbol`, `language_id`, `firm_parent_id`, `create_date`) VALUES
+(1, 'Test One Inc.', 'test-one', 1, 'USD', '$', 1, 0, '0000-00-00 00:00:00'),
+(2, 'Test Two Inc.', 'test-two', 0, 'USD', '$', 1, 0, '0000-00-00 00:00:00'),
+(3, 'Test Three Ltd', 'test-three', 0, 'GBP', '£', 1, 0, '0000-00-00 00:00:00'),
+(4, 'Test Four SpA', 'test-four', 0, 'EUR', '€', 2, 0, '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -370,4 +385,3 @@ ALTER TABLE `tbl_profiles`
 --
 ALTER TABLE `tbl_users`
   ADD CONSTRAINT `tbl_users_ibfk_1` FOREIGN KEY (`id`) REFERENCES `tbl_profiles` (`user_id`);
-COMMIT;
