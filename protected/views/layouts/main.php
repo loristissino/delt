@@ -57,6 +57,7 @@
 		Copyright &copy; <?php echo date('Y'); ?> by Loris Tissino.<br/>
 		All Rights Reserved.<br/>
 		<?php echo Yii::powered(); ?>
+    <?php echo Yii::app()->params['tagLine'] ?>
 	</div><!-- footer -->
 
 </div><!-- page -->
