@@ -17,7 +17,7 @@ class RegistrationForm extends User {
 			array('username', 'unique', 'message' => UserModule::t("This user's name already exists.")),
 			array('email', 'unique', 'message' => UserModule::t("This user's email address already exists.")),
 			//array('verifyPassword', 'compare', 'compareAttribute'=>'password', 'message' => UserModule::t("Retype Password is incorrect.")),
-			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
+			array('username', 'match', 'pattern' => '/^[A-Za-z0-9_\.]+$/u','message' => UserModule::t("Incorrect symbols (A-z0-9).")),
 		);
 		if (!(isset($_POST['ajax']) && $_POST['ajax']==='registration-form')) {
 			array_push($rules,array('verifyCode', 'captcha', 'allowEmpty'=>!UserModule::doCaptcha('registration')));
