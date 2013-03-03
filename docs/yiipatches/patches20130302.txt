@@ -1,0 +1,32 @@
+diff -r -c frameworkunpatched/messages/it/yii.php framework/messages/it/yii.php
+*** frameworkunpatched/messages/it/yii.php	2013-03-02 14:33:59.719286711 +0100
+--- framework/messages/it/yii.php	2013-03-03 11:34:36.637869746 +0100
+***************
+*** 85,91 ****
+    'Failed to write the uploaded file "{file}" to disk.' => 'Fallimento nella scrittura su disco del file caricato "{file}".',
+    'File upload was stopped by extension.' => 'Carimento del file "{file}" interrotto a causa dell\'estensione.',
+    'Filter "{filter}" is invalid. Controller "{class}" does have the filter method "filter{filter}".' => 'Il filtro "{filter} non è valido. Il controller "{class}" non contiene il metodo di filter "filter{filter}".',
+!   'Get a new code' => 'Procurasi un codice nuovo',
+    'Invalid MO file revision: {revision}.' => 'Revisione del file MO non valida: {revision}.',
+    'Invalid MO file: {file} (magic: {magic}).' => 'File MO non valido: {file} (magic: {magic}).',
+    'Invalid enumerable value "{value}". Please make sure it is among ({enum}).' => 'Valore enumerabile non valido "{value}". Verificare che sia entro ({enum}).',
+--- 85,91 ----
+    'Failed to write the uploaded file "{file}" to disk.' => 'Fallimento nella scrittura su disco del file caricato "{file}".',
+    'File upload was stopped by extension.' => 'Carimento del file "{file}" interrotto a causa dell\'estensione.',
+    'Filter "{filter}" is invalid. Controller "{class}" does have the filter method "filter{filter}".' => 'Il filtro "{filter} non è valido. Il controller "{class}" non contiene il metodo di filter "filter{filter}".',
+!   'Get a new code' => 'Procurati un codice nuovo',
+    'Invalid MO file revision: {revision}.' => 'Revisione del file MO non valida: {revision}.',
+    'Invalid MO file: {file} (magic: {magic}).' => 'File MO non valido: {file} (magic: {magic}).',
+    'Invalid enumerable value "{value}". Please make sure it is among ({enum}).' => 'Valore enumerabile non valido "{value}". Verificare che sia entro ({enum}).',
+***************
+*** 208,211 ****
+    'Go to page: ' => 'Vai alla pagina: ',
+    'Last &gt;&gt;' => 'Ultimo &gt;&gt;',
+    'Next &gt;' => 'Successivo &gt;',
+! );
+\ Manca newline alla fine del file
+--- 208,211 ----
+    'Go to page: ' => 'Vai alla pagina: ',
+    'Last &gt;&gt;' => 'Ultimo &gt;&gt;',
+    'Next &gt;' => 'Successivo &gt;',
+! );
