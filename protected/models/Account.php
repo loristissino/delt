@@ -65,9 +65,9 @@ class Account extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
-			'tblLanguages' => array(self::MANY_MANY, 'Language', '{{account_name}}(account_id, language_id)'),
 			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
       'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
+      'currentname' => array(self::HAS_ONE, 'AccountName', '', 'on' => 'currentname.account_id = t.id and currentname.language_id = firm.language_id'),
 		);
 	}
 
@@ -97,16 +97,17 @@ class Account extends CActiveRecord
 		// Warning: Please modify the following code to remove attributes that
 		// should not be searched.
 
-		$criteria=new CDbCriteria;
+    $criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('account_parent_id',$this->account_parent_id);
-		$criteria->compare('firm_id',$this->firm_id);
-		$criteria->compare('level',$this->level);
-		$criteria->compare('code',$this->code,true);
-		$criteria->compare('is_selectable',$this->is_selectable);
-		$criteria->compare('is_economic',$this->is_economic);
-		$criteria->compare('outstanding_balance',$this->outstanding_balance,true);
+    $criteria->compare('id',$this->id);
+    $criteria->compare('account_parent_id',$this->account_parent_id);
+//    $criteria->compare('name', $this->name);
+    $criteria->compare('firm_id',$this->firm_id);
+    $criteria->compare('level',$this->level);
+    $criteria->compare('code',$this->code,true);
+    $criteria->compare('is_selectable',$this->is_selectable);
+    $criteria->compare('is_economic',$this->is_economic);
+    $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
@@ -137,5 +138,50 @@ class Account extends CActiveRecord
       }
     }
 	}
+  /*
+  public function scopes()
+  {
+    return array(
+      'published'=>array(
+          'condition'=>'status=1',
+      ),
+      'recently'=>array(
+          'order'=>'create_time DESC',
+          'limit'=>5,
+      ),
+    );
+  }
+  */
+    
+  public function belongingTo($firm_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'firm_id = ' . $firm_id,
+        'order'=>'code ASC',
+    ));
+    return $this;
+  }
+  
+  public function getL10nNames()
+  {
+    $names='';
+    foreach($this->names as $name)
+    {
+      $names .= $name->name ;
+    }
+    return $names;
+  }
+  /*
+  public function getNamex()
+  {
+    $name=$this->name;
+    if(!$this->is_selectable)
+    {
+      $name = '<b>' . $name . '</b>';
+    }
+    
+    return $name;
+  }
+  */
   
 }

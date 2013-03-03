@@ -68,7 +68,7 @@ class Firm extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
-			'tblUsers' => array(self::MANY_MANY, 'Users', '{{firm_user}}(firm_id, user_id)'),
+			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
 			'posts' => array(self::HAS_MANY, 'Post', 'firm_id'),
 		);
 	}
@@ -124,6 +124,37 @@ class Firm extends CActiveRecord
 	{
 		return $this->name;
 	}
+  
+	/**
+	 * @param DEUser $user the user to check
+	 * @return boolean true if the firm is manageable by $user, false otherwise
+	 */
+  public function isManageableBy(DEUser $user)
+  {
+    foreach($this->tblUsers as $fuser)
+    {
+      if ($fuser->id == $user->id) return true;
+    };
+    return false;
+  }
 
+  public function getAccountsAsDataProvider()
+  {
+    $sort = new CSort;
+    $sort->defaultOrder = 'code ASC';
+    $sort->attributes = array(
+        'code'=>'code',
+        'name'=>'currentname.name',
+        'is_economic'=>'is_economic',
+    );    
+    
+    return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
+      'pagination'=>array(
+          'pageSize'=>10,
+          ),
+      'sort'=>$sort,
+      )
+    );
+  }
 
 }

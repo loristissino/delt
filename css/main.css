@@ -227,3 +227,13 @@ div.search-form
 {
 	background: #80CFFF;
 }
+
+.account_selectable
+{
+  font-weight:normal;
+}
+
+.account_unselectable
+{
+  font-weight:bold;
+}
