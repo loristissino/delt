@@ -60,8 +60,10 @@ $this->breadcrumbs=array(
       'htmlOptions'=>array('class'=>'centered')
       ),
 		array(
-			'class'=>'ext.grid.CDeltAccountButtonColumn',
+			'class'=>'CButtonColumn',
+      'viewButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/ledger",array("id"=>$data->primaryKey))',
+      'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/edit",array("id"=>$data->primaryKey))',
+      'deleteButtonUrl'=>'Yii::app()->controller->createUrl("account/delete",array("id"=>$data->primaryKey))',
 		),
 	),
 )); ?>
-
