@@ -1,21 +1,16 @@
 <?php
 /* @var $this AccountController */
-/* @var $model Account */
+/* @var $account Account */
+/* @var $firm Firm */
 
 $this->breadcrumbs=array(
-	'Accounts'=>array('index'),
-	$model->id=>array('view','id'=>$model->id),
-	'Update',
-);
-
-$this->menu=array(
-	array('label'=>'List Account', 'url'=>array('index')),
-	array('label'=>'Create Account', 'url'=>array('create')),
-	array('label'=>'View Account', 'url'=>array('view', 'id'=>$model->id)),
-	array('label'=>'Manage Account', 'url'=>array('admin')),
+	'Bookkeeping'=>array('/bookkeeping'),
+	$firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
+  'Chart of accounts' => array('/bookkeeping/accountschart', 'slug'=>$firm->slug),
+  $account->name,
 );
 ?>
 
-<h1>Update Account <?php echo $model->id; ?></h1>
+<h1>Update Account «<?php echo $account->name ?>»</h1>
 
-<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form', array('model'=>$account)); ?>

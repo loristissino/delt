@@ -6,6 +6,11 @@ $this->breadcrumbs=array(
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Chart of accounts',
 );
+
+$this->menu=array(
+	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'firm_id'=>$model->id)),
+);
+
 ?>
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
 
@@ -62,7 +67,7 @@ $this->breadcrumbs=array(
 		array(
 			'class'=>'CButtonColumn',
       'viewButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/ledger",array("id"=>$data->primaryKey))',
-      'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/edit",array("id"=>$data->primaryKey))',
+      'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/update",array("id"=>$data->primaryKey))',
       'deleteButtonUrl'=>'Yii::app()->controller->createUrl("account/delete",array("id"=>$data->primaryKey))',
 		),
 	),

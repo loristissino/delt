@@ -150,7 +150,7 @@ class Firm extends CActiveRecord
     
     return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
       'pagination'=>array(
-          'pageSize'=>20,
+          'pageSize'=>30,
           ),
       'sort'=>$sort,
       )

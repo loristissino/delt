@@ -9,6 +9,7 @@
  * @property string $country_code
  * @property string $english_name
  * @property string $native_name
+ * @property string $locale
  *
  * The followings are the available model relations:
  * @property Account[] $tblAccounts
@@ -97,4 +98,50 @@ class Language extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+  
+  public function __toString()
+  {
+    return sprintf('%s (%s_%s)', $this->english_name, $this->language_code, $this->country_code);
+  }
+  
+  public function getLocale()
+  {
+    return $this->language_code . '_' . $this->country_code;
+  }
+  
+	/**
+	 * Retrieves a list of languages based on the locale provided.
+	 * @return array the languages found.
+	 */
+  public function findByLocale($locale)
+  {
+    $info=explode('_', $locale);
+    switch(sizeof($info))
+    {
+      case 1:
+        $language_code=$info;
+        $country_code=null;
+        break;
+      case 2:
+        $language_code=$info[0];
+        $country_code=$info[1];
+        break;
+      default:
+        $language_code=null;
+        $country_code=null;
+    }
+    return Language::model()->findByAttributes(array('language_code'=>$language_code, 'country_code'=>$country_code));
+  }
+  
+  public function getAllLocales()
+  {
+    $languages = Language::model()->findAll();
+    $locales=array();
+    foreach($languages as $language)
+    {
+      $locales[]=$language->getLocale();
+    }
+    return $locales;
+  }
+  
 }

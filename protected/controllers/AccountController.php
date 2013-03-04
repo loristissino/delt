@@ -28,7 +28,7 @@ class AccountController extends Controller
 	{
 		return array(
 			array('allow',  // allow all users to perform 'index' and 'view' actions
-				'actions'=>array('index','view'),
+				'actions'=>array('index'),
 				'users'=>array('*'),
 			),
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
@@ -49,20 +49,24 @@ class AccountController extends Controller
 	 * Displays a particular model.
 	 * @param integer $id the ID of the model to be displayed
 	 */
+  /*
 	public function actionView($id)
 	{
 		$this->render('view',array(
 			'model'=>$this->loadModel($id),
 		));
 	}
+  */
 
 	/**
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($firm_id)
 	{
+    $firm = $this->loadFirm($firm_id);
 		$model=new Account;
+    $model->firm_id = $firm_id;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -70,12 +74,16 @@ class AccountController extends Controller
 		if(isset($_POST['Account']))
 		{
 			$model->attributes=$_POST['Account'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+      if($model->validate())
+      {
+        if($model->save())
+          $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+      }
 		}
 
 		$this->render('create',array(
-			'model'=>$model,
+			'account'=>$model,
+      'firm'=>$firm,
 		));
 	}
 
@@ -86,20 +94,28 @@ class AccountController extends Controller
 	 */
 	public function actionUpdate($id)
 	{
-		$model=$this->loadModel($id);
-
+		$account=$this->loadModel($id);
+    $this->checkManageability($firm=$this->loadFirm($account->firm_id));
+    if(!$account->textnames = $account->l10n_names)
+    {
+      $account->setDefaultForNames();
+    }
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		// $this->performAjaxValidation($account);
 
 		if(isset($_POST['Account']))
 		{
-			$model->attributes=$_POST['Account'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$account->attributes=$_POST['Account'];
+      if($account->validate())
+      {
+        if($account->save())
+          $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+      }
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
+			'account'=>$account,
+      'firm'=>$firm,
 		));
 	}
 
@@ -141,6 +157,7 @@ class AccountController extends Controller
 	/**
 	 * Manages all models.
 	 */
+  /*
 	public function actionAdmin()
 	{
 		$model=new Account('search');
@@ -152,6 +169,7 @@ class AccountController extends Controller
 			'model'=>$model,
 		));
 	}
+  */
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

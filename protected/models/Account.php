@@ -10,8 +10,10 @@
  * @property integer $level
  * @property string $code
  * @property integer $is_selectable
- * @property integer $nature
+ * @property string $nature
  * @property string $outstanding_balance
+ * @property string $l10n_names
+ * @property string $info
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -46,10 +48,11 @@ class Account extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firm_id, code', 'required'),
+			array('firm_id, code, textnames', 'required'),
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
 			array('nature,outstanding_balance', 'length', 'max'=>1),
+      array('textname', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, account_parent_id, firm_id, level, code, is_selectable, nature, outstanding_balance', 'safe', 'on'=>'search'),
@@ -81,10 +84,11 @@ class Account extends CActiveRecord
 			'account_parent_id' => 'Account Parent',
 			'firm_id' => 'Firm',
 			'level' => 'Level',
-			'code' => 'Code',
+			'code' => Yii::t('delt', 'Code'),
 			'is_selectable' => 'Is Selectable',
-			'nature' => 'Nature',
-			'outstanding_balance' => 'Outstanding Balance',
+			'nature' => Yii::t('delt', 'Nature'),
+			'outstanding_balance' => Yii::t('delt', 'Outstanding balance'),
+      'textnames' => Yii::t('delt', 'Localized names'),
 		);
 	}
 
@@ -162,27 +166,16 @@ class Account extends CActiveRecord
     return $this;
   }
   
-  public function getL10nNames()
+  public function getL10n_names()
   {
-    $names='';
-    foreach($this->names as $name)
+    $text='';
+    $account_names=AccountName::model()->with('language')->findAllByAttributes(array('account_id'=>$this->id));
+    foreach($account_names as $account_name)
     {
-      $names .= $name->name ;
+      $text .= $account_name->language->locale . ': ' . $account_name->name . "\n";
     }
-    return $names;
+    return $text;
   }
-  /*
-  public function getNamex()
-  {
-    $name=$this->name;
-    if(!$this->is_selectable)
-    {
-      $name = '<b>' . $name . '</b>';
-    }
-    
-    return $name;
-  }
-  */
   
   /**
 	 * Deletes the row corresponding to this active record.
@@ -192,22 +185,17 @@ class Account extends CActiveRecord
 	 */
 	public function delete()
 	{
-    Yii::trace('deltm', 'deleting...');
 		if(!$this->getIsNewRecord())
 		{
 			Yii::trace(get_class($this).'.delete()','system.db.ar.CActiveRecord');
-      Yii::trace('deltm', 'before before');
 			if($this->beforeDelete())
 			{
-        Yii::trace('deltm', 'trans');
         $transaction = $this->getDbConnection()->beginTransaction();
         try
         {
-          Yii::trace('deltm', 'in try');
           $deleted=AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
           $result=$this->deleteByPk($this->getPrimaryKey())>0;
           $transaction->commit();
-          Yii::trace('deltm', 'deleted: ' . $deleted . '  result: '. $result);
         }
         catch(Exception $e)
         {
@@ -243,5 +231,130 @@ class Account extends CActiveRecord
 		else
 			return parent::beforeDelete();
 	}
+  
+  
+  protected function beforeSave()
+  {
+    $this->level = sizeof(explode('.', $this->code));
+    
+    if($this->level > 1)
+    {
+      $parent = Account::model()->findByAttributes(array('firm_id'=>$this->firm_id, 'code'=>substr($this->code, 0, strrpos($this->code, '.'))));
+
+      if(!$parent)
+      {
+        $this->addError('code', Yii::t('delt', 'The parent account does not exist.'));
+        return false;
+      }
+      
+      $this->account_parent_id = $parent->id; 
+    }
+    
+    else
+    {
+      $this->account_parent_id = null; 
+    }
+    
+    return parent::beforeSave();
+  }
+  
+  public function save($runValidation=true,$attributes=null)
+  {
+    try
+    {
+      $transaction = $this->getDbConnection()->beginTransaction();
+
+      $result = parent::save($runValidation, $attributes);
+      
+      foreach(explode("\n", $this->textnames) as $line)
+      {
+        $info = explode(':', $line);
+        if (sizeof($info)!=2)
+        {
+          continue;
+        }
+        $locale=trim($info[0]);
+        $name=strip_tags(trim($info[1]));
+        
+        if($language = Language::model()->findByLocale($locale))
+        {
+          // if we don't have a name, it means that it must be deleted
+          if($name=='')
+          {
+            try
+            {
+              AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id, 'language_id'=>$language->id));
+            }
+            catch(Exception $e1)
+            {
+              // this should'n happen...
+            }
+          }
+          else // we have a name, it means that we must maybe add it
+          {
+            $account_name = AccountName::model()->findByAttributes(array('account_id'=>$this->id, 'language_id'=>$language->id));
+            if(!$account_name)
+            {
+              $account_name = new AccountName();
+              $account_name->account_id = $this->id;
+              $account_name->language_id = $language->id;
+            }
+            if($account_name->name !== $name)
+            {
+              $account_name->name = $name;
+              try
+              {
+                $account_name->save();
+              }
+              catch(Exception $e2)
+              {
+                // shouldn't happen...
+              }
+            }
+          }
+        }
+      }
+
+
+      
+      $transaction->commit();
+
+    }
+    catch (Exception $e)
+    {
+      $this->addError('code', Yii::t('delt', 'This code is already in use.' . $e->getMessage()));
+      $result = false;
+      $transaction->rollback();
+    }
+    return $result;
+  }
+  
+  
+  /**
+	 * This method is invoked after a model instance is created by new operator.
+	 * The default implementation raises the {@link onAfterConstruct} event.
+	 * It is here overridden to do postprocessing after model creation.
+	 * We call the parent implementation so that the event is raised properly.
+	 */  
+  protected function afterConstruct()
+  {
+    parent::afterConstruct();
+    $this->setDefaultForNames();
+  }
+  
+  public function setDefaultForNames()
+  {
+    $this->textnames = implode(": \n", Language::model()->getAllLocales()) . ": ";
+  }
+  
+  public function getNumberOfChildren()
+  {
+    return Account::model()->countByAttributes(array('account_parent_id'=>$this->id));
+  }
+  
+  public function getParent()
+  {
+    return Account::model()->findByPk($this->account_parent_id);
+  }
   
 }
