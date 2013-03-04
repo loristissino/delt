@@ -19,11 +19,17 @@ $this->breadcrumbs=array(
       'selectableRows'=>2,
     ),
 */
-		'code',
+    array(
+      'class'=>'CDataColumn',
+      'sortable'=>true,
+      'name'=>'code',
+      'header'=>Yii::t('delt', 'Code'),
+      ),
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
       'name'=>'name',
+      'header'=>Yii::t('delt', 'Name'),
       'value'=>array($this, 'RenderName'),
       // this will call the function RenderName() of the Controller, passing the current object and the row number as parameter
       'type'=>'raw',
@@ -38,13 +44,21 @@ $this->breadcrumbs=array(
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
-      'name'=>'is_economic',
-      'value'=>array($this, 'RenderIsEconomic'),
+      'name'=>'nature',
+      'header'=>Yii::t('delt', 'Nature'),
+      'value'=>array($this, 'RenderNature'),
       'type'=>'raw',
-      'htmlOptions'=>array('style'=>'text-align: center') // FIXME we should do it with a class
+      'htmlOptions'=>array('class'=>'centered')
       ),
-
-		'outstanding_balance',
+    array(
+      'class'=>'CDataColumn',
+      'sortable'=>true,
+      'name'=>'outstanding_balance',
+      'header'=>Yii::t('delt', 'Outstanding balance'),
+      'value'=>array($this, 'RenderOutstandingBalance'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'centered')
+      ),
 		array(
 			'class'=>'ext.grid.CDeltAccountButtonColumn',
 		),

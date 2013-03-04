@@ -145,10 +145,14 @@ class BookkeepingController extends Controller
     return $this->renderPartial('../account/_name',array('account'=>$account),true);
   }
 
-  public function renderIsEconomic(Account $account, $row)
+  public function renderNature(Account $account, $row)
   {
-    return $this->renderPartial('../account/_is_economic',array('account'=>$account),true);
+    return $this->renderPartial('../account/_nature',array('account'=>$account),true);
   }
 
+  public function renderOutstandingBalance(Account $account, $row)
+  {
+    return $this->renderPartial('../account/_outstanding_balance',array('account'=>$account),true);
+  }
   
 }

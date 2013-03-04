@@ -10,7 +10,7 @@
  * @property integer $level
  * @property string $code
  * @property integer $is_selectable
- * @property integer $is_economic
+ * @property integer $nature
  * @property string $outstanding_balance
  *
  * The followings are the available model relations:
@@ -47,12 +47,12 @@ class Account extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('firm_id, code', 'required'),
-			array('account_parent_id, firm_id, level, is_selectable, is_economic', 'numerical', 'integerOnly'=>true),
+			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
-			array('outstanding_balance', 'length', 'max'=>1),
+			array('nature,outstanding_balance', 'length', 'max'=>1),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_parent_id, firm_id, level, code, is_selectable, is_economic, outstanding_balance', 'safe', 'on'=>'search'),
+			array('id, account_parent_id, firm_id, level, code, is_selectable, nature, outstanding_balance', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -83,7 +83,7 @@ class Account extends CActiveRecord
 			'level' => 'Level',
 			'code' => 'Code',
 			'is_selectable' => 'Is Selectable',
-			'is_economic' => 'Is Economic',
+			'nature' => 'Nature',
 			'outstanding_balance' => 'Outstanding Balance',
 		);
 	}
@@ -106,7 +106,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
-    $criteria->compare('is_economic',$this->is_economic);
+    $criteria->compare('nature',$this->nature);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
 		return new CActiveDataProvider($this, array(

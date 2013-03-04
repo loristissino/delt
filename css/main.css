@@ -237,3 +237,8 @@ div.search-form
 {
   font-weight:bold;
 }
+
+td.centered
+{
+  text-align: center;
+}

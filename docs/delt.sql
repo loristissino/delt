@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 01 mar, 2013 at 10:43 PM
+-- Generato il: 04 mar, 2013 at 08:55 AM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
@@ -32,34 +32,34 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `level` int(11) NOT NULL DEFAULT '1',
   `code` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'the code to be used in searching and sorting',
   `is_selectable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, it will be possibile to post amounts in this account',
-  `is_economic` tinyint(1) NOT NULL DEFAULT '0' COMMENT 'if true, it is a revenue or an expense',
+  `nature` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   PRIMARY KEY (`id`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=18 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
 
 --
 -- Dump dei dati per la tabella `tbl_account`
 --
 
-INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `is_economic`, `outstanding_balance`) VALUES
-(1, NULL, 1, 1, '01', 0, 0, NULL),
-(2, NULL, 1, 1, '02', 0, 0, NULL),
-(3, NULL, 1, 1, '03', 0, 0, NULL),
-(4, 1, 1, 2, '01.01', 1, 0, 'D'),
-(5, 1, 1, 2, '01.02', 1, 0, NULL),
-(6, 1, 1, 2, '01.10', 0, 0, 'D'),
-(7, 2, 1, 2, '02.01', 0, 0, NULL),
-(8, 3, 1, 2, '03.01', 1, 0, 'C'),
-(9, 6, 1, 3, '01.10.C01', 1, 0, 'D'),
-(10, 6, 1, 3, '01.10.C02', 1, 0, 'D'),
-(11, 7, 1, 3, '02.01.S01', 1, 0, 'C'),
-(12, 7, 1, 3, '02.02.S02', 1, 0, 'C'),
-(13, NULL, 1, 1, '11', 0, 1, NULL),
-(14, NULL, 1, 1, '21', 1, 1, NULL),
-(15, 13, 1, 2, '11.01', 1, 1, 'D'),
-(16, 14, 1, 1, '21.01', 1, 1, 'C');
+INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `nature`, `outstanding_balance`) VALUES
+(1, NULL, 1, 1, '01', 0, 'P', NULL),
+(2, NULL, 1, 1, '02', 0, 'P', NULL),
+(3, NULL, 1, 1, '03', 0, 'P', NULL),
+(4, 1, 1, 2, '01.01', 1, 'P', 'D'),
+(5, 1, 1, 2, '01.02', 1, 'P', NULL),
+(6, 1, 1, 2, '01.10', 0, 'P', 'D'),
+(7, 2, 1, 2, '02.01', 0, 'P', NULL),
+(8, 3, 1, 2, '03.01', 1, 'P', 'C'),
+(9, 6, 1, 3, '01.10.C01', 1, 'P', 'D'),
+(10, 6, 1, 3, '01.10.C02', 1, 'P', 'D'),
+(11, 7, 1, 3, '02.01.S01', 1, 'P', 'C'),
+(12, 7, 1, 3, '02.02.S02', 1, 'P', 'C'),
+(13, NULL, 1, 1, '11', 0, 'E', NULL),
+(14, NULL, 1, 1, '21', 0, 'E', NULL),
+(15, 13, 1, 2, '11.01', 1, 'E', 'D'),
+(16, 14, 1, 2, '21.01', 1, 'E', 'C');
 
 -- --------------------------------------------------------
 
@@ -183,7 +183,8 @@ CREATE TABLE IF NOT EXISTS `tbl_firm_user` (
 --
 
 INSERT INTO `tbl_firm_user` (`firm_id`, `user_id`, `role`) VALUES
-(1, 2, '');
+(1, 2, ''),
+(4, 2, 'O');
 
 -- --------------------------------------------------------
 
@@ -263,16 +264,18 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `first_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `last_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `school` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
 
 --
 -- Dump dei dati per la tabella `tbl_profiles`
 --
 
-INSERT INTO `tbl_profiles` (`user_id`, `first_name`, `last_name`) VALUES
-(1, 'Administrator', 'Admin'),
-(2, 'Loris', 'Tissino');
+INSERT INTO `tbl_profiles` (`user_id`, `first_name`, `last_name`, `school`) VALUES
+(1, 'Administrator', 'Admin', ''),
+(2, 'Abcdef', 'Defghjkl', ''),
+(7, 'Loris', 'Tissino', '');
 
 -- --------------------------------------------------------
 
@@ -298,15 +301,16 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
   `position` int(3) NOT NULL DEFAULT '0',
   `visible` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dump dei dati per la tabella `tbl_profiles_fields`
 --
 
 INSERT INTO `tbl_profiles_fields` (`id`, `varname`, `title`, `field_type`, `field_size`, `field_size_min`, `required`, `match`, `range`, `error_message`, `other_validator`, `default`, `widget`, `widgetparams`, `position`, `visible`) VALUES
-(1, 'first_name', 'First Name', 'VARCHAR', 255, 3, 2, '', '', 'Incorrect First Name (length between 3 and 50 characters).', '', '', '', '', 1, 3),
-(2, 'last_name', 'Last Name', 'VARCHAR', 255, 3, 2, '', '', 'Incorrect Last Name (length between 3 and 50 characters).', '', '', '', '', 2, 3);
+(1, 'first_name', 'First Name', 'VARCHAR', 255, 3, 2, '', '', 'Incorrect First Name (length between 3 and 50 characters).', '', '', '', '', 1, 1),
+(2, 'last_name', 'Last Name', 'VARCHAR', 255, 3, 2, '', '', 'Incorrect Last Name (length between 3 and 50 characters).', '', '', '', '', 2, 1),
+(3, 'school', 'School', 'VARCHAR', 255, 0, 2, '', '', '', '', '', '', '', 0, 1);
 
 -- --------------------------------------------------------
 
@@ -327,15 +331,16 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username` (`username`),
   UNIQUE KEY `user_email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
 
 --
 -- Dump dei dati per la tabella `tbl_users`
 --
 
 INSERT INTO `tbl_users` (`id`, `username`, `password`, `email`, `activkey`, `superuser`, `status`, `create_at`, `lastvisit_at`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'webmaster@example.com', 'cf039dcc239258ae55bb2905c9c5b70d', 1, 1, '2013-02-24 13:41:09', '0000-00-00 00:00:00'),
-(2, 'abcdef', 'e10adc3949ba59abbe56e057f20f883e', 'loris@tissino.it', '972ed1ae320b27035bb8c41ff6af9e1d', 0, 0, '2013-02-24 13:46:18', '0000-00-00 00:00:00');
+(1, 'admin', '00e624aa2bcc3f749e28af0732cd5f10', 'webmaster@example.com', 'b6b2194b3c9dde4bd74bd636044989d9', 1, 1, '2013-02-24 13:41:09', '2013-03-03 12:30:58'),
+(2, 'abcdef', '5fe6ce280af32ba2816b0f0d4cff5e63', 'loris@tissino.it', '09a586d70c9a9004e6f567d367c000d2', 0, 1, '2013-02-24 13:46:18', '2013-03-04 08:21:25'),
+(7, 'pippo', 'e08a7c49d96c2b475656cc8fe18cee8e', 'loris.tissino@gmail.com', 'd25a809426d4cb8412f8fcef681f09e7', 0, 1, '2013-03-02 18:31:36', '0000-00-00 00:00:00');
 
 --
 -- Limiti per le tabelle scaricate
@@ -379,9 +384,3 @@ ALTER TABLE `tbl_post`
 --
 ALTER TABLE `tbl_profiles`
   ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
-
---
--- Limiti per la tabella `tbl_users`
---
-ALTER TABLE `tbl_users`
-  ADD CONSTRAINT `tbl_users_ibfk_1` FOREIGN KEY (`id`) REFERENCES `tbl_profiles` (`user_id`);

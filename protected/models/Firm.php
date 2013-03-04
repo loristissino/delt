@@ -145,12 +145,12 @@ class Firm extends CActiveRecord
     $sort->attributes = array(
         'code'=>'code',
         'name'=>'currentname.name',
-        'is_economic'=>'is_economic',
+        'nature'=>'nature',
     );    
     
     return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
       'pagination'=>array(
-          'pageSize'=>10,
+          'pageSize'=>20,
           ),
       'sort'=>$sort,
       )
