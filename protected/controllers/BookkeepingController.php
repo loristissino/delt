@@ -44,7 +44,7 @@ class BookkeepingController extends Controller
 	public function actionLedger($id /* account_id */)
 	{
     $account=$this->loadAccount($id);
-    $this->checkManageability($firm=$this->loadModel($account->firm_id));
+    $this->checkManageability($firm=$this->loadFirm($account->firm_id));
     
 		$this->render('ledger', array(
       'model'=>$firm,
@@ -94,51 +94,6 @@ class BookkeepingController extends Controller
     $this->checkManageability($model);
 		return $model;
 	}
-
-	/**
-	 * Returns the data model based on the id value given.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the id of the model to be loaded
-	 * @return Firm the loaded model
-	 * @throws CHttpException
-	 */
-	public function loadModel($id)
-	{
-		$model=Firm::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-    if(!$model->isManageableBy($this->DEUser))
-      throw new CHttpException(403, 'You are not allowed to access the requested page.');
-		return $model;
-	}
-  
-  /**
-	 * Returns the account model based on the primary key.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return Account the loaded model
-	 * @throws CHttpException
-	 */
-	public function loadAccount($id)
-	{
-		$model=Account::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
-	}
-  
-  /**
-	 * Checks whether a firm is manageable by the logged-in user.
-	 * If not, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return Account the loaded model
-	 * @throws CHttpException
-	 */
-  public function checkManageability(Firm $firm)
-  {
-    if(!$firm->isManageableBy($this->DEUser))
-      throw new CHttpException(403, 'You are not allowed to access the requested page.');
-  }
   
   public function renderName(Account $account, $row)
   {

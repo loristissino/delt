@@ -184,4 +184,64 @@ class Account extends CActiveRecord
   }
   */
   
+  /**
+	 * Deletes the row corresponding to this active record.
+	 * @return boolean whether the deletion is successful.
+	 * @throws CException if the record is new
+   * @override parent::delete()
+	 */
+	public function delete()
+	{
+    Yii::trace('deltm', 'deleting...');
+		if(!$this->getIsNewRecord())
+		{
+			Yii::trace(get_class($this).'.delete()','system.db.ar.CActiveRecord');
+      Yii::trace('deltm', 'before before');
+			if($this->beforeDelete())
+			{
+        Yii::trace('deltm', 'trans');
+        $transaction = $this->getDbConnection()->beginTransaction();
+        try
+        {
+          Yii::trace('deltm', 'in try');
+          $deleted=AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
+          $result=$this->deleteByPk($this->getPrimaryKey())>0;
+          $transaction->commit();
+          Yii::trace('deltm', 'deleted: ' . $deleted . '  result: '. $result);
+        }
+        catch(Exception $e)
+        {
+          $transaction->rollback();
+        }
+        
+        $this->afterDelete();
+        return true;
+
+			}
+			else
+				return false;
+		}
+		else
+			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+	}
+  
+  public function getNumberOfPosts()
+  {
+    return DebitCredit::model()->countByAttributes(array('account_id'=>$this->id));
+  }
+  
+  /**
+	 * This method is invoked before deleting a record.
+	 * @return boolean whether the record should be deleted. Defaults to true.
+	 */
+	protected function beforeDelete()
+	{
+		if($this->getNumberOfPosts() > 0)
+		{
+      return false;
+		}
+		else
+			return parent::beforeDelete();
+	}
+  
 }
