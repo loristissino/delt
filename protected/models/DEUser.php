@@ -115,4 +115,30 @@ class DEUser extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+  
+  public function getFirmsAsDataProvider()
+  {
+    $sort = new CSort;
+    $sort->defaultOrder = 'name ASC';
+    $sort->attributes = array(
+        'code'=>'name',
+        'slug'=>'slug',
+    );    
+    
+    return new CActiveDataProvider('Firm', array(
+      'criteria'=>array(
+        'with'=>array('tblUsers'=>array(
+          'on'=>'user.id = ' . $this->id,
+          'together'=>true,
+          'joinType' => 'INNER JOIN',
+          ),
+        ),
+      ),
+      'pagination'=>array(
+          'pageSize'=>30,
+          ),
+      'sort'=>$sort,
+      )
+    );
+  }
 }

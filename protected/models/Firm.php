@@ -79,15 +79,15 @@ class Firm extends CActiveRecord
 	public function attributeLabels()
 	{
 		return array(
-			'id' => 'ID',
-			'name' => 'Name',
-			'slug' => 'Slug',
-			'status' => 'Status',
-			'currency' => 'Currency',
-			'csymbol' => 'Csymbol',
-			'language_id' => 'Language',
-			'firm_parent_id' => 'Firm Parent',
-			'create_date' => 'Create Date',
+			'id' => Yii::t('delt', 'ID'),
+			'name' => Yii::t('delt', 'Name'),
+			'slug' => Yii::t('delt', 'Slug'),
+			'status' => Yii::t('delt', 'Status'),
+			'currency' => Yii::t('delt', 'Currency'),
+			'csymbol' => Yii::t('delt', 'Currency symbol'),
+			'language_id' => Yii::t('delt', 'Language'),
+			'firm_parent_id' => Yii::t('delt', 'Parent firm'),
+			'create_date' => Yii::t('delt', 'Create Date'),
 		);
 	}
 
@@ -131,6 +131,7 @@ class Firm extends CActiveRecord
 	 */
   public function isManageableBy(DEUser $user)
   {
+    // FIXME - This coould be probably be done better... :-(
     foreach($this->tblUsers as $fuser)
     {
       if ($fuser->id == $user->id) return true;
@@ -236,6 +237,15 @@ class Firm extends CActiveRecord
       return 0;
     }
     return $a['model']->level < $b['model']->level ? -1: 1;
+  }
+  
+  public function manageableBy($user_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'with'=>'tblUsers',
+        'condition'=>'user.id = ' . $user_id,
+    ));
+    return $this;
   }
 
 }
