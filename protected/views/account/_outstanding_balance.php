@@ -1,1 +1,1 @@
-<?php echo ($account->outstanding_balance===null and $account->is_selectable) ? '/' : Yii::t('delt', $account->outstanding_balance.'<!-- outstanding balance -->') ?>
+<?php echo ($account->outstanding_balance===null and $account->is_selectable) ? '/' : ($account->outstanding_balance=='D' ? Yii::t('delt', $account->outstanding_balance.'<!-- outstanding balance -->') . '&nbsp;&nbsp;&nbsp;&nbsp;' : '&nbsp;&nbsp;&nbsp;&nbsp;' . Yii::t('delt', $account->outstanding_balance.'<!-- outstanding balance -->')) ?>

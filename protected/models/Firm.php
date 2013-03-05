@@ -191,6 +191,7 @@ class Firm extends CActiveRecord
       {
         $info['model']->outstanding_balance = null;
       }
+      $info['model']->number_of_children = sizeof($info['children']);
     }
 //    echo "<pre>";
     

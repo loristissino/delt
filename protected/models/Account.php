@@ -14,6 +14,7 @@
  * @property string $outstanding_balance
  * @property string $l10n_names
  * @property string $textnames
+ * @property integer $number_of_children
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -89,6 +90,7 @@ class Account extends CActiveRecord
 			'nature' => Yii::t('delt', 'Nature'),
 			'outstanding_balance' => Yii::t('delt', 'Outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
+      'number_of_children' => Yii::t('delt', 'Number of children'),
 		);
 	}
 
@@ -260,6 +262,11 @@ class Account extends CActiveRecord
       $this->account_parent_id = null; 
     }
     
+    if(!in_array($this->outstanding_balance, array('D', 'C')))
+    {
+      $this->outstanding_balance = null;
+    }
+    
     return parent::beforeSave();
   }
   
@@ -375,6 +382,11 @@ class Account extends CActiveRecord
   public function setParentCode($value)
   {
     $this->code = $value . substr($this->code, strrpos($this->code, '.'));
+  }
+  
+  public function getIs_deletable()
+  {
+    return $this->number_of_children == 0;
   }
   
 }

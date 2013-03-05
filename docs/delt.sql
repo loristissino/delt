@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 05 mar, 2013 at 05:28 PM
+-- Generato il: 05 mar, 2013 at 06:54 PM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
@@ -35,33 +35,35 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `nature` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
+  `number_of_children` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `firm_code` (`firm_id`,`code`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=20 ;
 
 --
 -- Dump dei dati per la tabella `tbl_account`
 --
 
-INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `nature`, `outstanding_balance`, `textnames`) VALUES
-(1, NULL, 1, 1, '01', 0, 'P', NULL, ''),
-(2, NULL, 1, 1, '02', 0, 'P', NULL, ''),
-(3, NULL, 1, 1, '03', 0, 'P', NULL, ''),
-(4, 1, 1, 2, '01.01', 1, 'P', 'D', ''),
-(5, 1, 1, 2, '01.02', 1, 'P', NULL, ''),
-(6, 1, 1, 2, '01.10', 0, 'P', NULL, ''),
-(7, 2, 1, 2, '02.01', 0, 'P', NULL, ''),
-(8, 3, 1, 2, '03.01', 1, 'P', 'C', ''),
-(9, 6, 1, 3, '01.10.C01', 1, 'P', 'D', ''),
-(10, 6, 1, 3, '01.10.C02', 1, 'P', 'D', ''),
-(11, 7, 1, 3, '02.01.S01', 1, 'P', 'C', ''),
-(12, 7, 1, 3, '02.01.S02', 1, 'P', 'C', ''),
-(13, NULL, 1, 1, '11', 0, 'E', NULL, ''),
-(14, NULL, 1, 1, '21', 0, 'E', NULL, ''),
-(15, 13, 1, 2, '11.01', 1, 'E', 'D', ''),
-(16, 14, 1, 2, '21.01', 1, 'E', 'C', '');
+INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `nature`, `outstanding_balance`, `textnames`, `number_of_children`) VALUES
+(2, NULL, 1, 1, '02', 0, 'P', NULL, '', 1),
+(3, NULL, 1, 1, '03', 0, 'P', NULL, '', 1),
+(5, 17, 1, 2, '01.02', 1, 'P', NULL, 'en_US: Bank Checking Account\r\nit_IT: Banca c/c\r\n', 0),
+(6, 17, 1, 2, '01.10', 0, 'P', NULL, '', 2),
+(7, 2, 1, 2, '02.01', 0, 'P', NULL, '', 2),
+(8, 3, 1, 2, '03.01', 1, 'P', 'C', '', 0),
+(9, 6, 1, 3, '01.10.C01', 1, 'P', 'D', '', 0),
+(10, 6, 1, 3, '01.10.C02', 1, 'P', 'D', '', 0),
+(11, 7, 1, 3, '02.01.S01', 1, 'P', 'C', '', 0),
+(12, 7, 1, 3, '02.01.S02', 1, 'P', 'C', '', 0),
+(13, NULL, 1, 1, '11', 0, 'E', NULL, '', 1),
+(14, NULL, 1, 1, '21', 0, 'E', NULL, '', 1),
+(15, 13, 1, 2, '11.01', 1, 'E', 'D', '', 0),
+(16, 14, 1, 2, '21.01', 1, 'E', 'C', '', 0),
+(17, NULL, 1, 1, '01', 0, 'P', NULL, 'en_US: Assets\r\nit_IT: Attività', 4),
+(18, 17, 1, 2, '01.01', 1, 'P', 'D', 'en_US: Cash\r\nit_IT: Cassa', 0),
+(19, 17, 1, 2, '01.03', 1, 'P', 'C', 'en_US: Post Office Account\r\nit_IT: C/C Postale', 0);
 
 -- --------------------------------------------------------
 
@@ -83,14 +85,10 @@ CREATE TABLE IF NOT EXISTS `tbl_account_name` (
 --
 
 INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
-(1, 1, 'Assets'),
-(1, 2, 'Attività'),
 (2, 1, 'Liabilities'),
 (2, 2, 'Passività'),
 (3, 1, 'Equity'),
 (3, 2, 'Capitale netto'),
-(4, 1, 'Cash'),
-(4, 2, 'Cassa'),
 (5, 1, 'Bank Checking Account'),
 (5, 2, 'Banca c/c'),
 (6, 1, 'Accounts Receivable'),
@@ -110,7 +108,13 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (15, 1, 'Purchases'),
 (15, 2, 'Merci c/acquisti'),
 (16, 1, 'Sales'),
-(16, 2, 'Merci c/vendite');
+(16, 2, 'Merci c/vendite'),
+(17, 1, 'Assets'),
+(17, 2, 'Attività'),
+(18, 1, 'Cash'),
+(18, 2, 'Cassa'),
+(19, 1, 'Post Office Account'),
+(19, 2, 'C/C Postale');
 
 -- --------------------------------------------------------
 
