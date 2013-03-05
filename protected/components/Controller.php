@@ -59,6 +59,21 @@ class Controller extends CController
 		return $firm;
 	}
 
+	/**
+	 * Returns the data model based on the slug value given in the GET variable.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param string $slug the slug of the model to be loaded
+	 * @return Firm the loaded model
+	 * @throws CHttpException
+	 */
+	public function loadFirmBySlug($slug)
+	{
+		$model=Firm::model()->findByAttributes(array('slug'=>$slug));
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+    $this->checkManageability($model);
+		return $model;
+	}
   
   /**
 	 * Returns the account model based on the primary key.

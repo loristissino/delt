@@ -242,3 +242,13 @@ td.centered
 {
   text-align: center;
 }
+
+div.success
+{
+  background-color: #90EE90;
+}
+
+div.failure
+{
+  background-color: orange;
+}

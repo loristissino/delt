@@ -54,48 +54,34 @@ class BookkeepingController extends Controller
       'account'=>$account
     ));
 	}
-
-	// Uncomment the following methods and override them if needed
-	/*
-	public function filters()
-	{
-		// return the filter configuration for this controller, e.g.:
-		return array(
-			'inlineFilterName',
-			array(
-				'class'=>'path.to.FilterClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-
-	public function actions()
-	{
-		// return external action classes, e.g.:
-		return array(
-			'action1'=>'path.to.ActionClass',
-			'action2'=>array(
-				'class'=>'path.to.AnotherActionClass',
-				'propertyName'=>'propertyValue',
-			),
-		);
-	}
-	*/
   
-	/**
-	 * Returns the data model based on the slug value given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param string $slug the slug of the model to be loaded
-	 * @return Firm the loaded model
-	 * @throws CHttpException
-	 */
+  public function actionFixAccountsChart($slug)
+  {
+    $firm=$this->loadModelBySlug($slug);
+    
+    if($_POST)
+    {
+      set_time_limit(0);
+      if($firm->fixAccounts())
+      {
+        Yii::app()->user->setFlash('delt_success','Checks have been correctly run.'); 
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure','Problems with checks.'); 
+      }
+      $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+    }
+    
+		$this->render('fixaccountschart', array(
+      'model'=>$this->loadModelBySlug($slug)
+    ));
+  }
+
+  
 	public function loadModelBySlug($slug)
 	{
-		$model=Firm::model()->findByAttributes(array('slug'=>$slug));
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-    $this->checkManageability($model);
-		return $model;
+    return $this->loadFirmBySlug($slug);
 	}
   
   public function renderName(Account $account, $row)

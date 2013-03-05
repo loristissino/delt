@@ -156,5 +156,85 @@ class Firm extends CActiveRecord
       )
     );
   }
+  
+  public function fixAccounts()
+  {
+    $maxlevel=0;
+    $accounts = $this->accounts;
+    $a=array();
+    foreach($accounts as $account)
+    {
+      $a[$account->id]=array(
+        'model'=>$account,
+        'children'=>array(),
+      );      
+    }
+    foreach($a as $id=>$info)
+    {
+      $parent_id = $info['model']->account_parent_id;
+      if(isset($a[$parent_id]))
+      {
+        $a[$parent_id]['children'][]=$id;
+        $a[$id]['parent_id']=$parent_id;
+      }
+      $info['model']->level = sizeof(explode('.', $info['model']->code));
+      $maxlevel=max($maxlevel, $info['model']->level);
+    }
+    
+    uasort($a, array($this, '_compareAccountsByLevel'));
+    
+    foreach($a as $id=>$info)
+    {
+      $info['model']->is_selectable = sizeof($info['children'])==0;
+      // an account is selectable when it has no children
+      if(!$info['model']->is_selectable)
+      {
+        $info['model']->outstanding_balance = null;
+      }
+    }
+//    echo "<pre>";
+    
+    foreach($a as $id=>$info)
+    {
+      echo '[' . $id . '] ' . $info['model'] . "\n"; //->code . '  ' . $info['model']->name . "\n";
+      echo "children: \n";
+      print_r($info['children']);
+      foreach($info['children'] as $child_id)
+      {
+        $a[$child_id]['model']->nature = $info['model']->nature;
+        $a[$child_id]['model']->setParentCode($info['model']->code);
+      }
+      
+    }
+    
+//    die();
+    
+    $transaction = $this->getDbConnection()->beginTransaction();
+    try
+    {
+      foreach($a as $id=>$info)
+      {
+        $info['model']->basicSave(false);
+      }
+      $transaction->commit();
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
+    return true;
+    
+  }
+  
+  
+  private function _compareAccountsByLevel($a, $b)
+  {
+    if($a['model']->level == $b['model']->level)
+    {
+      return 0;
+    }
+    return $a['model']->level < $b['model']->level ? -1: 1;
+  }
 
 }

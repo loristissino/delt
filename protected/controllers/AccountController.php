@@ -62,11 +62,11 @@ class AccountController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate($firm_id)
+	public function actionCreate($slug)
 	{
-    $firm = $this->loadFirm($firm_id);
+    $firm = $this->loadFirmBySlug($slug);
 		$model=new Account;
-    $model->firm_id = $firm_id;
+    $model->firm_id = $firm->id;
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);

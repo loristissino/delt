@@ -156,6 +156,11 @@ class Account extends CActiveRecord
     );
   }
   */
+  
+  public function __toString()
+  {
+    return sprintf('%s - "%s"', $this->code, $this->name);
+  }
     
   public function belongingTo($firm_id)
   {
@@ -239,7 +244,7 @@ class Account extends CActiveRecord
     
     if($this->level > 1)
     {
-      $parent = Account::model()->findByAttributes(array('firm_id'=>$this->firm_id, 'code'=>substr($this->code, 0, strrpos($this->code, '.'))));
+      $parent = Account::model()->findByAttributes(array('firm_id'=>$this->firm_id, 'code'=>$this->getComputedParentCode()));
 
       if(!$parent)
       {
@@ -329,6 +334,11 @@ class Account extends CActiveRecord
     return $result;
   }
   
+  public function basicSave($runValidation=true,$attributes=null)
+  {
+    return parent::save($runValidation, $attributes);
+  }
+  
   
   /**
 	 * This method is invoked after a model instance is created by new operator.
@@ -355,6 +365,16 @@ class Account extends CActiveRecord
   public function getParent()
   {
     return Account::model()->findByPk($this->account_parent_id);
+  }
+  
+  public function getComputedParentCode()
+  {
+    return substr($this->code, 0, strrpos($this->code, '.'));
+  }
+  
+  public function setParentCode($value)
+  {
+    $this->code = $value . substr($this->code, strrpos($this->code, '.'));
   }
   
 }

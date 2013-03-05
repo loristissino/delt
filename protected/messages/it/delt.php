@@ -31,5 +31,6 @@ return array(
   
   'Operations' => 'Operazioni',
   'Create new account' => 'Crea nuovo conto',
+  'Fix chart' => 'Sistema piano dei conti',
 );
 
