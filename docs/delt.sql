@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 05 mar, 2013 at 05:14 PM
+-- Generato il: 05 mar, 2013 at 05:28 PM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `is_selectable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, it will be possibile to post amounts in this account',
   `nature` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
+  `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
   PRIMARY KEY (`id`),
   UNIQUE KEY `firm_code` (`firm_id`,`code`),
   KEY `account_parent_id` (`account_parent_id`),
@@ -44,23 +45,23 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
 -- Dump dei dati per la tabella `tbl_account`
 --
 
-INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `nature`, `outstanding_balance`) VALUES
-(1, NULL, 1, 1, '01', 0, 'P', NULL),
-(2, NULL, 1, 1, '02', 0, 'P', NULL),
-(3, NULL, 1, 1, '03', 0, 'P', NULL),
-(4, 1, 1, 2, '01.01', 1, 'P', 'D'),
-(5, 1, 1, 2, '01.02', 1, 'P', NULL),
-(6, 1, 1, 2, '01.10', 0, 'P', 'D'),
-(7, 2, 1, 2, '02.01', 0, 'P', NULL),
-(8, 3, 1, 2, '03.01', 1, 'P', 'C'),
-(9, 6, 1, 3, '01.10.C01', 1, 'P', 'D'),
-(10, 6, 1, 3, '01.10.C02', 1, 'P', 'D'),
-(11, 7, 1, 3, '02.01.S01', 1, 'P', 'C'),
-(12, 7, 1, 3, '02.02.S02', 1, 'P', 'C'),
-(13, NULL, 1, 1, '11', 0, 'E', NULL),
-(14, NULL, 1, 1, '21', 0, 'E', NULL),
-(15, 13, 1, 2, '11.01', 1, 'E', 'D'),
-(16, 14, 1, 2, '21.01', 1, 'E', 'C');
+INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`, `is_selectable`, `nature`, `outstanding_balance`, `textnames`) VALUES
+(1, NULL, 1, 1, '01', 0, 'P', NULL, ''),
+(2, NULL, 1, 1, '02', 0, 'P', NULL, ''),
+(3, NULL, 1, 1, '03', 0, 'P', NULL, ''),
+(4, 1, 1, 2, '01.01', 1, 'P', 'D', ''),
+(5, 1, 1, 2, '01.02', 1, 'P', NULL, ''),
+(6, 1, 1, 2, '01.10', 0, 'P', NULL, ''),
+(7, 2, 1, 2, '02.01', 0, 'P', NULL, ''),
+(8, 3, 1, 2, '03.01', 1, 'P', 'C', ''),
+(9, 6, 1, 3, '01.10.C01', 1, 'P', 'D', ''),
+(10, 6, 1, 3, '01.10.C02', 1, 'P', 'D', ''),
+(11, 7, 1, 3, '02.01.S01', 1, 'P', 'C', ''),
+(12, 7, 1, 3, '02.01.S02', 1, 'P', 'C', ''),
+(13, NULL, 1, 1, '11', 0, 'E', NULL, ''),
+(14, NULL, 1, 1, '21', 0, 'E', NULL, ''),
+(15, 13, 1, 2, '11.01', 1, 'E', 'D', ''),
+(16, 14, 1, 2, '21.01', 1, 'E', 'C', '');
 
 -- --------------------------------------------------------
 

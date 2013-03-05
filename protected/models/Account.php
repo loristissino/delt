@@ -13,7 +13,7 @@
  * @property string $nature
  * @property string $outstanding_balance
  * @property string $l10n_names
- * @property string $info
+ * @property string $textnames
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -52,7 +52,7 @@ class Account extends CActiveRecord
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
 			array('nature,outstanding_balance', 'length', 'max'=>1),
-      array('textname', 'safe'),
+      array('textnames', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, account_parent_id, firm_id, level, code, is_selectable, nature, outstanding_balance', 'safe', 'on'=>'search'),
