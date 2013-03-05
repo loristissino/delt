@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 04 mar, 2013 at 08:55 AM
+-- Generato il: 05 mar, 2013 at 05:14 PM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
@@ -35,6 +35,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `nature` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `firm_code` (`firm_id`,`code`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=17 ;
@@ -339,8 +340,8 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `username`, `password`, `email`, `activkey`, `superuser`, `status`, `create_at`, `lastvisit_at`) VALUES
 (1, 'admin', '00e624aa2bcc3f749e28af0732cd5f10', 'webmaster@example.com', 'b6b2194b3c9dde4bd74bd636044989d9', 1, 1, '2013-02-24 13:41:09', '2013-03-03 12:30:58'),
-(2, 'abcdef', '5fe6ce280af32ba2816b0f0d4cff5e63', 'loris@tissino.it', '09a586d70c9a9004e6f567d367c000d2', 0, 1, '2013-02-24 13:46:18', '2013-03-04 08:21:25'),
-(7, 'pippo', 'e08a7c49d96c2b475656cc8fe18cee8e', 'loris.tissino@gmail.com', 'd25a809426d4cb8412f8fcef681f09e7', 0, 1, '2013-03-02 18:31:36', '0000-00-00 00:00:00');
+(2, 'abcdef', '5fe6ce280af32ba2816b0f0d4cff5e63', 'abcdef@example.com', '09a586d70c9a9004e6f567d367c000d2', 0, 1, '2013-02-24 13:46:18', '2013-03-04 08:21:25'),
+(7, 'pippo', 'e08a7c49d96c2b475656cc8fe18cee8e', 'pippo@example.com', 'd25a809426d4cb8412f8fcef681f09e7', 0, 1, '2013-03-02 18:31:36', '0000-00-00 00:00:00');
 
 --
 -- Limiti per le tabelle scaricate
