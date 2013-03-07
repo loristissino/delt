@@ -72,6 +72,7 @@ class AccountController extends Controller
     {
       $parent = $this->loadAccount($id);
       $model->code = $parent->code . '.';
+      $model->nature = $parent->nature;
     }
 
 		// Uncomment the following line if AJAX validation is needed

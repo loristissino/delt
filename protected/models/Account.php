@@ -342,7 +342,7 @@ class Account extends CActiveRecord
     }
     catch (Exception $e)
     {
-      $this->addError('code', Yii::t('delt', 'This code is already in use.' . $e->getMessage()));
+      $this->addError('code', Yii::t('delt', 'This code is already in use.'));
       $result = false;
       $transaction->rollback();
     }

@@ -95,7 +95,10 @@ class FirmController extends Controller
 		{
 			$model->attributes=$_POST['Firm'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+      {
+        Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
+				$this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
+      }
 		}
 
 		$this->render('update',array(
@@ -108,6 +111,7 @@ class FirmController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
+  /*
 	public function actionDelete($id)
 	{
 		$this->loadModel($id)->delete();
@@ -116,6 +120,7 @@ class FirmController extends Controller
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
 	}
+  */
 
 	/**
 	 * Lists all models.
@@ -131,6 +136,7 @@ class FirmController extends Controller
 	/**
 	 * Manages all models.
 	 */
+  /*
 	public function actionAdmin()
 	{
 		$model=new Firm('search');
@@ -142,6 +148,7 @@ class FirmController extends Controller
 			'model'=>$model,
 		));
 	}
+  */
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
@@ -152,10 +159,7 @@ class FirmController extends Controller
 	 */
 	public function loadModel($id)
 	{
-		$model=Firm::model()->findByPk($id);
-		if($model===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $model;
+    return $this->loadFirm($id);
 	}
 
 	/**

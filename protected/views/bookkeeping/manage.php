@@ -14,7 +14,6 @@ $this->breadcrumbs=array(
         array('label'=>Yii::t('delt','Bookkeeping'), 'items'=>array(
             array('label'=>Yii::t('delt','Chart of accounts'), 'url'=>array('/bookkeeping/accountschart', 'slug'=>$model->slug)),
             array('label'=>Yii::t('delt','Journal'), 'url'=>array('/bookkeeping/journal', 'slug'=>$model->slug)),
-            array('label'=>Yii::t('delt','Ledger'), 'url'=>array('/bookkeeping/ledger', 'slug'=>$model->slug)),
             array('label'=>Yii::t('delt','Trial balance'), 'url'=>array('/bookkeeping/balance', 'slug'=>$model->slug)),
         )),
         array('label'=>Yii::t('delt','Management'), 'items'=>array(

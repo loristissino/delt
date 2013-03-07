@@ -228,6 +228,11 @@ div.search-form
 	background: #80CFFF;
 }
 
+.account_main
+{
+  font-weight:bold;
+}
+
 .account_selectable
 {
   font-weight:normal;
@@ -235,7 +240,8 @@ div.search-form
 
 .account_unselectable
 {
-  font-weight:bold;
+  font-weight:normal;
+  font-style: italic;
 }
 
 td.centered
