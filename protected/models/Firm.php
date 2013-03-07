@@ -129,9 +129,9 @@ class Firm extends CActiveRecord
 	 * @param DEUser $user the user to check
 	 * @return boolean true if the firm is manageable by $user, false otherwise
 	 */
-  public function isManageableBy(DEUser $user)
+  public function isManageableBy(DEUser $user=null)
   {
-    // FIXME - This coould be probably be done better... :-(
+    // FIXME - This could probably be done better... :-(
     foreach($this->tblUsers as $fuser)
     {
       if ($fuser->id == $user->id) return true;

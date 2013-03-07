@@ -1,25 +1,26 @@
 <?php
 
 /**
- * This is the model class for table "{{debitcredit}}".
+ * This is the model class for table "{{post}}".
  *
- * The followings are the available columns in table '{{debitcredit}}':
+ * The followings are the available columns in table '{{post}}':
  * @property integer $id
- * @property integer $account_id
- * @property integer $post_id
- * @property string $amount
+ * @property integer $firm_id
+ * @property string $date
+ * @property string $description
+ * @property integer $is_confirmed
  * @property integer $rank
  *
  * The followings are the available model relations:
- * @property Account $account
- * @property Post $post
+ * @property Debitcredit[] $debitcredits
+ * @property Firm $firm
  */
-class DebitCredit extends CActiveRecord
+class Post extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return DebitCredit the static model class
+	 * @return Post the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +32,7 @@ class DebitCredit extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{debitcredit}}';
+		return '{{post}}';
 	}
 
 	/**
@@ -42,12 +43,12 @@ class DebitCredit extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('account_id, post_id, amount', 'required'),
-			array('account_id, post_id, rank', 'numerical', 'integerOnly'=>true),
-			array('amount', 'length', 'max'=>10),
+			array('firm_id, date, description', 'required'),
+			array('firm_id, is_confirmed, rank', 'numerical', 'integerOnly'=>true),
+			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_id, post_id, amount, rank', 'safe', 'on'=>'search'),
+			array('id, firm_id, date, description, is_confirmed, rank', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -59,8 +60,8 @@ class DebitCredit extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'account' => array(self::BELONGS_TO, 'Account', 'account_id'),
-			'post' => array(self::BELONGS_TO, 'Post', 'post_id'),
+			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'post_id'),
+			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 		);
 	}
 
@@ -71,9 +72,10 @@ class DebitCredit extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'account_id' => 'Account',
-			'post_id' => 'Post',
-			'amount' => 'Amount',
+			'firm_id' => 'Firm',
+			'date' => 'Date',
+			'description' => 'Description',
+			'is_confirmed' => 'Is Confirmed',
 			'rank' => 'Rank',
 		);
 	}
@@ -90,13 +92,27 @@ class DebitCredit extends CActiveRecord
 		$criteria=new CDbCriteria;
 
 		$criteria->compare('id',$this->id);
-		$criteria->compare('account_id',$this->account_id);
-		$criteria->compare('post_id',$this->post_id);
-		$criteria->compare('amount',$this->amount,true);
+		$criteria->compare('firm_id',$this->firm_id);
+		$criteria->compare('date',$this->date,true);
+		$criteria->compare('description',$this->description,true);
+		$criteria->compare('is_confirmed',$this->is_confirmed);
 		$criteria->compare('rank',$this->rank);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+  
+  public function belongingTo($post_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'{{debitcredit}}.post_id = ' . $post_id,
+        'order'=>'code ASC',
+    ));
+    return $this;
+  }  
+  
+  
+  
+  
 }

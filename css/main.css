@@ -243,6 +243,11 @@ td.centered
   text-align: center;
 }
 
+.currency
+{
+  text-align: right;
+}
+
 div.success
 {
   background-color: #90EE90;
@@ -253,3 +258,31 @@ div.failure
   background-color: orange;
 }
 
+a.hiddenlink
+{
+  text-decoration: none;
+  color: black;
+}
+
+a.hiddenlink:hover
+{
+  text-decoration: underline;
+  color: blue;
+}
+
+.grandtotal
+{
+  color: black;
+  font-weight: bold;
+}
+
+div.balance
+{
+  font-size: 1.2em;
+  background-color: #EFEFEF;
+}
+
+span.warning
+{
+   color: #BE3C8B;
+}

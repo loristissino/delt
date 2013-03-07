@@ -72,6 +72,14 @@ class Account extends CActiveRecord
 			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
       'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
       'currentname' => array(self::HAS_ONE, 'AccountName', '', 'on' => 'currentname.account_id = t.id and currentname.language_id = firm.language_id'),
+      'debitgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
+        'select'=>'SUM(amount)',
+        'condition'=>'amount > 0',
+        ),
+      'creditgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
+        'select'=>'SUM(amount)',
+        'condition'=>'amount < 0',
+        ),
 		);
 	}
 
@@ -88,7 +96,7 @@ class Account extends CActiveRecord
 			'code' => Yii::t('delt', 'Code'),
 			'is_selectable' => 'Is Selectable',
 			'nature' => Yii::t('delt', 'Nature'),
-			'outstanding_balance' => Yii::t('delt', 'Outstanding balance'),
+			'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
       'number_of_children' => Yii::t('delt', 'Number of children'),
 		);
@@ -222,7 +230,7 @@ class Account extends CActiveRecord
   
   public function getNumberOfPosts()
   {
-    return DebitCredit::model()->countByAttributes(array('account_id'=>$this->id));
+    return Debitcredit::model()->countByAttributes(array('account_id'=>$this->id));
   }
   
   /**
@@ -369,6 +377,11 @@ class Account extends CActiveRecord
     return Account::model()->countByAttributes(array('account_parent_id'=>$this->id));
   }
   
+  public function getChildren()
+  {
+    return Account::model()->findAllByAttributes(array('account_parent_id'=>$this->id));
+  }
+  
   public function getParent()
   {
     return Account::model()->findByPk($this->account_parent_id);
@@ -388,5 +401,23 @@ class Account extends CActiveRecord
   {
     return $this->number_of_children == 0;
   }
-  
+
+  public function getDebitcreditsAsDataProvider()
+  {
+/*    $sort = new CSort;
+    $sort->defaultOrder = 'code ASC';
+    $sort->attributes = array(
+        'code'=>'code',
+        'name'=>'currentname.name',
+        'nature'=>'nature',
+    );    
+  */  
+    return new CActiveDataProvider(Debitcredit::model()->with('post')->belongingTo($this->id), array(
+      'pagination'=>array(
+          'pageSize'=>30,
+          ),
+    //  'sort'=>$sort,
+      )
+    );
+  }
 }

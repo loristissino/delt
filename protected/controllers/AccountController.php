@@ -83,7 +83,10 @@ class AccountController extends Controller
       if($model->validate())
       {
         if($model->save())
+        {
+          $firm->fixAccounts();
           $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+        }
       }
 		}
 
@@ -115,7 +118,10 @@ class AccountController extends Controller
       if($account->validate())
       {
         if($account->save())
+        {
+          $firm->fixAccounts();
           $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+        }
       }
 		}
 
@@ -138,6 +144,7 @@ class AccountController extends Controller
     try
     {
       $this->loadModel($id)->delete();
+      $firm->fixAccounts();
     }
     catch (Exception $e)
     {
@@ -146,7 +153,8 @@ class AccountController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('bookkeeping/accountschart', 'slug'=>$firm->slug));
+      
 	}
 
 	/**

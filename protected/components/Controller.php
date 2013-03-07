@@ -71,6 +71,8 @@ class Controller extends CController
 		$model=Firm::model()->findByAttributes(array('slug'=>$slug));
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
+    if(!$this->DEUser)
+      throw new CHttpException(401,'You must be authenticated to access this page.');
     $this->checkManageability($model);
 		return $model;
 	}
@@ -89,5 +91,6 @@ class Controller extends CController
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+  
   
 }

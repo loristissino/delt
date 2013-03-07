@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
+	//array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
 );
 
 ?>
@@ -68,11 +68,11 @@ $this->menu=array(
 		array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
 			'class'=>'CButtonColumn',
-      'template'=>'{view}{delete}{update}{new}',
+      'template'=>'{view}{update}{new}',
       'viewButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/ledger",array("id"=>$data->primaryKey))',
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/update",array("id"=>$data->primaryKey))',
       'deleteButtonUrl'=>'Yii::app()->controller->createUrl("account/delete",array("id"=>$data->primaryKey))',
-      'headerHtmlOptions'=>array('style'=>'width: 70px;'),
+      //'headerHtmlOptions'=>array('style'=>'width: 70px;'),
       'htmlOptions'=>array('style'=>'text-align: right'),
       'buttons'=>array(
         'new'=>array(
@@ -84,9 +84,14 @@ $this->menu=array(
         'view'=>array(
           'visible'=>'$data->is_selectable',
         ),
+        'update'=>array(
+          'label'=>'Edit',
+          'options'=>array('title'=>Yii::t('delt', 'Edit')),
+        )
+        /*
         'delete'=>array(
           'visible'=>'$data->is_deletable',
-        ),
+        ),*/
       )
       
 		),

@@ -4,6 +4,7 @@ class BookkeepingController extends Controller
 {
   
   public $layout='//layouts/column2';
+  public $firm=null;
   
 	public function actionIndex()
 	{
@@ -47,11 +48,11 @@ class BookkeepingController extends Controller
 	public function actionLedger($id /* account_id */)
 	{
     $account=$this->loadAccount($id);
-    $this->checkManageability($firm=$this->loadFirm($account->firm_id));
+    $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     
 		$this->render('ledger', array(
-      'model'=>$firm,
-      'account'=>$account
+      'model'=>$this->firm,
+      'account'=>$account,
     ));
 	}
   
@@ -93,10 +94,19 @@ class BookkeepingController extends Controller
   {
     return $this->renderPartial('../account/_nature',array('account'=>$account),true);
   }
-
+  
   public function renderOutstandingBalance(Account $account, $row)
   {
     return $this->renderPartial('../account/_outstanding_balance',array('account'=>$account),true);
   }
+
+  public function renderDebit(Debitcredit $debitcredit, $row)
+  {
+    return $this->renderPartial('_debit',array('debitcredit'=>$debitcredit),true);
+  }
   
+  public function renderCredit(Debitcredit $debitcredit, $row)
+  {
+    return $this->renderPartial('_credit',array('debitcredit'=>$debitcredit),true);
+  }
 }

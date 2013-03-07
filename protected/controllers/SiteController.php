@@ -37,7 +37,21 @@ class SiteController extends Controller
 	 */
 	public function actionTest()
 	{
-		$this->render('test');
+    $form = new Abcde;
+    $form->item="Ciao";
+    $form->something="Mondo";
+    $form->items=array(new Defg('first', 'bump'), new Defg('second', 'jkk'));
+    
+    if(isset($_POST['Abcde']))
+    {
+        $model->attributes=$_POST['Abcde'];
+        if($model->validate())
+        {
+            // form inputs are valid, do something here
+            return;
+        }
+    }
+    $this->render('_abcde',array('model'=>$form, 'items'=>$form->items));
 	}
 
 
