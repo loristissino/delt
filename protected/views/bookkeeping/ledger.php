@@ -13,8 +13,6 @@ $grandtotal = $debitgrandtotal + $creditgrandtotal;
 
 $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
 
-//$url=CHtml::normalizeUrl(array('account/delete','id'=>$account->id));
-
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/accountschart', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),

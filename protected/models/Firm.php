@@ -198,9 +198,6 @@ class Firm extends CActiveRecord
     
     foreach($a as $id=>$info)
     {
-      echo '[' . $id . '] ' . $info['model'] . "\n"; //->code . '  ' . $info['model']->name . "\n";
-      echo "children: \n";
-      print_r($info['children']);
       foreach($info['children'] as $child_id)
       {
         $a[$child_id]['model']->nature = $info['model']->nature;

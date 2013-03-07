@@ -45,6 +45,40 @@ class BookkeepingController extends Controller
     ));
 	}
 
+	public function actionNewpost($slug)
+	{
+    
+    $postform = new PostForm();
+    
+    $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
+    
+        
+		if(isset($_POST['PostForm']))
+		{
+			$postform->attributes=$_POST['PostForm'];
+      $postform->acquireItems($_POST['DebitcreditForm']);
+      if(isset($_POST['addrow']))
+      {
+        $postform->debitcredits[] = new DebitcreditForm();
+      }
+      
+      if($postform->validate())
+      {
+        if($postform->save())
+        {
+          $this->redirect(array('bookkeeping/journal','slug'=>$firm->slug));
+        }
+      }
+		}
+
+    
+		$this->render('newpost', array(
+      'model'=>$this->loadModelBySlug($slug),
+      'postform'=>$postform,
+      'items'=>$postform->debitcredits,
+    ));
+	}
+
 	public function actionLedger($id /* account_id */)
 	{
     $account=$this->loadAccount($id);

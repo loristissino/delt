@@ -4,14 +4,14 @@
 $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'Journal',
+  'New post',
 );
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/accountschart', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'New post'), 'url'=>array('bookkeeping/newpost', 'slug'=>$model->slug)),
 );
 
 ?>
-<h1><?php echo Yii::t('delt', 'Journal') ?></h1>
+<h1>New post</h1>
 
+<?php echo $this->renderPartial('_postform', array('postform'=>$postform, 'items'=>$items)) ?>
