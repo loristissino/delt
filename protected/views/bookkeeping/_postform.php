@@ -29,20 +29,34 @@
 
 
 <table>
-<tr><th>Name</th><th>Debit</th><th>Credit</th></tr>
+<tr><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
 <?php foreach($items as $i=>$item): ?>
 <tr>
-<td><?php echo CHtml::activeTextField($item,"[$i]name"); ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]debit"); ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]credit"); ?></td>
+<td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+  'id'=>'name'.$i,
+  'name'=>"DebitcreditForm[$i][name]",
+  'value'=>$item->name,
+  'source'=>$this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)),
+   'options'=>array(
+    'delay'=>200,
+    'minLength'=>2,
+    ),
+  'htmlOptions'=>array(
+     'size'=>'50',
+     'class'=>$item->name_errors ? 'error': 'valid',
+     ),
+  ))
+?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('class'=>'currency ' . ($item->debit_errors ? 'error': 'valid'))) ?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('class'=>'currency ' . ($item->credit_errors ? 'error': 'valid'))) ?></td>
 </tr>
 <?php endforeach; ?>
 </table>
 
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
-		<?php echo CHtml::submitButton('Add row', array('name'=>'addrow')); ?>
+		<?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'submit')); ?>
+		<?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

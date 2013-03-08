@@ -7,9 +7,12 @@ return array(
   'Chart of accounts' => 'Piano dei conti',
   'Trial balance' => 'Situazione contabile',
   'Ledger' => 'Libro mastro',
+  'Account' => 'Conto',
 
   'Code' => 'Codice',
   'Name' => 'Nome',
+  'Date' => 'Data',
+  'Description' => 'Descrizione',
 
   'Nature' => 'Natura',
   'P<!-- nature -->' => 'P',  // conti patrimoniali (stato patrimoniale)
@@ -40,7 +43,18 @@ return array(
   
   'Edit'=>'Modifica',
   'Check the debits and the credits.'=>'Controlla gli addebiti e gli accrediti.',
+  'Save journal post' => 'Registra nel giornale',
+  'Add a row' => 'Aggiungi una riga',
   
   'The following accounts belong here:' => 'I seguenti conti fanno parte di questo raggruppamento:',
+  
+  'Row {row}: ' => 'Riga {row}: ',
+  'the account with code "{code}" is not available.' => 'Il conto con codice "{code}" non è disponibile.',
+  'the value "{value}" is not numeric.' => 'il valore "{value}" non è numerico.',
+  'the value "{value}" cannot be negative.' => 'il valore "{value}" non può essere negativo.',
+  'you cannot have both a debit and a credit.' => 'non si può avere sia un addebito sia un accredito.',
+  'you must have a debit or a credit.' => 'è necessario un addebito o un accredito',
+  'No amounts specified.' => 'Nessun importo specificato',
+  'The total amount of debits does not match the total amounts of credits.' => 'Il totale degli addebiti non corrisponde al totale degli accrediti.',
 );
 

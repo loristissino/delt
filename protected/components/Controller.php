@@ -93,4 +93,53 @@ class Controller extends CController
 	}
   
   
+  /**
+   * Serves an object as a json-encoded string via HTTP.
+   * @param string $object the object to send
+   */  
+  public function serveJson($object)
+  {
+    $this->serveContent('application/json', CJSON::encode($object), false);
+  }
+
+  /**
+   * Serves a content via HTTP.
+   * @param string $type the Internet Media Type (MIME) of the content
+   * @param string $content the content to send
+   */  
+  public function serveContent($type, $content)
+  {
+    $this->_serve($type, $content, false);
+  }
+
+  /**
+   * Serves a file via HTTP.
+   * @param string $type the Internet Media Type (MIME) of the file
+   * @param string $file the file to send
+   */  
+  public function serveFile($type, $file)
+  {
+    $this->_serve($type, $file, true);
+  }
+
+  /**
+   * Serves something via HTTP.
+   * @param string $type the Internet Media Type (MIME) of the content
+   * @param string $content the content to send
+   * @param boolean $is_file whether the content is a file
+   */  
+  private function _serve($type, $content, $is_file=false)
+  {
+    header("Content-Type: " . $type);
+    if ($is_file)
+    {
+      readfile($content);
+    }
+    else
+    {
+      echo $content;
+    }
+    Yii::app()->end();
+  }
+  
 }

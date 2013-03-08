@@ -47,8 +47,10 @@ class BookkeepingController extends Controller
 
 	public function actionNewpost($slug)
 	{
+    $this->firm=$this->loadModelBySlug($slug);
     
     $postform = new PostForm();
+    $postform->firm_id = $this->firm->id;
     
     $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
     
@@ -78,6 +80,20 @@ class BookkeepingController extends Controller
       'items'=>$postform->debitcredits,
     ));
 	}
+
+
+  /**
+   * Serves a list of suggestions matching the term $term, in form of
+   * a json-encoded object.
+   * @param string $term the string to match
+   * @param string $slug the slug of the firm
+   */
+  public function actionSuggestaccount($term='', $slug='')
+  {
+    $firm=$this->loadFirmBySlug($_GET['slug']);
+    $this->serveJson($firm->findAccounts($term));
+  }
+
 
 	public function actionLedger($id /* account_id */)
 	{

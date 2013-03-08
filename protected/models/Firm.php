@@ -244,5 +244,26 @@ class Firm extends CActiveRecord
     ));
     return $this;
   }
+  
+  public function findAccounts($term)
+  {
+    $accounts = Yii::app()->db->createCommand()
+      ->select('code, outstanding_balance, n.name')
+      ->from('{{account}}')
+      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere(array('or', 
+        array('like', 'code', '%' . $term . '%'),
+        array('like', 'n.name', '%' . $term . '%')
+        ))
+      ->queryAll();
+    
+    $result=array();
+    foreach($accounts as $account)
+    {
+      $result[]=$account['code']. ' - ' . $account['name'];
+    }
+    return $result;
+  }
 
 }
