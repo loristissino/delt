@@ -67,7 +67,7 @@ return array(
   'the value "{value}" cannot be negative.' => 'il valore "{value}" non può essere negativo.',
   'you cannot have both a debit and a credit.' => 'non è possibile avere sia un addebito sia un accredito.',
   'you must have a debit or a credit.' => 'è necessario un addebito o un accredito.',
-  'No amounts specified.' => 'Nessun importo specificato',
+  'No amounts specified.' => 'Nessun importo specificato.',
   'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).' => 'Il totale degli addebiti ({debits}) non corrisponde al totale degli accrediti ({credits}).',
   
   'Fields with <span class="required">*</span> are required.' => 'I campi indicati con <span class="required"> * </span> sono obbligatori.',

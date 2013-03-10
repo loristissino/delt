@@ -64,9 +64,9 @@ class AccountController extends Controller
 	 */
 	public function actionCreate($slug, $id=null)
 	{
-    $firm = $this->loadFirmBySlug($slug);
+    $this->firm = $this->loadFirmBySlug($slug);
 		$model=new Account;
-    $model->firm_id = $firm->id;
+    $model->firm_id = $this->firm->id;
 
     if($id)
     {
@@ -85,15 +85,15 @@ class AccountController extends Controller
       {
         if($model->save())
         {
-          $firm->fixAccounts();
-          $this->redirect(array('bookkeeping/coa','slug'=>$firm->slug));
+          $this->firm->fixAccounts();
+          $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
 		}
 
 		$this->render('create',array(
 			'account'=>$model,
-      'firm'=>$firm,
+      'firm'=>$this->firm,
 		));
 	}
 

@@ -10,9 +10,6 @@ $this->breadcrumbs=array(
   $account->name,
 );
 
-$this->menu=array(
-	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('/bookkeeping/coa', 'slug'=>$firm->slug)),
-);
 ?>
 
 <h1><?php echo Yii::t('delt', 'Create new account') ?></h1>

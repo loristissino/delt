@@ -88,6 +88,8 @@ class PostForm extends CFormModel
   {
     $grandtotal_debit = 0;
     $grandtotal_credit = 0;
+    $errors=false;
+
     foreach($this->debitcredits as $row => $debitcredit)
     {
       
