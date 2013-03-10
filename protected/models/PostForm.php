@@ -51,7 +51,7 @@ class PostForm extends CFormModel
       $post->date = $this->date;
       $post->firm_id = $this->firm_id;
       $post->description = $this->description;
-      $post->rank = 1;
+      $post->rank = $post->getCurrentMaxRank() + 1;
       
       $post->save(true);
       
@@ -77,6 +77,7 @@ class PostForm extends CFormModel
     }
     catch(Exception $e)
     {
+      Yii::app()->user->setFlash('delt_failure',$e->getMessage()); 
       $transaction->rollback();
       return false;
     }

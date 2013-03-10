@@ -298,3 +298,12 @@ span.warning
    background-color: #BE3C8B;
    color: green;
 }
+
+span.highlighted
+{
+   background-color: yellow;
+}
+
+span.ordinary
+{
+}

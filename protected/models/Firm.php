@@ -69,7 +69,7 @@ class Firm extends CActiveRecord
 		return array(
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
-			'posts' => array(self::HAS_MANY, 'Post', 'firm_id'),
+			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'{{post}}.date ASC'),
 		);
 	}
 
@@ -154,6 +154,17 @@ class Firm extends CActiveRecord
           'pageSize'=>100,
           ),
       'sort'=>$sort,
+      )
+    );
+  }
+  
+
+  public function getPostsAsDataProvider()
+  {
+    return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->with('account.names')->ofFirm($this->id), array(
+      'pagination'=>array(
+          'pageSize'=>30,
+          ),
       )
     );
   }
@@ -256,6 +267,7 @@ class Firm extends CActiveRecord
         array('like', 'code', '%' . $term . '%'),
         array('like', 'n.name', '%' . $term . '%')
         ))
+      ->andWhere('is_selectable = 1')
       ->queryAll();
     
     $result=array();

@@ -6,6 +6,15 @@ class BookkeepingController extends Controller
   public $layout='//layouts/column2';
   public $firm=null;
   
+  public $hide_date_and_description = false;
+  // we set this to true when we want to avoid duplicates, like in the journal
+  
+  public $show_link_on_description = false;
+  
+  public $last_post_id = null;
+  
+  public $post_id = null;
+  
 	public function actionIndex()
 	{
 		$this->render('index', array('firms'=>$this->DEUser->firms));
@@ -38,10 +47,12 @@ class BookkeepingController extends Controller
     ));
 	}
 
-	public function actionJournal($slug)
+	public function actionJournal($slug, $post=null)
 	{
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->post_id = $post;
 		$this->render('journal', array(
-      'model'=>$this->loadModelBySlug($slug)
+      'model'=>$this->firm,
     ));
 	}
 
@@ -82,6 +93,12 @@ class BookkeepingController extends Controller
     ));
 	}
 
+	public function actionUpdatepost($id)
+	{
+    throw new CHttpException(501, 'Not yet implemented.');
+	}
+
+
 
   /**
    * Serves a list of suggestions matching the term $term, in form of
@@ -96,11 +113,12 @@ class BookkeepingController extends Controller
   }
 
 
-	public function actionLedger($id /* account_id */)
+	public function actionLedger($id /* account_id */, $post=null)
 	{
     $account=$this->loadAccount($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     
+    $this->post_id = $post;
 		$this->render('ledger', array(
       'model'=>$this->firm,
       'account'=>$account,
@@ -153,6 +171,7 @@ class BookkeepingController extends Controller
 
   public function renderDebit(Debitcredit $debitcredit, $row)
   {
+    $this->last_post_id = $debitcredit->post_id;
     return $this->renderPartial('_debit',array('debitcredit'=>$debitcredit),true);
   }
   
@@ -163,7 +182,25 @@ class BookkeepingController extends Controller
 
   public function renderDate(Debitcredit $debitcredit, $row)
   {
-    return $this->renderPartial('_date',array('debitcredit'=>$debitcredit),true);
+    if((!$this->hide_date_and_description) or ($debitcredit->post_id != $this->last_post_id))
+    {
+      return $this->renderPartial('_date',array('debitcredit'=>$debitcredit),true);
+    }
+    return '';
+  }
+  
+  public function renderDescription(Debitcredit $debitcredit, $row)
+  {
+    if((!$this->hide_date_and_description) or ($debitcredit->post_id != $this->last_post_id))
+    {
+      return $this->renderPartial('_description', array('debitcredit'=>$debitcredit), true);
+    }
+    return '';
+  }
+  
+  public function renderAccount(Debitcredit $debitcredit, $row)
+  {
+    return $this->renderPartial('_account',array('account'=>$debitcredit->account, 'post'=>$debitcredit->post),true);
   }
 
 

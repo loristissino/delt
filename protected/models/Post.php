@@ -10,6 +10,7 @@
  * @property string $description
  * @property integer $is_confirmed
  * @property integer $rank
+ * @property integer $maxrank
  *
  * The followings are the available model relations:
  * @property Debitcredit[] $debitcredits
@@ -17,6 +18,8 @@
  */
 class Post extends CActiveRecord
 {
+  public $maxrank;
+  
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -124,6 +127,17 @@ class Post extends CActiveRecord
       $this->date=$date->format('Y-m-d');
     }
     return parent::beforeSave();
+  }
+  
+  public function getCurrentMaxRank()
+  {
+    $criteria = new CDbCriteria;
+    $criteria->select='MAX(rank) as maxrank';
+    $criteria->condition='firm_id = :firm_id';
+    $criteria->params=array(':firm_id' => $this->firm_id);
+    
+    $result = self::model()->find($criteria);
+    return $result->maxrank;
   }
   
 }

@@ -110,6 +110,15 @@ class Debitcredit extends CActiveRecord
     return $this;
   }
   
+  public function ofFirm($firm_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'post.firm_id = ' . $firm_id,
+        'order'=>'post.date ASC, post.rank ASC',
+    ));
+    return $this;
+  }
+  
   public function getDebit()
   {
     return $this->amount>0 ? $this->amount: null;

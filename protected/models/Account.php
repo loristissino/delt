@@ -169,6 +169,11 @@ class Account extends CActiveRecord
       }
     }
 	}
+  
+  public function getParent()
+  {
+    return Account::model()->findByPk($this->account_parent_id);
+  }
   /*
   public function scopes()
   {
@@ -186,7 +191,7 @@ class Account extends CActiveRecord
   
   public function __toString()
   {
-    return sprintf('%s - "%s"', $this->code, $this->name);
+    return sprintf('%s - %s', $this->code, $this->name);
   }
     
   public function belongingTo($firm_id)
@@ -399,7 +404,7 @@ class Account extends CActiveRecord
     return Account::model()->findAllByAttributes(array('account_parent_id'=>$this->id));
   }
   
-  public function getParent()
+  public function getParentAccount()
   {
     return Account::model()->findByPk($this->account_parent_id);
   }

@@ -13,6 +13,8 @@ $grandtotal = $debitgrandtotal + $creditgrandtotal;
 
 $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
 
+$this->show_link_on_description = true;
+
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),
@@ -50,8 +52,14 @@ $this->menu=array(
       'name'=>'date',
       'value'=>array($this, 'RenderDate'),
       'type'=>'raw',
+      'header'=>Yii::t('delt', 'Date'),
       ),
-    'post.description',
+    array(
+      'name'=>'post.description',
+      'header'=>Yii::t('delt', 'Description'),
+      'value'=>array($this, 'RenderDescription'),
+      'type'=>'raw',
+      ),
     array(
       'class'=>'CDataColumn',
       'name'=>'debit',
@@ -82,5 +90,9 @@ $this->menu=array(
 <li><?php echo $child_account->code ?> - <?php echo CHtml::link($child_account->name, array('bookkeeping/ledger', 'id'=>$child_account->id)) ?></li>
 <?php endforeach ?>
 </ul>
+<?php endif ?>
 
+<?php if($account->account_parent_id): ?>
+<hr />
+<p><?php echo Yii::t('delt', 'Parent account') ?>: <?php echo CHtml::link($account->parentAccount, $this->createUrl('bookkeeping/ledger', array('id'=>$account->account_parent_id))) ?></p>
 <?php endif ?>

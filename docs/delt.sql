@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generato il: 07 mar, 2013 at 10:35 PM
+-- Generato il: 10 mar, 2013 at 12:14 PM
 -- Versione MySQL: 5.1.41
 -- Versione PHP: 5.3.2-1ubuntu4.14
 
@@ -40,7 +40,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   UNIQUE KEY `firm_code` (`firm_id`,`code`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=79 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=83 ;
 
 --
 -- Dump dei dati per la tabella `tbl_account`
@@ -56,22 +56,22 @@ INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`
 (16, NULL, 1, 1, '04', 0, 'E', NULL, 'en_US: Revenues\r\nit_IT: Ricavi', 4),
 (17, NULL, 1, 1, '01', 0, 'P', NULL, 'en_US: Assets\r\nit_IT: Attività\r\n', 11),
 (18, 17, 1, 2, '01.01', 1, 'P', 'D', 'en_US: Cash\r\nit_IT: Cassa\r\n', 0),
-(20, 7, 1, 3, '02.01.SUPP01', 1, 'P', 'C', 'en_US: Supplier Example #1\r\nit_IT: Fornitore Esempio n. 2\r\n', 0),
+(20, 7, 1, 3, '02.01.SUPP01', 1, 'P', 'C', 'en_US: Supplier Example #1\r\nit_IT: Fornitore Esempio n. 1\r\n', 0),
 (21, NULL, 4, 1, '01', 0, 'P', NULL, 'en_US: \r\nit_IT: Prova uno', 1),
 (22, 21, 4, 2, '01.', 1, 'P', NULL, 'en_US: \r\nit_IT: prova due', 0),
 (23, NULL, 4, 1, '02', 0, 'P', NULL, 'it_IT: Con un bel nome Ciao\r\n', 1),
 (24, 23, 4, 2, '02.', 1, 'P', 'C', 'en_US: fghdfhdfh\r\nit_IT: ghdfgh', 0),
-(25, 6, 1, 3, '01.03.CUST01', 1, 'P', 'D', 'en_US: Customer Example #1\r\nit_IT: Cliente Esempio n. 1', 0),
+(25, 6, 1, 3, '01.03.CUST01', 1, 'P', 'D', 'en_US: Customer Example #1\r\nit_IT: Cliente Esempio n. 1\r\n', 0),
 (26, 6, 1, 3, '01.03.CUST02', 1, 'P', 'D', 'en_US: Customer Example #2\r\nit_IT: Cliente Esempio n. 2', 0),
-(27, 17, 1, 2, '01.04', 1, 'P', 'D', 'en_US: Prepaid Expenses\r\nit_IT: ', 0),
+(27, 17, 1, 2, '01.04', 1, 'P', 'D', 'en_US: Prepaid Expenses\r\nit_IT: Risconti attivi\r\n', 0),
 (28, 17, 1, 2, '01.05', 1, 'P', 'D', 'en_US: Inventory\r\nit_IT: Magazzino', 0),
 (29, 17, 1, 2, '01.06', 1, 'P', 'D', 'en_US: Buildings\r\nit_IT: Fabbricati', 0),
-(30, 17, 1, 2, '01.07', 1, 'P', 'C', 'en_US: Accumulated Depreciation on Buildings\r\nit_IT: Fondo Ammortamento Fabbricati\r\n', 0),
+(30, 17, 1, 2, '01.07', 1, 'P', 'C', 'en_US: Accumulated Depreciation on Buildings\r\nit_IT: Fondo ammortamento Fabbricati\r\n', 0),
 (31, 17, 1, 2, '01.08', 0, 'P', NULL, 'en_US: Vehicles & Equipment\r\nit_IT: Automezzi e Attrezzature', 2),
 (32, 31, 1, 3, '01.08.01', 1, 'P', 'D', 'en_US: Vehicles\r\nit_IT: Automezzi', 0),
 (33, 31, 1, 3, '01.08.02', 1, 'P', 'D', 'en_US: Equipment\r\nit_IT: Attrezzature', 0),
 (34, 17, 1, 2, '01.09', 1, 'P', 'D', 'en_US: Investments & Stocks\r\nit_IT: Investimenti finanziari', 0),
-(35, 17, 1, 2, '01.10', 1, 'P', 'D', 'en_US: Other Assets\r\nit_IT: Altre Attività', 0),
+(35, 17, 1, 2, '01.10', 1, 'P', 'D', 'en_US: Other Assets\r\nit_IT: Altre attività\r\n', 0),
 (36, 17, 1, 2, '01.11', 1, 'P', 'D', 'en_US: Accrued Income\r\nit_IT: Ratei attivi\r\n', 0),
 (37, 7, 1, 3, '02.01.SUPP02', 1, 'P', 'C', 'en_US: Supplier Example #2\r\nit_IT: Fornitore Esempio n. 2', 0),
 (38, 2, 1, 2, '02.06', 1, 'P', 'C', 'en_US: Credit Cards\r\nit_IT: Debiti per Carte di Credito', 0),
@@ -96,7 +96,7 @@ INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`
 (57, 56, 1, 2, '06.01', 1, 'E', 'D', 'en_US: Advertising Expense\r\nit_IT: Spese di pubblicità', 0),
 (58, 56, 1, 2, '06.05', 1, 'E', 'D', 'en_US: Bank Fees\r\nit_IT: Oneri bancari', 0),
 (59, 56, 1, 2, '06.06', 1, 'E', 'D', 'en_US: Audit Fees\r\nit_IT: Spese per audit esterno', 0),
-(60, 56, 1, 2, '06.10', 1, 'E', 'D', 'en_US: Client Expense\r\nit_IT: ', 0),
+(60, 56, 1, 2, '06.10', 1, 'E', 'D', 'en_US: Client Expense\r\nit_IT: Spese commerciali\r\n', 0),
 (61, 56, 1, 2, '06.20', 1, 'E', 'D', 'en_US: Depreciation Expense\r\nit_IT: Ammortamenti', 0),
 (62, 56, 1, 2, '06.30', 1, 'E', 'D', 'en_US: Training Expense\r\nit_IT: Spese per formazione', 0),
 (63, 56, 1, 2, '06.40', 1, 'E', 'D', 'en_US: Payroll Expense\r\nit_IT: Spese per il personale', 0),
@@ -111,7 +111,11 @@ INSERT INTO `tbl_account` (`id`, `account_parent_id`, `firm_id`, `level`, `code`
 (75, 56, 1, 2, '06.85', 1, 'E', 'D', 'en_US: Legal Expense\r\nit_IT: Spese legali', 0),
 (76, 56, 1, 2, '06.90', 1, 'E', 'D', 'en_US: Personnel Benefits'' Expenses\r\nit_IT: Spese legate al personale', 0),
 (77, 56, 1, 2, '06.95', 1, 'E', 'D', 'en_US: Communication Expense\r\nit_IT: Spese di comunicazione', 0),
-(78, 56, 1, 2, '06.96', 1, 'E', 'D', 'en_US: Travelling & Conveyance\r\nit_IT: Spese per viaggi e trasporti', 0);
+(78, 56, 1, 2, '06.96', 1, 'E', 'D', 'en_US: Travelling & Conveyance\r\nit_IT: Spese per viaggi e trasporti', 0),
+(79, NULL, 1, 1, 'Z01', 1, 'p', NULL, 'en_US: Closing financial balance\r\nit_IT: Stato patrimoniale finale\r\n', 0),
+(80, NULL, 1, 1, 'Z02', 1, 'e', NULL, 'it_IT: Conto economico finale\r\nen_US: Closing Economic Balance\r\n', 0),
+(81, NULL, 1, 1, 'Z11', 1, 'r', 'C', 'en_US: Net profit\r\nit_IT: Utile di esercizio\r\n', 0),
+(82, NULL, 1, 1, 'Z12', 1, 'r', 'D', 'en_US: Total loss\r\nit_IT: Perdita di esercizio', 0);
 
 -- --------------------------------------------------------
 
@@ -152,7 +156,7 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (18, 1, 'Cash'),
 (18, 2, 'Cassa'),
 (20, 1, 'Supplier Example #1'),
-(20, 2, 'Fornitore Esempio n. 2'),
+(20, 2, 'Fornitore Esempio n. 1'),
 (21, 2, 'Prova uno'),
 (22, 2, 'prova due'),
 (23, 2, 'Con un bel nome Ciao'),
@@ -163,12 +167,13 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (26, 1, 'Customer Example #2'),
 (26, 2, 'Cliente Esempio n. 2'),
 (27, 1, 'Prepaid Expenses'),
+(27, 2, 'Risconti attivi'),
 (28, 1, 'Inventory'),
 (28, 2, 'Magazzino'),
 (29, 1, 'Buildings'),
 (29, 2, 'Fabbricati'),
 (30, 1, 'Accumulated Depreciation on Buildings'),
-(30, 2, 'Fondo Ammortamento Fabbricati'),
+(30, 2, 'Fondo ammortamento Fabbricati'),
 (31, 1, 'Vehicles & Equipment'),
 (31, 2, 'Automezzi e Attrezzature'),
 (32, 1, 'Vehicles'),
@@ -178,7 +183,7 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (34, 1, 'Investments & Stocks'),
 (34, 2, 'Investimenti finanziari'),
 (35, 1, 'Other Assets'),
-(35, 2, 'Altre Attività'),
+(35, 2, 'Altre attività'),
 (36, 1, 'Accrued Income'),
 (36, 2, 'Ratei attivi'),
 (37, 1, 'Supplier Example #2'),
@@ -228,6 +233,7 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (59, 1, 'Audit Fees'),
 (59, 2, 'Spese per audit esterno'),
 (60, 1, 'Client Expense'),
+(60, 2, 'Spese commerciali'),
 (61, 1, 'Depreciation Expense'),
 (61, 2, 'Ammortamenti'),
 (62, 1, 'Training Expense'),
@@ -257,7 +263,15 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 (77, 1, 'Communication Expense'),
 (77, 2, 'Spese di comunicazione'),
 (78, 1, 'Travelling & Conveyance'),
-(78, 2, 'Spese per viaggi e trasporti');
+(78, 2, 'Spese per viaggi e trasporti'),
+(79, 1, 'Closing financial balance'),
+(79, 2, 'Stato patrimoniale finale'),
+(80, 1, 'Closing Economic Balance'),
+(80, 2, 'Conto economico finale'),
+(81, 1, 'Net profit'),
+(81, 2, 'Utile di esercizio'),
+(82, 1, 'Total loss'),
+(82, 2, 'Perdita di esercizio');
 
 -- --------------------------------------------------------
 
@@ -270,11 +284,12 @@ CREATE TABLE IF NOT EXISTS `tbl_debitcredit` (
   `account_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
-  `rank` int(11) DEFAULT NULL,
+  `rank` int(11) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `postrank` (`post_id`,`rank`),
   KEY `account_id` (`account_id`),
   KEY `post_id` (`post_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=45 ;
 
 --
 -- Dump dei dati per la tabella `tbl_debitcredit`
@@ -308,7 +323,7 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
 --
 
 INSERT INTO `tbl_firm` (`id`, `name`, `slug`, `description`, `status`, `currency`, `csymbol`, `language_id`, `firm_parent_id`, `create_date`) VALUES
-(1, 'Test One Inc.', 'test-one', 'Sample firm with a simple Chart of Accounts (http://en.wikipedia.org/wiki/Chart_of_accounts)', 1, 'USD', '$', 1, 0, '0000-00-00 00:00:00'),
+(1, 'Test One Inc.', 'test-one', 'Sample firm with a simple Chart of Accounts (http://en.wikipedia.org/wiki/Chart_of_accounts)', 1, 'USD', '$', 2, 0, '0000-00-00 00:00:00'),
 (2, 'Test Two Inc.', 'test-two', NULL, 0, 'USD', '$', 1, 0, '0000-00-00 00:00:00'),
 (3, 'Test Three Ltd', 'test-three', NULL, 0, 'GBP', '£', 1, 0, '0000-00-00 00:00:00'),
 (4, 'Test Four SpA', 'test-four', NULL, 0, 'EUR', '€', 2, 0, '0000-00-00 00:00:00');
@@ -392,10 +407,11 @@ CREATE TABLE IF NOT EXISTS `tbl_post` (
   `date` date NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 NOT NULL,
   `is_confirmed` tinyint(1) NOT NULL DEFAULT '0',
-  `rank` int(11) DEFAULT NULL,
+  `rank` int(11) NOT NULL,
   PRIMARY KEY (`id`),
+  UNIQUE KEY `firm_rank` (`firm_id`,`rank`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=29 ;
 
 --
 -- Dump dei dati per la tabella `tbl_post`
@@ -487,7 +503,7 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
 
 INSERT INTO `tbl_users` (`id`, `username`, `password`, `email`, `activkey`, `superuser`, `status`, `create_at`, `lastvisit_at`) VALUES
 (1, 'admin', '00e624aa2bcc3f749e28af0732cd5f10', 'webmaster@example.com', 'b6b2194b3c9dde4bd74bd636044989d9', 1, 1, '2013-02-24 13:41:09', '2013-03-03 12:30:58'),
-(2, 'abcdef', '5fe6ce280af32ba2816b0f0d4cff5e63', 'abcdef@example.com', '09a586d70c9a9004e6f567d367c000d2', 0, 1, '2013-02-24 13:46:18', '2013-03-07 21:16:49'),
+(2, 'abcdef', '5fe6ce280af32ba2816b0f0d4cff5e63', 'abcdef@example.com', '09a586d70c9a9004e6f567d367c000d2', 0, 1, '2013-02-24 13:46:18', '2013-03-10 09:48:12'),
 (7, 'pippo', 'e08a7c49d96c2b475656cc8fe18cee8e', 'pippo@example.com', 'd25a809426d4cb8412f8fcef681f09e7', 0, 1, '2013-03-02 18:31:36', '0000-00-00 00:00:00');
 
 --

@@ -8,6 +8,7 @@ return array(
   'Trial balance' => 'Situazione contabile',
   'Ledger' => 'Libro mastro',
   'Account' => 'Conto',
+  'Parent account' => 'Conto di livello superiore',
 
   'Code' => 'Codice',
   'Name' => 'Nome',
