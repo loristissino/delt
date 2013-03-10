@@ -32,11 +32,7 @@
      <?php echo $form->dropDownList(
         $model, 
         'nature',
-        array(
-          'P'=>Yii::t('delt', 'Patrimonial (Asset / Liability / Equity)'),
-          'E'=>Yii::t('delt', 'Economic (Profit / Loss)'),
-          'M'=>Yii::t('delt', 'Memorandum'),
-          ) 
+        $model->validNatures()
          )
       ?>
 		<?php echo $form->error($model,'nature'); ?>

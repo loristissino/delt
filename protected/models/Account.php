@@ -52,6 +52,7 @@ class Account extends CActiveRecord
 			array('firm_id, code, textnames', 'required'),
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
+      array('nature', 'checkNature'),
 			array('nature,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'safe'),
 			// The following rule is used by search().
@@ -101,6 +102,22 @@ class Account extends CActiveRecord
       'number_of_children' => Yii::t('delt', 'Number of children'),
 		);
 	}
+  
+	/**
+	 * @return array valid account natures (key=>label)
+	 */
+	public function validNatures()
+	{
+		return array(
+      'P'=>Yii::t('delt', 'Patrimonial (Asset / Liability / Equity)'),
+      'E'=>Yii::t('delt', 'Economic (Profit / Loss)'),
+      'M'=>Yii::t('delt', 'Memorandum'),
+      'p'=>Yii::t('delt', 'Closing Patrimonial Account'),
+      'e'=>Yii::t('delt', 'Closing Economic Account'),
+      'r'=>Yii::t('delt', 'Result Account (Net profit / Total loss)'),
+      ); 
+	}
+  
 
 	/**
 	 * Retrieves a list of models based on the current search/filter conditions.
@@ -420,4 +437,13 @@ class Account extends CActiveRecord
       )
     );
   }
+  
+  public function checkNature()
+  {
+     if(!in_array($this->nature, array_keys($this->validNatures())))
+     {
+       $this->addError('nature', Yii::t('delt', 'Not a valid nature.'));
+     } 
+  }
+  
 }

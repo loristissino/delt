@@ -13,7 +13,7 @@ class PostForm extends CFormModel
 	{
 		return array(
 			array('date, description', 'required'),
-      array('debitcredits', 'checkdebitcredits'),
+      array('debitcredits', 'checkDebitcredits'),
 		);
 	}
 

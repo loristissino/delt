@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/accountschart', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug)),
 );
 
 ?>

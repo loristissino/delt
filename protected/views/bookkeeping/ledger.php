@@ -14,7 +14,7 @@ $grandtotal = $debitgrandtotal + $creditgrandtotal;
 $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/accountschart', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),
   array('label'=>Yii::t('zii', 'Delete'), 'url'=>$url=CHtml::normalizeUrl(array('account/delete','id'=>$account->id)),  'linkOptions'=>array(   
       'submit' => $url,

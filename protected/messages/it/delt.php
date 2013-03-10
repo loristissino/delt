@@ -60,6 +60,8 @@ return array(
   
   'Fields with <span class="required">*</span> are required.' => 'I campi indicati con <span class="required"> * </span> sono obbligatori.',
   'The rows in which the account field is empty are ignored.' => 'Le righe in cui il campo del conto è vuoto vengono ignorate.',
-  'The imbalance is: {amount}.'=> 'Lo sbilancio è: {amount}.'
+  'The imbalance is: {amount}.'=> 'Lo sbilancio è: {amount}.',
+  'Edit account «{name}»' => 'Modifica del conto «{name}»',
+  
 );
 

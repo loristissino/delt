@@ -22,10 +22,10 @@ class BookkeepingController extends Controller
     ));
   }
 
-	public function actionAccountschart($slug)
+	public function actionCoa($slug)
 	{
     $model=$this->loadModelBySlug($slug);
-		$this->render('accountschart', array(
+		$this->render('coa', array(
       'model'=>$model,
 			'dataProvider'=>$model->getAccountsAsDataProvider(),
     ));
@@ -122,7 +122,7 @@ class BookkeepingController extends Controller
       {
         Yii::app()->user->setFlash('delt_failure','Problems with checks.'); 
       }
-      $this->redirect(array('bookkeeping/accountschart','slug'=>$firm->slug));
+      $this->redirect(array('bookkeeping/coa','slug'=>$firm->slug));
     }
     
 		$this->render('fixaccountschart', array(
