@@ -14,6 +14,17 @@ class Controller extends CController
 	 * @var array context menu items. This property will be assigned to {@link CMenu::items}.
 	 */
 	public $menu=array();
+
+	/**
+	 * @var Firm The current selected firm, identified by slug or Pk.
+	 */
+  public $firm=null;
+  
+	/**
+	 * @var array general firm menu items. This property will be assigned to {@link CMenu::items}.
+	 */
+	public $firmmenu=array();
+  
 	/**
 	 * @var array the breadcrumbs of the current page. The value of this property will
 	 * be assigned to {@link CBreadcrumbs::links}. Please refer to {@link CBreadcrumbs::links}
@@ -56,6 +67,7 @@ class Controller extends CController
 			throw new CHttpException(404,'The requested page does not exist.');
     if(!$firm->isManageableBy($this->DEUser))
       throw new CHttpException(403, 'You are not allowed to access the requested page.');
+      
 		return $firm;
 	}
 

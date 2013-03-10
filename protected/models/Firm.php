@@ -158,7 +158,25 @@ class Firm extends CActiveRecord
     );
   }
   
-
+  public function getAccountBalancesAsDataProvider()
+  {
+    return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
+      'criteria'=>array(
+          'condition'=>'is_selectable = 1',
+          'order' => 'code ASC',
+          'with'=>array('debitcredits'=>array(
+            'on'=>'t.id = debitcredits.account_id',
+            'together'=>true,
+            'joinType' => 'INNER JOIN',
+            )),
+        ),
+      'pagination'=>array(
+          'pageSize'=>100,
+          ),
+      )
+    );
+  }
+  
   public function getPostsAsDataProvider()
   {
     return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->with('account.names')->ofFirm($this->id), array(
@@ -276,6 +294,21 @@ class Firm extends CActiveRecord
       $result[]=$account['code']. ' - ' . $account['name'];
     }
     return $result;
+  }
+  
+  
+  public function getTotalAmounts($type='D')
+  {
+    $amount = Yii::app()->db->createCommand()
+      ->select('SUM(amount) as total')
+      ->from('{{debitcredit}}')
+      ->leftJoin('{{post}} p', 'post_id = p.id')
+      ->where('p.firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('amount ' . $type='D'? '>0' : '<0')
+      ->queryScalar();
+            
+    return $type='D' ? $amount : -$amount;
+
   }
 
 }

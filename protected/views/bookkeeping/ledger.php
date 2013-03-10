@@ -16,15 +16,18 @@ $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
 $this->show_link_on_description = true;
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),
-  array('label'=>Yii::t('zii', 'Delete'), 'url'=>$url=CHtml::normalizeUrl(array('account/delete','id'=>$account->id)),  'linkOptions'=>array(   
+  );
+
+if($deletable)
+{
+  $this->menu[]= array('label'=>Yii::t('zii', 'Delete'), 'url'=>$url=$this->createUrl('account/delete', array('id'=>$account->id)),  'linkOptions'=>array(   
       'submit' => $url,
       'title' => Yii::t('delt', 'Delete this account'),
-      'confirm' => Yii::t('zii', 'Are you sure you want to delete this item?'),
+      'confirm' => Yii::t('zii', 'Are you sure you want to delete this item?') . ($account->number_of_children ? ' ' . Yii::t('delt', 'The children accounts won\'t be deleted, but they will remain orphans.') : ''),
     ),
-  ),
-);
+  );
+}
 
 ?>
 <h1><?php echo Yii::t('delt', 'Ledger') ?></h1>
@@ -35,9 +38,7 @@ $this->menu=array(
 <div class="balance">
   <p>
     <?php echo Yii::t('delt', 'Outstanding balance') ?>: <?php echo DELT::currency_value($grandtotal, $this->firm->currency, true) ?>.
-    <?php if((($account->outstanding_balance=='C') and ($grandtotal>0)) or (($account->outstanding_balance=='D') and ($grandtotal<0))): ?>
-      <span class="warning" title="<?php echo Yii::t('delt', 'According to its definition, the account should not have this kind of outstanding balance.') ?>"><?php echo Yii::t('delt', 'Check the debits and the credits.') ?></span>
-    <?php endif ?>
+    <?php echo $this->renderPartial('_comment', array('account'=>$account, 'value'=>$grandtotal), true) ?>
   </p>
 </div>
 <?php endif ?>
@@ -78,9 +79,6 @@ $this->menu=array(
       'footer'=>DELT::currency_value(-$creditgrandtotal, $this->firm->currency),
       'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
       ),
-		array(
-			'class'=>'CButtonColumn',
-		),
 	),
 )); ?>
 <?php else: ?>

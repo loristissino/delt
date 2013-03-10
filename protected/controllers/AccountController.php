@@ -105,7 +105,7 @@ class AccountController extends Controller
 	public function actionUpdate($id)
 	{
 		$account=$this->loadModel($id);
-    $this->checkManageability($firm=$this->loadFirm($account->firm_id));
+    $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     if(!$account->textnames = $account->l10n_names)
     {
       $account->setDefaultForNames();
@@ -128,7 +128,7 @@ class AccountController extends Controller
 
 		$this->render('update',array(
 			'account'=>$account,
-      'firm'=>$firm,
+      'firm'=>$this->firm,
 		));
 	}
 
@@ -144,7 +144,7 @@ class AccountController extends Controller
     
     try
     {
-      $this->loadModel($id)->delete();
+      $account->delete();
       $firm->fixAccounts();
     }
     catch (Exception $e)

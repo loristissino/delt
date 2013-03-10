@@ -4,7 +4,6 @@ class BookkeepingController extends Controller
 {
   
   public $layout='//layouts/column2';
-  public $firm=null;
   
   public $hide_date_and_description = false;
   // we set this to true when we want to avoid duplicates, like in the journal
@@ -14,6 +13,9 @@ class BookkeepingController extends Controller
   public $last_post_id = null;
   
   public $post_id = null;
+  
+  public $debit_sum = 0;
+  public $credit_sum = 0;
   
 	public function actionIndex()
 	{
@@ -26,24 +28,27 @@ class BookkeepingController extends Controller
 	 */
 	public function actionManage($slug)
 	{
+    $this->firm = $this->loadModelBySlug($slug);
 		$this->render('manage', array(
-      'model'=>$this->loadModelBySlug($slug)
+      'model'=>$this->firm
     ));
   }
 
 	public function actionCoa($slug)
 	{
-    $model=$this->loadModelBySlug($slug);
+    $this->firm=$this->loadModelBySlug($slug);
 		$this->render('coa', array(
-      'model'=>$model,
-			'dataProvider'=>$model->getAccountsAsDataProvider(),
+      'model'=>$this->firm,
+			'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
     ));
 	}
 
 	public function actionBalance($slug)
 	{
+    $this->firm=$this->loadModelBySlug($slug);
 		$this->render('balance', array(
-      'model'=>$this->loadModelBySlug($slug)
+      'model'=>$this->firm,
+      'dataProvider'=>$this->firm->getAccountBalancesAsDataProvider(),
     ));
 	}
 
@@ -180,6 +185,24 @@ class BookkeepingController extends Controller
     return $this->renderPartial('_credit',array('debitcredit'=>$debitcredit),true);
   }
 
+  public function renderSingleDebit(Account $account, $row)
+  {
+    $this->debit_sum += $account->debitgrandtotal;
+    return $this->renderPartial('_value',array('value'=>$account->debitgrandtotal),true);
+  }
+  
+  public function renderSingleCredit(Account $account, $row)
+  {
+    $this->credit_sum += $account->creditgrandtotal;
+    return $this->renderPartial('_value',array('value'=>-$account->creditgrandtotal),true);
+  }
+  
+  public function renderCheckedOutstandingBalance(Account $account, $row)
+  {
+    $value = $account->debitgrandtotal + $account->creditgrandtotal;
+    return $this->renderPartial('_checkedoutstandingbalance', array('account'=>$account, 'value'=>$value), true);
+  }
+
   public function renderDate(Debitcredit $debitcredit, $row)
   {
     if((!$this->hide_date_and_description) or ($debitcredit->post_id != $this->last_post_id))
@@ -202,6 +225,12 @@ class BookkeepingController extends Controller
   {
     return $this->renderPartial('_account',array('account'=>$debitcredit->account, 'post'=>$debitcredit->post),true);
   }
+  
+  public function renderSingleAccount(Account $account, $row)
+  {
+    return $this->renderPartial('_singleaccount',array('account'=>$account),true);
+  }
+  
 
 
 }

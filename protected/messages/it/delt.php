@@ -5,7 +5,7 @@ return array(
   'Bookkeeping and accountancy' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
   'Chart of accounts' => 'Piano dei conti',
-  'Trial balance' => 'Situazione contabile',
+  'Trial Balance' => 'Situazione contabile',
   'Ledger' => 'Libro mastro',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
@@ -19,6 +19,17 @@ return array(
   'P<!-- nature -->' => 'P',  // conti patrimoniali (stato patrimoniale)
   'E<!-- nature -->' => 'E',  // conti economici (reddito di esercizio)
   'M<!-- nature -->' => 'O',  // conti d'ordine
+  'p<!-- nature -->' => 'p',  // chiusura patrimoniale
+  'e<!-- nature -->' => 'e',  // chiusura economica
+  'r<!-- nature -->' => 'r',  // risultato di esercizio
+
+  'Patrimonial (Asset / Liability / Equity)' => 'Patrimoniale (Attività / Passività / Capitale proprio)',
+  'Economic (Profit / Loss)' => 'Economica (Ricavo / Costo)',
+  'Memorandum' => 'Conto d\'ordine', 
+  'Closing Patrimonial Account' => 'Conto di chiusura patrimoniale',
+  'Closing Economic Account' => 'Conto di chiusura economica',
+  'Result Account (Net profit / Total loss)' => 'Risultato di esercizio',  
+  
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',
@@ -29,9 +40,9 @@ return array(
   'Credit' => 'Avere',
   'According to its definition, the account should not have this kind of outstanding balance.' => 'In base alla sua definizione, il conto non dovrebbe avere questo tipo di eccedenza.',
   
-  'Patrimonial (Asset / Liability / Equity)' => 'Patrimoniale (Attività / Passività / Capitale proprio)',
-  'Economic (Profit / Loss)' => 'Economica (Ricavo / Costo)',
-  'Memorandum' => 'Conto d\'ordine',  
+  
+  'Total Debit' => 'Totale Dare',
+  'Total Credit' => 'Totale Avere',
   
   'Localized names' => 'Nomi localizzati',
   
@@ -63,6 +74,8 @@ return array(
   'The rows in which the account field is empty are ignored.' => 'Le righe in cui il campo del conto è vuoto vengono ignorate.',
   'The imbalance is: {amount}.'=> 'Lo sbilancio è: {amount}.',
   'Edit account «{name}»' => 'Modifica del conto «{name}»',
+  
+  'The children accounts won\'t be deleted, but they will remain orphans.' => 'I conti figli non verranno cancellati, ma resteranno orfani.',
   
 );
 

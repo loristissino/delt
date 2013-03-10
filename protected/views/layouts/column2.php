@@ -1,4 +1,15 @@
-<?php /* @var $this Controller */ ?>
+<?php /* @var $this Controller */ 
+
+if($this->firm)
+{
+  $this->firmmenu=array(
+    array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Journal'), 'url'=>array('bookkeeping/journal', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Trial Balance'), 'url'=>array('bookkeeping/balance', 'slug'=>$this->firm->slug)),
+    );
+}
+
+?>
 <?php $this->beginContent('//layouts/main'); ?>
 
 
@@ -21,6 +32,16 @@
 </div>
 <div class="span-5 last">
 	<div id="sidebar">
+	<?php
+		$this->beginWidget('zii.widgets.CPortlet', array(
+			'title'=>Yii::t('delt', 'Bookkeeping'),
+		));
+		$this->widget('zii.widgets.CMenu', array(
+			'items'=>$this->firmmenu,
+			'htmlOptions'=>array('class'=>'operations'),
+		));
+		$this->endWidget();
+	?>
 	<?php
 		$this->beginWidget('zii.widgets.CPortlet', array(
 			'title'=>Yii::t('delt', 'Operations'),

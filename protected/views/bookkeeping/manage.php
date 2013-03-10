@@ -9,7 +9,8 @@ $this->breadcrumbs=array(
 ?>
 <h1><?php echo $model->name ?></h1>
 
-<?php $this->widget('zii.widgets.CMenu', array(
+
+<?php /*$this->widget('zii.widgets.CMenu', array(
     'items'=>array(
         array('label'=>Yii::t('delt','Bookkeeping'), 'items'=>array(
             array('label'=>Yii::t('delt','Chart of accounts'), 'url'=>array('/bookkeeping/coa', 'slug'=>$model->slug)),
@@ -21,5 +22,5 @@ $this->breadcrumbs=array(
             array('label'=>Yii::t('delt','Export'), 'url'=>array('/firm/export', 'slug'=>$model->slug)),
         ))
      ),
-));
+));*/
 ?>
