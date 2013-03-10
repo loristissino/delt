@@ -112,7 +112,18 @@ class Post extends CActiveRecord
     return $this;
   }  
   
-  
-  
+  public function beforeSave()
+  {
+    // we must convert the date from the user input
+    // since we use jquery.ui.datepicker and its i18n features, we
+    // use the browser locale to know the format used
+    
+    $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
+    if($date)
+    {
+      $this->date=$date->format('Y-m-d');
+    }
+    return parent::beforeSave();
+  }
   
 }

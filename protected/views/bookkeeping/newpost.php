@@ -4,7 +4,7 @@
 $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'New post',
+  'New journal post',
 );
 
 $this->menu=array(
@@ -12,6 +12,6 @@ $this->menu=array(
 );
 
 ?>
-<h1>New post</h1>
+<h1><?php echo Yii::t('delt', 'New journal post') ?></h1>
 
 <?php echo $this->renderPartial('_postform', array('postform'=>$postform, 'items'=>$items)) ?>

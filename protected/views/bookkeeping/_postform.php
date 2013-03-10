@@ -11,22 +11,42 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">
+    <?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
+    <?php echo Yii::t('delt', 'The rows in which the account field is empty are ignored.') ?>
+  </p>
 
 	<?php echo $form->errorSummary($postform); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($postform,'date'); ?>
-		<?php echo $form->textField($postform,'date'); ?>
+		<?php // echo $form->textField($postform,'date'); ?>
+    
+    <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+      'name'=>'PostForm[date]',
+      'value'=>$postform->date,
+      'language'=>Yii::app()->language,
+      'options'=>array(
+          'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+          'showOn'=>'both', // 'focus', 'button', 'both'
+          'buttonText'=>Yii::t('ui','Select form calendar'),
+          'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
+          'buttonImageOnly'=>true,
+      ),
+      'htmlOptions'=>array(
+          'style'=>'width:80px;vertical-align:top',
+          'class'=>'datepicker',
+      ),
+    ));
+   ?>
 		<?php echo $form->error($postform,'date'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($postform,'description'); ?>
-		<?php echo $form->textField($postform,'description'); ?>
+		<?php echo $form->textField($postform,'description', array('size'=>100)); ?>
 		<?php echo $form->error($postform,'description'); ?>
 	</div>
-
 
 <table>
 <tr><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>

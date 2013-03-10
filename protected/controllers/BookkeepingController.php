@@ -51,6 +51,7 @@ class BookkeepingController extends Controller
     
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
+    $postform->currency = $this->firm->currency;
     
     $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
     
@@ -68,7 +69,7 @@ class BookkeepingController extends Controller
       {
         if($postform->save())
         {
-          $this->redirect(array('bookkeeping/journal','slug'=>$firm->slug));
+          $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
         }
       }
 		}
@@ -159,4 +160,11 @@ class BookkeepingController extends Controller
   {
     return $this->renderPartial('_credit',array('debitcredit'=>$debitcredit),true);
   }
+
+  public function renderDate(Debitcredit $debitcredit, $row)
+  {
+    return $this->renderPartial('_date',array('debitcredit'=>$debitcredit),true);
+  }
+
+
 }

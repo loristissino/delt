@@ -45,7 +45,12 @@ $this->menu=array(
 	'id'=>'firm-grid',
 	'dataProvider'=>$account->getDebitcreditsAsDataProvider(),
 	'columns'=>array(
-		'post.date',
+    array(
+      'class'=>'CDataColumn',
+      'name'=>'date',
+      'value'=>array($this, 'RenderDate'),
+      'type'=>'raw',
+      ),
     'post.description',
     array(
       'class'=>'CDataColumn',

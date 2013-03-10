@@ -7,6 +7,7 @@ class PostForm extends CFormModel
   public $date;
   public $description;
   public $debitcredits;
+  public $currency;
   
   public function rules()
 	{
@@ -41,11 +42,45 @@ class PostForm extends CFormModel
   
   public function save()
   {
-    //$transaction = $this->getDbConnection()->beginTransaction();
+
+    $post = new Post();
+    $transaction = $post->getDbConnection()->beginTransaction();
     
-    echo "<pre>";
-    print_r($this->debitcredits);
-    die('saving...');
+    try
+    {
+      $post->date = $this->date;
+      $post->firm_id = $this->firm_id;
+      $post->description = $this->description;
+      $post->rank = 1;
+      
+      $post->save(true);
+      
+      $rank = 1;
+      
+      foreach($this->debitcredits as $debitcreditform)
+      {
+        if($debitcreditform->account_id)
+        {
+          $Debitcredit = new Debitcredit();
+          $Debitcredit->post_id = $post->id;
+          $Debitcredit->account_id = $debitcreditform->account_id;
+          $Debitcredit->amount = $debitcreditform->debit - $debitcreditform->credit;
+          $Debitcredit->rank = $rank++;
+          
+          $Debitcredit->save(true);
+        }
+      }
+      
+      $transaction->commit();
+      return true;
+      
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
+    
   }
   
   public function checkDebitcredits() // $attribute,$params)
@@ -120,16 +155,17 @@ class PostForm extends CFormModel
           $this->debitcredits[$row]->credit_errors=true;
           $errors=true;
       }
-
       
-      if($errors)
+      if(!$errors)
       {
-        return;
+        $grandtotal_debit += $debit;
+        $grandtotal_credit += $credit;
       }
-      
-      $grandtotal_debit += $debit;
-      $grandtotal_credit += $credit;
-      
+    }
+
+    if($errors)
+    {
+      return;
     }
     
     if($grandtotal_debit==0 and $grandtotal_credit==0)
@@ -139,7 +175,11 @@ class PostForm extends CFormModel
     
     if($grandtotal_debit != $grandtotal_credit)
     {
-       $this->addError('debitcredits', Yii::t('delt', 'The total amount of debits does not match the total amounts of credits.'));
+       $this->addError('debitcredits',
+        Yii::t('delt', 'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).', array('{debits}'=>DELT::currency_value($grandtotal_debit, $this->currency), '{credits}'=>DELT::currency_value($grandtotal_credit, $this->currency)))
+        . ' ' .
+        Yii::t('delt', 'The imbalance is: {amount}.', array('{amount}'=>DELT::currency_value($grandtotal_debit - $grandtotal_credit, $this->currency, true)))
+        );
     }
     
     

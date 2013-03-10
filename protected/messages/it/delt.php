@@ -43,6 +43,7 @@ return array(
   
   'Edit'=>'Modifica',
   'Check the debits and the credits.'=>'Controlla gli addebiti e gli accrediti.',
+  'New journal post' => 'Nuova registrazione',
   'Save journal post' => 'Registra nel giornale',
   'Add a row' => 'Aggiungi una riga',
   
@@ -52,9 +53,13 @@ return array(
   'the account with code "{code}" is not available.' => 'Il conto con codice "{code}" non è disponibile.',
   'the value "{value}" is not numeric.' => 'il valore "{value}" non è numerico.',
   'the value "{value}" cannot be negative.' => 'il valore "{value}" non può essere negativo.',
-  'you cannot have both a debit and a credit.' => 'non si può avere sia un addebito sia un accredito.',
-  'you must have a debit or a credit.' => 'è necessario un addebito o un accredito',
+  'you cannot have both a debit and a credit.' => 'non è possibile avere sia un addebito sia un accredito.',
+  'you must have a debit or a credit.' => 'è necessario un addebito o un accredito.',
   'No amounts specified.' => 'Nessun importo specificato',
-  'The total amount of debits does not match the total amounts of credits.' => 'Il totale degli addebiti non corrisponde al totale degli accrediti.',
+  'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).' => 'Il totale degli addebiti ({debits}) non corrisponde al totale degli accrediti ({credits}).',
+  
+  'Fields with <span class="required">*</span> are required.' => 'I campi indicati con <span class="required"> * </span> sono obbligatori.',
+  'The rows in which the account field is empty are ignored.' => 'Le righe in cui il campo del conto è vuoto vengono ignorate.',
+  'The imbalance is: {amount}.'=> 'Lo sbilancio è: {amount}.'
 );
 
