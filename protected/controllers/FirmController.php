@@ -62,6 +62,9 @@ class FirmController extends Controller
 	 */
 	public function actionCreate()
 	{
+    throw new CHttpException(501, 'Not yet implemented.');
+
+    
 		$model=new Firm;
 
 		// Uncomment the following line if AJAX validation is needed

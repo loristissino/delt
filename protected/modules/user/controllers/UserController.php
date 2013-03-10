@@ -23,11 +23,13 @@ class UserController extends Controller
 	 */
 	public function accessRules()
 	{
+    
 		return array(
+      /*
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
-				'users'=>array('*'),
-			),
+				'users'=>array('admin'),
+			),*/
 			array('deny',  // deny all users
 				'users'=>array('*'),
 			),
@@ -50,6 +52,8 @@ class UserController extends Controller
 	 */
 	public function actionIndex()
 	{
+    throw new CHttpException(501, 'Not yet implemented.');
+
 		$dataProvider=new CActiveDataProvider('User', array(
 			'criteria'=>array(
 		        'condition'=>'status>'.User::STATUS_BANNED,

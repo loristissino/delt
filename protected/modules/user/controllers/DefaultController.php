@@ -8,6 +8,8 @@ class DefaultController extends Controller
 	 */
 	public function actionIndex()
 	{
+    throw new CHttpException(501, 'Not yet implemented.');
+
 		$dataProvider=new CActiveDataProvider('User', array(
 			'criteria'=>array(
 		        'condition'=>'status>'.User::STATUS_BANNED,
