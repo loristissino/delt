@@ -66,13 +66,17 @@ class Controller extends CController
 	 * @return Firm the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadFirm($id)
+	public function loadFirm($id, $check_manageability=true)
 	{
 		$firm=Firm::model()->findByPk($id);
 		if($firm===null)
 			throw new CHttpException(404,'The requested page does not exist.');
-    if(!$firm->isManageableBy($this->DEUser))
-      throw new CHttpException(403, 'You are not allowed to access the requested page.');
+    if(!$this->DEUser)
+      throw new CHttpException(401,'You must be authenticated to access this page.');
+    if($check_manageability)
+    {
+      $this->checkManageability($firm);
+    }
       
 		return $firm;
 	}
@@ -84,14 +88,17 @@ class Controller extends CController
 	 * @return Firm the loaded model
 	 * @throws CHttpException
 	 */
-	public function loadFirmBySlug($slug)
+	public function loadFirmBySlug($slug, $check_manageability=true)
 	{
 		$model=Firm::model()->findByAttributes(array('slug'=>$slug));
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
     if(!$this->DEUser)
       throw new CHttpException(401,'You must be authenticated to access this page.');
-    $this->checkManageability($model);
+    if($check_manageability)
+    {
+      $this->checkManageability($model);
+    }
 		return $model;
 	}
   

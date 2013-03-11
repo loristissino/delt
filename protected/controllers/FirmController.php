@@ -88,34 +88,53 @@ class FirmController extends Controller
 	 * Forks an existing, public, firm.
 	 * If creation is successful, the browser will be redirected to the 'update' page.
 	 */
-	public function actionFork()
+	public function actionFork($slug=null)
 	{
-		$model=new Firm;
-
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
-
-		if(isset($_POST['Firm']))
+    $firm = null;
+    if($slug)
+    {
+      $firm = $this->loadFirmBySlug($slug, false);
+    }
+    
+		if($_POST)
 		{
-			$model->attributes=$_POST['Firm'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+      $newfirm = new Firm();
+      try
+      {
+			  $newfirm->forkFrom($firm, $this->DEUser);
+        $newfirm->fixAccounts();
+        $newfirm->fixAccountNames();
+				$this->redirect(array('firm/update','id'=>$newfirm->id));
+      }
+      catch(Exception $e)
+      {
+        Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+				$this->redirect(array('firm/form'));
+      }
 		}
 
-		$this->render('fork',array(
-			'model'=>$model,
-		));
+    if($firm)
+    {
+      $this->render('fork_confirm',array(
+        'firm'=>$firm,
+      ));
+    }
+    else
+    {
+      $this->render('fork', array(
+        'firms'=>Firm::model()->findForkableFirms()
+      ));
+    }
 	}
-
 
 	/**
 	 * Updates a particular model.
 	 * If update is successful, the browser will be redirected to the 'view' page.
 	 * @param integer $id the ID of the model to be updated
 	 */
-	public function actionUpdate($slug)
+	public function actionUpdate($id=null)
 	{
-		$model=$this->loadFirmBySlug($slug);
+    $model=$this->loadFirm($id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -123,10 +142,15 @@ class FirmController extends Controller
 		if(isset($_POST['Firm']))
 		{
 			$model->attributes=$_POST['Firm'];
-			if($model->save())
+      try
       {
+        $model->save();
         Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
 				$this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
+      }
+      catch(Exception $e)
+      {
+        Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
       }
 		}
 

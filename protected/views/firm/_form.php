@@ -28,21 +28,9 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'status'); ?>
-		<?php echo $form->textField($model,'status'); ?>
-		<?php echo $form->error($model,'status'); ?>
-	</div>
-
-	<div class="row">
 		<?php echo $form->labelEx($model,'currency'); ?>
 		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?>
 		<?php echo $form->error($model,'currency'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'csymbol'); ?>
-		<?php echo $form->textField($model,'csymbol',array('size'=>1,'maxlength'=>1)); ?>
-		<?php echo $form->error($model,'csymbol'); ?>
 	</div>
 
 	<div class="row">
@@ -50,19 +38,7 @@
 		<?php echo $form->textField($model,'language_id'); ?>
 		<?php echo $form->error($model,'language_id'); ?>
 	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'firm_parent_id'); ?>
-		<?php echo $form->textField($model,'firm_parent_id'); ?>
-		<?php echo $form->error($model,'firm_parent_id'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'create_date'); ?>
-		<?php echo $form->textField($model,'create_date'); ?>
-		<?php echo $form->error($model,'create_date'); ?>
-	</div>
-
+  
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

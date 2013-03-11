@@ -235,8 +235,6 @@ class Firm extends CActiveRecord
       
     }
     
-//    die();
-    
     $transaction = $this->getDbConnection()->beginTransaction();
     try
     {
@@ -253,6 +251,15 @@ class Firm extends CActiveRecord
     }
     return true;
     
+  }
+  
+  public function fixAccountNames()
+  {
+    // useful after firm forking (this way we get the i18n names)
+    foreach($this->accounts as $account)
+    {
+      $account->save();
+    }
   }
   
   
@@ -310,5 +317,74 @@ class Firm extends CActiveRecord
     return $type='D' ? $amount : -$amount;
 
   }
+  
+  public function findForkableFirms()
+  {
+    return Firm::model()->findAllByAttributes(array('status'=>1));
+  }
+  
+  public function forkFrom(Firm $source, DEUser $user)
+  {
+    $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
+    $this->slug=md5($this->name + microtime());
+    foreach(array('language_id','currency','csymbol','description') as $property)
+    {
+      $this->$property = $source->$property;
+    }
+    $this->status = 0;
+    $this->firm_parent_id = $source->id;
+    
+    $transaction = $this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      $this->save(false);
+      
+      $fu = new FirmUser();
+      $fu->firm_id=$this->id;
+      $fu->user_id=$user->id;
+      $fu->role='O';
+      $fu->save(false);
+
+      foreach($source->accounts as $account)
+      {
+        echo $account . "\n";
+        $newaccount = new Account;
+        $newaccount->firm_id = $this->id;
+        $newaccount->account_parent_id = null;
+        
+        foreach(array('code', 'level', 'nature', 'is_selectable', 'outstanding_balance', 'number_of_children') as $property)
+        {
+          $newaccount->$property = $account->$property ? $account->$property : '1';
+          echo $property . ' -- ' . $account->$property . "\n";
+        }
+        $newaccount->textnames = $account->l10n_names;
+        $newaccount->basicSave(false);
+      }
+      
+      $transaction->commit();
+      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully forked.'));
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollBack();
+      Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
+      return false;
+    }
+    
+  }
+  
+  
+  public function behaviors()
+  {
+    return array(
+        'CTimestampBehavior'=>array(
+          'class'=>'zii.behaviors.CTimestampBehavior',
+          'createAttribute'=>'create_date',
+        ),
+    );
+  }
+  
 
 }
