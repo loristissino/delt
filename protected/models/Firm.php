@@ -355,7 +355,6 @@ class Firm extends CActiveRecord
         foreach(array('code', 'level', 'nature', 'is_selectable', 'outstanding_balance', 'number_of_children') as $property)
         {
           $newaccount->$property = $account->$property ? $account->$property : '1';
-          echo $property . ' -- ' . $account->$property . "\n";
         }
         $newaccount->textnames = $account->l10n_names;
         $newaccount->basicSave(false);
