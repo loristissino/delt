@@ -19,6 +19,11 @@ class Controller extends CController
 	 * @var Firm The current selected firm, identified by slug or Pk.
 	 */
   public $firm=null;
+
+	/**
+	 * @var Post The current selected post, identified by Pk.
+	 */
+  public $post=null;
   
 	/**
 	 * @var array general firm menu items. This property will be assigned to {@link CMenu::items}.
@@ -105,6 +110,20 @@ class Controller extends CController
 		return $model;
 	}
   
+  /**
+	 * Returns the post model based on the primary key.
+	 * If the data model is not found, an HTTP exception will be raised.
+	 * @param integer $id the ID of the model to be loaded
+	 * @return Post the loaded model
+	 * @throws CHttpException
+	 */
+	public function loadPost($id)
+	{
+		$model=Post::model()->findByPk($id);
+		if($model===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $model;
+	}
   
   /**
    * Serves an object as a json-encoded string via HTTP.

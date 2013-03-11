@@ -140,4 +140,9 @@ class Post extends CActiveRecord
     return $result->maxrank;
   }
   
+  public function deleteDebitcredits()
+  {
+    Debitcredit::model()->deleteAllByAttributes(array('post_id'=>$this->id));
+  }
+  
 }

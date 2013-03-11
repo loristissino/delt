@@ -21,15 +21,15 @@ return array(
   'P<!-- nature -->' => 'P',  // conti patrimoniali (stato patrimoniale)
   'E<!-- nature -->' => 'E',  // conti economici (reddito di esercizio)
   'M<!-- nature -->' => 'O',  // conti d'ordine
-  'p<!-- nature -->' => 'p',  // chiusura patrimoniale
-  'e<!-- nature -->' => 'e',  // chiusura economica
+  'p<!-- nature -->' => 'p',  // transitorio patrimoniale
+  'e<!-- nature -->' => 'e',  // transitorio economica
   'r<!-- nature -->' => 'r',  // risultato di esercizio
 
   'Patrimonial (Asset / Liability / Equity)' => 'Patrimoniale (Attività / Passività / Capitale proprio)',
   'Economic (Profit / Loss)' => 'Economica (Ricavo / Costo)',
   'Memorandum' => 'Conto d\'ordine', 
-  'Closing Patrimonial Account' => 'Conto di chiusura patrimoniale',
-  'Closing Economic Account' => 'Conto di chiusura economica',
+  'Transitory Patrimonial Account' => 'Conto transitorio patrimoniale',
+  'Transitory Economic Account' => 'Conto transitorio economico',
   'Result Account (Net profit / Total loss)' => 'Risultato di esercizio',  
   
 

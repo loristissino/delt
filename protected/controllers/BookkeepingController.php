@@ -80,16 +80,17 @@ class BookkeepingController extends Controller
       {
         $postform->debitcredits[] = new DebitcreditForm();
       }
-      
-      if($postform->validate())
+      else
       {
-        if($postform->save())
+        if($postform->validate())
         {
-          $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+          if($postform->save())
+          {
+            $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+          }
         }
       }
 		}
-
     
 		$this->render('newpost', array(
       'model'=>$this->loadModelBySlug($slug),
@@ -98,9 +99,47 @@ class BookkeepingController extends Controller
     ));
 	}
 
+
 	public function actionUpdatepost($id)
 	{
-    throw new CHttpException(501, 'Not yet implemented.');
+    $this->post = $this->loadPost($id);
+    $this->firm=$this->post->firm;
+    $this->checkManageability($this->firm);
+    
+    $postform = new PostForm();
+    $postform->firm_id = $this->firm->id;
+    $postform->currency = $this->firm->currency;
+    
+    $postform->loadFromPost($this->post);
+        
+		if(isset($_POST['PostForm']))
+		{
+			$postform->attributes=$_POST['PostForm'];
+      $postform->acquireItems($_POST['DebitcreditForm']);
+      if(isset($_POST['addrow']))
+      {
+        $postform->debitcredits[] = new DebitcreditForm();
+      }
+      else
+      {
+        if($postform->validate())
+        {
+          if($postform->save())
+          {
+            $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+          }
+        }
+      }
+		}
+    
+		$this->render('updatepost', array(
+      'model'=>$this->firm,
+      'postform'=>$postform,
+      'items'=>$postform->debitcredits,
+    ));
+
+
+
 	}
 
 

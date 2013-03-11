@@ -106,6 +106,7 @@ class Debitcredit extends CActiveRecord
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'account_id = ' . $account_id,
+        'order'=>'post.date ASC, post.rank ASC',
     ));
     return $this;
   }

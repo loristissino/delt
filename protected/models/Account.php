@@ -112,8 +112,8 @@ class Account extends CActiveRecord
       'P'=>Yii::t('delt', 'Patrimonial (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Economic (Profit / Loss)'),
       'M'=>Yii::t('delt', 'Memorandum'),
-      'p'=>Yii::t('delt', 'Closing Patrimonial Account'),
-      'e'=>Yii::t('delt', 'Closing Economic Account'),
+      'p'=>Yii::t('delt', 'Transitory Patrimonial Account'),
+      'e'=>Yii::t('delt', 'Transitory Economic Account'),
       'r'=>Yii::t('delt', 'Result Account (Net profit / Total loss)'),
       ); 
 	}
@@ -272,6 +272,12 @@ class Account extends CActiveRecord
   
   protected function beforeSave()
   {
+    
+    if(substr($this->code, -1, 1)=='.')
+    {
+      $this->addError('code', Yii::t('delt', 'The code cannot end with a dot.'));
+      return false;
+    }
     $this->level = sizeof(explode('.', $this->code));
     
     if($this->level > 1)

@@ -9,6 +9,10 @@ class PostForm extends CFormModel
   public $debitcredits;
   public $currency;
   
+  public $post = null; // the original Post instance
+  
+  private $is_new = true;
+  
   public function rules()
 	{
 		return array(
@@ -31,6 +35,8 @@ class PostForm extends CFormModel
   
   public function acquireItems($values)
   {
+    $this->debitcredits=array();
+    
     foreach($values as $key => $value)
     {
       $this->debitcredits[$key] = new DebitcreditForm();
@@ -40,10 +46,25 @@ class PostForm extends CFormModel
     }
   }
   
+  public function loadFromPost(Post $post)
+  {
+    $this->post = $post;
+    $this->description = $post->description;
+    $this->date = Yii::app()->dateFormatter->formatDateTime($post->date, 'short', null);
+    foreach($post->debitcredits as $debitcredit)
+    {
+      $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
+      $this->debitcredits[$debitcredit->id]->name = $debitcredit->account;
+      $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? $debitcredit->amount : '';
+      $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? -$debitcredit->amount : '';
+    }
+  }
+  
   public function save()
   {
-
-    $post = new Post();
+    $this->is_new = !isset($this->post);
+    $post = $this->is_new ? new Post() : $this->post;
+    
     $transaction = $post->getDbConnection()->beginTransaction();
     
     try
@@ -51,9 +72,14 @@ class PostForm extends CFormModel
       $post->date = $this->date;
       $post->firm_id = $this->firm_id;
       $post->description = $this->description;
-      $post->rank = $post->getCurrentMaxRank() + 1;
+      if($this->is_new)
+      {
+        $post->rank = $post->getCurrentMaxRank() + 1;
+      }
       
       $post->save(true);
+      
+      $post->deleteDebitcredits();
       
       $rank = 1;
       
@@ -70,6 +96,7 @@ class PostForm extends CFormModel
           $Debitcredit->save(true);
         }
       }
+      
       
       $transaction->commit();
       return true;
@@ -89,6 +116,8 @@ class PostForm extends CFormModel
     $grandtotal_debit = 0;
     $grandtotal_credit = 0;
     $errors=false;
+    
+    $used_accounts = array();
 
     foreach($this->debitcredits as $row => $debitcredit)
     {
@@ -113,7 +142,15 @@ class PostForm extends CFormModel
       }
       else
       {
-        $this->debitcredits[$row]->account_id = $account->id;
+        if(!in_array($account->id, $used_accounts))
+        {
+          $this->debitcredits[$row]->account_id = $account->id;
+          $used_accounts[] = $account->id;
+        }
+        else
+        {
+          $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" makes the row a duplicate.', array('{code}'=>$code)));
+        }
       }
       
       $errors=false;
