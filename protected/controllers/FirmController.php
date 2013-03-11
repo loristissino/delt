@@ -144,7 +144,7 @@ class FirmController extends Controller
 			$model->attributes=$_POST['Firm'];
       try
       {
-        $model->save();
+        $model->save(false);
         Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
 				$this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
       }
