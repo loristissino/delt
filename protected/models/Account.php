@@ -463,7 +463,9 @@ class Account extends CActiveRecord
       ->select('SUM(amount) as total')
       ->from('{{debitcredit}} dc')
       ->leftJoin('{{account}} a', 'dc.account_id = a.id')
+      ->leftJoin('{{post}} p', 'dc.post_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')
+      ->andWhere('p.firm_id = :id', array(':id'=>$this->id))
       ->queryScalar();
             
     return $amount;
