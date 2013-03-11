@@ -348,7 +348,6 @@ class Firm extends CActiveRecord
 
       foreach($source->accounts as $account)
       {
-        echo $account . "\n";
         $newaccount = new Account;
         $newaccount->firm_id = $this->id;
         $newaccount->account_parent_id = null;
