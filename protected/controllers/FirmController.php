@@ -27,12 +27,14 @@ class FirmController extends Controller
 	public function accessRules()
 	{
 		return array(
+      /*
 			array('allow',  // allow all users to perform 'index' and 'view' actions
 				'actions'=>array('index','view'),
 				'users'=>array('*'),
 			),
+      */
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update'),
+				'actions'=>array('create','update','fork'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -81,6 +83,30 @@ class FirmController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	/**
+	 * Forks an existing, public, firm.
+	 * If creation is successful, the browser will be redirected to the 'update' page.
+	 */
+	public function actionFork()
+	{
+		$model=new Firm;
+
+		// Uncomment the following line if AJAX validation is needed
+		// $this->performAjaxValidation($model);
+
+		if(isset($_POST['Firm']))
+		{
+			$model->attributes=$_POST['Firm'];
+			if($model->save())
+				$this->redirect(array('view','id'=>$model->id));
+		}
+
+		$this->render('fork',array(
+			'model'=>$model,
+		));
+	}
+
 
 	/**
 	 * Updates a particular model.

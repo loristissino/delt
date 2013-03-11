@@ -7,6 +7,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
   array('label'=>Yii::t('delt', 'Create firm'), 'url'=>array('firm/create')),
+  array('label'=>Yii::t('delt', 'Fork existing firm'), 'url'=>array('firm/fork')),
   );
 
 ?>

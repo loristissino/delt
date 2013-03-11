@@ -7,6 +7,7 @@
  * @property integer $id
  * @property string $name
  * @property string $slug
+ * @property string $description
  * @property integer $status
  * @property string $currency
  * @property string $csymbol
@@ -53,9 +54,10 @@ class Firm extends CActiveRecord
 			array('slug', 'length', 'max'=>32),
 			array('currency', 'length', 'max'=>5),
 			array('csymbol', 'length', 'max'=>1),
+      array('description', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, name, slug, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
+			array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -82,6 +84,7 @@ class Firm extends CActiveRecord
 			'id' => Yii::t('delt', 'ID'),
 			'name' => Yii::t('delt', 'Name'),
 			'slug' => Yii::t('delt', 'Slug'),
+      'description' => Yii::t('delt', 'Description'),
 			'status' => Yii::t('delt', 'Status'),
 			'currency' => Yii::t('delt', 'Currency'),
 			'csymbol' => Yii::t('delt', 'Currency symbol'),
@@ -105,6 +108,7 @@ class Firm extends CActiveRecord
 		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('slug',$this->slug,true);
+    $criteria->compare('description',$this->description,true);
 		$criteria->compare('status',$this->status);
 		$criteria->compare('currency',$this->currency,true);
 		$criteria->compare('csymbol',$this->csymbol,true);
