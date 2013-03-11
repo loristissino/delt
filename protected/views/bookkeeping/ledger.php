@@ -7,11 +7,21 @@ $this->breadcrumbs=array(
   'Ledger',
 );
 
-$debitgrandtotal = $account->debitgrandtotal;
-$creditgrandtotal = $account->creditgrandtotal;
-$grandtotal = $debitgrandtotal + $creditgrandtotal;
+$noc = $account->number_of_children;
+$deletable = true;
 
-$deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
+if($noc==0)
+{
+  $debitgrandtotal = $account->debitgrandtotal;
+  $creditgrandtotal = $account->creditgrandtotal;
+  $grandtotal = $debitgrandtotal + $creditgrandtotal;
+  $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
+}
+else
+{
+  $grandtotal = $account->consolidatedBalance;
+  $deletable = false;
+}
 
 $this->show_link_on_description = true;
 
@@ -38,7 +48,7 @@ if($deletable)
 <div class="balance">
   <p>
     <?php echo Yii::t('delt', 'Outstanding balance') ?>: <?php echo DELT::currency_value($grandtotal, $this->firm->currency, true) ?>.
-    <?php echo $this->renderPartial('_comment', array('account'=>$account, 'value'=>$grandtotal), true) ?>
+    <?php echo $this->renderPartial('_comment', array('account'=>$account, 'value'=>$grandtotal, 'only_icon'=>false), true) ?>
   </p>
 </div>
 <?php endif ?>
@@ -82,12 +92,13 @@ if($deletable)
 	),
 )); ?>
 <?php else: ?>
-<p><?php echo Yii::t('delt', 'The following accounts belong here:') ?></p>
+<p><?php echo Yii::t('delt', 'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:') ?></p>
 <ul>
 <?php foreach($account->children as $child_account): ?>
 <li><?php echo $child_account->code ?> - <?php echo CHtml::link($child_account->name, array('bookkeeping/ledger', 'id'=>$child_account->id)) ?></li>
 <?php endforeach ?>
 </ul>
+
 <?php endif ?>
 
 <?php if($account->account_parent_id): ?>

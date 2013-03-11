@@ -61,7 +61,7 @@ return array(
   'Save journal post' => 'Registra nel giornale',
   'Add a row' => 'Aggiungi una riga',
   
-  'The following accounts belong here:' => 'I seguenti conti fanno parte di questo raggruppamento:',
+  'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:' => 'L\'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
   
   'Row {row}: ' => 'Riga {row}: ',
   'the account with code "{code}" is not available.' => 'Il conto con codice "{code}" non è disponibile.',

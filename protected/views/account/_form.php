@@ -38,22 +38,20 @@
 		<?php echo $form->error($model,'nature'); ?>
 	</div>
   
-  <?php if($model->is_selectable): ?>
-    <div class="row">
-      <?php echo $form->labelEx($model,'outstanding_balance'); ?>
-       <?php echo $form->dropDownList(
-          $model, 
-          'outstanding_balance',
-          array(
-            '/'=>Yii::t('delt', 'unset'),
-            'D'=>Yii::t('delt', 'Debit'),
-            'C'=>Yii::t('delt', 'Credit'),
-            ) 
-           )
-        ?>
-      <?php echo $form->error($model,'outstanding_balance'); ?>
-    </div>
-  <?php endif ?>
+  <div class="row">
+    <?php echo $form->labelEx($model,'outstanding_balance'); ?>
+     <?php echo $form->dropDownList(
+        $model, 
+        'outstanding_balance',
+        array(
+          '/'=>Yii::t('delt', 'unset'),
+          'D'=>Yii::t('delt', 'Debit'),
+          'C'=>Yii::t('delt', 'Credit'),
+          ) 
+         )
+      ?>
+    <?php echo $form->error($model,'outstanding_balance'); ?>
+  </div>
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>

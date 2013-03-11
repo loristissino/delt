@@ -217,10 +217,6 @@ class Firm extends CActiveRecord
     {
       $info['model']->is_selectable = sizeof($info['children'])==0;
       // an account is selectable when it has no children
-      if(!$info['model']->is_selectable)
-      {
-        $info['model']->outstanding_balance = null;
-      }
       $info['model']->number_of_children = sizeof($info['children']);
     }
 //    echo "<pre>";

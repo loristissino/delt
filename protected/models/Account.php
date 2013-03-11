@@ -457,4 +457,16 @@ class Account extends CActiveRecord
      } 
   }
   
+  public function getConsolidatedBalance()
+  {
+    $amount = Yii::app()->db->createCommand()
+      ->select('SUM(amount) as total')
+      ->from('{{debitcredit}} dc')
+      ->leftJoin('{{account}} a', 'dc.account_id = a.id')
+      ->where('a.code REGEXP "^' . $this->code .'"')
+      ->queryScalar();
+            
+    return $amount;
+  }
+  
 }

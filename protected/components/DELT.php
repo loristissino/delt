@@ -4,10 +4,11 @@ class DELT
 {
   public static function currency_value($amount, $currency, $with_debit_credit=false)
   {
-    if(!$amount)
+    if($amount==0)
     {
-      return '';
+      return '0';
     }
+    
     if($with_debit_credit)
     {
       return Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', ($amount>0 ? 'D':'C').'<!-- outstanding balance -->');
