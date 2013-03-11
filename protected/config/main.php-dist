@@ -77,7 +77,7 @@ return array(
 			'rules'=>array(
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-        '<controller:\w+>/<slug:[a-zA-Z\-]*>/<action:\w+>'=>'<controller>/<action>',
+        '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),
 		),

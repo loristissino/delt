@@ -375,7 +375,7 @@ class Firm extends CActiveRecord
     
   }
   
-  
+  /*
   public function behaviors()
   {
     return array(
@@ -385,6 +385,7 @@ class Firm extends CActiveRecord
         ),
     );
   }
+  */
   
 
 }
