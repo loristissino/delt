@@ -1,6 +1,8 @@
 <?php
 
 return array(
+
+  'Welcome to <i>{name}</i>'=>'Benvenuti su <i>{name}</i>',
   'Bookkeeping' => 'Contabilità',
   'Bookkeeping and accountancy' => 'Gestione contabile',
   'Journal' => 'Libro giornale',

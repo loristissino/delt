@@ -4,7 +4,7 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<h1><?php echo Yii::t('delt', 'Welcome to <i>{name}</i>i>', array('{name}'=> Yii::app()->name)) ?></h1>
+<h1><?php echo Yii::t('delt', 'Welcome to <i>{name}</i>', array('{name}'=> Yii::app()->name)) ?></h1>
 
 <p>The application is still under development. Some rules applying now:</p>
 <ul>
