@@ -465,7 +465,7 @@ class Account extends CActiveRecord
       ->leftJoin('{{account}} a', 'dc.account_id = a.id')
       ->leftJoin('{{post}} p', 'dc.post_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')
-      ->andWhere('p.firm_id = :id', array(':id'=>$this->id))
+      ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
       ->queryScalar();
             
     return $amount;
