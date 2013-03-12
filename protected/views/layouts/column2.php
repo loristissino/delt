@@ -3,9 +3,9 @@
 if($this->firm)
 {
   $this->firmmenu=array(
-    array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('bookkeeping/coa', 'slug'=>$this->firm->slug)),
-    array('label'=>Yii::t('delt', 'Journal'), 'url'=>array('bookkeeping/journal', 'slug'=>$this->firm->slug)),
-    array('label'=>Yii::t('delt', 'Trial Balance'), 'url'=>array('bookkeeping/balance', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('/bookkeeping/coa', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Journal'), 'url'=>array('/bookkeeping/journal', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Trial Balance'), 'url'=>array('/bookkeeping/balance', 'slug'=>$this->firm->slug)),
     );
 }
 else
@@ -13,7 +13,7 @@ else
   $this->firmmenu=array();
   foreach($this->DEUser->firms as $firm)
   {
-    $this->firmmenu[]=array('label'=>$firm, 'url'=>array('bookkeeping/manage', 'slug'=>$firm->slug));
+    $this->firmmenu[]=array('label'=>$firm, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug));
   }
 }
 
