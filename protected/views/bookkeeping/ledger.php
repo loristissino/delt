@@ -47,7 +47,7 @@ if($deletable)
 <?php if(!$deletable): ?>
 <div class="balance">
   <p>
-    <?php echo Yii::t('delt', 'Outstanding balance') ?>: <?php echo DELT::currency_value($grandtotal, $this->firm->currency, true) ?>.
+    <?php echo Yii::t('delt', 'Outstanding balance') ?>: <?php echo DELT::currency_value($grandtotal, $this->firm->currency, true, true) ?>.
     <?php echo $this->renderPartial('_comment', array('account'=>$account, 'value'=>$grandtotal, 'only_icon'=>false), true) ?>
   </p>
 </div>

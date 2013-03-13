@@ -2,11 +2,11 @@
 
 class DELT
 {
-  public static function currency_value($amount, $currency, $with_debit_credit=false)
+  public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false)
   {
     if($amount==0)
     {
-      return '0';
+      return $with_zero ? '0': '';
     }
     
     if($with_debit_credit)
@@ -19,7 +19,32 @@ class DELT
     }
   }
   
-  
+  public static function currency2decimal($value, $currency)
+  {
+    $sample=Yii::app()->numberFormatter->formatCurrency(12345.67, $currency);
+    
+    // strangely enough, this information does not seem to be available:
+    $thousand_sep = substr($sample, strpos($sample, '2')+1, 1);
+    $decimal_sep = substr($sample, strpos($sample, '5')+1, 1);
+    
+    $legalchars = $thousand_sep . $decimal_sep . '0123456789';
+    
+    $clean='';
+    for($i=0; $i<strlen($value); $i++)
+    {
+      $c=substr($value, $i, 1);
+      if(strpos($legalchars, $c)!==false)
+      {
+        $clean .= $c;
+      }
+    }
+    
+    $value=str_replace($thousand_sep, '', $clean);
+    $value=str_replace($decimal_sep, '.', $value);
+    
+    return $value;
+  }
+
   public static function getConvertedJQueryUIDateFormat()
   {
     $locale=strtolower(str_replace('_', '-', Yii::app()->request->getPreferredLanguage()));

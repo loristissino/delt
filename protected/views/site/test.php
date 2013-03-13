@@ -11,6 +11,5 @@ $this->pageTitle=Yii::app()->name;
 <?php
 
 
-
 ?>
 </pre>

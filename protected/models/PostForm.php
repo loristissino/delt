@@ -55,8 +55,8 @@ class PostForm extends CFormModel
     {
       $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
       $this->debitcredits[$debitcredit->id]->name = $debitcredit->account;
-      $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? $debitcredit->amount : '';
-      $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? -$debitcredit->amount : '';
+      $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
+      $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
     }
   }
   
@@ -156,7 +156,10 @@ class PostForm extends CFormModel
       $errors=false;
       foreach(array('debit', 'credit') as $type)
       {
+
+        $debitcredit[$type]=DELT::currency2decimal($debitcredit[$type], $this->currency);
         $value=$debitcredit[$type];
+
         $error=$type . '_errors';
         if($value!='' and !is_numeric($value))
         {
@@ -222,6 +225,16 @@ class PostForm extends CFormModel
         );
     }
     
+    if($this->hasErrors())
+    {
+      foreach($this->debitcredits as $row => $debitcredit)
+      {
+        foreach(array('debit', 'credit') as $type)
+        {
+          $this->debitcredits[$row][$type]=$debitcredit[$type] ? DELT::currency_value($debitcredit[$type], $this->currency) : '';
+        }
+      }
+    }
     
   }
 
