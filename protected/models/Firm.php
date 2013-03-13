@@ -71,7 +71,7 @@ class Firm extends CActiveRecord
 		return array(
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
-			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'{{post}}.date ASC'),
+			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'posts.date ASC'),
 		);
 	}
 
@@ -346,6 +346,8 @@ class Firm extends CActiveRecord
       $fu->role='O';
       $fu->save(false);
 
+      $references = array();  // this will keep references between the old and the new codes of accounts
+
       foreach($source->accounts as $account)
       {
         $newaccount = new Account;
@@ -358,8 +360,32 @@ class Firm extends CActiveRecord
         }
         $newaccount->textnames = $account->l10n_names;
         $newaccount->basicSave(false);
+        
+        $references[$account->id]=$newaccount->id;
       }
       
+      foreach($source->posts as $post)
+      {
+        $newpost = new Post;
+        $newpost->firm_id = $this->id;
+        foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
+        {
+          $newpost->$property = $post->$property;
+        }
+        $newpost->save(false);
+        foreach($post->debitcredits as $debitcredit)
+        {
+          $newdebitcredit = new Debitcredit;
+          $newdebitcredit->post_id = $newpost->id;
+          foreach(array('amount', 'rank') as $property)
+          {
+            $newdebitcredit->$property = $debitcredit->$property;
+          }
+          $newdebitcredit->account_id = $references[$debitcredit->account_id];
+          $newdebitcredit->save(false);
+        }
+      }
+  
       $transaction->commit();
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully forked.'));
       return true;
@@ -371,6 +397,17 @@ class Firm extends CActiveRecord
       return false;
     }
     
+  }
+  
+  public function isForkableBy(DEUser $user)
+  {
+    if($this->status==1)
+      return true;
+    
+    if($this->isManageableBy($user))
+      return true;
+      
+    return false;
   }
   
   /*

@@ -94,23 +94,25 @@ class FirmController extends Controller
     if($slug)
     {
       $firm = $this->loadFirmBySlug($slug, false);
+      if(!$firm->isForkableBy($this->DEUser))
+        throw new CHttpException(403, 'You are not allowed to access the requested page.');
     }
     
 		if($_POST)
 		{
       $newfirm = new Firm();
-      try
-      {
+      //try
+      //{
 			  $newfirm->forkFrom($firm, $this->DEUser);
         $newfirm->fixAccounts();
         $newfirm->fixAccountNames();
 				$this->redirect(array('firm/update','id'=>$newfirm->id));
-      }
+      /*}
       catch(Exception $e)
       {
         Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
 				$this->redirect(array('firm/form'));
-      }
+      }*/
 		}
 
     if($firm)
@@ -122,7 +124,8 @@ class FirmController extends Controller
     else
     {
       $this->render('fork', array(
-        'firms'=>Firm::model()->findForkableFirms()
+        'publicfirms'=>Firm::model()->findForkableFirms(),
+        'ownfirms'=>$this->DEUser->firms,
       ));
     }
 	}
