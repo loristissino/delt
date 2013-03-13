@@ -129,6 +129,13 @@ class Post extends CActiveRecord
     return parent::beforeSave();
   }
   
+  public function getDateForFormWidget()
+  {
+    $date=DateTime::createFromFormat('Y-m-d', $this->date);
+    $format = DELT::getConvertedJQueryUIDateFormat();
+    return $date->format($format);
+  }
+  
   public function getCurrentMaxRank()
   {
     $criteria = new CDbCriteria;

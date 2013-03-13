@@ -50,7 +50,7 @@ class PostForm extends CFormModel
   {
     $this->post = $post;
     $this->description = $post->description;
-    $this->date = Yii::app()->dateFormatter->formatDateTime($post->date, 'short', null);
+    $this->date = $post->getDateForFormWidget();
     foreach($post->debitcredits as $debitcredit)
     {
       $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
