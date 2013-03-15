@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'New journal post'), 'url'=>array('bookkeeping/newpost', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Closing post'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug)),
 );
 
 $this->hide_date_and_description = true;

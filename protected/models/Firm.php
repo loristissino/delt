@@ -181,6 +181,61 @@ class Firm extends CActiveRecord
     );
   }
   
+  public function getAccountBalances($nature='')
+  {
+    $result=array();
+    $accounts = Yii::app()->db->createCommand()
+      ->select('SUM(amount) as total, a.code as code, n.name')
+      ->from('{{debitcredit}}')
+      ->leftJoin('{{account}} a', 'account_id = a.id')
+      ->leftJoin('{{account_name}} n', 'a.id = n.account_id AND n.language_id = ' . $this->language_id)
+      ->leftJoin('{{post}} p', 'post_id = p.id')
+      ->where('p.firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('a.nature = :nature', array(':nature'=>$nature))
+      ->order('a.code')
+      ->group('a.code, n.name')
+      ->having('total <> 0')
+      ->queryAll();
+    
+    $grandtotal=0;  
+    foreach($accounts as $account)
+    {
+      $grandtotal+=$account['total'];
+      $row=array();
+      $row['name']=$account['code'] . ' - ' . $account['name'];
+      if($account['total'] > 0)
+      {
+        $row['debit']='';
+        $row['credit']= DELT::currency_value($account['total'], $this->currency);
+      }
+      elseif($account['total'] < 0)
+      {
+        $row['debit']= DELT::currency_value(-$account['total'], $this->currency);
+        $row['credit']='';
+      }
+      else
+      { // this should theoretically never happen...
+        $row['debit']='';
+        $row['credit']='';
+      }
+      $result[]=$row;
+    }
+    if($grandtotal!=0)
+    {
+      $closingaccounts=Account::model()->with('names')->findAllByAttributes(array('firm_id'=>$this->id, 'nature'=>strtolower($nature), 'is_selectable'=>true));
+      if(sizeof($closingaccounts)==1)
+      { 
+        $result[]=array(
+          'name'=>$closingaccounts[0]->__toString(),
+          'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
+          'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
+          );
+      }
+    }
+    
+    return $result;
+  }
+  
   public function getPostsAsDataProvider()
   {
     return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->with('account.names')->ofFirm($this->id), array(

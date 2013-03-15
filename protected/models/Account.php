@@ -117,6 +117,15 @@ class Account extends CActiveRecord
       'r'=>Yii::t('delt', 'Result Account (Net profit / Total loss)'),
       ); 
 	}
+
+	/**
+	 * @return array valid account natures
+	 */
+	public function getValidNatureByCode($code)
+  {
+    $natures=$this->validNatures();
+    return isset($natures[$code]) ? $natures[$code] : null;
+  }
   
 
 	/**

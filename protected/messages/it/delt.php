@@ -85,5 +85,17 @@ return array(
   'Your firms' => 'Le tue aziende', 
   'Create firm' => 'Crea un\'azienda', 
   
+  'Closing post' => 'Registrazione di chiusura',
+  'Patrimonial closing post' => 'Registrazione di chiusura patrimoniale',
+  'Economic closing post' => 'Registrazione di chiusura economica',
+  'Memo closing post' => 'Registrazione di chiusura conti d\'ordine',
+
+  'Patrimonial closing' => 'Chiusura patrimoniale',
+  'Economic closing' => 'Chiusura economica',
+  'Memo closing' => 'Chiusura conti d\'ordine',
+
+  'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
+
+  'This firm does not seem to have accounts of nature «{nature}» to close.'=> 'Questa azienda non sembra avere conti di natura «{nature}» da chiudere.',
 );
 

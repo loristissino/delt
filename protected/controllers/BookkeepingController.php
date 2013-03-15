@@ -17,6 +17,9 @@ class BookkeepingController extends Controller
   public $debit_sum = 0;
   public $credit_sum = 0;
   
+  public $accounts;
+  public $postdescription;
+  
 	public function actionIndex()
 	{
 		$this->render('index', array('firms'=>$this->DEUser->firms));
@@ -68,9 +71,19 @@ class BookkeepingController extends Controller
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
     $postform->currency = $this->firm->currency;
+    if(isset($this->postdescription))
+    {
+      $postform->description = $this->postdescription;
+    }
     
-    $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
-    
+    if(isset($this->accounts) and sizeof($this->accounts)>0)
+    {
+      $postform->acquireItems($this->accounts);
+    }
+    else
+    {
+      $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
+    }
         
 		if(isset($_POST['PostForm']))
 		{
@@ -98,6 +111,38 @@ class BookkeepingController extends Controller
       'items'=>$postform->debitcredits,
     ));
 	}
+  
+  public function actionClosingpost($slug, $nature='')
+  {
+    switch($nature)
+    {
+      case 'P':
+        $this->postdescription=Yii::t('delt', 'Patrimonial closing post');
+        break;
+      case 'E':
+        $this->postdescription=Yii::t('delt', 'Economic closing post');
+        break;
+      case 'M':
+        $this->postdescription=Yii::t('delt', 'Memo closing post');
+        break;
+      default:
+        $nature='';
+        $this->postdescription=Yii::t('delt', 'Closing post');
+    }
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->accounts = $this->firm->getAccountBalances($nature);
+    
+    if(sizeof($this->accounts))
+    {
+      return $this->actionNewpost($slug);
+      // we show the standard form
+    }
+    
+    $this->render('closingpost', array('nature'=>$nature, 'model'=>$this->firm));
+    
+    
+    
+  }
 
 
 	public function actionUpdatepost($id)
