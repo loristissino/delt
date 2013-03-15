@@ -35,8 +35,11 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'language_id'); ?>
-		<?php echo $form->textField($model,'language_id'); ?>
-		<?php echo $form->error($model,'language_id'); ?>
+     <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAll(),
+        'id', //this is the attribute name for list option values 
+        'complete_name' // this is the attribute name for list option texts 
+         )
+      ); ?>
 	</div>
   
 	<div class="row buttons">

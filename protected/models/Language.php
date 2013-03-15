@@ -104,6 +104,11 @@ class Language extends CActiveRecord
     return sprintf('%s (%s_%s)', $this->english_name, $this->language_code, $this->country_code);
   }
   
+  public function getComplete_name()
+  {
+    return sprintf('%s_%s - %s (%s)', $this->language_code, $this->country_code, $this->english_name, $this->native_name);
+  }
+  
   public function getLocale()
   {
     return $this->language_code . '_' . $this->country_code;
