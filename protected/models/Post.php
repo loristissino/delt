@@ -152,4 +152,24 @@ class Post extends CActiveRecord
     Debitcredit::model()->deleteAllByAttributes(array('post_id'=>$this->id));
   }
   
+  public function safeDelete()
+  {
+    $transaction=$this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      $this->deleteDebitcredits();
+      $this->delete();
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
+    
+  }
+  
+  
 }

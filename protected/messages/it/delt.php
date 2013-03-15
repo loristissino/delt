@@ -79,6 +79,9 @@ return array(
   
   'The children accounts won\'t be deleted, but they will remain orphans.' => 'I conti figli non verranno cancellati, ma resteranno orfani.',
   
+  'Edit journal post' => 'Modifica registrazione contabile',
+
+
   
   'Fork an existing firm' => 'Duplica un\'azienda esistente',
   'Public firms' => 'Aziende pubbliche',

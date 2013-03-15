@@ -140,8 +140,6 @@ class BookkeepingController extends Controller
     
     $this->render('closingpost', array('nature'=>$nature, 'model'=>$this->firm));
     
-    
-    
   }
 
 
@@ -183,11 +181,31 @@ class BookkeepingController extends Controller
       'items'=>$postform->debitcredits,
     ));
 
-
-
 	}
 
 
+	public function actionDeletepost($id)
+	{
+    $this->post = $this->loadPost($id);
+    $this->firm=$this->post->firm;
+    $this->checkManageability($this->firm);
+    
+		if(Yii::app()->getRequest()->isPostRequest)
+		{
+      if($this->post->safeDelete())
+      {
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The post has been successfully deleted.'));
+      }
+      else
+      {
+        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The post could not be deleted.'));
+      }
+      $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+      
+		}
+    throw new CHttpException(404, 'The requested page does not exist.');
+
+	}
 
   /**
    * Serves a list of suggestions matching the term $term, in form of
@@ -218,7 +236,7 @@ class BookkeepingController extends Controller
   {
     $firm=$this->loadModelBySlug($slug);
     
-    if($_POST)
+    if(Yii::app()->getRequest()->isPostRequest)
     {
       set_time_limit(0);
       if($firm->fixAccounts())
