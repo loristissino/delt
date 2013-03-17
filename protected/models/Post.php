@@ -63,7 +63,7 @@ class Post extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'post_id'),
+			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'post_id', 'order'=>'debitcredits.rank ASC'),
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 		);
 	}

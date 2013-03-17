@@ -3,6 +3,8 @@
 return array(
 
   'Welcome to <i>{name}</i>'=>'Benvenuti su <i>{name}</i>',
+  'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.' => 'Puoi fare esperienza nella tenuta della contabilità con il metodo della partita doppia con una delle tue aziende, elencate sulla destra.',
+  
   'Bookkeeping' => 'Contabilità',
   'Bookkeeping and accountancy' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
@@ -80,7 +82,8 @@ return array(
   'The children accounts won\'t be deleted, but they will remain orphans.' => 'I conti figli non verranno cancellati, ma resteranno orfani.',
   
   'Edit journal post' => 'Modifica registrazione contabile',
-
+  'Delete' => 'Elimina',
+  'Are you sure you want to delete this journal post?' => 'Sei sicuro di voler eliminare questa registrazione contabile?',
 
   
   'Fork an existing firm' => 'Duplica un\'azienda esistente',
@@ -100,5 +103,30 @@ return array(
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
 
   'This firm does not seem to have accounts of nature «{nature}» to close.'=> 'Questa azienda non sembra avere conti di natura «{nature}» da chiudere.',
+  
+  'Reasons' => 'Causali',
+  'Create Reason' => 'Crea causale',
+  'Create a Reason based on this post' => 'Crea una causale basata su questa registrazione',
+  'Delete this post' => 'Elimina questa registrazione',
+  'You are going to create a new reason with the following accounts:' => 'Stai per creare una nuova causale con i seguenti conti:',
+  'Reason creation' => 'Creazione di causale',
+  'The reason has been correctly saved.'=>'La causale è stata correttamente salvata.',
+  'The reason could not be saved.'=>'La causale non è stata salvata.',
+  
+  'Create'=>'Crea',
+  
+  'Fork the firm «{firm}»' => 'Duplica l\'azienda «{firm}»',
+  'Do you want to proceed?' => 'Vuoi procedere?',
+  'Yes, please, fork this firm' => 'Sì, crea un duplicato di questa azienda',
+  
+  'Edit Firm «{name}»' => 'Modifica azienda «{name}»',
+  
+  'Currency' => 'Valuta',
+  'Slug' => 'Slug',
+  'Language' => 'Lingua',
+  
+  'Save' => 'Salva',
+  
+  
 );
 

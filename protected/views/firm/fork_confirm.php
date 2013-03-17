@@ -17,10 +17,28 @@ $this->breadcrumbs=array(
 
 <hr />
 
-<p><?php echo Yii::t('delt', 'Do you want to proceed?') ?></p>
-
+<div class="form">
 <?php $form=$this->beginWidget('CActiveForm'); ?>
+
+	<?php echo $form->errorSummary($forkfirmform); ?>
+
+    <div class="row buttons">
+      <?php echo $form->label($forkfirmform, 'type'); ?><?php echo $form->dropDownList($forkfirmform,
+          'type',
+          $forkfirmform->getTypeOptions()
+          ) ?>
+          <hr />
+    </div>
+    <div class="row checkbox">
+      <?php echo $form->checkBox($forkfirmform, 'license_confirmation') ?>
+      <?php echo $form->label($forkfirmform,'license_confirmation'); ?>
+        <hr />
+    </div>
+    <div class="row">
+    <p><?php echo Yii::t('delt', 'Do you want to proceed?') ?></p>
+    </div>
     <div class="row submit">
         <?php echo CHtml::submitButton(Yii::t('delt', 'Yes, please, fork this firm')) ?>
     </div>
 <?php $this->endWidget(); ?>
+</div><!-- form -->

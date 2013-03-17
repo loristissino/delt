@@ -22,7 +22,14 @@ class BookkeepingController extends Controller
   
 	public function actionIndex()
 	{
-		$this->render('index', array('firms'=>$this->DEUser->firms));
+    if($this->DEUser)
+    {
+      $this->render('index', array('firms'=>$this->DEUser->firms));
+    }
+    else
+    {
+      $this->redirect(array('site/index'));
+    }
 	}
 
 	/**
@@ -207,6 +214,59 @@ class BookkeepingController extends Controller
 
 	}
 
+  public function actionPostfromreason($id)
+  {
+    $reason=$this->loadReason($id);
+    $this->firm=$reason->firm;
+    $this->checkManageability($this->firm);
+    
+    $this->accounts = $reason->getAccountsInvolved($this->firm->currency);
+    
+    if(sizeof($this->accounts))
+    {
+      $this->postdescription=$reason->description;
+      return $this->actionNewpost($this->firm->slug);
+      // we show the standard form
+    }
+    
+    throw new CHttpException(404,'The requested page does not exist.');
+  }
+
+
+  public function actionCreatereason($id)
+  {
+    $this->post = $this->loadPost($id);
+    $this->firm=$this->post->firm;
+    $this->checkManageability($this->firm);
+    
+    $reason=new Reason;
+
+    if(isset($_POST['Reason']))
+    {
+        $reason->attributes=$_POST['Reason'];
+        if($reason->validate())
+        {
+          $reason->firm_id = $this->firm->id;
+          $reason->post_id = $this->post->id;
+          if($reason->save())
+          {
+            Yii::app()->user->setFlash('delt_success','The reason has been correctly saved.'); 
+          }
+          else
+          {
+            Yii::app()->user->setFlash('delt_failure','The reason could not be saved.'); 
+          }
+          $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+        }
+    }
+    if(!$reason->description)
+    {
+      $reason->description = $this->post->description;
+    }
+
+    $this->render('createreason',array('model'=>$this->firm, 'reason'=>$reason));
+  }
+
   /**
    * Serves a list of suggestions matching the term $term, in form of
    * a json-encoded object.
@@ -254,12 +314,19 @@ class BookkeepingController extends Controller
       'model'=>$this->loadModelBySlug($slug)
     ));
   }
-
   
 	public function loadModelBySlug($slug)
 	{
     return $this->loadFirmBySlug($slug);
 	}
+  
+  public function loadReason($id)
+  {
+		$reason=Reason::model()->findByPk($id);
+		if($reason===null)
+			throw new CHttpException(404,'The requested page does not exist.');
+		return $reason;
+  }
   
   public function renderName(Account $account, $row)
   {

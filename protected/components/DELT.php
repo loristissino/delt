@@ -6,12 +6,12 @@ class DELT
   {
     if($amount==0)
     {
-      return $with_zero ? '0': '';
+      return $with_zero ? Yii::app()->numberFormatter->formatCurrency(0, $currency): '';
     }
     
     if($with_debit_credit)
     {
-      return Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', ($amount>0 ? 'D':'C').'<!-- outstanding balance -->');
+      return Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', self::amount2type($amount));
     }
     else
     {
@@ -43,6 +43,17 @@ class DELT
     $value=str_replace($decimal_sep, '.', $value);
     
     return $value;
+  }
+  
+  public static function amount2type($amount, $with_html_comment=true)
+  {
+    $type = $amount > 0 ? 'D' : ($amount < 0 ? 'C': null);
+    if($with_html_comment)
+    {
+      $type .='<!-- outstanding balance -->';
+    }
+    return $type;
+    
   }
 
   public static function getConvertedJQueryUIDateFormat()

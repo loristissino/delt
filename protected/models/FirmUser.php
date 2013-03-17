@@ -53,6 +53,7 @@ class FirmUser extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
+      'profiles'=>array(self::HAS_MANY, 'Profile', 'user_id', 'order'=>'profiles.last_name, profiles.first_name ASC'),
 		);
 	}
 

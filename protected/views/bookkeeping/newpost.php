@@ -7,6 +7,15 @@ $this->breadcrumbs=array(
   'New journal post',
 );
 
+if(sizeof($model->reasons))
+{
+  $this->menutitle='Reasons';
+  $this->menu=array();
+  foreach($model->reasons as $reason)
+  {
+    $this->menu[]=array('label'=>$reason->description, 'url'=>array('bookkeeping/postfromreason', 'id'=>$reason->id));
+  }
+}
 ?>
 <h1><?php echo Yii::t('delt', 'New journal post') ?></h1>
 

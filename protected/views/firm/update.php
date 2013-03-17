@@ -10,6 +10,11 @@ $this->breadcrumbs=array(
 
 ?>
 
-<h1><?php echo Yii::t('delt', 'Update Firm «{name}»', array('{name}'=>$model->name)) ?></h1>
+<h1><?php echo Yii::t('delt', 'Edit Firm «{name}»', array('{name}'=>$model->name)) ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+
+
+<hr />
+
+<?php echo $model->getLicenseCode($this) ?>

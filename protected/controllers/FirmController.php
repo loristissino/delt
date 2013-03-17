@@ -85,7 +85,7 @@ class FirmController extends Controller
 	}
 
 	/**
-	 * Forks an existing, public, firm.
+	 * Forks an existing, public, firm, or a personal private firm.
 	 * If creation is successful, the browser will be redirected to the 'update' page.
 	 */
 	public function actionFork($slug=null)
@@ -98,27 +98,34 @@ class FirmController extends Controller
         throw new CHttpException(403, 'You are not allowed to access the requested page.');
     }
     
-		if($_POST)
+    $form = new ForkfirmForm;
+    
+		if(isset($_POST['ForkfirmForm']))
 		{
-      $newfirm = new Firm();
-      //try
-      //{
-			  $newfirm->forkFrom($firm, $this->DEUser);
-        $newfirm->fixAccounts();
-        $newfirm->fixAccountNames();
-				$this->redirect(array('firm/update','id'=>$newfirm->id));
-      /*}
-      catch(Exception $e)
+      $form->attributes=$_POST['ForkfirmForm'];
+      
+      if($form->validate())
       {
-        Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
-				$this->redirect(array('firm/form'));
-      }*/
+        $newfirm = new Firm();
+        try
+        {
+          $newfirm->forkFrom($firm, $this->DEUser, $form->type);
+          $newfirm->fixAccounts();
+          $newfirm->fixAccountNames();
+          $this->redirect(array('firm/update','id'=>$newfirm->id));
+        }
+        catch(Exception $e)
+        {
+          Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+          $this->redirect(array('firm/form'));
+        }
+      }
 		}
 
     if($firm)
     {
       $this->render('fork_confirm',array(
-        'firm'=>$firm,
+        'firm'=>$firm, 'forkfirmform'=>$form,
       ));
     }
     else

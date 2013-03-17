@@ -19,7 +19,10 @@
  * @property Account[] $accounts
  * @property Users[] $tblUsers
  * @property Post[] $posts
+ * @property Reason[] $reasons
+ *
  */
+
 class Firm extends CActiveRecord
 {
 	/**
@@ -72,6 +75,8 @@ class Firm extends CActiveRecord
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
 			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'posts.date ASC'),
+      'reasons' => array(self::HAS_MANY, 'Reason', 'firm_id', 'order'=>'reasons.description ASC'),
+      'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
 		);
 	}
 
@@ -129,18 +134,54 @@ class Firm extends CActiveRecord
 		return $this->name;
 	}
   
+  
+  public function getParent()
+  {
+    return Firm::model()->findByPk($this->firm_parent_id);
+  }
+  
 	/**
 	 * @param DEUser $user the user to check
 	 * @return boolean true if the firm is manageable by $user, false otherwise
 	 */
   public function isManageableBy(DEUser $user=null)
   {
-    // FIXME - This could probably be done better... :-(
-    foreach($this->tblUsers as $fuser)
+    if(!$user)
     {
-      if ($fuser->id == $user->id) return true;
-    };
-    return false;
+      return false;
+    }
+    $fu=FirmUser::model()->findByAttributes(array('firm_id'=>$this->id, 'user_id'=>$user->id));
+    return sizeof($fu) > 0;
+  }
+  
+  public function getOwners($as_text=false)
+  {
+    // FIXME This should be done with one query, I must study how the model from the plugin works...
+    
+    $rows = FirmUser::model()->findAllByAttributes(array('firm_id'=>$this->id));
+    
+    if($as_text)
+    {
+      $users = array();
+      foreach($rows as $row)
+      {
+        $users[]=$row->user_id;
+      }
+      
+      $profiles=Profile::model()->findAllByPk($users);
+      
+      $lines = array();
+      {
+        foreach($profiles as $profile)
+        {
+          $lines[]=$profile->first_name . ' ' . $profile->last_name;
+        }
+      }
+           
+      return implode(', ', $lines);
+    }
+    
+    return $rows;
   }
 
   public function getAccountsAsDataProvider()
@@ -278,7 +319,6 @@ class Firm extends CActiveRecord
       // an account is selectable when it has no children
       $info['model']->number_of_children = sizeof($info['children']);
     }
-//    echo "<pre>";
     
     foreach($a as $id=>$info)
     {
@@ -378,7 +418,7 @@ class Firm extends CActiveRecord
     return Firm::model()->findAllByAttributes(array('status'=>1));
   }
   
-  public function forkFrom(Firm $source, DEUser $user)
+  public function forkFrom(Firm $source, DEUser $user, $type)
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
     $this->slug=md5($this->name + microtime());
@@ -419,28 +459,53 @@ class Firm extends CActiveRecord
         $references[$account->id]=$newaccount->id;
       }
       
-      foreach($source->posts as $post)
+      if(substr($type, 1, 1)=='1')
       {
-        $newpost = new Post;
-        $newpost->firm_id = $this->id;
-        foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
+        // we must fork reasons...
+        foreach($source->reasons as $reason)
         {
-          $newpost->$property = $post->$property;
-        }
-        $newpost->save(false);
-        foreach($post->debitcredits as $debitcredit)
-        {
-          $newdebitcredit = new Debitcredit;
-          $newdebitcredit->post_id = $newpost->id;
-          foreach(array('amount', 'rank') as $property)
+          $newreason = new Reason;
+          $newreason->firm_id = $this->id;
+          foreach(array('description') as $property)
           {
-            $newdebitcredit->$property = $debitcredit->$property;
+            $newreason->$property = $reason->$property;
           }
-          $newdebitcredit->account_id = $references[$debitcredit->account_id];
-          $newdebitcredit->save(false);
+          $info=array();
+          foreach(unserialize($reason->info) as $id=>$value)
+          {
+            $info[$references[$id]]=$value;
+          }
+          $newreason->info=serialize($info);
+          $newreason->save(false);
         }
       }
-  
+      
+      if(substr($type, 2, 1)=='1')
+      {
+        // we must fork posts...
+        foreach($source->posts as $post)
+        {
+          $newpost = new Post;
+          $newpost->firm_id = $this->id;
+          foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
+          {
+            $newpost->$property = $post->$property;
+          }
+          $newpost->save(false);
+          foreach($post->debitcredits as $debitcredit)
+          {
+            $newdebitcredit = new Debitcredit;
+            $newdebitcredit->post_id = $newpost->id;
+            foreach(array('amount', 'rank') as $property)
+            {
+              $newdebitcredit->$property = $debitcredit->$property;
+            }
+            $newdebitcredit->account_id = $references[$debitcredit->account_id];
+            $newdebitcredit->save(false);
+          }
+        }
+      }
+      
       $transaction->commit();
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully forked.'));
       return true;
@@ -476,6 +541,37 @@ class Firm extends CActiveRecord
     );
   }
   */
+  
+  public function getLicenseCode(CController $controller)
+  {
+    $text = Yii::t('delt', '<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />
+<span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">«{firmname}»</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="{author_url}" property="cc:attributionName" rel="cc:attributionURL">{author_name}</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.'
+,
+
+    array(
+      '{locale}' => $this->language->locale,
+      '{firmname}' => $this->name,
+      '{author_name}' => $this->getOwners(true),
+      '{author_url}' => $controller->createUrl('firm/owners', array('slug'=>$this->slug)),
+      )
+    );
+    
+
+    if($this->firm_parent_id)
+    {
+      $text .= Yii::t('delt', '<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="{source_url}" rel="dct:source">{source_name}</a>.',
+      
+      array(
+        '{source_url}' => $controller->createUrl('firm/public', array('slug'=>$this->parent->slug)),
+        '{source_name}' => $this->parent,
+      )
+      
+      );
+      
+    }
+    
+    return $text;
+  }
   
 
 }

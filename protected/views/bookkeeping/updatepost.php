@@ -8,14 +8,18 @@ $this->breadcrumbs=array(
   'Update post',
 );
 
-$this->menu=array();
+$this->menu=array(
+  array('label'=>Yii::t('delt', 'Create Reason'), 'url'=>$this->createUrl('bookkeeping/createreason', array('id'=>$postform->post->id)),'linkOptions'=>array(
+    'title'=>Yii::t('delt', 'Create a Reason based on this post'),
+    ))
+  );
 
 if(true) // TODO -- we might manage a 'is deletable' condition
 {
-  $this->menu[]= array('label'=>Yii::t('zii', 'Delete'), 'url'=>$url=$this->createUrl('bookkeeping/deletepost', array('id'=>$postform->post->id)),  'linkOptions'=>array(   
+  $this->menu[]= array('label'=>Yii::t('delt', 'Delete'), 'url'=>$url=$this->createUrl('bookkeeping/deletepost', array('id'=>$postform->post->id)),  'linkOptions'=>array(   
       'submit' => $url,
       'title' => Yii::t('delt', 'Delete this post'),
-      'confirm' => Yii::t('zii', 'Are you sure you want to delete this item?'),
+      'confirm' => Yii::t('delt', 'Are you sure you want to delete this journal post?'),
     ),
   );
 }

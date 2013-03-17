@@ -52,7 +52,7 @@ else
 	?>
 	<?php
 		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>Yii::t('delt', 'Operations'),
+			'title'=>Yii::t('delt', $this->menutitle),
 		));
 		$this->widget('zii.widgets.CMenu', array(
 			'items'=>$this->menu,
