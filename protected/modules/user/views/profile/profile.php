@@ -18,6 +18,11 @@ $this->menu=array(
 	<?php echo Yii::app()->user->getFlash('profileMessage'); ?>
 </div>
 <?php endif; ?>
+
+<div>
+<?php echo CHtml::image(DELT::getGravatar($model->email)) ?>
+</div>
+
 <table class="dataGrid">
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('username')); ?></th>

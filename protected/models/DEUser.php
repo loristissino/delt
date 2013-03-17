@@ -141,4 +141,6 @@ class DEUser extends CActiveRecord
       )
     );
   }
+  
+  
 }
