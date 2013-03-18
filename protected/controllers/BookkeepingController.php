@@ -73,31 +73,36 @@ class BookkeepingController extends Controller
   
   public function actionExport($slug)
   {
- //   throw new CHttpException(501, 'Not yet implemented.');
-    
     $this->firm=$this->loadModelBySlug($slug);
-    
-   // $data=$this->firm->getExportData();
 
+    $data=$this->firm->getExportData('111');
+    
     $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.delt';
     $this->sendDispositionHeader($filename);
-    
-    $data=array(
-      'test1'=>array(
-        '01.01'=>'something',
-        '02.03'=>'something else',
-      'test2'=>array(
-        'nothing'=>true,
-        ),
-      )
-    );
-    
     $this->serveJson($data);
   }
 
   public function actionImport($slug)
   {
-    throw new CHttpException(501, 'Not yet implemented.');
+    $this->firm=$this->loadModelBySlug($slug);
+    
+    if(isset($_POST['Firm']))
+		{
+      throw new CHttpException(501, 'Not yet implemented.');
+      $file=CUploadedFile::getInstance($this->firm, 'file');
+      if (is_object($file) && get_class($file)==='CUploadedFile')
+      {
+        $this->render('import', array(
+          'model'=>$this->loadModelBySlug($slug),
+          'data'=>CJSON::decode(implode('', file($file->getTempName())))
+        ));
+        Yii::app()->end();
+    	}
+		}
+    
+    $this->render('import', array(
+      'model'=>$this->loadModelBySlug($slug),
+    ));
   }
 
 	public function actionNewpost($slug)

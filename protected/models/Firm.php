@@ -607,5 +607,88 @@ class Firm extends CActiveRecord
     return $text;
   }
   
+  /**
+   * Builds an array of all relevant data of a firm.
+   * @param type string the type of data to return
+   * @return array the data
+   */  
+  public function getExportData($type)
+  {
+    /* type can be:
+     *   100 -- only accounts
+     *   110 -- accounts and reasons
+     *   111 -- accounts, reasons, posts
+     */
+    
+    $data=array();
+    
+    $data['base']=array(
+      'name'=>$this->name,
+      'description'=>$this->description,
+      'currency'=>$this->currency,
+      'language'=>$this->language->locale,
+      );
+    
+    $references = array();
+    foreach($this->accounts as $account)
+    {
+      $values=array();
+      foreach(array('code', 'textnames', 'nature', 'outstanding_balance') as $property)
+      {
+        $values[$property] = $account->$property;
+      }
+      $data['accounts'][]=$values;
+      $references[$account->id]=$account->code;
+    }
+    
+    if(substr($type, 1, 1)=='1')
+    {
+      // we must export reasons...
+      foreach($this->reasons as $reason)
+      {
+        $values=array();
+        foreach(array('description') as $property)
+        {
+          $values[$property] = $reason->$property;
+        }
+        $info=array();
+        foreach(unserialize($reason->info) as $id=>$value)
+        {
+          $info[$references[$id]]=$value;
+        }
+        $values['accounts']=$info;
+        $data['reasons'][]=$values;
+      }
+    }
+    
+    if(substr($type, 2, 1)=='1')
+    {
+      // we must export posts...
+      foreach($this->posts as $post)
+      {
+        $values = array();
+        foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
+        {
+          $values[$property] = $post->$property;
+        }
+        foreach($post->debitcredits as $debitcredit)
+        {
+          $info = array();
+          foreach(array('amount', 'rank') as $property)
+          {
+            $info[$property] = $debitcredit->$property;
+          }
+          $info['account_code'] = $references[$debitcredit->account_id];
+          $values['debitcredits'][]=$info;
+        }
+
+        $data['posts'][]=$values;
+      }
+    }
+
+    return $data;
+  }
+  
+  
 
 }
