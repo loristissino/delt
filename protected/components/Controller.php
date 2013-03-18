@@ -135,6 +135,15 @@ class Controller extends CController
 	}
   
   /**
+   * Sends a Content-Disposition HTTP header.
+   * @param string $filename the filename being sent
+   */  
+  public function sendDispositionHeader($filename)
+  {
+    header(sprintf('Content-Disposition: attachment; filename="%s"', $filename));
+  }
+
+  /**
    * Serves an object as a json-encoded string via HTTP.
    * @param string $object the object to send
    */  
