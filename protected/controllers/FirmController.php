@@ -34,7 +34,7 @@ class FirmController extends Controller
 			),
       */
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','fork'),
+				'actions'=>array('create','update','fork','public','owners'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -57,6 +57,16 @@ class FirmController extends Controller
 			'model'=>$this->loadModel($id),
 		));
 	}
+
+  public function actionPublic($slug)
+  {
+    throw new CHttpException(501, 'Not yet implemented.');
+  }
+
+  public function actionOwners($slug)
+  {
+    throw new CHttpException(501, 'Not yet implemented.');
+  }
 
 	/**
 	 * Creates a new model.

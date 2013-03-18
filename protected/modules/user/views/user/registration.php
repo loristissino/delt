@@ -60,7 +60,7 @@ $this->breadcrumbs=array(
 			foreach($profileFields as $field) {
 			?>
 	<div class="row">
-		<?php echo $form->labelEx($profile,$field->varname); ?>
+		<?php echo $form->labelEx($profile, $field->varname)?>
 		<?php 
 		if ($widgetEdit = $field->widgetEdit($profile)) {
 			echo $widgetEdit;

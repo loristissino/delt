@@ -126,7 +126,11 @@ return array(
   'Language' => 'Lingua',
   
   'Save' => 'Salva',
+  'Export' => 'Esporta',
+  'Import' => 'Importa',
   
+  'ISO 4217 code' => 'Codice ISO 4217',
+  'See the Wikipedia page to find out the code of the currency you want to use' => 'Accedi alla pagina di Wikipedia per trovare il codice della valuta che intendi usare',
   
 );
 

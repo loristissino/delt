@@ -127,4 +127,5 @@ return array(
         'The value of the default field (database).' => 'Valore di default del campo (database).',
         'Display order of fields.' => 'Ordine di visualizzazione dei campi.',
         'Not visited' => 'Non visitato',
+        'School'=> 'Scuola',
 );

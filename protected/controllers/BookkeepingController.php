@@ -70,6 +70,32 @@ class BookkeepingController extends Controller
       'model'=>$this->firm,
     ));
 	}
+  
+  public function actionExport($slug)
+  {
+    throw new CHttpException(501, 'Not yet implemented.');
+    
+    $this->firm=$this->loadModelBySlug($slug);
+    
+    $data=array(
+      'test1'=>array(
+        '01.01'=>'something',
+        '02.03'=>'something else',
+      'test2'=>array(
+        'nothing'=>true,
+        ),
+      )
+    );
+    
+    echo "<pre>" . json_encode($data) . '</pre>';
+    Yii::app()->end();
+    
+  }
+
+  public function actionImport($slug)
+  {
+    throw new CHttpException(501, 'Not yet implemented.');
+  }
 
 	public function actionNewpost($slug)
 	{
