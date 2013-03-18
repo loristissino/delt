@@ -65,7 +65,7 @@ class DELT
       return $format;
     }
     
-    $locale = substr($locale, 0, strpos($locale, '_'));
+    $locale = substr($locale, 0, strpos($locale, '-'));
 
     if($format = self::_getConvertedJQueryUIDateFormat($locale))
     {

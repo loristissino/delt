@@ -71,10 +71,15 @@ class PostForm extends CFormModel
     $post = $this->is_new ? new Post() : $this->post;
     
     $transaction = $post->getDbConnection()->beginTransaction();
-    
     try
     {
-      $post->date = $this->date;
+      // we must convert the date from the user input
+      // since we use jquery.ui.datepicker and its i18n features, we
+      // use the browser locale to know the format used
+      
+      $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
+      $post->date= $date ? $date->format('Y-m-d'): $this->date;
+      
       $post->firm_id = $this->firm_id;
       $post->description = $this->description;
       if($this->is_new)
