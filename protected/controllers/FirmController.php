@@ -157,20 +157,23 @@ class FirmController extends Controller
     $model=$this->loadFirm($id);
 
 		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+		 $this->performAjaxValidation($model);
 
 		if(isset($_POST['Firm']))
 		{
 			$model->attributes=$_POST['Firm'];
-      try
+      if($model->validate())
       {
-        $model->save(false);
-        Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
-				$this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
-      }
-      catch(Exception $e)
-      {
-        Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+        try
+        {
+          $model->save(false);
+          Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
+          $this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
+        }
+        catch(Exception $e)
+        {
+          Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+        }
       }
 		}
 

@@ -29,7 +29,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'slug'); ?>
-		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?>
+		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?> (<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?') ?>)
 		<?php echo $form->error($model,'slug'); ?>
 	</div>
 

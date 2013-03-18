@@ -51,13 +51,14 @@ class Firm extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, slug, currency, csymbol, language_id, firm_parent_id, create_date', 'required'),
+			array('name, slug, language_id, create_date', 'required'),
 			array('status, language_id, firm_parent_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
-			array('slug', 'length', 'max'=>32),
 			array('currency', 'length', 'max'=>5),
 			array('csymbol', 'length', 'max'=>1),
       array('description', 'safe'),
+      array('slug', 'validateSlug'),
+      array('currency', 'validateCurrency'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -134,6 +135,39 @@ class Firm extends CActiveRecord
 		return $this->name;
 	}
   
+  public function validateSlug()
+  {
+    if(strlen($this->slug)>32)
+    {
+      $this->addError('slug', Yii::t('delt', 'The maximum length of a slug is of 32 characters.'));
+      return;
+    }
+    if(preg_match('/[^0-9a-z\-]/', $this->slug))
+    {
+      $this->addError('slug', Yii::t('delt', 'Only lowercase letters, digits and minus sign are allowed.'));
+      return;
+    }
+    
+    $f=Firm::model()->findByAttributes(array('slug'=>$this->slug));
+    if($f and $f->id != $this->id)
+    {
+      $this->addError('slug', Yii::t('delt', 'This slug is already in use.'));
+    }
+  }
+
+  public function validateCurrency()
+  {
+    if($this->currency=='')
+    {
+      return;
+    }
+    if(strlen($this->currency)!=3)
+    {
+      $this->addError('currency', Yii::t('delt', 'The currency must be expressed as an ISO 4217 code (three characters).'));
+    }
+    $this->currency = strtoupper($this->currency);
+  }
+
   
   public function getParent()
   {

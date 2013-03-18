@@ -129,8 +129,14 @@ return array(
   'Export' => 'Esporta',
   'Import' => 'Importa',
   
+  'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?' => 'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani.">slug</a>?',
   'ISO 4217 code' => 'Codice ISO 4217',
   'See the Wikipedia page to find out the code of the currency you want to use' => 'Accedi alla pagina di Wikipedia per trovare il codice della valuta che intendi usare',
   
+  'The information about the firm has been correctly saved.'=>'Le informazioni sull\'azienda sono state correttamente salvate.',
+  'The information about the firm could not be saved.' => 'Le informazioni sull\'azienda non sono state salvate.',
+  
+  'This slug is already in use.' => 'Questo slug è già in uso.',
+  'Only lowercase letters, digits and minus sign are allowed.' => 'Solo lettere minuscole, cifre e il segno meno sono ammessi.',
 );
 
