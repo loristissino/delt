@@ -2,6 +2,12 @@
 
 class DELT
 {
+  
+  public static function getVersion()
+  {
+    return '0.9.1';
+  }
+  
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false)
   {
     if($amount==0)
