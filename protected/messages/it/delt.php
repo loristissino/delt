@@ -130,13 +130,25 @@ return array(
   'Import' => 'Importa',
   
   'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?' => 'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani.">slug</a>?',
-  'ISO 4217 code' => 'Codice ISO 4217',
-  'See the Wikipedia page to find out the code of the currency you want to use' => 'Accedi alla pagina di Wikipedia per trovare il codice della valuta che intendi usare',
+  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>' => 'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia">codice ISO 4217</a> di tre lettere',
+
   
   'The information about the firm has been correctly saved.'=>'Le informazioni sull\'azienda sono state correttamente salvate.',
   'The information about the firm could not be saved.' => 'Le informazioni sull\'azienda non sono state salvate.',
   
   'This slug is already in use.' => 'Questo slug è già in uso.',
   'Only lowercase letters, digits and minus sign are allowed.' => 'Solo lettere minuscole, cifre e il segno meno sono ammessi.',
+  
+  
+  'Data to duplicate:' => 'Dati da duplicare:',
+  'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Sono consapevole del fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  
+  'Chart of Accounts' => 'Piano dei conti',
+  'Chart of Accounts and Reasons' => 'Piano dei conti e causali contabili',
+  'Chart of Accounts, Reasons and Posts' => 'Piano dei conti, causali contabili, registrazioni contabili',
+  'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
+  
+  'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',
+  
 );
 

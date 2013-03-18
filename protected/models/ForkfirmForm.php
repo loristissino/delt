@@ -21,7 +21,7 @@ class ForkfirmForm extends CFormModel
 	{
 		return array(
 			'type' => Yii::t('delt', 'Data to duplicate:'),
-			'license_confirmation' => Yii::t('delt', 'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Commons Attribution-ShareAlike 3.0 License</a>.', array('{locale}'=>Yii::app()->language)),
+			'license_confirmation' => Yii::t('delt', 'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)),
 		);
 	}
   

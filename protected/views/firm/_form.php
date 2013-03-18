@@ -29,13 +29,13 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'slug'); ?>
-		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?> (<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?') ?>)
+		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?> <span class="hint">(<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?') ?>)</span>
 		<?php echo $form->error($model,'slug'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'currency'); ?>
-		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?> (<?php echo CHtml::link(Yii::t('delt', 'ISO 4217 code'), 'http://en.wikipedia.org/wiki/ISO_4217', array('target'=>'_new', 'title'=>Yii::t('delt', 'See the Wikipedia page to find out the code of the currency you want to use'))) ?>)
+		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?> <span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>')?>)</span>
 		<?php echo $form->error($model,'currency'); ?>
 	</div>
 
