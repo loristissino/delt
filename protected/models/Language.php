@@ -115,8 +115,8 @@ class Language extends CActiveRecord
   }
   
 	/**
-	 * Retrieves a list of languages based on the locale provided.
-	 * @return array the languages found.
+	 * Retrieves a language based on the locale provided.
+	 * @return Language the language found.
 	 */
   public function findByLocale($locale)
   {

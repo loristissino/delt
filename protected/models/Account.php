@@ -480,4 +480,29 @@ class Account extends CActiveRecord
     return $amount;
   }
   
+  public function safeDelete()
+  {
+    $transaction=$this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      $this->deleteNames();
+      $this->delete();
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      Yii::trace('could not delete account ' . $this->id . ' reason: ' . $e->getMessage(), 'delt.debug');
+      $transaction->rollback();
+      return false;
+    }
+  }
+  
+  public function deleteNames()
+  {
+    AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
+    Yii::trace('names deleted for account ' . $this->id, 'delt.debug');
+  }
+  
 }

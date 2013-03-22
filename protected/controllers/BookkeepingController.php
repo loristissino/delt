@@ -88,20 +88,25 @@ class BookkeepingController extends Controller
     
     if(isset($_POST['Firm']))
 		{
-      throw new CHttpException(501, 'Not yet implemented.');
+      //throw new CHttpException(501, 'Not yet implemented.');
       $file=CUploadedFile::getInstance($this->firm, 'file');
       if (is_object($file) && get_class($file)==='CUploadedFile')
       {
-        $this->render('import', array(
-          'model'=>$this->loadModelBySlug($slug),
-          'data'=>CJSON::decode(implode('', file($file->getTempName())))
-        ));
-        Yii::app()->end();
+        if($this->firm->loadFromFile($file))
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Data correctly imported.'));
+          $this->redirect(array('bookkeeping/manage','slug'=>$this->firm->slug));
+        }
+        else
+        {
+          $this->firm->addError('file', Yii::t('delt', 'The file seems to be invalid.'));
+        }
+
     	}
 		}
     
     $this->render('import', array(
-      'model'=>$this->loadModelBySlug($slug),
+      'model'=>$this->firm,
     ));
   }
 

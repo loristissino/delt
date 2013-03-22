@@ -5,7 +5,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '0.9.1';
+    return '0.9.2';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false)
@@ -184,6 +184,22 @@ class DELT
         $url .= ' />';
     }
     return $url;
+  }
+  
+  public static function object2array($object, &$array, $properties=array())
+  {
+    foreach ($properties as $property)
+    {
+      $array[$property] = $object->$property; 
+    }
+  }
+
+  public static function array2object($array, $object, $properties=array())
+  {
+    foreach ($properties as $property)
+    {
+      $object->$property = $array[$property];
+    }
   }
 
 }

@@ -622,21 +622,15 @@ class Firm extends CActiveRecord
     
     $data=array();
     
-    $data['base']=array(
-      'name'=>$this->name,
-      'description'=>$this->description,
-      'currency'=>$this->currency,
-      'language'=>$this->language->locale,
-      );
-    
+    DELT::object2array($this, $data['base'], array('name', 'description', 'currency'));
+
+    $data['base']['language'] = $this->language->locale;
+        
     $references = array();
     foreach($this->accounts as $account)
     {
       $values=array();
-      foreach(array('code', 'textnames', 'nature', 'outstanding_balance') as $property)
-      {
-        $values[$property] = $account->$property;
-      }
+      DELT::object2array($account, $values, array('code', 'textnames', 'nature', 'outstanding_balance'));
       $data['accounts'][]=$values;
       $references[$account->id]=$account->code;
     }
@@ -647,10 +641,7 @@ class Firm extends CActiveRecord
       foreach($this->reasons as $reason)
       {
         $values=array();
-        foreach(array('description') as $property)
-        {
-          $values[$property] = $reason->$property;
-        }
+        DELT::object2array($reason, $values, array('description'));
         $info=array();
         foreach(unserialize($reason->info) as $id=>$value)
         {
@@ -667,17 +658,12 @@ class Firm extends CActiveRecord
       foreach($this->posts as $post)
       {
         $values = array();
-        foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
-        {
-          $values[$property] = $post->$property;
-        }
+        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'rank'));
+        
         foreach($post->debitcredits as $debitcredit)
         {
           $info = array();
-          foreach(array('amount', 'rank') as $property)
-          {
-            $info[$property] = $debitcredit->$property;
-          }
+          DELT::object2array($debitcredit, $info, array('amount', 'rank'));
           $info['account_code'] = $references[$debitcredit->account_id];
           $values['debitcredits'][]=$info;
         }
@@ -686,9 +672,157 @@ class Firm extends CActiveRecord
       }
     }
 
+    $data['meta']=array(
+      'delt_version'=>DELT::getVersion(),
+      'website'=>Yii::app()->getRequest()->getHostInfo(),
+      'id'=>$this->id,
+      );
+      
+    $data['md5sum']=$this->_md5($data);
+
     return $data;
   }
   
+  public function loadFromFile(CUploadedFile $file)
+  {
+    try
+    {
+      $data = CJSON::decode(implode('', file($file->getTempName())));
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
+    
+    if(!$this->_md5($data, true))
+    {
+      return false;
+    }
+    
+    // data are valid, we can proceed...
+
+    // the following do not need to be in the transaction:    
+    $this->_deletePosts();
+    $this->_deleteReasons();
+    $this->_deleteAccounts();
+    
+    $transaction = $this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+
+      DELT::array2object($data['base'], $this, array('name', 'description', 'currency'));
+
+      $language=Language::model()->findByLocale($data['base']['language']);
+      $this->language_id = $language->id;
+      
+      $this->save(false);
+     
+      $references = array();
+      foreach($data['accounts'] as $values)
+      {
+        $newaccount = new Account;
+        $newaccount->firm_id = $this->id;
+        DELT::array2object($values, $newaccount, array('code', 'textnames', 'nature', 'outstanding_balance'));
+        $newaccount->basicSave(false);
+        $references[$values['code']]=$newaccount->id;
+      }
+      
+      
+      foreach($data['reasons'] as $values)
+      {
+        $newreason = new Reason;
+        $newreason->firm_id = $this->id;
+        DELT::array2object($values, $newreason, array('description'));
+
+        $info=array();
+        foreach($values['accounts'] as $id=>$value)
+        {
+          $info[$references[$id]]=$value;
+        }
+        
+        $newreason->info=serialize($info);
+        $newreason->save(false);
+      }
+
+      foreach($data['posts'] as $values)
+      {
+        $newpost = new Post;
+        $newpost->firm_id = $this->id;
+        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'rank'));
+        
+        $newpost->save(false);
+        
+        foreach($values['debitcredits'] as $debitcredit)
+        {
+          $newdebitcredit = new Debitcredit;
+          $newdebitcredit->post_id = $newpost->id;
+          DELT::array2object($debitcredit, $newdebitcredit, array('amount', 'rank'));
+          $newdebitcredit->account_id = $references[$debitcredit['account_code']];
+          $newdebitcredit->save(false);
+        }
+      }
+      
+      $transaction->commit();
+      
+      $this->fixAccountNames();
+      
+      return true;
+    }
+    catch (Exception $e)
+    {
+      $this->addError('description', $e->getMessage());
+      return false;
+    }
+  }
   
+  /**
+   * Returns or checks the md5sum of json-encoded data from an array.
+   * @param data array the data to checksum
+   * @param check boolean whether to return the checksum or the validation
+   * @return mixed the result
+   */
+  private function _md5($data, $check=false)
+  {
+    $export_info=Yii::app()->params['export'];
+    
+    if($check and (!isset($export_info['check_on_import']) or $export_info['check_on_import']==false))
+    {
+      return true;
+    }
+    
+    $key = isset($export_info['key']) ? $export_info['key'] : '';
+
+    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['reasons'] . $data['posts'] . $data['meta'] . $key));
+    
+    return $check ? $md5 == $data['md5sum'] : $md5;
+    
+  }
+  
+  private function _deletePosts()
+  {
+    foreach($this->posts as $post)
+    {
+      $post->safeDelete();
+    }
+  }
+
+  private function _deleteReasons()
+  {
+    Reason::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
+  }
+
+  private function _deleteAccounts()
+  {
+    $account_ids = Yii::app()->db->createCommand()
+      ->select('id')
+      ->from('{{account}}')
+      ->where('firm_id = :id', array(':id'=>$this->id))
+      ->queryColumn();
+    
+    AccountName::model()->deleteAllByAttributes(array('account_id'=>$account_ids));
+    Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
+  }
+
 
 }
