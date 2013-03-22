@@ -149,6 +149,9 @@ return array(
   'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
   
   'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',
+  'Data correctly imported.' => 'Dati correttamente importati',
+  
+  'Select date from calendar' => 'Seleziona la data dal calendario',
   
 );
 

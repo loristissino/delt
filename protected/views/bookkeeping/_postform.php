@@ -2,6 +2,7 @@
 /* @var $this AbcdeController */
 /* @var $model Abcde */
 /* @var $form CActiveForm */
+
 ?>
 
 <div class="form">
@@ -9,6 +10,7 @@
 <?php $form=$this->beginWidget('CActiveForm', array(
 	'id'=>'postform',
 	'enableAjaxValidation'=>false,
+  'focus'=> (isset($postform->post) ? null : array($postform, 'description')),
 )); ?>
 
 	<p class="note">
@@ -29,7 +31,7 @@
       'options'=>array(
           'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
           'showOn'=>'both', // 'focus', 'button', 'both'
-          'buttonText'=>Yii::t('ui','Select form calendar'),
+          'buttonText'=>Yii::t('delt','Select date from calendar'),
           'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
           'buttonImageOnly'=>true,
       ),

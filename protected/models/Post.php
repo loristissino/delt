@@ -117,9 +117,7 @@ class Post extends CActiveRecord
     
   public function getDateForFormWidget()
   {
-    $date=DateTime::createFromFormat('Y-m-d', $this->date);
-    $format = DELT::getConvertedJQueryUIDateFormat();
-    return $date->format($format);
+    return DELT::getDateForFormWidget($this->date);
   }
   
   public function getCurrentMaxRank()

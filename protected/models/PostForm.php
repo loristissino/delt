@@ -35,11 +35,7 @@ class PostForm extends CFormModel
   
   public function acquireItems($values)
   {
-    /*
-    echo "<pre>"; //</pre>
-    print_r($values);
-    die();
-    */
+
     $this->debitcredits=array();
     
     foreach($values as $key => $value)

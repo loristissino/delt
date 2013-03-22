@@ -202,4 +202,11 @@ class DELT
     }
   }
 
+  public static function getDateForFormWidget($date)
+  {
+    $date=DateTime::createFromFormat('Y-m-d', $date);
+    $format = DELT::getConvertedJQueryUIDateFormat();
+    return $date->format($format);
+  }
+  
 }

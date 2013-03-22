@@ -117,6 +117,12 @@ class BookkeepingController extends Controller
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
     $postform->currency = $this->firm->currency;
+    
+    if(!$postform->date)
+    {
+      $postform->date = Yii::app()->getUser()->getState('lastpostdate', DELT::getDateForFormWidget(date('Y-m-d')));
+    }
+    
     if(isset($this->postdescription))
     {
       $postform->description = $this->postdescription;
@@ -145,6 +151,7 @@ class BookkeepingController extends Controller
         {
           if($postform->save())
           {
+            Yii::app()->getUser()->setState('lastpostdate', $postform->date);
             $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
           }
         }
