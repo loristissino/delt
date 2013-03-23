@@ -51,9 +51,10 @@
 	</div>
 
 <table>
-<tr><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
-<?php foreach($items as $i=>$item): ?>
+<tr><th><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
+<?php $row=1; foreach($items as $i=>$item): ?>
 <tr>
+<td class="number"><?php echo $row++ ?></td>
 <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
   'id'=>'name'.$i,
   'name'=>"DebitcreditForm[$i][name]",
@@ -69,8 +70,8 @@
      ),
   ))
 ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('class'=>'currency ' . ($item->debit_errors ? 'error': 'valid'))) ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('class'=>'currency ' . ($item->credit_errors ? 'error': 'valid'))) ?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 12, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 12, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
 </tr>
 <?php endforeach; ?>
 </table>

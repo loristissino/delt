@@ -153,5 +153,11 @@ return array(
   
   'Select date from calendar' => 'Seleziona la data dal calendario',
   
+  'the amount of the debit has been computed by difference;' => 'l\'ammontare dell\'addebito è stato calcolato per differenza;',
+  'the amount of the credit has been computed by difference;' => 'l\'ammontare dell\'accredito è stato calcolato per differenza;',
+  'it must be checked.' => 'va controllato.',
+  
+  'Row' => 'Riga',
+  
 );
 

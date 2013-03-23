@@ -125,10 +125,11 @@ class PostForm extends CFormModel
     
     $used_accounts = array();
 
+    $line_number = 0;
     foreach($this->debitcredits as $row => $debitcredit)
     {
-      
-      $row_message = Yii::t('delt', 'Row {row}: ', array('{row}'=> $row+1));
+      $last_line = $row;  //we use this later, for an amount proposal...
+      $row_message = Yii::t('delt', 'Row {row}: ', array('{row}'=> ++$line_number));
       
       if($debitcredit['name']=='')
       {
@@ -199,10 +200,33 @@ class PostForm extends CFormModel
       
       if(!$debit and !$credit)
       {
+        if($line_number==(sizeof($this->debitcredits)))
+        {
+          // it is the last line, we can make a guess...
+          if($grandtotal_debit > $grandtotal_credit)
+          {
+            $credit = $grandtotal_debit - $grandtotal_credit;
+            $this->debitcredits[$row]['credit']=$credit;
+            $this->debitcredits[$row]->guessed = true;
+            
+            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the credit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
+          }
+          if($grandtotal_debit < $grandtotal_credit)
+          {
+            $debit = $grandtotal_credit - $grandtotal_debit;
+            $this->debitcredits[$row]['debit']=$debit;
+            $this->debitcredits[$row]->guessed = true;
+
+            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the debit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
+          }
+        }
+        else
+        {
           $this->addError('debitcredits', $row_message . Yii::t('delt', 'you must have a debit or a credit.'));
           $this->debitcredits[$row]->debit_errors=true;
           $this->debitcredits[$row]->credit_errors=true;
           $errors=true;
+        }
       }
       
       if(!$errors)
@@ -225,7 +249,7 @@ class PostForm extends CFormModel
     if($grandtotal_debit != $grandtotal_credit)
     {
        $this->addError('debitcredits',
-        Yii::t('delt', 'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).', array('{debits}'=>DELT::currency_value($grandtotal_debit, $this->currency), '{credits}'=>DELT::currency_value($grandtotal_credit, $this->currency)))
+        Yii::t('delt', 'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).', array('{debits}'=>DELT::currency_value($grandtotal_debit, $this->currency, false, true), '{credits}'=>DELT::currency_value($grandtotal_credit, $this->currency, false, true)))
         . ' ' .
         Yii::t('delt', 'The imbalance is: {amount}.', array('{amount}'=>DELT::currency_value($grandtotal_debit - $grandtotal_credit, $this->currency, true)))
         );

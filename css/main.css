@@ -249,9 +249,15 @@ td.centered
   text-align: center;
 }
 
+
 .currency
 {
   text-align: right;
+}
+
+.guessed
+{
+  color: blue;
 }
 
 div.success
