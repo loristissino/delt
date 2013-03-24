@@ -9,6 +9,7 @@
  * @property integer $firm_id
  * @property integer $level
  * @property string $code
+ * @property string $rcode
  * @property integer $is_selectable
  * @property string $nature
  * @property string $outstanding_balance
@@ -281,12 +282,18 @@ class Account extends CActiveRecord
   
   protected function beforeSave()
   {
+    if($this->_codeContainsOnlyValidChars())
+    {
+      $this->addError('code', Yii::t('delt', 'The code contains illegal characters.'));
+      return false;
+    }
     
     if(substr($this->code, -1, 1)=='.')
     {
       $this->addError('code', Yii::t('delt', 'The code cannot end with a dot.'));
       return false;
     }
+    
     $this->level = sizeof(explode('.', $this->code));
     
     if($this->level > 1)
@@ -317,6 +324,8 @@ class Account extends CActiveRecord
   
   public function save($runValidation=true,$attributes=null)
   {
+    $this->_computeRcode();
+    
     try
     {
       $transaction = $this->getDbConnection()->beginTransaction();
@@ -388,9 +397,29 @@ class Account extends CActiveRecord
   
   public function basicSave($runValidation=true,$attributes=null)
   {
+    $this->_computeRcode();
     return parent::save($runValidation, $attributes);
   }
   
+  /*
+   * Computes a reversed code, that will be used for sorting accounts
+   * in a children-to-parent order
+   * 
+   */  
+  private function _computeRcode()
+  {
+    $this->rcode = $this->code . str_repeat('~', 16);
+  }
+  
+  
+  /*
+   * Checks whether the code contains only valid characters
+   * @return boolean true if the code is legal, false otherwise
+   */
+  private function _codeContainsOnlyValidChars()
+  {
+    return !preg_match('/^[a-zA-Z0-9\.]*$/', $this->code);
+  }
   
   /**
 	 * This method is invoked after a model instance is created by new operator.
@@ -465,6 +494,7 @@ class Account extends CActiveRecord
        $this->addError('nature', Yii::t('delt', 'Not a valid nature.'));
      } 
   }
+
   
   public function getConsolidatedBalance()
   {

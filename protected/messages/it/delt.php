@@ -13,6 +13,8 @@ return array(
   'Ledger' => 'Libro mastro',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
+  'The parent account does not exist.' => 'Il conto di livello superiore non esiste.',
+  'The code contains illegal characters.' => 'Il codice contiene caratteri illeciti.',
 
   'Code' => 'Codice',
   'Name' => 'Nome',
