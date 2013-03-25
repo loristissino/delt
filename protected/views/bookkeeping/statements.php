@@ -10,5 +10,17 @@ $this->breadcrumbs=array(
 ?>
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 
-<?php echo $this->renderPartial('_statement', array('title'=>'Financial statement', 'data'=>$financial, 'model'=>$model)) ?>
-<?php echo $this->renderPartial('_statement', array('title'=>'Profit and loss statement', 'data'=>$economic, 'model'=>$model)) ?>
+<?php echo $this->renderPartial('_statement', array(
+  'title'=>'Financial Statement',
+  'data'=>$financial,
+  'model'=>$model,
+  'level'=>$level,
+  'order'=>array('D'=>'Assets', 'C'=>'Liabilities and Equity'),
+  )) ?>
+<?php echo $this->renderPartial('_statement', array(
+  'title'=>'Profit and Loss Statement',
+  'data'=>$economic,
+  'model'=>$model,
+  'level'=>$level,
+  'order'=>array('C'=>'Revenues', 'D'=>'Expenses'),
+  )) ?>

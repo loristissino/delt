@@ -69,6 +69,7 @@ class BookkeepingController extends Controller
       'model'=>$this->firm,
       'financial'=>$this->firm->getFinancialStatement($level),
       'economic'=>$this->firm->getEconomicStatement($level),
+      'level'=>$level,
     ));
 	}
 
@@ -456,6 +457,10 @@ class BookkeepingController extends Controller
     return $this->renderPartial('_singleaccount',array('account'=>$account),true);
   }
   
+  public function _amountOfType($amount, $type)
+  {
+    return ($amount > 0 and $type=='D') or ($amount < 0 and $type=='C');
+  }
 
 
 }

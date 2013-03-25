@@ -13,8 +13,8 @@ return array(
   'Firm'=>'Azienda',
   'Ledger' => 'Libro mastro',
   'Statements' => 'Bilancio',
-  'Financial statement' => 'Situazione patrimoniale',
-  'Profit and loss statement' => 'Conto economico',
+  'Financial Statement' => 'Situazione patrimoniale',
+  'Profit and Loss Statement' => 'Conto economico',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
   'The parent account does not exist.' => 'Il conto di livello superiore non esiste.',
@@ -39,7 +39,10 @@ return array(
   'Transitory Patrimonial Account' => 'Conto transitorio patrimoniale',
   'Transitory Economic Account' => 'Conto transitorio economico',
   'Result Account (Net profit / Total loss)' => 'Risultato di esercizio',  
-  
+  'Assets'=>'Attività',
+  'Liabilities and Equity' => 'Passività e patrimonio',
+  'Revenues' => 'Ricavi',  
+  'Expenses' => 'Costi',  
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',

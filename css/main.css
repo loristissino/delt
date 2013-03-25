@@ -313,3 +313,14 @@ span.highlighted
 span.ordinary
 {
 }
+
+div.statementtable
+{
+  /* background-color: yellow; */
+}
+
+div.statementtable table td
+{
+  border-style: dotted;
+  border-width: 1px;
+}
