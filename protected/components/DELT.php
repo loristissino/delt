@@ -5,7 +5,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '0.9.3';
+    return '0.9.4';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false)
