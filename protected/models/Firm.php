@@ -25,6 +25,9 @@
 
 class Firm extends CActiveRecord
 {
+  
+  public $license_confirmation;
+  
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -51,7 +54,7 @@ class Firm extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, slug, language_id, create_date', 'required'),
+			array('name, slug, language_id', 'required'),
 			array('status, language_id, firm_parent_id', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
 			array('currency', 'length', 'max'=>5),
@@ -59,6 +62,7 @@ class Firm extends CActiveRecord
       array('description', 'safe'),
       array('slug', 'validateSlug'),
       array('currency', 'validateCurrency'),
+      array('license_confirmation', 'checkLicense'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -97,6 +101,7 @@ class Firm extends CActiveRecord
 			'language_id' => Yii::t('delt', 'Language'),
 			'firm_parent_id' => Yii::t('delt', 'Parent firm'),
 			'create_date' => Yii::t('delt', 'Create Date'),
+			'license_confirmation' => Yii::t('delt', 'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)),
 		);
 	}
 
@@ -166,6 +171,14 @@ class Firm extends CActiveRecord
       $this->addError('currency', Yii::t('delt', 'The currency must be expressed as an ISO 4217 code (three characters).'));
     }
     $this->currency = strtoupper($this->currency);
+  }
+  
+  public function checkLicense()
+  {
+    if(!$this->license_confirmation)
+    {
+      $this->addError('license_confirmation', Yii::t('delt', 'You must confirm that you accept the license for the contents.'));
+    }
   }
 
   
@@ -564,6 +577,32 @@ class Firm extends CActiveRecord
     return false;
   }
   
+  public function saveWithOwner(DEUser $user)
+  {
+    $transaction = $this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      $this->save();
+      
+      $fu = new FirmUser();
+      $fu->firm_id=$this->id;
+      $fu->user_id=$user->id;
+      $fu->role='O';
+      $fu->save(false);
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
+    
+  }
+  
+  
+  
   /*
   public function behaviors()
   {
@@ -578,7 +617,7 @@ class Firm extends CActiveRecord
   
   public function getLicenseCode(CController $controller)
   {
-    $text = Yii::t('delt', '<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" /></a><br />
+    $text = Yii::t('delt', '<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" width="88" height="31" /></a><br />
 <span xmlns:dct="http://purl.org/dc/terms/" property="dct:title">«{firmname}»</span> by <a xmlns:cc="http://creativecommons.org/ns#" href="{author_url}" property="cc:attributionName" rel="cc:attributionURL">{author_name}</a> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported License</a>.'
 ,
 
@@ -591,7 +630,7 @@ class Firm extends CActiveRecord
     );
     
 
-    if($this->firm_parent_id)
+    if($this->firm_parent_id && $this->parent)
     {
       $text .= Yii::t('delt', '<br />Based on a work at <a xmlns:dct="http://purl.org/dc/terms/" href="{source_url}" rel="dct:source">{source_name}</a>.',
       
@@ -812,6 +851,11 @@ class Firm extends CActiveRecord
     Reason::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  private function _deleteUsers()
+  {
+    FirmUser::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
+  }
+
   private function _deleteAccounts()
   {
     $account_ids = Yii::app()->db->createCommand()
@@ -859,6 +903,28 @@ class Firm extends CActiveRecord
     }
     
     return $accounts;
+  }
+  
+  public function safeDelete()
+  {
+    $this->_deletePosts();
+    $this->_deleteReasons();
+    $this->_deleteAccounts();
+    $this->_deleteUsers();
+
+    $transaction = $this->getDbConnection()->beginTransaction();
+    try
+    {
+      $this->delete();
+      $transaction->commit();
+      return true;
+    }
+    catch (Exception $e)
+    {
+      $transaction->rollback();
+      Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
+      return false;
+    }
   }
 
 

@@ -7,12 +7,9 @@ $this->breadcrumbs=array(
 	'Create',
 );
 
-$this->menu=array(
-	array('label'=>'List Firm', 'url'=>array('index')),
-	array('label'=>'Manage Firm', 'url'=>array('admin')),
-);
+$this->menu=array();
 ?>
 
-<h1>Create Firm</h1>
+<h1><?php echo Yii::t('delt', 'Create a Firm') ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

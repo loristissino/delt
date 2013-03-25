@@ -4,13 +4,17 @@ return array(
 
   'Welcome to <i>{name}</i>'=>'Benvenuti su <i>{name}</i>',
   'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.' => 'Puoi fare esperienza nella tenuta della contabilità con il metodo della partita doppia con una delle tue aziende, elencate sulla destra.',
-  
+  'You have no firms that you can use to gain experience in bookkeeping with. Go create one.' => 'Non hai aziende che puoi usare per fare esperienza con la contabilità. Creane una.',
   'Bookkeeping' => 'Contabilità',
   'Bookkeeping and accountancy' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
   'Chart of accounts' => 'Piano dei conti',
   'Trial Balance' => 'Situazione contabile',
+  'Firm'=>'Azienda',
   'Ledger' => 'Libro mastro',
+  'Statements' => 'Bilancio',
+  'Financial statement' => 'Situazione patrimoniale',
+  'Profit and loss statement' => 'Conto economico',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
   'The parent account does not exist.' => 'Il conto di livello superiore non esiste.',
@@ -132,7 +136,7 @@ return array(
   'Import' => 'Importa',
   
   'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?' => 'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani.">slug</a>?',
-  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>' => 'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia">codice ISO 4217</a> di tre lettere',
+  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>, like EUR, USD, or GBP' => 'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
 
   
   'The information about the firm has been correctly saved.'=>'Le informazioni sull\'azienda sono state correttamente salvate.',
@@ -162,9 +166,14 @@ return array(
   'Row' => 'Riga',
   'The code cannot end with a dot.' => 'Il codice non può finire con un punto.',
   'Total:' => 'Totale',
-  'Statements' => 'Bilancio',
-  'Financial statement' => 'Situazione patrimoniale',
-  'Profit and loss statement' => 'Conto economico',
   
+  'Delete this firm' => 'Elimina questa azienda',
+  'Are you sure you want to delete this firm?' => 'Sei sicuro di voler eliminare questa azienda?',
+  'The firm has been correctly deleted.' => 'L\'azienda è stata correttamente eliminata.',
+  'Create a Firm' => 'Crea un\'azienda',
+  'The language is used for the names of the accounts, not for the user interface' => 'La lingua è usata per i nomi dei conti, non per l\'interfaccia utente',
+  
+  'The file seems to be invalid.' => 'Il file non appare valido.',
+  'Importing data to a firm will erase all current content.' => 'L\'importazione di dati per un\'azienda comporta la cancellazione di tutti i contenuti correnti.',
 );
 

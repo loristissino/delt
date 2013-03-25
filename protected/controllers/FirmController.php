@@ -34,7 +34,7 @@ class FirmController extends Controller
 			),
       */
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','fork','public','owners'),
+				'actions'=>array('create','update','fork','public','owners','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -74,10 +74,8 @@ class FirmController extends Controller
 	 */
 	public function actionCreate()
 	{
-    throw new CHttpException(501, 'Not yet implemented.');
-
-    
 		$model=new Firm;
+    $model->currency = 'EUR';
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -85,8 +83,11 @@ class FirmController extends Controller
 		if(isset($_POST['Firm']))
 		{
 			$model->attributes=$_POST['Firm'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			if($model->saveWithOwner($this->DEUser))
+      {
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
+				$this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
+      }
 		}
 
 		$this->render('create',array(
@@ -187,16 +188,20 @@ class FirmController extends Controller
 	 * If deletion is successful, the browser will be redirected to the 'admin' page.
 	 * @param integer $id the ID of the model to be deleted
 	 */
-  /*
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
-
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    $firm=$this->loadFirm($id);
+    if($firm->safeDelete())
+    {
+      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been correctly deleted.'));
+      $this->redirect(array('/bookkeeping/index'));
+    }
+    else
+    {
+      Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The firm could not be deleted.') . ' ' . Yii::app()->getUser()->getFlash('delt_failure'));
+      $this->redirect(array('/bookkeeping/manage', 'slug'=>$firm->slug));
+    }
 	}
-  */
 
 	/**
 	 * Lists all models.
