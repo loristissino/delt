@@ -175,7 +175,7 @@ class Firm extends CActiveRecord
   
   public function checkLicense()
   {
-    if(!$this->license_confirmation)
+    if(!$this->id and !$this->license_confirmation)
     {
       $this->addError('license_confirmation', Yii::t('delt', 'You must confirm that you accept the license for the contents.'));
     }
