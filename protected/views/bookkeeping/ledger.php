@@ -31,7 +31,7 @@ $this->menu=array(
 
 if($deletable)
 {
-  $this->menu[]= array('label'=>Yii::t('zii', 'Delete'), 'url'=>$url=$this->createUrl('account/delete', array('id'=>$account->id)),  'linkOptions'=>array(   
+  $this->menu[]= array('label'=>Yii::t('yii', 'Delete'), 'url'=>$url=$this->createUrl('account/delete', array('id'=>$account->id)),  'linkOptions'=>array(   
       'submit' => $url,
       'title' => Yii::t('delt', 'Delete this account'),
       'confirm' => Yii::t('zii', 'Are you sure you want to delete this item?') . ($account->number_of_children ? ' ' . Yii::t('delt', 'The children accounts won\'t be deleted, but they will remain orphans.') : ''),
