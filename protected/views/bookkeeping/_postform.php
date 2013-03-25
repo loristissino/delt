@@ -46,7 +46,7 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($postform,'description'); ?>
-		<?php echo $form->textField($postform,'description', array('size'=>100)); ?>
+		<?php echo $form->textField($postform,'description', array('size'=>80)); ?>
 		<?php echo $form->error($postform,'description'); ?>
 	</div>
 
@@ -70,8 +70,8 @@
      ),
   ))
 ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 12, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 12, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
 </tr>
 <?php endforeach; ?>
 </table>

@@ -62,6 +62,16 @@ class BookkeepingController extends Controller
     ));
 	}
 
+	public function actionStatements($slug, $level=1)
+	{
+    $this->firm=$this->loadModelBySlug($slug);
+		$this->render('statements', array(
+      'model'=>$this->firm,
+      'financial'=>$this->firm->getFinancialStatement($level),
+      'economic'=>$this->firm->getEconomicStatement($level),
+    ));
+	}
+
 	public function actionJournal($slug, $post=null)
 	{
     $this->firm=$this->loadModelBySlug($slug);

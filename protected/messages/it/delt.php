@@ -160,6 +160,11 @@ return array(
   'it must be checked.' => 'va controllato.',
   
   'Row' => 'Riga',
+  'The code cannot end with a dot.' => 'Il codice non può finire con un punto.',
+  'Total:' => 'Totale',
+  'Statements' => 'Bilancio',
+  'Financial statement' => 'Situazione patrimoniale',
+  'Profit and loss statement' => 'Conto economico',
   
 );
 

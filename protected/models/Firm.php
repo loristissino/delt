@@ -764,7 +764,7 @@ class Firm extends CActiveRecord
       }
       
       $transaction->commit();
-      
+      $this->fixAccounts();
       $this->fixAccountNames();
       
       return true;
@@ -822,6 +822,43 @@ class Firm extends CActiveRecord
     
     AccountName::model()->deleteAllByAttributes(array('account_id'=>$account_ids));
     Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
+  }
+
+  public function getFinancialStatement($level=1)
+  {
+    return $this->_getStatement('P', $level);
+  }
+  
+  public function getEconomicStatement($level=1)  // aka Profit and Loss statement
+  {
+    return $this->_getStatement('E', $level);
+  }
+  
+  private function _getStatement($type, $level=1)
+  {
+    $accounts = Yii::app()->db->createCommand()
+      ->select('id, code, level, name, is_selectable')
+      ->from('{{account}}')
+      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('nature = :nature', array(':nature'=>$type))
+      ->andWhere('level <= :level', array(':level'=>$level))
+      ->order('rcode')
+      ->queryAll();
+            
+    foreach($accounts as $key=>&$item)
+    {
+      $account=Account::model()->findByPk($item['id']);
+      $item['amount']=$account->consolidatedBalance;
+      
+      if($item['amount'] == 0)
+      {
+        unset($accounts[$key]);  // we remove items that yeld a zero value...
+      }
+      
+    }
+    
+    return $accounts;
   }
 
 
