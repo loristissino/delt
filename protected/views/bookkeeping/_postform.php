@@ -18,7 +18,7 @@
     <?php echo Yii::t('delt', 'The rows in which the account field is empty are ignored.') ?>
   </p>
 
-	<?php echo $form->errorSummary($postform); ?>
+	<?php echo $form->errorSummary($postform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($postform,'date'); ?>

@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm'); ?>
 
-	<?php echo $form->errorSummary($forkfirmform); ?>
+	<?php echo $form->errorSummary($forkfirmform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
     <div class="row buttons">
       <?php echo $form->label($forkfirmform, 'type'); ?><?php echo $form->dropDownList($forkfirmform,

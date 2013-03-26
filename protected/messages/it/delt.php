@@ -110,6 +110,7 @@ return array(
   'Memo closing' => 'Chiusura conti d\'ordine',
 
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
+  'Please fix the following errors:' => 'Devi correggere i seguenti errori:',
 
   'This firm does not seem to have accounts of nature «{nature}» to close.'=> 'Questa azienda non sembra avere conti di natura «{nature}» da chiudere.',
   
@@ -164,6 +165,8 @@ return array(
   
   'the amount of the debit has been computed by difference;' => 'l\'ammontare dell\'addebito è stato calcolato per differenza;',
   'the amount of the credit has been computed by difference;' => 'l\'ammontare dell\'accredito è stato calcolato per differenza;',
+  'the amount of the debit has been computed as a balance for the account;' => 'l\'ammontare dell\'addebito è stato calcolato a saldo del conto;',
+  'the amount of the credit has been computed as a balance for the account;' => 'l\'ammontare dell\'accredito è stato calcolato a saldo del conto;',
   'it must be checked.' => 'va controllato.',
   
   'Row' => 'Riga',

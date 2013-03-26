@@ -13,7 +13,7 @@
 
 	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
 
-	<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model, Yii::t('delt', 'Please fix the following errors:')); ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'code'); ?>

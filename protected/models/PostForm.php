@@ -152,6 +152,7 @@ class PostForm extends CFormModel
         if(!in_array($account->id, $used_accounts))
         {
           $this->debitcredits[$row]->account_id = $account->id;
+          $this->debitcredits[$row]->account = $account;
           $used_accounts[] = $account->id;
         }
         else
@@ -161,8 +162,11 @@ class PostForm extends CFormModel
       }
       
       $errors=false;
+      $question=false;
+      
       foreach(array('debit', 'credit') as $type)
       {
+        $question = trim($debitcredit[$type])=='?' ? true : $question;
 
         $debitcredit[$type]=DELT::currency2decimal($debitcredit[$type], $this->currency);
         $value=$debitcredit[$type];
@@ -200,7 +204,25 @@ class PostForm extends CFormModel
       
       if(!$debit and !$credit)
       {
-        if($line_number==(sizeof($this->debitcredits)))
+        if($question)
+        {
+          $v = $this->debitcredits[$row]->account->consolidatedBalance;
+          if($v > 0)
+          {
+            $credit = $v;
+            $this->debitcredits[$row]['credit']=$credit;
+            $this->debitcredits[$row]->guessed = true;
+            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the credit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
+          }
+          if($v < 0)
+          {
+            $debit = -$v;
+            $this->debitcredits[$row]['debit']=$debit;
+            $this->debitcredits[$row]->guessed = true;
+            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the debit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
+          }
+        }
+        elseif($line_number==(sizeof($this->debitcredits)))
         {
           // it is the last line, we can make a guess...
           if($grandtotal_debit > $grandtotal_credit)
