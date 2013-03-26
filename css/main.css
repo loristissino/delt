@@ -374,3 +374,12 @@ div.statementtable table tr.level6
 {
   background-color: #ffffff;
 }
+
+span.positiveamount
+{
+}
+
+span.negativeamount
+{
+  color: red;
+}

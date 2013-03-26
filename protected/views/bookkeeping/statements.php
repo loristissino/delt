@@ -24,12 +24,14 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
   'data'=>$financial,
   'model'=>$model,
   'level'=>$level,
-  'order'=>array('D'=>'Assets', 'C'=>'Liabilities and Equity'),
+  'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
+  'with_subtitles'=>true,
   )) ?>
 <?php echo $this->renderPartial('_statement', array(
   'title'=>'Profit and Loss Statement',
   'data'=>$economic,
   'model'=>$model,
   'level'=>$level,
-  'order'=>array('C'=>'Revenues', 'D'=>'Expenses'),
+  'order'=>array('+'=>'Value Added Income Statement'),
+  'with_subtitles'=>false,
   )) ?>

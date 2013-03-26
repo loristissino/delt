@@ -184,5 +184,7 @@ return array(
   
   'Depth'=>'Profondità',
   'Down to Level {number}' => 'Fino al livello {number}',
+  'Grandtotal' => 'Totale generale',
+  'Aggregate Grandtotal: {amount}.' => 'Totale generale cumulativo: {amount}.',
 );
 

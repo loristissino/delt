@@ -463,6 +463,12 @@ class Account extends CActiveRecord
     $this->code = $value . substr($this->code, strrpos($this->code, '.'));
   }
   
+  public function getFirstAncestor()
+  {
+    $code = substr($this->code, 0, strpos($this->code, '.'));
+    return Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id));
+  }
+  
   public function getIs_deletable()
   {
     return $this->number_of_children == 0;

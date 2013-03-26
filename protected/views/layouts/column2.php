@@ -6,7 +6,7 @@ if($this->firm)
     array('label'=>Yii::t('delt', 'Chart of accounts'), 'url'=>array('/bookkeeping/coa', 'slug'=>$this->firm->slug)),
     array('label'=>Yii::t('delt', 'Journal'), 'url'=>array('/bookkeeping/journal', 'slug'=>$this->firm->slug)),
     array('label'=>Yii::t('delt', 'Trial Balance'), 'url'=>array('/bookkeeping/balance', 'slug'=>$this->firm->slug)),
-    array('label'=>Yii::t('delt', 'Statements'), 'url'=>array('/bookkeeping/statements', 'slug'=>$this->firm->slug, 'level'=>2)),
+    array('label'=>Yii::t('delt', 'Statements'), 'url'=>array('/bookkeeping/statements', 'slug'=>$this->firm->slug, 'level'=>$this->firm->getCOAMaxLevel())),
     );
 }
 else

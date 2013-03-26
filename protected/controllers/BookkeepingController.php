@@ -65,6 +65,8 @@ class BookkeepingController extends Controller
 	public function actionStatements($slug, $level=1)
 	{
     $this->firm=$this->loadModelBySlug($slug);
+    if($level>$this->firm->getCOAMaxLevel())
+      throw new CHttpException(404,'The requested page does not exist.');
 		$this->render('statements', array(
       'model'=>$this->firm,
       'financial'=>$this->firm->getFinancialStatement($level),
@@ -455,11 +457,6 @@ class BookkeepingController extends Controller
   public function renderSingleAccount(Account $account, $row)
   {
     return $this->renderPartial('_singleaccount',array('account'=>$account),true);
-  }
-  
-  public function _amountOfType($amount, $type)
-  {
-    return ($amount > 0 and $type=='D') or ($amount < 0 and $type=='C');
   }
 
 

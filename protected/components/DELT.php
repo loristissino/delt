@@ -5,24 +5,45 @@ class DELT
   
   public static function getVersion()
   {
-    return '0.9.4';
+    return '0.9.5';
   }
   
-  public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false)
+  public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
   {
     if($amount==0)
     {
-      return $with_zero ? Yii::app()->numberFormatter->formatCurrency(0, $currency): '';
+      $value = $with_zero ? Yii::app()->numberFormatter->formatCurrency(0, $currency): '';
     }
     
     if($with_debit_credit)
     {
-      return Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', self::amount2type($amount));
+      $value = Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', self::amount2type($amount));
     }
     else
     {
-      return Yii::app()->numberFormatter->formatCurrency($amount, $currency);
+      $value = Yii::app()->numberFormatter->formatCurrency($amount, $currency);
     }
+    
+    $t='';
+    if($element)
+    {
+      $t='<' . $element;
+      if(sizeof($htmlOptions))
+      {
+        foreach($htmlOptions as $k=>$v)
+        {
+          $t.= ' ' . $k . '="' . $v . '"';
+        }
+      }
+      $t.='>';
+    }
+    $u='';
+    if($element)
+    {
+      $u='</' . $element .'>';
+    }
+    return $t . $value . $u;
+    
   }
   
   public static function currency2decimal($value, $currency)
