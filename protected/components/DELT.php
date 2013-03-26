@@ -12,6 +12,10 @@ class DELT
   {
     if($amount==0)
     {
+      if(!$with_zero)
+      {
+        return '';
+      }
       $value = $with_zero ? Yii::app()->numberFormatter->formatCurrency(0, $currency): '';
     }
     
