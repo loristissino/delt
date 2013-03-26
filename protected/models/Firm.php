@@ -459,6 +459,17 @@ class Firm extends CActiveRecord
     return $type='D' ? $amount : -$amount;
 
   }
+
+  public function getCOAMaxLevel()
+  {
+    $level = Yii::app()->db->createCommand()
+      ->select('MAX(level) as level')
+      ->from('{{account}}')
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->queryScalar();
+    return $level;
+  }
+
   
   public function findForkableFirms()
   {

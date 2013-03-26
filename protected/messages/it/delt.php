@@ -181,5 +181,8 @@ return array(
   
   'The file seems to be invalid.' => 'Il file non appare valido.',
   'Importing data to a firm will erase all current content.' => 'L\'importazione di dati per un\'azienda comporta la cancellazione di tutti i contenuti correnti.',
+  
+  'Depth'=>'Profondità',
+  'Down to Level {number}' => 'Fino al livello {number}',
 );
 

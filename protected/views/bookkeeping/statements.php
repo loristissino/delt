@@ -7,6 +7,15 @@ $this->breadcrumbs=array(
   'Statements',
 );
 
+$this->menutitle=Yii::t('delt', 'Depth');
+
+$this->menu=array();
+
+for($i=1; $i<=$model->COAMaxLevel; $i++)
+{
+  $this->menu[]=array('label'=>Yii::t('delt', 'Down to Level {number}', array('{number}'=>$i)), 'url'=>array('bookkeeping/statements', 'slug'=>$model->slug, 'level'=>$i));
+}
+
 ?>
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 

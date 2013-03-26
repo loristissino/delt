@@ -321,6 +321,56 @@ div.statementtable
 
 div.statementtable table td
 {
-  border-style: dotted;
+  color: black;
+  border-bottom-style: dotted;
   border-width: 1px;
+}
+
+div.statementtable table td.empty
+{
+  color: black;
+  border-style: none;
+  background-color: white;
+}
+
+div.statementtable table tr.level1
+{
+  background-color: black; /*#d7d7d7;*/
+}
+
+div.statementtable table tr.level1 td
+{
+  color: white;
+}
+
+div.statementtable table tr.level1 td a
+{
+  color: white;
+}
+
+div.statementtable table tr.level2
+{
+  background-color: #f0f0f0;
+}
+
+div.statementtable table tr.level3
+{
+  background-color: #f7f7f7;
+}
+
+div.statementtable table tr.level4
+{
+  color: blue;
+  background-color: #ffffff;
+}
+
+div.statementtable table tr.level5
+{
+  color: #999999;
+  background-color: #ffffff;
+}
+
+div.statementtable table tr.level6
+{
+  background-color: #ffffff;
 }
