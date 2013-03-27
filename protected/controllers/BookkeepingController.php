@@ -5,7 +5,7 @@ class BookkeepingController extends Controller
   
   public $layout='//layouts/column2';
   
-  public $hide_date_and_description = false;
+  private $line_shown = false;
   // we set this to true when we want to avoid duplicates, like in the journal
   
   public $show_link_on_description = false;
@@ -433,7 +433,7 @@ class BookkeepingController extends Controller
 
   public function renderDate(Debitcredit $debitcredit, $row)
   {
-    if((!$this->hide_date_and_description) or ($debitcredit->post_id != $this->last_post_id))
+    if($debitcredit->post_id != $this->last_post_id)
     {
       return $this->renderPartial('_date',array('debitcredit'=>$debitcredit),true);
     }
@@ -442,11 +442,19 @@ class BookkeepingController extends Controller
   
   public function renderDescription(Debitcredit $debitcredit, $row)
   {
-    if((!$this->hide_date_and_description) or ($debitcredit->post_id != $this->last_post_id))
+    if($debitcredit->post_id != $this->last_post_id)
     {
+      $this->line_shown = true;
       return $this->renderPartial('_description', array('debitcredit'=>$debitcredit), true);
     }
+    $this->line_shown = false;
     return '';
+  }
+  
+  public function isLineShown()
+  {
+    return $this->line_shown;
+    //return $this->hide_date_and_description;
   }
   
   public function renderAccount(Debitcredit $debitcredit, $row)

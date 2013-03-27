@@ -12,8 +12,6 @@ $this->menu=array(
 	array('label'=>Yii::t('delt', 'Closing post'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug)),
 );
 
-$this->hide_date_and_description = true;
-
 ?>
 <h1><?php echo Yii::t('delt', 'Journal') ?></h1>
 
@@ -69,6 +67,7 @@ $this->hide_date_and_description = true;
         'update'=>array(
           'label'=>'Edit',
           'options'=>array('title'=>Yii::t('delt', 'Edit')),
+          'visible'=>array($this, 'isLineShown'),
         )
       )
 		),
