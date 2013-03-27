@@ -163,6 +163,7 @@ return array(
   
   'Select date from calendar' => 'Seleziona la data dal calendario',
   
+  'the account with code "{code}" makes the row a duplicate.' => 'il conto con codice "{code}" rende la riga un duplicato.',
   'the amount of the debit has been computed by difference;' => 'l\'ammontare dell\'addebito è stato calcolato per differenza;',
   'the amount of the credit has been computed by difference;' => 'l\'ammontare dell\'accredito è stato calcolato per differenza;',
   'the amount of the debit has been computed as a balance for the account;' => 'l\'ammontare dell\'addebito è stato calcolato a saldo del conto;',
@@ -186,5 +187,10 @@ return array(
   'Down to Level {number}' => 'Fino al livello {number}',
   'Grandtotal' => 'Totale generale',
   'Aggregate Grandtotal: {amount}.' => 'Totale generale cumulativo: {amount}.',
+  
+  'Move Up' => 'Sposta in su',
+  'Move Down' => 'Sposta in giù',
+  'Up' => 'Su',
+  'Down' => 'Giù',
 );
 
