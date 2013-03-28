@@ -5,8 +5,8 @@
 
 $n = sizeof($items);
 
-$up_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_up.png', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'title'=>Yii::t('delt', 'Move Up'))));
-$down_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_down.png', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'title'=>Yii::t('delt', 'Move Down'))));
+$up_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_up.png', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
+$down_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_down.png', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -20,11 +20,11 @@ $cs->registerScript(
     var text = "";
     if(i>1)
     {
-      text += up;
+      text += up.replace("%pr%", (i==' . $n . ' ? "8" : "0"));
     }
     if(i< ' . $n . ')
     {
-      text += down;
+      text += down.replace("%pl%", (i==1 ? "10": "0"));
     }
     $("#swap" +  i).html(text);
   }
@@ -53,9 +53,11 @@ $cs->registerScript(
   
   function swaprows(a,b)
   {
-    swapcontent("#name"+a, "#name"+b);
-    swapcontent("#debit"+a, "#debit"+b);
-    swapcontent("#credit"+a, "#credit"+b);
+    $.each(new Array("name", "debit", "credit"), function()
+      {
+        swapcontent("#" + this + a, "#" + this +b);
+      }
+    );
   }
   
   function swapcontent(a, b)
@@ -70,8 +72,6 @@ $cs->registerScript(
 );
 
 ?>
-
-
 
 <div class="form">
 
@@ -125,11 +125,8 @@ $cs->registerScript(
 <tbody>
 <?php $row=0; foreach($items as $i=>$item): ?>
 <tr id="row<?php echo ++$row ?>>">
-<td class="number" style="width: 200px">
-<span id="swap<?php echo $row ?>"></span>
-
-<?php echo $row ?>
-
+<td class="number" style="width: 200px;">
+<?php echo $row ?><span id="swap<?php echo $row ?>"></span>
 </td>
 <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
   'id'=>'name'.$row,
