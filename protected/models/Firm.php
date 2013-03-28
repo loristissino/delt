@@ -328,7 +328,7 @@ class Firm extends CActiveRecord
   {
     return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->with('account.names')->ofFirm($this->id), array(
       'pagination'=>array(
-          'pageSize'=>30,
+          'pageSize'=>100,
           ),
       )
     );
@@ -708,7 +708,7 @@ class Firm extends CActiveRecord
       foreach($this->posts as $post)
       {
         $values = array();
-        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'rank'));
+        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'rank'));
         
         foreach($post->debitcredits as $debitcredit)
         {
@@ -799,7 +799,7 @@ class Firm extends CActiveRecord
       {
         $newpost = new Post;
         $newpost->firm_id = $this->id;
-        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'rank'));
+        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'rank'));
         
         $newpost->save(false);
         
@@ -904,7 +904,7 @@ class Firm extends CActiveRecord
     foreach($accounts as $key=>&$item)
     {
       $account=Account::model()->findByPk($item['id']);
-      $item['amount']=$account->consolidatedBalance;
+      $item['amount']=$account->getConsolidatedBalance(true);
       
       if($item['amount'] == 0)
       {

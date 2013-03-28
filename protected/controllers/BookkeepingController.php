@@ -19,6 +19,7 @@ class BookkeepingController extends Controller
   
   public $accounts;
   public $postdescription;
+  public $is_closing = 0;
   
 	public function actionIndex()
 	{
@@ -171,6 +172,7 @@ class BookkeepingController extends Controller
       }
 		}
     
+    $postform->is_closing = $this->is_closing;
 		$this->render('newpost', array(
       'model'=>$this->loadModelBySlug($slug),
       'postform'=>$postform,
@@ -197,6 +199,7 @@ class BookkeepingController extends Controller
     }
     $this->firm=$this->loadModelBySlug($slug);
     $this->accounts = $this->firm->getAccountBalances($nature);
+    $this->is_closing = true;
     
     if(sizeof($this->accounts))
     {
@@ -456,6 +459,7 @@ class BookkeepingController extends Controller
     return $this->line_shown;
     //return $this->hide_date_and_description;
   }
+
   
   public function renderAccount(Debitcredit $debitcredit, $row)
   {

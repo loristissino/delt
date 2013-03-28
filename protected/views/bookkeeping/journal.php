@@ -30,6 +30,7 @@ $this->menu=array(
       'name'=>'post.description',
       'header'=>Yii::t('delt', 'Description'),
       'value'=>array($this, 'RenderDescription'),
+      'cssClassExpression'=>'$data->post->is_closing && $data->rank==1? \'closing\' : \'\'',
       ),
     array(
       'name'=>'post.account',

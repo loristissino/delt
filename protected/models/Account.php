@@ -502,7 +502,7 @@ class Account extends CActiveRecord
   }
 
   
-  public function getConsolidatedBalance()
+  public function getConsolidatedBalance($without_closing=false)
   {
     $amount = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total')
@@ -511,6 +511,7 @@ class Account extends CActiveRecord
       ->leftJoin('{{post}} p', 'dc.post_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')
       ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
+      ->andWhere($without_closing ? 'p.is_closing = 0': 'true')
       ->queryScalar();
             
     return $amount;

@@ -9,6 +9,7 @@
  * @property string $date
  * @property string $description
  * @property integer $is_confirmed
+ * @property integer $is_closing
  * @property integer $rank
  * @property integer $maxrank
  *
@@ -47,11 +48,11 @@ class Post extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('firm_id, date, description', 'required'),
-			array('firm_id, is_confirmed, rank', 'numerical', 'integerOnly'=>true),
+			array('firm_id, is_confirmed, is_closing, rank', 'numerical', 'integerOnly'=>true),
 			array('description', 'length', 'max'=>255),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, firm_id, date, description, is_confirmed, rank', 'safe', 'on'=>'search'),
+			array('id, firm_id, date, description, is_confirmed, is_closing, rank', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -79,6 +80,7 @@ class Post extends CActiveRecord
 			'date' => 'Date',
 			'description' => 'Description',
 			'is_confirmed' => 'Is Confirmed',
+      'is_closing' => 'Is Closing',
 			'rank' => 'Rank',
 		);
 	}
@@ -99,6 +101,7 @@ class Post extends CActiveRecord
 		$criteria->compare('date',$this->date,true);
 		$criteria->compare('description',$this->description,true);
 		$criteria->compare('is_confirmed',$this->is_confirmed);
+		$criteria->compare('is_closing',$this->is_confirmed);
 		$criteria->compare('rank',$this->rank);
 
 		return new CActiveDataProvider($this, array(

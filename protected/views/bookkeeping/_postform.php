@@ -150,7 +150,7 @@ $cs->registerScript(
 </tbody>
 </table>
 
-
+  <?php echo CHtml::activeHiddenField($postform, 'is_closing', array('value'=>$postform->is_closing)) ?>
 	<div class="row buttons">
 		<?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'submit')); ?>
 		<?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>

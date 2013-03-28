@@ -8,6 +8,7 @@ class PostForm extends CFormModel
   public $description;
   public $debitcredits;
   public $currency;
+  public $is_closing = false;
   
   public $post = null; // the original Post instance
   
@@ -16,7 +17,7 @@ class PostForm extends CFormModel
   public function rules()
 	{
 		return array(
-			array('date, description', 'required'),
+			array('date, description, is_closing', 'required'),
       array('debitcredits', 'checkDebitcredits'),
 		);
 	}
@@ -52,6 +53,7 @@ class PostForm extends CFormModel
     $this->post = $post;
     $this->description = $post->description;
     $this->date = $post->getDateForFormWidget();
+    $this->is_closing = $post->is_closing;
     foreach($post->debitcredits as $debitcredit)
     {
       $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
@@ -82,6 +84,7 @@ class PostForm extends CFormModel
       {
         $post->rank = $post->getCurrentMaxRank() + 1;
       }
+      $post->is_closing = $this->is_closing;
       
       $post->save(true);
       

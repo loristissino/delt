@@ -69,6 +69,7 @@ if($deletable)
       'name'=>'post.description',
       'header'=>Yii::t('delt', 'Description'),
       'value'=>array($this, 'RenderDescription'),
+      'cssClassExpression'=>'$data->post->is_closing? \'closing\' : \'\'',
       'type'=>'raw',
       ),
     array(

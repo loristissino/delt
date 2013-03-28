@@ -54,6 +54,6 @@
 <?php if($key=='+') $ggt += $gt; else $ggt -= $gt; ?>
 <?php endforeach ?>
 
-<?php if($with_subtitles): ?>
+<?php if($with_subtitles and $ggt): ?>
 <p><?php echo Yii::t('delt', 'Aggregate Grandtotal: {amount}.', array('{amount}'=>DELT::currency_value($ggt, $model->currency))) ?></p>
 <?php endif ?>
