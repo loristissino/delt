@@ -308,7 +308,15 @@ class Firm extends CActiveRecord
       }
       $result[]=$row;
     }
-    if($grandtotal!=0)
+    if($nature=='e')
+    {
+      $result[]=array(
+        'name'=>Yii::t('delt', $grandtotal<0 ? 'Select account of profit destination': 'Select account of loss destination'),
+        'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
+        'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
+        );
+    }
+    elseif($grandtotal!=0)
     {
       $closingaccounts=Account::model()->with('names')->findAllByAttributes(array('firm_id'=>$this->id, 'nature'=>strtolower($nature), 'is_selectable'=>true));
       if(sizeof($closingaccounts)==1)

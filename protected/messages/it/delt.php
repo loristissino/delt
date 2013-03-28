@@ -186,11 +186,16 @@ return array(
   'Depth'=>'Profondità',
   'Down to Level {number}' => 'Fino al livello {number}',
   'Grandtotal' => 'Totale generale',
-  'Aggregate Grandtotal: {amount}.' => 'Totale generale cumulativo: {amount}.',
+  'Aggregate Grandtotal' => 'Totale generale aggregato',
   
   'Move Up' => 'Sposta in su',
   'Move Down' => 'Sposta in giù',
   'Up' => 'Su',
   'Down' => 'Giù',
+  
+  'Profit/Loss' => 'Utile/Perdita',
+  'Select account of profit destination'=>'Seleziona conto di destinazione utile',
+  'Select account of loss destination'=>'Seleziona conto di destinazione perdita',
+  
 );
 

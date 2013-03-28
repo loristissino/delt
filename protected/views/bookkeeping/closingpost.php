@@ -10,6 +10,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Economic closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'E')),
+	array('label'=>Yii::t('delt', 'Profit/Loss'), 'url'=>array('bookkeeping/profitlosspost', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Patrimonial closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'P')),
 	array('label'=>Yii::t('delt', 'Memo closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'M')),
 );

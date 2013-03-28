@@ -333,6 +333,12 @@ div.statementtable table td.empty
   background-color: white;
 }
 
+div.statementtable table td.secondtolast
+{
+  border-top-style: solid;
+  border-top-width: 1px;
+}
+
 div.statementtable table tr.level1
 {
   background-color: black; /*#d7d7d7;*/
@@ -373,6 +379,11 @@ div.statementtable table tr.level5
 div.statementtable table tr.level6
 {
   background-color: #ffffff;
+}
+
+div.statementtable table tr.aggregate
+{
+  background-color: #D6D6D6;
 }
 
 span.positiveamount

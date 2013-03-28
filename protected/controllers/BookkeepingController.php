@@ -211,6 +211,22 @@ class BookkeepingController extends Controller
     
   }
 
+  public function actionProfitlosspost($slug)
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->postdescription=Yii::t('delt', 'Profit/Loss');
+    $this->accounts = $this->firm->getAccountBalances('e');
+    
+    if(sizeof($this->accounts))
+    {
+      return $this->actionNewpost($slug);
+      // we show the standard form
+    }
+    
+    $this->render('closingpost', array('nature'=>'e', 'model'=>$this->firm));
+    
+  }
+
 
 	public function actionUpdatepost($id)
 	{
@@ -238,6 +254,7 @@ class BookkeepingController extends Controller
         {
           if($postform->save())
           {
+            Yii::app()->getUser()->setState('lastpostdate', $postform->date);
             $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
           }
         }
