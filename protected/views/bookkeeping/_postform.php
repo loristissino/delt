@@ -8,52 +8,171 @@ $n = sizeof($items);
 $up_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_up.png', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
 $down_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_down.png', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
 
+$json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
+
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
   'swap-rows-handler',
   '
   
-  for(i=1; i<= ' . $n . '; i++)
-  {
-    var down = "<span id=\'down" + i +"\'>' . $down_icon . '</span>";
-    var up   = "<span id=\'up" + i +"\'>' . $up_icon . '</span>";
-    var text = "";
-    if(i>1)
+  var view_as_textfields = true;
+  var n = ' . $n . ';
+  var fields = new Array("name", "debit", "credit");
+  
+  $("#commands").html("<span id=\"toggle\">toggle</span>&nbsp;<span id=\"load_accounts\">load accounts</span>");
+  $("#load_accounts").hide();
+  
+  $("#load_accounts").click(function()
     {
-      text += up.replace("%pr%", (i==' . $n . ' ? "8" : "0"));
+      var jsonUrl = "' . $json_url . '";
+      console.log(jsonUrl);
+      $.getJSON(
+        jsonUrl,
+        {},
+        function (json)
+          {
+            var value="";
+            $.each(json, function()
+              {
+                value += this + "\n";
+            }
+            );
+            $("#raw_input").val(value);
+            $("#raw_input").attr("rows", json.length);
+            $("#load_accounts").hide();
+          }
+        );
+      return false;
     }
-    if(i< ' . $n . ')
+  );
+  
+  $("#toggle").click(function()
     {
-      text += down.replace("%pl%", (i==1 ? "10": "0"));
+      if(view_as_textfields)
+      {
+        toTextArea();
+      }
+      else
+      {
+        fromTextArea();
+      }
+      $("#rows_as_textfields").toggle(500);
+      $("#rows_as_textarea").toggle(500);
+      view_as_textfields = ! view_as_textfields;
     }
-    $("#swap" +  i).html(text);
-  }
-  for(i=1; i< ' . $n . '; i++)
+  );
+  
+  function toTextArea()
   {
-    $("#down" +i).click((function(index)
+    var text="";
+    for(i=1; i<=n; i++)
+    {
+      var name = $("#name"+i).val();
+      var debit = $("#debit"+i).val();
+      var credit = $("#credit"+i).val();
+      if (name || debit || credit)
       {
-        return function()
-        {
-          swaprows(index, index+1);
-          return false;
-        }
-      })(i));
+        text += $("#name"+i).val() + "\t" + debit + "\t" + credit + "\t\n";
+      }
+    }
+    $("#raw_input").val(text);
+    if(text=="")
+    {
+      $("#load_accounts").show();
+    }
+    else
+    {
+      $("#load_accounts").hide();
+    }
   }
-  for(i=2; i<= ' . $n . '; i++)
+  
+  function fromTextArea()
   {
-    $("#up" +i).click((function(index)
+    $("#load_accounts").hide();
+    text = $("#raw_input").val();
+    lines = text.replace(/\n$/).split(/\n/);
+    if(lines.length<=n)
+    {
+      for(i=0; i<lines.length; i++)
       {
-        return function()
+        data = lines[i].split(/\t/);
+        if(data.length>=3)
         {
-          swaprows(index, index-1);
-          return false;
+          var name = data[0];
+          var debit = data[1];
+          var credit = data[2];
+          if((debit != "") || (credit !=""))
+          {
+            $("#name" + (i+1)).val(name);
+            $("#debit" + (i+1)).val(debit);
+            $("#credit" + (i+1)).val(credit);
+          }
         }
-      })(i));
+      }
+      for(k=i+1; k<=n; k++)
+      {
+        $.each(fields, function()
+          {
+            $("#" + this + k).val("");
+          }
+        );
+      }
+      text = $("#raw_input").val("");
+    }
+    else  // we have extra lines, we need to do a post...
+    {
+      $("form#postform").submit();
+    }
+    
+    
+  }
+  
+  addArrows();
+  
+  function addArrows()
+  {
+    for(i=1; i<= n; i++)
+    {
+      var down = "<span id=\'down" + i +"\'>' . $down_icon . '</span>";
+      var up   = "<span id=\'up" + i +"\'>' . $up_icon . '</span>";
+      var text = "";
+      if(i>1)
+      {
+        text += up.replace("%pr%", (i==n ? "8" : "0"));
+      }
+      if(i<n)
+      {
+        text += down.replace("%pl%", (i==1 ? "10": "0"));
+      }
+      $("#swap" +  i).html(text);
+    }
+    for(i=1; i<n; i++)
+    {
+      $("#down" +i).click((function(index)
+        {
+          return function()
+          {
+            swaprows(index, index+1);
+            return false;
+          }
+        })(i));
+    }
+    for(i=2; i<=n; i++)
+    {
+      $("#up" +i).click((function(index)
+        {
+          return function()
+          {
+            swaprows(index, index-1);
+            return false;
+          }
+        })(i));
+    }
   }
   
   function swaprows(a,b)
   {
-    $.each(new Array("name", "debit", "credit"), function()
+    $.each(fields, function()
       {
         swapcontent("#" + this + a, "#" + this +b);
       }
@@ -66,7 +185,19 @@ $cs->registerScript(
     $(a).val($(b).val());
     $(b).val(c);
   }
+  
+  
+  
+  
   '
+/*
+    $(".form").bind("keyup", "ctrl-u", function()
+    {
+      console.log("pressed key up");
+    }
+  );
+*/
+  
   ,
   CClientScript::POS_READY
 );
@@ -118,43 +249,56 @@ $cs->registerScript(
 		<?php echo $form->error($postform,'description'); ?>
 	</div>
 
-<table>
-<thead>
-<tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
-</thead>
-<tbody>
-<?php $row=0; foreach($items as $i=>$item): ?>
-<tr id="row<?php echo ++$row ?>>">
-<td class="number" style="width: 200px;">
-<?php echo $row ?><span id="swap<?php echo $row ?>"></span>
-</td>
-<td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-  'id'=>'name'.$row,
-  'name'=>"DebitcreditForm[$i][name]",
-  'value'=>$item->name,
-  'source'=>$this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)),
-   'options'=>array(
-    'delay'=>200,
-    'minLength'=>2,
-    ),
-  'htmlOptions'=>array(
-     'size'=>'50',
-     'class'=>$item->name_errors ? 'error': 'valid',
-     ),
-  ))
-?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
-<td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
-</tr>
-<?php endforeach; ?>
-</tbody>
-</table>
+  <div id="commands"></div>
 
-  <?php echo CHtml::activeHiddenField($postform, 'is_closing', array('value'=>$postform->is_closing)) ?>
-	<div class="row buttons">
-		<?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'submit')); ?>
-		<?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>
-	</div>
+  <div id="rows_as_textfields" style="display: block">
+    <div class="accountsrows">
+      <table>
+      <thead>
+      <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
+      </thead>
+      <tbody>
+      <?php $row=0; foreach($items as $i=>$item): ?>
+      <tr id="row<?php echo ++$row ?>">
+      <td class="number" style="width: 200px;">
+      <?php echo $row ?><span id="swap<?php echo $row ?>"></span>
+      </td>
+      <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+        'id'=>'name'.$row,
+        'name'=>"DebitcreditForm[$i][name]",
+        'value'=>$item->name,
+        'source'=>$this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)),
+         'options'=>array(
+          'delay'=>200,
+          'minLength'=>2,
+          ),
+        'htmlOptions'=>array(
+           'size'=>'50',
+           'class'=>$item->name_errors ? 'error': 'valid',
+           ),
+        ))
+      ?></td>
+      <td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+      <td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+      </tr>
+      <?php endforeach; ?>
+      </tbody>
+      </table>
+    </div><!--accountsrows -->
+
+    <?php echo CHtml::activeHiddenField($postform, 'is_closing', array('value'=>$postform->is_closing)) ?>
+    <div class="row buttons">
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'save')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>
+    </div>
+  </div><!-- rows_as_textfields -->
+  <div id="rows_as_textarea" style="display: none">
+    <div class="row">
+      <?php echo $form->labelEx($postform, 'raw_input'); ?>
+      <?php echo $form->textArea($postform, 'raw_input', array('id'=>'raw_input', 'maxlength' => 10000, 'rows' => $n, 'cols' => 65)); ?>
+      <?php echo $form->error($postform,'raw_input'); ?>
+    </div>
+  </div><!-- rows_as_textarea -->
 
 <?php $this->endWidget(); ?>
 

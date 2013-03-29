@@ -6,6 +6,7 @@ class PostForm extends CFormModel
   public $firm_id;
   public $date;
   public $description;
+  public $raw_input;
   public $debitcredits;
   public $currency;
   public $is_closing = false;
@@ -18,6 +19,7 @@ class PostForm extends CFormModel
 	{
 		return array(
 			array('date, description, is_closing', 'required'),
+      array('raw_input', 'safe'),
       array('debitcredits', 'checkDebitcredits'),
 		);
 	}
@@ -30,14 +32,36 @@ class PostForm extends CFormModel
 		return array(
 			'date' => Yii::t('delt', 'Date'),
 			'description' => Yii::t('delt', 'Description'),
+      'raw_input' => Yii::t('delt', 'Raw input'),
 		);
 	}
 
   
   public function acquireItems($values)
   {
-
     $this->debitcredits=array();
+
+    if($this->raw_input)
+    {
+      $count=0;
+      foreach(explode("\n", $this->raw_input) as $line)
+      {
+        if(sizeof($fields=explode("\t", $line))>=3)
+        {
+          list($name, $debit, $credit) = $fields;
+          if(is_numeric(DELT::currency2decimal($debit, $this->currency)) or is_numeric(DELT::currency2decimal($credit, $this->currency)))
+          {
+            $this->debitcredits[$count] = new DebitcreditForm();
+            foreach(array('name', 'debit', 'credit') as $index=>$property)
+            {
+              $this->debitcredits[$count]->$property = $$property;
+            }
+            $count++;
+          }
+        }
+      }
+      return;
+    }
     
     foreach($values as $key => $value)
     {

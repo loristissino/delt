@@ -154,12 +154,15 @@ class BookkeepingController extends Controller
 		if(isset($_POST['PostForm']))
 		{
 			$postform->attributes=$_POST['PostForm'];
-      $postform->acquireItems($_POST['DebitcreditForm']);
+      if(isset($_POST['DebitcreditForm']))
+      {
+        $postform->acquireItems($_POST['DebitcreditForm']);
+      }
       if(isset($_POST['addrow']))
       {
         $postform->debitcredits[] = new DebitcreditForm();
       }
-      else
+      elseif(!$postform->raw_input)
       {
         if($postform->validate())
         {
@@ -172,6 +175,7 @@ class BookkeepingController extends Controller
       }
 		}
     
+    $postform->raw_input='';
     $postform->is_closing = $this->is_closing;
 		$this->render('newpost', array(
       'model'=>$this->loadModelBySlug($slug),
@@ -224,9 +228,7 @@ class BookkeepingController extends Controller
     }
     
     $this->render('closingpost', array('nature'=>'e', 'model'=>$this->firm));
-    
   }
-
 
 	public function actionUpdatepost($id)
 	{
@@ -248,7 +250,7 @@ class BookkeepingController extends Controller
       {
         $postform->debitcredits[] = new DebitcreditForm();
       }
-      else
+      elseif(!$postform->raw_input)
       {
         if($postform->validate())
         {
@@ -261,6 +263,7 @@ class BookkeepingController extends Controller
       }
 		}
     
+    $postform->raw_input='';
 		$this->render('updatepost', array(
       'model'=>$this->firm,
       'postform'=>$postform,
