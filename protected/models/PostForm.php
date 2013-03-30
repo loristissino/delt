@@ -60,6 +60,10 @@ class PostForm extends CFormModel
           }
         }
       }
+      for($i=$count+1; $i<=2; $i++)
+      {
+        $this->debitcredits[] = new DebitcreditForm();
+      }
       return;
     }
     

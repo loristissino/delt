@@ -192,4 +192,10 @@ class Controller extends CController
     Yii::app()->end();
   }
   
+  
+  public function createIcon($name, $alt='', $htmlOptions=array())
+  {
+    return CHtml::image(Yii::app()->request->baseUrl.'/images/' . $name . '.png', $alt, $htmlOptions);
+  }
+  
 }

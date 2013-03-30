@@ -197,5 +197,16 @@ return array(
   'Select account of profit destination'=>'Seleziona conto di destinazione utile',
   'Select account of loss destination'=>'Seleziona conto di destinazione perdita',
   
+  'Raw input' => 'Input grezzo',
+  'Switch to raw input mode' => 'Passa alla modalità input grezzo',
+  'Text fields' => 'Campi di testo',
+  'Switch to text fields mode' => 'Passa alla modalità campi di testo',
+  'Load accounts' => 'Carica conti',
+  'Load all accounts' => 'Carica tutti i conti',
+  'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).' => 'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona "Carica i conti" qui sopra per caricare tutti i conti disponibili).',
+  'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.' => 'Quando hai finito con il foglio elettronico, incolla qui le tre colonne (nome, addebito, accredito) e passa alla modalità campi testuali.',
+  
+  
+  
 );
 

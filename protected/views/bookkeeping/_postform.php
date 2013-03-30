@@ -5,8 +5,12 @@
 
 $n = sizeof($items);
 
-$up_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_up.png', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
-$down_icon=addslashes(CHtml::image(Yii::app()->request->baseUrl.'/images/arrow_down.png', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
+$up_icon=addslashes($this->createIcon('arrow_up', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
+$down_icon=addslashes($this->createIcon('arrow_down', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
+
+$raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
+$textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
+$load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -19,13 +23,16 @@ $cs->registerScript(
   var n = ' . $n . ';
   var fields = new Array("name", "debit", "credit");
   
-  $("#commands").html("<span id=\"toggle\">toggle</span>&nbsp;<span id=\"load_accounts\">load accounts</span>");
+  var raw_input_icon = "' . $raw_input_icon . '";
+  var textfields_icon = "' . $textfields_icon . '";
+  var load_accounts_icon = "' . $load_accounts_icon . '";
+  
+  $("#commands").html("<span id=\"toggle\">" + raw_input_icon + "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>");
   $("#load_accounts").hide();
   
   $("#load_accounts").click(function()
     {
       var jsonUrl = "' . $json_url . '";
-      console.log(jsonUrl);
       $.getJSON(
         jsonUrl,
         {},
@@ -68,14 +75,15 @@ $cs->registerScript(
     for(i=1; i<=n; i++)
     {
       var name = $("#name"+i).val();
-      var debit = $("#debit"+i).val();
-      var credit = $("#credit"+i).val();
+      var debit = $("#debit"+i).val().replace(/[^\d.,]/g, "");
+      var credit = $("#credit"+i).val().replace(/[^\d.,]/g, "");
       if (name || debit || credit)
       {
         text += $("#name"+i).val() + "\t" + debit + "\t" + credit + "\t\n";
       }
     }
     $("#raw_input").val(text);
+    $("#toggle").html(textfields_icon);
     if(text=="")
     {
       $("#load_accounts").show();
@@ -90,6 +98,8 @@ $cs->registerScript(
   {
     $("#load_accounts").hide();
     text = $("#raw_input").val();
+    $("#toggle").html(raw_input_icon);
+    
     lines = text.replace(/\n$/).split(/\n/);
     if(lines.length<=n)
     {
@@ -118,6 +128,7 @@ $cs->registerScript(
         );
       }
       text = $("#raw_input").val("");
+
     }
     else  // we have extra lines, we need to do a post...
     {
@@ -295,6 +306,11 @@ $cs->registerScript(
   <div id="rows_as_textarea" style="display: none">
     <div class="row">
       <?php echo $form->labelEx($postform, 'raw_input'); ?>
+      <br />
+      <span class="hint">
+      <?php echo Yii::t('delt', 'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).')?><br />
+      <?php echo Yii::t('delt', 'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.')?>
+      </span>
       <?php echo $form->textArea($postform, 'raw_input', array('id'=>'raw_input', 'maxlength' => 10000, 'rows' => $n, 'cols' => 65)); ?>
       <?php echo $form->error($postform,'raw_input'); ?>
     </div>
