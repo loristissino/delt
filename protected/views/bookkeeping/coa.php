@@ -72,8 +72,8 @@ $this->menu=array(
       'viewButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/ledger",array("id"=>$data->primaryKey))',
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/update",array("id"=>$data->primaryKey))',
       'deleteButtonUrl'=>'Yii::app()->controller->createUrl("account/delete",array("id"=>$data->primaryKey))',
-      //'headerHtmlOptions'=>array('style'=>'width: 70px;'),
-      'htmlOptions'=>array('style'=>'text-align: right'),
+      'headerHtmlOptions'=>array('class'=>'buttons'),
+      'htmlOptions'=>array('style'=>'text-align: right', 'class'=>'buttons'),
       'buttons'=>array(
         'new'=>array(
           'label'=>'New',
