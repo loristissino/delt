@@ -62,8 +62,8 @@ $this->menu=array(
 			'class'=>'CButtonColumn',
       'template'=>'{update}',
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/updatepost",array("id"=>$data->post_id))',
-      'headerHtmlOptions'=>array('style'=>'width: 20px;'),
-      'htmlOptions'=>array('style'=>'text-align: right'),
+      'headerHtmlOptions'=>array('style'=>'width: 20px;', 'class'=>'buttons'),
+      'htmlOptions'=>array('style'=>'text-align: right', 'class'=>'buttons'),
       'buttons'=>array(
         'update'=>array(
           'label'=>'Edit',

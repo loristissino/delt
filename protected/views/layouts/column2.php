@@ -24,6 +24,14 @@ else
 
 <div class="span-19">
 	<div id="content">
+  
+  <?php if($this->firm): ?>
+    <div id="firm_info">
+      <h1><?php echo $this->firm->name ?></h1>
+      <p><?php echo $this->createAbsoluteUrl('firm/view', array('slug'=>$this->firm->slug)) ?></p>
+      <p><?php echo $this->firm->getOwners(true) ?></p>
+    </div>
+  <?php endif ?>
 
   <?php if(Yii::app()->user->hasFlash('delt_success')): ?>
     <div class="success">
