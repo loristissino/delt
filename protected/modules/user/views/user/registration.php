@@ -1,6 +1,6 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Registration");
 $this->breadcrumbs=array(
-	UserModule::t("Registration"),
+	'Registration',
 );
 ?>
 
@@ -91,8 +91,13 @@ $this->breadcrumbs=array(
 	</div>
 	<?php endif; ?>
 	
+  <div class="row checkbox">
+    <?php echo $form->checkBox($profile, 'terms') ?>&nbsp;<?php echo UserModule::t('I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.', array('{tos}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.tos')), '{privacy}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.privacy')))) ?>
+    <?php echo $form->error($profile, 'terms'); ?>
+  </div>
+  
 	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Register")); ?>
+		<?php echo CHtml::submitButton(UserModule::t("Sign up")); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

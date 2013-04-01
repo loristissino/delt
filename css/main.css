@@ -400,3 +400,8 @@ span.negativeamount
   background-color: #9AF29A;
 }
 
+.important
+{
+  background:#fffbcc;
+  border:1px solid #e6db55;
+}

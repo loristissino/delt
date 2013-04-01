@@ -1,7 +1,7 @@
 <?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Profile");
 $this->breadcrumbs=array(
-	UserModule::t("Profile")=>array('profile'),
-	UserModule::t("Edit"),
+	'Profile'=>array('profile'),
+	'Edit'
 );
 $this->menu=array(
 	((UserModule::isAdmin())
@@ -13,6 +13,12 @@ $this->menu=array(
 );
 
 $this->menutitle=UserModule::t('Profile');
+
+$languages=array_merge(array(
+    '0'=>UserModule::t('unselected (use browser\'s preferences)'),
+  ),
+  Yii::app()->params['available_languages']
+);
 
 ?><h1><?php echo UserModule::t('Edit profile'); ?></h1>
 
@@ -31,6 +37,18 @@ $this->menutitle=UserModule::t('Profile');
 	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
 
 	<?php echo $form->errorSummary(array($model,$profile)); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'username'); ?>
+		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->error($model,'username'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'email'); ?>
+		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
+		<?php echo $form->error($model,'email'); ?>
+	</div>
 
 <?php 
 		$profileFields=$profile->getFields();
@@ -55,17 +73,22 @@ $this->menutitle=UserModule::t('Profile');
 			}
 		}
 ?>
-	<div class="row">
-		<?php echo $form->labelEx($model,'username'); ?>
-		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
-		<?php echo $form->error($model,'username'); ?>
-	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'email'); ?>
+		<?php echo $form->labelEx($profile, 'language') ?>
+		<?php echo $form->dropDownList($profile,'language', $languages); ?>
+		<?php echo $form->error($profile,'language'); ?>
 	</div>
+  
+  <?php if($profile->mustAcceptTerms()): ?>
+  <div class="row checkbox">
+    <?php echo $form->checkBox($profile, 'terms') ?>&nbsp;<?php echo UserModule::t('I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.', array('{tos}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.tos')), '{privacy}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.privacy')))) ?>
+    <?php echo $form->error($profile, 'terms'); ?>
+  </div>
+  <?php else: ?>
+  
+  <?php endif ?>
+
 
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>

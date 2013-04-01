@@ -10,7 +10,11 @@ class StartupBehavior extends CBehavior
 
     public function beginRequest(CEvent $event)
     {
-        $language=Yii::app()->request->getPreferredLanguage();
+        $language=Yii::app()->getUser()->getState('language');
+        if(!$language)
+        {
+          $language = Yii::app()->request->getPreferredLanguage();
+        }
         $info=explode('_', $language);
         if(sizeof($info)>1)
         {
@@ -20,7 +24,11 @@ class StartupBehavior extends CBehavior
         {
           $lang=$language;
         }
-        Yii::app()->language=$lang;
+        
+        if(in_array($lang, array_keys(Yii::app()->params['available_languages'])))
+        {
+          Yii::app()->language = $lang;
+        }
         
         // http://learnyii.blogspot.it/2011/03/yii-theme-iphone-android-blackberry.html
         Yii::app()->theme = Yii::app()->session['theme'];

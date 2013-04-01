@@ -1,8 +1,8 @@
 <?php /* @var $this Controller */ 
 
 $mainmenu_items=array(
-				array('label'=>'Home', 'url'=>array('/site/index')),
-				array('label'=>'About', 'url'=>array('/site/page', 'view'=>'about')),
+				array('label'=>Yii::t('delt', 'Home'), 'url'=>array('/site/page', 'view'=>Yii::app()->language . '.index')),
+				array('label'=>Yii::t('delt','About'), 'url'=>array('/site/page', 'view'=>Yii::app()->language . '.about')),
 				array('label'=>Yii::t('delt','Contact'), 'url'=>array('/site/contact')),
 				array('label'=>Yii::t('delt','Bookkeeping'), 'url'=>array('/bookkeeping/index'), 'visible'=>!Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
@@ -12,10 +12,10 @@ $mainmenu_items=array(
 			);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo Yii::app()->language ?>" lang="<?php echo Yii::app()->language ?>">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="language" content="en" />
+	<meta name="language" content="<?php echo Yii::app()->language ?>" />
 
 	<!-- blueprint CSS framework -->
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />

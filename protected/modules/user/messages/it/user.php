@@ -2,9 +2,9 @@
 
 return array(
         'Registration' => 'Registrazione',
-        'Register' => 'Registrati',
-        'Login' => 'Login',
-        'Logout' => 'Logout',
+        'Sign up' => 'Registrati',
+        'Login' => 'Entra',
+        'Logout' => 'Esci',
         'username' => 'Username',
         'username or email' => 'nome utente o email',
         'password' => 'Password',
@@ -76,14 +76,14 @@ return array(
         'Create User' => 'Crea utente',
         'Create' => 'Crea',
         'Manage' => 'Gestisci',
-        'Manage Users' => 'Gestisci utenti',
+        'Manage Users' => 'Gestione utenti',
         'Users' => 'Utenti',
-        'Update User' => 'Aggiorna Utente',
-        'Delete User' => 'Elimina Utente',
+        'Update User' => 'Aggiorna utente',
+        'Delete User' => 'Elimina utente',
         'Delete file' => 'Elimina file',
-        'View User' => 'Visualizza Utente',
+        'View User' => 'Visualizza utente',
         'Are you sure to delete this item?' => 'Sei sicuro di voler cancellare questo elemento?',
-        'Changes are saved.' => 'Le modifiche sono state registrate.',
+        'Changes have been saved.' => 'Le modifiche sono state registrate.',
         'Mange Profile Field' => 'Gestisci i campi del profilo',
         'Variable name' => 'Nome della variabile',
         'Title' => 'Titolo',
@@ -128,4 +128,12 @@ return array(
         'Display order of fields.' => 'Ordine di visualizzazione dei campi.',
         'Not visited' => 'Non visitato',
         'School'=> 'Scuola',
+        'Language'=> 'Lingua',
+        'unselected (use browser\'s preferences)' => 'non selezionata (usa preferenze del browser)',
+        
+        'I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.' => 
+            'Ho preso visione di <a href="{tos}">Termini e condizioni</a> e dell\'<a href="{privacy}">Informativa sul trattamento dei dati personali</a>, e li accetto.',
+    
+        'You must agree with the Terms of Service and the Privacy Policy.' => 'Devi accettare Termini e condizioni e dichiarare di aver preso visione dell\'Informativa sul trattamento dei dati personali.'
+
 );

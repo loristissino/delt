@@ -206,7 +206,14 @@ return array(
   'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).' => 'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona "Carica i conti" qui sopra per caricare tutti i conti disponibili).',
   'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.' => 'Quando hai finito con il foglio elettronico, incolla qui le tre colonne (nome, addebito, accredito) e passa alla modalità campi testuali.',
   
+  'Image from gravatar.com' => 'Immagine da gravatar.com',
+  'This page in other languages:' => 'Questa pagina in altre lingue: ',
   
+  'Contact' => 'Contattaci',
+  'Home' => 'Pagina principale',
+  'About' => 'Questo sito',
+  'This page in other languages:'=>'Questa pagina in altre lingue:',
+  'Themes' => 'Temi',
   
 );
 

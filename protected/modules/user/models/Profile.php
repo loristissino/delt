@@ -94,6 +94,8 @@ class Profile extends UActiveRecord
 			array_push($rules,array(implode(',',$numerical), 'numerical', 'integerOnly'=>true));
 			array_push($rules,array(implode(',',$float), 'type', 'type'=>'float'));
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
+      array_push($rules,array('language', 'safe'));
+      array_push($rules,array('terms', 'checkTerms'));
 			$this->_rules = $rules;
 		}
 		return $this->_rules;
@@ -125,7 +127,8 @@ class Profile extends UActiveRecord
 		
 		foreach ($model as $field)
 			$labels[$field->varname] = ((Yii::app()->getModule('user')->fieldsMessage)?UserModule::t($field->title,array(),Yii::app()->getModule('user')->fieldsMessage):UserModule::t($field->title));
-			
+		
+    $labels['language'] = UserModule::t('Language'); // we made an exception, because the field is treated in a different way...
 		return $labels;
 	}
 	
@@ -180,4 +183,31 @@ class Profile extends UActiveRecord
 			return $this->_model;
 		}
 	}
+  
+  public function beforeSave() {
+    if(!in_array($this->language, array_keys(Yii::app()->params['available_languages'])))
+    {
+      $this->language = '';
+    }
+    Yii::app()->getUser()->setState('language', $this->language);
+    return parent::beforeSave();
+  }
+  
+  public function checkTerms(){
+    if(!$this->terms)
+    {
+      $this->addError('terms', UserModule::t('You must agree with the Terms of Service and the Privacy Policy.'));
+    }
+    elseif($this->terms=='1') // we just got the check
+    {
+      $this->terms=serialize(array(
+        'time'=>time(),
+        'remote_addr'=>Yii::app()->getRequest()->getUserHostAddress()
+      ));
+    }
+  }
+  
+  public function mustAcceptTerms() {
+    return !$this->terms;
+  }
 }

@@ -47,7 +47,7 @@ class ProfileController extends Controller
 				$model->save();
 				$profile->save();
                 Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes is saved."));
+				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes have been saved."));
 				$this->redirect(array('/user/profile'));
 			} else $profile->validate();
 		}
