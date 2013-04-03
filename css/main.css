@@ -405,3 +405,24 @@ span.negativeamount
   background:#fffbcc;
   border:1px solid #e6db55;
 }
+
+.comment
+{
+  background:#fffbcc;
+  font-style: italic;
+}
+
+.comment span.keyword
+{
+  color: #8D0F0F;
+}
+
+span.jdebit
+{
+  padding-left: 0px;
+}
+
+span.jcredit
+{
+  padding-left: 20px;
+}

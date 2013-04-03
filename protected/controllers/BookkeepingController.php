@@ -483,7 +483,7 @@ class BookkeepingController extends Controller
   
   public function renderAccount(Debitcredit $debitcredit, $row)
   {
-    return $this->renderPartial('_account',array('account'=>$debitcredit->account, 'post'=>$debitcredit->post),true);
+    return $this->renderPartial('_account',array('account'=>$debitcredit->account, 'post'=>$debitcredit->post, 'amount'=>$debitcredit->amount),true);
   }
   
   public function renderSingleAccount(Account $account, $row)

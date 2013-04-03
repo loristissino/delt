@@ -693,6 +693,7 @@ class Firm extends CActiveRecord
       $references[$account->id]=$account->code;
     }
     
+    $data['reasons']=array();
     if(substr($type, 1, 1)=='1')
     {
       // we must export reasons...
@@ -710,6 +711,7 @@ class Firm extends CActiveRecord
       }
     }
     
+    $data['posts'] = array();
     if(substr($type, 2, 1)=='1')
     {
       // we must export posts...
@@ -728,6 +730,10 @@ class Firm extends CActiveRecord
 
         $data['posts'][]=$values;
       }
+    }
+    else
+    {
+      $data['posts']=array();
     }
 
     $data['meta']=array(

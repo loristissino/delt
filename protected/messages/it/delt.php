@@ -12,6 +12,7 @@ return array(
   'Trial Balance' => 'Situazione contabile',
   'Firm'=>'Azienda',
   'Ledger' => 'Libro mastro',
+  'Ledger for account «{name}»' => 'Libro mastro per il conto «{name}»',
   'Statements' => 'Bilancio',
   'Financial Statement' => 'Situazione patrimoniale',
   'Profit and Loss Statement' => 'Conto economico',
@@ -24,6 +25,7 @@ return array(
   'Name' => 'Nome',
   'Date' => 'Data',
   'Description' => 'Descrizione',
+  'Comment' => 'Commento',
 
   'Nature' => 'Natura',
   'P<!-- nature -->' => 'P',  // conti patrimoniali (stato patrimoniale)
@@ -174,6 +176,7 @@ return array(
   'The code cannot end with a dot.' => 'Il codice non può finire con un punto.',
   'Total:' => 'Totale',
   
+  'Delete' => 'Elimina',
   'Delete this firm' => 'Elimina questa azienda',
   'Are you sure you want to delete this firm?' => 'Sei sicuro di voler eliminare questa azienda?',
   'The firm has been correctly deleted.' => 'L\'azienda è stata correttamente eliminata.',

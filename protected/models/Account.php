@@ -16,6 +16,7 @@
  * @property string $l10n_names
  * @property string $textnames
  * @property integer $number_of_children
+ * @property string $comment
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -53,7 +54,9 @@ class Account extends CActiveRecord
 			array('firm_id, code, textnames', 'required'),
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
+      array('comment', 'length', 'max'=>500),
       array('nature', 'checkNature'),
+      array('comment', 'checkComment'),
 			array('nature,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'safe'),
 			// The following rule is used by search().
@@ -101,6 +104,7 @@ class Account extends CActiveRecord
 			'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
       'number_of_children' => Yii::t('delt', 'Number of children'),
+      'comment'=> Yii::t('delt', 'Comment'),
 		);
 	}
   
@@ -501,6 +505,13 @@ class Account extends CActiveRecord
      } 
   }
 
+  public function checkComment()
+  {
+     if($this->comment != strip_tags($this->comment))
+     {
+       $this->addError('comment', Yii::t('delt', 'The text cannot contain HTML tags.'));
+     } 
+  }
   
   public function getConsolidatedBalance($without_closing=false)
   {

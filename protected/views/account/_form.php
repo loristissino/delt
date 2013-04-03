@@ -26,6 +26,12 @@
     <?php echo $form->textArea($model, 'textnames', array('maxlength' => 300, 'rows' => 4, 'cols' => 50)); ?>
 		<?php echo $form->error($model,'textnames'); ?>
 	</div>
+  
+	<div class="row">
+		<?php echo $form->labelEx($model,'comment'); ?>
+    <?php echo $form->textArea($model, 'comment', array('maxlength' => 300, 'rows' => 4, 'cols' => 50)); ?>
+		<?php echo $form->error($model,'comment'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'nature') ?>

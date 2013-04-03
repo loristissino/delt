@@ -11,6 +11,7 @@ $down_icon=addslashes($this->createIcon('arrow_down', Yii::t('delt', 'Down'), ar
 $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
 $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
+$sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort accounts, debits first'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -26,8 +27,13 @@ $cs->registerScript(
   var raw_input_icon = "' . $raw_input_icon . '";
   var textfields_icon = "' . $textfields_icon . '";
   var load_accounts_icon = "' . $load_accounts_icon . '";
+  var sort_icon = "' . $sort_icon . '";
   
-  $("#commands").html("<span id=\"toggle\">" + raw_input_icon + "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>");
+  $("#commands").html(
+    "<span id=\"toggle\">" + raw_input_icon + 
+    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
+    "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>"
+    );
   $("#load_accounts").hide();
   
   $("#load_accounts").click(function()
@@ -68,6 +74,32 @@ $cs->registerScript(
       view_as_textfields = ! view_as_textfields;
     }
   );
+
+  $("#sort_accounts").click(function()
+    {
+      var arr = [];
+      for (i=1; i<=n; i++)
+      {
+        var obj = {
+          name: $("#name"+i).val(),
+          debit: $("#debit"+i).val().replace(/[^\d.,]/g, ""),
+          credit: $("#credit"+i).val().replace(/[^\d.,]/g, ""),
+          content: ($("#debit"+i).val()!="" ? "A" : "B") + $("#name"+i).val()
+          };
+        arr.push(obj);
+      }
+      arr.sort(function(a,b) {return a.content < b.content ? -1: 1 });
+      var i=1;
+      $.each(arr, function()
+        {
+          $("#name" + i).val(this.name);
+          $("#debit" + i).val(this.debit);
+          $("#credit" + i).val(this.credit);
+          i++;
+        }
+      )
+    }
+  );
   
   function toTextArea()
   {
@@ -92,11 +124,13 @@ $cs->registerScript(
     {
       $("#load_accounts").hide();
     }
+    $("#sort_accounts").hide();
   }
   
   function fromTextArea()
   {
     $("#load_accounts").hide();
+    $("#sort_accounts").show();
     text = $("#raw_input").val();
     $("#toggle").html(raw_input_icon);
     
@@ -272,6 +306,7 @@ $cs->registerScript(
       <?php $row=0; foreach($items as $i=>$item): ?>
       <tr id="row<?php echo ++$row ?>">
       <td class="number" style="width: 200px;">
+      <?php echo $this->createIcon('tp', '', array('height'=>1, 'width'=>40)) ?><br />
       <?php echo $row ?><span id="swap<?php echo $row ?>"></span>
       </td>
       <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
