@@ -15,7 +15,7 @@ return array(
   'Ledger for account «{name}»' => 'Libro mastro per il conto «{name}»',
   'Statements' => 'Bilancio',
   'Financial Statement' => 'Situazione patrimoniale',
-  'Profit and Loss Statement' => 'Conto economico',
+  'Income Statement' => 'Conto economico',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
   'The parent account does not exist.' => 'Il conto di livello superiore non esiste.',
@@ -208,6 +208,8 @@ return array(
   'Load all accounts' => 'Carica tutti i conti',
   'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).' => 'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona "Carica i conti" qui sopra per caricare tutti i conti disponibili).',
   'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.' => 'Quando hai finito con il foglio elettronico, incolla qui le tre colonne (nome, addebito, accredito) e passa alla modalità campi testuali.',
+  'Sort accounts' => 'Ordina i conti',
+  'Sort accounts, debits first' => 'Ordina i conti, mettendo prima gli addebiti',
   
   'Image from gravatar.com' => 'Immagine da gravatar.com',
   'This page in other languages:' => 'Questa pagina in altre lingue: ',
@@ -217,6 +219,14 @@ return array(
   'About' => 'Questo sito',
   'This page in other languages:'=>'Questa pagina in altre lingue:',
   'Themes' => 'Temi',
+  
+  'You reached the number of firms maneageble with your account ({number}).' => 'Hai raggiunto il numero massimo di aziende gestibili con il tuo account ({number}).',
+  'If you want to create a new one, please delete some of the existing.' => 'Se vuoi crearne una nuova, prima elimina una delle esistenti.',
+  'Sorry, you are not allowed to create firms at this time.' => 'Purtroppo, al momento non sei autorizzato a creare aziende.',
+  
+  'The post has been successfully deleted.' => 'La registrazione è stata correttamente eliminata.',
+  'you cannot do a debit to this kind of account.' => 'non è possibile addebitare questo tipo di conto.',
+  'you cannot do a credit to this kind of account.' => 'non è possibile accreditare questo tipo di conto.',
   
 );
 

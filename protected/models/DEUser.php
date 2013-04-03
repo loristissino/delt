@@ -142,5 +142,18 @@ class DEUser extends CActiveRecord
     );
   }
   
+  public function getProfile()
+  {
+    if($u = WebUser::model(Yii::app()->user->id))
+    {
+      return $u->profile;
+    }
+  }
+  
+  public function canCreateFirms()
+  {
+    return ($this->profile->allowed_firms - sizeof($this->firms) > 0);
+  }
+
   
 }

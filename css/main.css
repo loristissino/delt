@@ -410,6 +410,7 @@ span.negativeamount
 {
   background:#fffbcc;
   font-style: italic;
+  padding-bottom: 10px;
 }
 
 .comment span.keyword

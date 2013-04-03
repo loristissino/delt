@@ -282,6 +282,22 @@ class PostForm extends CFormModel
         }
       }
       
+      if(!$this->is_closing && $this->debitcredits[$row]->account->nature=='E')
+      {
+        if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
+        {
+          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you cannot do a credit to this kind of account.'));
+          $this->debitcredits[$row]->credit_errors=true;
+          $errors=true;
+        }
+        if($this->debitcredits[$row]->account->outstanding_balance == 'C' && $debit>0)
+        {
+          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you cannot do a debit to this kind of account.'));
+          $this->debitcredits[$row]->debit_errors=true;
+          $errors=true;
+        }
+      }
+      
       if(!$errors)
       {
         $grandtotal_debit += $debit;

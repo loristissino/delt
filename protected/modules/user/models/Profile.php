@@ -96,6 +96,7 @@ class Profile extends UActiveRecord
 			array_push($rules,array(implode(',',$decimal), 'match', 'pattern' => '/^\s*[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?\s*$/'));
       array_push($rules,array('language', 'safe'));
       array_push($rules,array('terms', 'checkTerms'));
+      array_push($rules,array('allowed_firms', 'safe'));
 			$this->_rules = $rules;
 		}
 		return $this->_rules;

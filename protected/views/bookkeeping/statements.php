@@ -28,7 +28,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
   'with_subtitles'=>true,
   )) ?>
 <?php echo $this->renderPartial('_statement', array(
-  'title'=>'Profit and Loss Statement',
+  'title'=>'Income Statement',
   'data'=>$economic,
   'model'=>$model,
   'level'=>$level,

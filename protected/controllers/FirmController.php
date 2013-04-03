@@ -82,11 +82,19 @@ class FirmController extends Controller
 
 		if(isset($_POST['Firm']))
 		{
-			$model->attributes=$_POST['Firm'];
-			if($model->saveWithOwner($this->DEUser))
+      if($this->DEUser->canCreateFirms())
       {
-        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
-				$this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
+        $model->attributes=$_POST['Firm'];
+        if($model->saveWithOwner($this->DEUser))
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
+          $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
+        }
+      }
+      else
+      {
+        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'Sorry, you are not allowed to create firms at this time.'));
+        $this->redirect(array('/bookkeeping/index'));
       }
 		}
 
@@ -113,23 +121,31 @@ class FirmController extends Controller
     
 		if(isset($_POST['ForkfirmForm']))
 		{
-      $form->attributes=$_POST['ForkfirmForm'];
-      
-      if($form->validate())
+      if($this->DEUser->canCreateFirms())
       {
-        $newfirm = new Firm();
-        try
+        $form->attributes=$_POST['ForkfirmForm'];
+        
+        if($form->validate())
         {
-          $newfirm->forkFrom($firm, $this->DEUser, $form->type);
-          $newfirm->fixAccounts();
-          $newfirm->fixAccountNames();
-          $this->redirect(array('firm/update','id'=>$newfirm->id));
+          $newfirm = new Firm();
+          try
+          {
+            $newfirm->forkFrom($firm, $this->DEUser, $form->type);
+            $newfirm->fixAccounts();
+            $newfirm->fixAccountNames();
+            $this->redirect(array('firm/update','id'=>$newfirm->id));
+          }
+          catch(Exception $e)
+          {
+            Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+            $this->redirect(array('firm/form'));
+          }
         }
-        catch(Exception $e)
-        {
-          Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
-          $this->redirect(array('firm/form'));
-        }
+      }
+      else
+      {
+        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'Sorry, you are not allowed to create firms at this time.'));
+        $this->redirect(array('/bookkeeping/index'));
       }
 		}
 
