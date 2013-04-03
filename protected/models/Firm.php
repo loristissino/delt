@@ -519,6 +519,7 @@ class Firm extends CActiveRecord
         {
           $newaccount->$property = $account->$property ? $account->$property : '1';
         }
+        $newaccount->comment = $account->comment;
         $newaccount->textnames = $account->l10n_names;
         $newaccount->basicSave(false);
         
@@ -553,7 +554,7 @@ class Firm extends CActiveRecord
         {
           $newpost = new Post;
           $newpost->firm_id = $this->id;
-          foreach(array('date', 'description', 'is_confirmed', 'rank') as $property)
+          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'rank') as $property)
           {
             $newpost->$property = $post->$property;
           }
