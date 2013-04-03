@@ -161,7 +161,7 @@ return array(
   'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
   
   'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',
-  'Data correctly imported.' => 'Dati correttamente importati',
+  'Data correctly imported.' => 'Dati correttamente importati.',
   
   'Select date from calendar' => 'Seleziona la data dal calendario',
   
@@ -181,6 +181,7 @@ return array(
   'Are you sure you want to delete this firm?' => 'Sei sicuro di voler eliminare questa azienda?',
   'The firm has been correctly deleted.' => 'L\'azienda è stata correttamente eliminata.',
   'Create a Firm' => 'Crea un\'azienda',
+  'The firm has been successfully created.' => 'L\'azienda è stata correttamente creata.',
   'The language is used for the names of the accounts, not for the user interface' => 'La lingua è usata per i nomi dei conti, non per l\'interfaccia utente',
   
   'The file seems to be invalid.' => 'Il file non appare valido.',

@@ -688,7 +688,7 @@ class Firm extends CActiveRecord
     foreach($this->accounts as $account)
     {
       $values=array();
-      DELT::object2array($account, $values, array('code', 'textnames', 'nature', 'outstanding_balance'));
+      DELT::object2array($account, $values, array('code', 'textnames', 'nature', 'outstanding_balance', 'comment'));
       $data['accounts'][]=$values;
       $references[$account->id]=$account->code;
     }
@@ -787,7 +787,7 @@ class Firm extends CActiveRecord
       {
         $newaccount = new Account;
         $newaccount->firm_id = $this->id;
-        DELT::array2object($values, $newaccount, array('code', 'textnames', 'nature', 'outstanding_balance'));
+        DELT::array2object($values, $newaccount, array('code', 'textnames', 'nature', 'outstanding_balance', 'comment'));
         $newaccount->basicSave(false);
         $references[$values['code']]=$newaccount->id;
       }
