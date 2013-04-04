@@ -443,6 +443,7 @@ class Firm extends CActiveRecord
         array('like', 'n.name', '%' . $term . '%')
         ))
       ->andWhere('is_selectable = 1')
+      ->order('code')
       ->queryAll();
     
     $result=array();
