@@ -21,7 +21,11 @@ class DELT
     
     if($with_debit_credit)
     {
-      $value = Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency) . ' ' . Yii::t('delt', self::amount2type($amount));
+      $value = Yii::app()->numberFormatter->formatCurrency(abs($amount), $currency);
+      if($amount)
+      {
+        $value .= ' ' .Yii::t('delt', self::amount2type($amount));
+      }
     }
     else
     {

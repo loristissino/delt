@@ -108,5 +108,5 @@ if($deletable)
 
 <?php if($account->account_parent_id): ?>
 <hr />
-<p><?php echo Yii::t('delt', 'Parent account') ?>: <?php echo CHtml::link($account->parentAccount, $this->createUrl('bookkeeping/ledger', array('id'=>$account->account_parent_id))) ?></p>
+<p><?php echo Yii::t('delt', 'Parent account') ?>: <?php echo CHtml::link($account->parentAccount, $this->createUrl('bookkeeping/ledger', array('id'=>$account->account_parent_id))) ?>.</p>
 <?php endif ?>

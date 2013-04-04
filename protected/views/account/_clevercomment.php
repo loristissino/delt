@@ -12,8 +12,8 @@
       //if(in_array($first, $keywords))
       //{
         $text .= '<span class="keyword">' . $first . '</span> ';
-        $remaining = substr($line, strlen($first)+1);
-        $text .= $first=='@href' ? '<a href="' . $remaining . '">' . $remaining . '</a>' : $remaining;
+        $remaining = chop(substr($line, strlen($first)+1));
+        $text .= ($first=='@href' ? '<a href="' . $remaining . '" target="_blank">' . $remaining . '</a>' : $remaining) . "\n";
       //}
     }
     else
