@@ -362,6 +362,12 @@ class Firm extends CActiveRecord
   
   public function getAccountBalances($nature='')
   {
+    $natures=array($nature);
+    if($nature=='P')
+    {
+      $natures[]='r';
+    }
+    
     $result=array();
     $accounts = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total, a.code as code, n.name')
@@ -370,7 +376,7 @@ class Firm extends CActiveRecord
       ->leftJoin('{{account_name}} n', 'a.id = n.account_id AND n.language_id = ' . $this->language_id)
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
-      ->andWhere('a.nature = :nature', array(':nature'=>$nature))
+      ->andWhere(array('in', 'nature', $natures))
       ->order('a.code')
       ->group('a.code, n.name')
       ->having('total <> 0')
@@ -401,8 +407,21 @@ class Firm extends CActiveRecord
     }
     if($nature=='e')
     {
+      $ob=$grandtotal>0 ? 'D': 'C';
+      
+      $resultAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'nature'=>'r', 'outstanding_balance'=>$ob));
+      if(sizeof($resultAccounts)==1)
+      {
+        $account=$resultAccounts[0];
+        $name=$account['code'] . ' - ' . $account['name'];
+      }
+      else
+      {
+        $name = Yii::t('delt', $grandtotal<0 ? 'Select account of profit destination': 'Select account of loss destination');
+      }
+      
       $result[]=array(
-        'name'=>Yii::t('delt', $grandtotal<0 ? 'Select account of profit destination': 'Select account of loss destination'),
+        'name'=>$name,
         'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
         'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
         );
@@ -470,7 +489,10 @@ class Firm extends CActiveRecord
     {
       foreach($info['children'] as $child_id)
       {
-        $a[$child_id]['model']->nature = $info['model']->nature;
+        if($a[$child_id]['model']->nature!='r')
+        {
+          $a[$child_id]['model']->nature = $info['model']->nature;
+        }
         $a[$child_id]['model']->setParentCode($info['model']->code);
       }
       
@@ -998,12 +1020,18 @@ class Firm extends CActiveRecord
   
   private function _getStatement($nature, $level=1)
   {
+    $natures=array($nature);
+    if($nature=='P')
+    {
+      $natures[]='r';
+    }
+
     $accounts = Yii::app()->db->createCommand()
       ->select('id, code, level, name, is_selectable')
       ->from('{{account}}')
       ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
       ->where('firm_id=:id', array(':id'=>$this->id))
-      ->andWhere('nature = :nature', array(':nature'=>$nature))
+      ->andWhere(array('in', 'nature', $natures))
       ->andWhere('level <= :level', array(':level'=>$level))
       ->order('rcode')
       ->queryAll();
