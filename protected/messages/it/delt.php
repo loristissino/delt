@@ -229,5 +229,18 @@ return array(
   'you cannot do a debit to this kind of account.' => 'non è possibile addebitare questo tipo di conto.',
   'you cannot do a credit to this kind of account.' => 'non è possibile accreditare questo tipo di conto.',
   
+  'Synchronize' => 'Sincronizza',
+  'Syncronize accounts from ancestor firms' => 'Sincronizza conti da un\'azienda di cui questa è derivazione',
+  
+  'Synchronize accounts' => 'Sincronizza conti',
+  'You can synchronize your firm\'s chart of accounts with the one of one of the following ancestors:' => 'Puoi sincronizzare il piano dei conti della tua azienda con quelli di una delle seguenti aziende:',
+  'New accounts found' => 'Nuovi conti trovati',
+  'Changed accounts found' => 'Conti modificati trovati',
+  'Select all' => 'Seleziona tutto',
+  'Changes' => 'Modifiche',
+  'There are no accounts to synchronize.' => 'Non ci sono conti da sincronizzare.',
+  
+  
+  
 );
 

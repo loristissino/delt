@@ -28,7 +28,7 @@ class AccountController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete'),
+				'actions'=>array('create','update','delete','synchronize'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -139,6 +139,11 @@ class AccountController extends Controller
     $account=$this->loadAccount($id);
     $this->checkManageability($firm=$this->loadFirm($account->firm_id));
     
+    if(!Yii::app()->getRequest()->isPostRequest)
+    {
+      throw new CHttpException(404,'The requested page does not exist.'); 
+    }
+    
     try
     {
       $account->delete();
@@ -152,18 +157,46 @@ class AccountController extends Controller
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('bookkeeping/coa', 'slug'=>$firm->slug));
-      
+    
 	}
 
 	/**
-	 * Lists all models.
+	 * Synchronizes the whole chart of accounts from parent firm or other ancestor.
 	 */
-	public function actionIndex()
+	public function actionSynchronize($slug, $ancestor='')
 	{
-		$dataProvider=new CActiveDataProvider('Account');
-		$this->render('index',array(
-			'dataProvider'=>$dataProvider,
-		));
+    $this->firm = $this->loadFirmBySlug($slug);
+    
+    if($ancestor and $ancestor=$this->loadFirmBySlug($ancestor, false) and $this->firm->isDescendantOf($ancestor))
+    {
+      if(Yii::app()->getRequest()->isPostRequest)
+      {
+        if($this->firm->synchronizeAccounts($_POST))
+        {
+          $this->firm->fixAccounts();
+          $this->firm->fixAccountNames();
+          Yii::app()->getUser()->setFlash('delt_success', 'Accounts correctly synchronized.');
+        }
+        else
+        {
+          Yii::app()->getUser()->setFlash('delt_failure', 'The accounts could not be synchronized.');
+        }
+        $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
+      }
+      
+      $this->render('synchronize',array(
+        'firm'=>$this->firm,
+        'ancestor'=>$ancestor,
+        'diff'=>$this->firm->findDifferentAccounts($ancestor),
+      ));
+    }
+    else
+    {
+      $this->render('synchronize',array(
+        'firm'=>$this->firm,
+        'ancestors'=>$this->firm->ancestors,
+      ));
+    }
 	}
 
 	/**

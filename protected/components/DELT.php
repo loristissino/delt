@@ -233,6 +233,31 @@ class DELT
       }
     }
   }
+  
+  public static function object2object($source, $target, $properties=array())
+  {
+    foreach ($properties as $property)
+    {
+      $target->$property = $source->$property;
+    }
+  }
+  
+  public static function compareObjects($source, $target, $properties=array())
+  {
+    $differences=array();
+    foreach ($properties as $property)
+    {
+      if(($sp=chop($source->$property)) != ($tp=chop($target->$property)))
+      {
+        $differences[$property]=array('source'=>$sp, 'target'=>$tp);
+      }
+    }
+    if(sizeof($differences))
+    {
+      return $differences;
+    }
+    return false;
+  }
 
   public static function getDateForFormWidget($date)
   {

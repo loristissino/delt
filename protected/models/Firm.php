@@ -187,6 +187,97 @@ class Firm extends CActiveRecord
     return Firm::model()->findByPk($this->firm_parent_id);
   }
   
+  public function getAncestors()
+  {
+    $ancestors = array();
+    $firm = $this;
+    while($firm = $firm->getParent())
+    {
+      array_push($ancestors, $firm);
+    }
+    return $ancestors;
+  }
+  
+  public function isDescendantOf($firm)
+  {
+    foreach($this->ancestors as $ancestor)
+    {
+      if($ancestor->id == $firm->id)
+      {
+        return true;
+      }
+    }
+    return false;
+  }
+  
+  public function findDifferentAccounts(Firm $firm)
+  {
+    $own     = array();
+    $new     = array();
+    $changes = array();
+    foreach($this->accounts as $account)
+    {
+      $own[$account->code]=$account;
+    }
+    foreach($firm->accounts as $account)
+    {
+      if(!in_array($account->code, array_keys($own)))
+      {
+        $new[]=$account;
+      }
+      else
+      {
+        if($differences = DELT::compareObjects($account, $own[$account->code], array('comment', 'nature', 'outstanding_balance', 'textnames')))
+        {
+          $changes[] = array('account'=>$account, 'differences'=>$differences);
+        }
+      }
+    }
+    return array('new'=>$new, 'changes'=>$changes);
+    
+  }
+  
+  public function synchronizeAccounts($postdata)
+  {
+    $transaction = $this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      if(isset($postdata['newaccounts']))
+      {
+        foreach($postdata['newaccounts'] as $id)
+        {
+          $account = Account::model()->findByPk($id);
+          $newaccount = new Account;
+          DELT::object2object($account, $newaccount, array('code', 'textnames', 'nature', 'outstanding_balance','comment'));
+          $newaccount->firm_id = $this->id;
+          $newaccount->basicSave(false);
+        }
+      }
+      
+      if(isset($postdata['changedaccounts']))
+      {
+        foreach($postdata['changedaccounts'] as $id)
+        {
+          $account = Account::model()->findByPk($id);
+          $oldaccount = Account::model()->findByAttributes(array('firm_id'=>$this->id, 'code'=>$account->code));
+          DELT::object2object($account, $oldaccount, array('code', 'textnames', 'nature', 'outstanding_balance','comment'));
+          $oldaccount->basicSave(false);
+        }
+      }
+      
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollBack();
+      die($e->getMessage());
+      return false;
+    }
+  }
+  
+  
 	/**
 	 * @param DEUser $user the user to check
 	 * @return boolean true if the firm is manageable by $user, false otherwise

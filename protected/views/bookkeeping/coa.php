@@ -11,6 +11,10 @@ $this->menu=array(
 	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
 	//array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
 );
+if($model->firm_parent_id)
+{
+  $this->menu[]=array('label'=>Yii::t('delt', 'Synchronize'), 'url'=>array('account/synchronize', 'slug'=>$model->slug), 'linkOptions'=>array('title'=>Yii::t('delt', 'Syncronize accounts from ancestor firms')));
+}
 
 ?>
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>

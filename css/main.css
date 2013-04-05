@@ -427,3 +427,26 @@ span.jcredit
 {
   padding-left: 20px;
 }
+
+.syncaccountstable
+{
+  font-size: 12px;
+}
+
+.syncaccountstable tr td
+{
+  font-size: 0.9em;
+  vertical-align: top;
+  background-color: #EFFDFF;
+}
+
+.syncaccountstable th
+{
+	background: #B7D6E7;
+  color: #298dcd;
+}
+
+#newaccountstable th.first
+{
+	background: #6FACCF;
+}
