@@ -296,6 +296,32 @@ class BookkeepingController extends Controller
 
 	}
 
+
+	public function actionClearjournal($slug)
+	{
+    $this->firm=$this->loadFirmBySlug($slug);
+    
+		if(Yii::app()->getRequest()->isPostRequest)
+		{
+      if($this->firm->clearJournal())
+      {
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal has been successfully cleared.'));
+      }
+      else
+      {
+        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The journal could not be cleared.'));
+      }
+      
+      $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+      
+		}
+    throw new CHttpException(404, 'The requested page does not exist.');
+
+	}
+
+
+
+
   public function actionPostfromreason($id)
   {
     $reason=$this->loadReason($id);

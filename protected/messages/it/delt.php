@@ -241,6 +241,12 @@ return array(
   'There are no accounts to synchronize.' => 'Non ci sono conti da sincronizzare.',
   
   
+  'Clear' => 'Svuota',
+  'Delete all journal posts' => 'Elimina tutte le registrazioni contabili',
+  'Are you sure you want to delete all journal posts?' => 'Sei sicuro di voler eliminare tutte le registrazioni contabili?',
+  'The journal has been successfully cleared.'=> 'Le registrazioni contabili sono state correttamente eliminate.',
+  
+  
   
 );
 

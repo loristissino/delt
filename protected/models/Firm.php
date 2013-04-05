@@ -1084,6 +1084,12 @@ class Firm extends CActiveRecord
       return false;
     }
   }
+  
+  public function clearJournal()
+  {
+    $this->_deletePosts();
+    return true;
+  }
 
 
 }

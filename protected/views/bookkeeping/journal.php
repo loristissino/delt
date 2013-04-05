@@ -10,7 +10,17 @@ $this->breadcrumbs=array(
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'New journal post'), 'url'=>array('bookkeeping/newpost', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Closing post'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug)),
-);
+  );
+
+if(sizeof($model->posts))
+{
+  $this->menu[] = array('label'=>Yii::t('delt', 'Clear'), 'url'=>$url=$this->createUrl('bookkeeping/clearjournal', array('slug'=>$model->slug)),  'linkOptions'=>array(   
+      'submit' => $url,
+      'title' => Yii::t('delt', 'Delete all journal posts'),
+      'confirm' => Yii::t('delt', 'Are you sure you want to delete all journal posts?'),
+      ),
+    );  
+}
 
 ?>
 <h1><?php echo Yii::t('delt', 'Journal') ?></h1>
