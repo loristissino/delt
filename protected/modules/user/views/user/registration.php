@@ -82,12 +82,12 @@ $this->breadcrumbs=array(
 	<div class="row">
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		
-		<?php $this->widget('CCaptcha'); ?>
+		<?php $this->widget('CCaptcha', array('buttonLabel'=>Yii::t('delt', 'Get a new code.'))) ?>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		<?php echo $form->error($model,'verifyCode'); ?>
 		
-		<p class="hint"><?php echo UserModule::t("Please enter the letters as they are shown in the image above."); ?>
-		<br/><?php echo UserModule::t("Letters are not case-sensitive."); ?></p>
+		<p class="hint"><?php echo UserModule::t('Please enter the letters as they are shown in the image above.') ?>
+		<br /><?php echo UserModule::t('Letters are not case-sensitive.') ?></p>
 	</div>
 	<?php endif; ?>
 	

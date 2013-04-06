@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 ?>
 
-<h1>Contact Us</h1>
+<h1><?php echo Yii::t('delt', 'Contact Us') ?></h1>
 
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
 <?php else: ?>
 
 <p>
-If you have business inquiries or other questions, please fill out the following form to contact us. Thank you.
+<?php echo Yii::t('delt', 'If you have questions about DELT Project or this website, please fill out the following form to contact us. Thank you.') ?>
 </p>
 
 <div class="form">
@@ -33,20 +33,27 @@ If you have business inquiries or other questions, please fill out the following
 	),
 )); ?>
 
-	<p class="note">Fields with <span class="required">*</span> are required.</p>
+	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
 
 	<?php echo $form->errorSummary($model); ?>
 
+  <?php if(Yii::app()->user->isGuest): ?>
 	<div class="row">
 		<?php echo $form->labelEx($model,'name'); ?>
 		<?php echo $form->textField($model,'name'); ?>
 		<?php echo $form->error($model,'name'); ?>
 	</div>
+  <?php endif ?>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email'); ?>
+		<?php echo $form->textField($model,'email', array('size'=>'40')); ?>
 		<?php echo $form->error($model,'email'); ?>
+    <?php if(Yii::app()->user->isGuest): ?>
+    <p class="hint">
+      <?php echo Yii::t('delt', 'We will use your address only to answer your question.') ?>
+    </p>
+    <?php endif ?>
 	</div>
 
 	<div class="row">
@@ -65,17 +72,18 @@ If you have business inquiries or other questions, please fill out the following
 	<div class="row">
 		<?php echo $form->labelEx($model,'verifyCode'); ?>
 		<div>
-		<?php $this->widget('CCaptcha'); ?>
+		<?php $this->widget('CCaptcha', array('buttonLabel'=>Yii::t('delt', 'Get a new code.'))); ?>
 		<?php echo $form->textField($model,'verifyCode'); ?>
 		</div>
-		<div class="hint">Please enter the letters as they are shown in the image above.
-		<br/>Letters are not case-sensitive.</div>
+		<p class="hint"><?php echo Yii::t('delt', 'Please enter the letters as they are shown in the image above.') ?>
+		<br /><?php echo Yii::t('delt', 'Letters are not case-sensitive.') ?></p>
+
 		<?php echo $form->error($model,'verifyCode'); ?>
 	</div>
 	<?php endif; ?>
 
 	<div class="row buttons">
-		<?php echo CHtml::submitButton('Submit'); ?>
+		<?php echo CHtml::submitButton(Yii::t('delt', 'Submit')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>
