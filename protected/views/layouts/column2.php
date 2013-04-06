@@ -70,6 +70,15 @@ else
 		$this->endWidget();
 	?>
 
+  <?php
+  /*
+  $this->widget('ext.widgets.SocialShareWidget', array(
+      'url' => isset($this->firm) ? $this->createAbsoluteUrl('/firm/public', array('slug'=>$this->firm->slug)) : $this->createAbsoluteUrl('/site/view'), 
+      'services' => array('google', 'twitter', 'facebook'), 
+      'htmlOptions' => array('class' => 'icons'), 
+      'popup' => true,
+  )) */?><span class="socialhint">&nbsp;<?php //echo Yii::t('delt', 'Spread the word!') ?></span> 
+  
 	</div><!-- sidebar -->
 </div>
 <?php $this->endContent(); ?>

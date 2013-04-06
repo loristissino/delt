@@ -55,6 +55,8 @@ $mainmenu_items=array(
 
 	<div class="clear"></div>
 
+
+
 	<div id="footer">
 		Website based on <a href="http://loristissino.github.com/delt/">DELT</a>, Double Entry Learning Tool (release <?php echo DELT::getVersion() ?>) - Copyright &copy; <?php echo date('Y'); ?> by Loris Tissino.<br/>
 		All Rights Reserved.<br/>
