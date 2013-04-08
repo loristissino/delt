@@ -8,6 +8,8 @@ class Profile extends UActiveRecord
 	 * @var boolean $regMode
 	 */
 	public $regMode = false;
+  
+  public $byAdminMode = false;
 	
 	private $_model;
 	private $_modelReg;
@@ -195,6 +197,10 @@ class Profile extends UActiveRecord
   }
   
   public function checkTerms(){
+    if($this->byAdminMode)
+    {
+      return;
+    }
     if(!$this->terms)
     {
       $this->addError('terms', UserModule::t('You must agree with the Terms of Service and the Privacy Policy.'));
