@@ -668,7 +668,7 @@ class Firm extends CActiveRecord
         {
           $newpost = new Post;
           $newpost->firm_id = $this->id;
-          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'rank') as $property)
+          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank') as $property)
           {
             $newpost->$property = $post->$property;
           }
@@ -833,7 +833,7 @@ class Firm extends CActiveRecord
       foreach($this->posts as $post)
       {
         $values = array();
-        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'rank'));
+        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank'));
         
         foreach($post->debitcredits as $debitcredit)
         {
@@ -928,7 +928,7 @@ class Firm extends CActiveRecord
       {
         $newpost = new Post;
         $newpost->firm_id = $this->id;
-        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'rank'));
+        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank'));
         
         $newpost->save(false);
         

@@ -225,9 +225,12 @@ return array(
   'If you want to create a new one, please delete some of the existing.' => 'Se vuoi crearne una nuova, prima elimina una delle esistenti.',
   'Sorry, you are not allowed to create firms at this time.' => 'Purtroppo, al momento non sei autorizzato a creare aziende.',
   
+  
   'The post has been successfully deleted.' => 'La registrazione è stata correttamente eliminata.',
-  'you cannot do a debit to this kind of account.' => 'non è possibile addebitare questo tipo di conto.',
-  'you cannot do a credit to this kind of account.' => 'non è possibile accreditare questo tipo di conto.',
+  'you cannot do a debit to this kind of account' => 'non è possibile addebitare questo tipo di conto',
+  'you cannot do a credit to this kind of account' => 'non è possibile accreditare questo tipo di conto',
+  '(unless the post is marked as adjustment)' => '(a meno che la registrazione non sia contrassegnata come rettifica)',
+  'Mark this post as adjustment, thus allowing exceptions in debit/credit checks'=>'Contrassegna questa registrazione come rettifica, ammettendo di conseguenza eccezioni nei controlli',
   
   'Synchronize' => 'Sincronizza',
   'Syncronize accounts from ancestor firms' => 'Sincronizza conti da un\'azienda di cui questa è derivazione',
@@ -262,5 +265,7 @@ return array(
   'Body'=>'Testo',
   'We will use your address only to answer your question.'=>'Useremo il tuo indirizzo di posta elettronica solo per rispondere alla domanda.',
   'Get a new code.'=>'Procurati un codice nuovo',
+  
+  'Options' => 'Opzioni',
 );
 

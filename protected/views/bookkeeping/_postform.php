@@ -333,6 +333,12 @@ $cs->registerScript(
     </div><!--accountsrows -->
 
     <?php echo CHtml::activeHiddenField($postform, 'is_closing', array('value'=>$postform->is_closing)) ?>
+    <?php if ($postform->adjustment_checkbox_needed): ?>
+    <div class="row">
+      <?php echo $form->labelEx($postform, 'options') ?>
+      <?php echo $form->checkBox($postform, 'is_adjustment', array('checked'=>$postform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this post as adjustment, thus allowing exceptions in debit/credit checks') ?>
+    </div>
+    <?php endif ?>
     <div class="row buttons">
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'save')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>

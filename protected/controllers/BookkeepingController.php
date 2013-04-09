@@ -171,6 +171,14 @@ class BookkeepingController extends Controller
             Yii::app()->getUser()->setState('lastpostdate', $postform->date);
             $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
           }
+          else
+          {
+            Yii::app()->getUser()->setFlash('delt_failure', 'Something wrong happened.');
+          }
+        }
+        else
+        {
+          Yii::app()->getUser()->setFlash('delt_failure', 'Something strange happened.');
         }
       }
 		}
@@ -239,6 +247,10 @@ class BookkeepingController extends Controller
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
     $postform->currency = $this->firm->currency;
+    if($this->post->is_adjustment)
+    {
+      $postform->adjustment_checkbox_needed = true; 
+    }
     
     $postform->loadFromPost($this->post);
         

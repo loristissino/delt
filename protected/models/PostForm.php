@@ -10,6 +10,8 @@ class PostForm extends CFormModel
   public $debitcredits;
   public $currency;
   public $is_closing = false;
+  public $is_adjustment = false;
+  public $adjustment_checkbox_needed = false;
   
   public $post = null; // the original Post instance
   
@@ -19,7 +21,7 @@ class PostForm extends CFormModel
 	{
 		return array(
 			array('date, description, is_closing', 'required'),
-      array('raw_input', 'safe'),
+      array('raw_input, is_adjustment', 'safe'),
       array('debitcredits', 'checkDebitcredits'),
 		);
 	}
@@ -33,7 +35,8 @@ class PostForm extends CFormModel
 			'date' => Yii::t('delt', 'Date'),
 			'description' => Yii::t('delt', 'Description'),
       'raw_input' => Yii::t('delt', 'Raw input'),
-		);
+      'options' => Yii::t('delt', 'Options')
+      );
 	}
 
   
@@ -79,9 +82,8 @@ class PostForm extends CFormModel
   public function loadFromPost(Post $post)
   {
     $this->post = $post;
-    $this->description = $post->description;
+    DELT::object2object($post, $this, array('description', 'is_closing', 'is_adjustment'));
     $this->date = $post->getDateForFormWidget();
-    $this->is_closing = $post->is_closing;
     foreach($post->debitcredits as $debitcredit)
     {
       $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
@@ -103,16 +105,14 @@ class PostForm extends CFormModel
       // since we use jquery.ui.datepicker and its i18n features, we
       // use the browser locale to know the format used
       
+      DELT::object2object($this, $post, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
       $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
       $post->date= $date ? $date->format('Y-m-d'): $this->date;
       
-      $post->firm_id = $this->firm_id;
-      $post->description = $this->description;
       if($this->is_new)
       {
         $post->rank = $post->getCurrentMaxRank() + 1;
       }
-      $post->is_closing = $this->is_closing;
       
       $post->save(true);
       
@@ -134,8 +134,8 @@ class PostForm extends CFormModel
         }
       }
       
-      
       $transaction->commit();
+
       return true;
       
     }
@@ -150,6 +150,7 @@ class PostForm extends CFormModel
   
   public function checkDebitcredits() // $attribute,$params)
   {
+    
     $grandtotal_debit = 0;
     $grandtotal_credit = 0;
     $errors=false;
@@ -281,23 +282,31 @@ class PostForm extends CFormModel
           $errors=true;
         }
       }
-      /*
-      if(!$this->is_closing && $this->debitcredits[$row]->account->nature=='E')
+      
+      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account->nature=='E')
       {
         if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you cannot do a credit to this kind of account.'));
+          $this->addError('debitcredits', $row_message . 
+            Yii::t('delt', 'you cannot do a credit to this kind of account') . ' ' .
+            Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
+            );
           $this->debitcredits[$row]->credit_errors=true;
           $errors=true;
+          $this->adjustment_checkbox_needed = true;
         }
         if($this->debitcredits[$row]->account->outstanding_balance == 'C' && $debit>0)
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you cannot do a debit to this kind of account.'));
+          $this->addError('debitcredits', $row_message . 
+            Yii::t('delt', 'you cannot do a debit to this kind of account') . ' ' .
+            Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
+            );
           $this->debitcredits[$row]->debit_errors=true;
           $errors=true;
+          $this->adjustment_checkbox_needed = true;
         }
       }
-      */
+      
       
       if(!$errors)
       {
@@ -308,6 +317,7 @@ class PostForm extends CFormModel
 
     if($errors)
     {
+      $this->_fixAmounts();
       return;
     }
     
@@ -327,15 +337,20 @@ class PostForm extends CFormModel
     
     if($this->hasErrors())
     {
-      foreach($this->debitcredits as $row => $debitcredit)
-      {
-        foreach(array('debit', 'credit') as $type)
-        {
-          $this->debitcredits[$row][$type]=$debitcredit[$type] ? DELT::currency_value($debitcredit[$type], $this->currency) : '';
-        }
-      }
+      $this->_fixAmounts();
     }
     
+  }
+  
+  private function _fixAmounts()
+  {
+    foreach($this->debitcredits as $row => $debitcredit)
+    {
+      foreach(array('debit', 'credit') as $type)
+      {
+        $this->debitcredits[$row][$type]=$debitcredit[$type] ? DELT::currency_value($debitcredit[$type], $this->currency) : '';
+      }
+    }
   }
 
 }
