@@ -281,7 +281,7 @@ class PostForm extends CFormModel
           $errors=true;
         }
       }
-      
+      /*
       if(!$this->is_closing && $this->debitcredits[$row]->account->nature=='E')
       {
         if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
@@ -297,6 +297,7 @@ class PostForm extends CFormModel
           $errors=true;
         }
       }
+      */
       
       if(!$errors)
       {
