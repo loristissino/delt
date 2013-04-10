@@ -269,7 +269,8 @@ return array(
   'Options' => 'Opzioni',
   'License' => 'Licenza',
   
-  'The firm is being created.' =>'L\'azienda è in fase di creazione.',
+  'The firm is being forked.' =>'Duplicazione dell\'azienda in corso.',
+  'The data are being imported.' =>'Importazione dei dati in corso.',
   'Please wait a few seconds...' => 'Aspetta qualche secondo...',
   'Copy of "{name}"' => 'Copia di "{name}"',
 );

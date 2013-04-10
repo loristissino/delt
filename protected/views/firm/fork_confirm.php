@@ -7,9 +7,8 @@ $this->breadcrumbs=array(
 	'Fork',
 );
 
-
 $ajax_loader_icon=addslashes($this->createIcon('ajax-loader', Yii::t('delt', 'Please wait...'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Please wait')), '.gif'));
-$please_wait_text = addslashes(Yii::t('delt', 'The firm is being created.') . ' ' . Yii::t('delt', 'Please wait a few seconds...'));
+$please_wait_text = addslashes(Yii::t('delt', 'The firm is being forked.') . ' ' . Yii::t('delt', 'Please wait a few seconds...'));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -19,11 +18,9 @@ $cs->registerScript(
   var ajax_loader_icon = "' . $ajax_loader_icon . '";
   var please_wait_text = "' . $please_wait_text . '";
   
-  $("#forkButton").click(function()
+  $("#submitButton").click(function()
   {
-    console.log("Clicked!");
-    console.log(ajax_loader_icon);
-    $("#forkButton").hide();
+    $("#submitButton").hide();
     $("#pleasewaitSpan").show();
     $("form#myform").submit();
     return false;
@@ -71,7 +68,7 @@ $cs->registerScript(
     <p><?php echo Yii::t('delt', 'Do you want to proceed?') ?></p>
     </div>
     <div class="row submit" id="submitDiv">
-        <?php echo CHtml::submitButton(Yii::t('delt', 'Yes, please, fork this firm'), array('id'=>'forkButton')) ?>
+        <?php echo CHtml::submitButton(Yii::t('delt', 'Yes, please, fork this firm'), array('id'=>'submitButton')) ?>
     </div>
 
       <hr />
