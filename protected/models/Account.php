@@ -336,16 +336,8 @@ class Account extends CActiveRecord
 
       $result = parent::save($runValidation, $attributes);
       
-      foreach(explode("\n", $this->textnames) as $line)
+      foreach($this->getNamesAsArray() as $locale=>$name)
       {
-        $info = explode(':', $line);
-        if (sizeof($info)!=2)
-        {
-          continue;
-        }
-        $locale=trim($info[0]);
-        $name=strip_tags(trim($info[1]));
-        
         if($language = Language::model()->findByLocale($locale))
         {
           // if we don't have a name, it means that it must be deleted
@@ -552,5 +544,24 @@ class Account extends CActiveRecord
     AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
     Yii::trace('names deleted for account ' . $this->id, 'delt.debug');
   }
+  
+  public function getNamesAsArray()
+  {
+    $result=array();
+    foreach(explode("\n", str_replace("\r", "", $this->textnames)) as $line)
+    {
+      $info = explode(':', $line);
+      if (sizeof($info)!=2)
+      {
+        continue;
+      }
+      $locale=trim($info[0]);
+      $name=strip_tags(trim($info[1]));
+      $result[$locale]=$name;
+    }
+    ksort($result);
+    return $result;
+  }
+  
   
 }

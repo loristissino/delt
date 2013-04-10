@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
+	//array('label'=>Yii::t('delt', 'Text list'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug, 'template'=>'coatextlist')),
 	//array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
 );
 if($model->firm_parent_id)
@@ -21,7 +22,7 @@ if($model->firm_parent_id)
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'account-grid',
-	'dataProvider'=>$model->getAccountsAsDataProvider(),
+	'dataProvider'=>$model->getAccountsAsDataProvider(200),
 //	'filter'=>$model,
 	'columns'=>array(
 /*    array(
@@ -101,3 +102,5 @@ if($model->firm_parent_id)
 		),
 	),
 )); ?>
+
+

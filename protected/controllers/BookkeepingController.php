@@ -45,10 +45,10 @@ class BookkeepingController extends Controller
     ));
   }
 
-	public function actionCoa($slug)
+	public function actionCoa($slug, $template='coa')
 	{
     $this->firm=$this->loadModelBySlug($slug);
-		$this->render('coa', array(
+		$this->render($template, array(
       'model'=>$this->firm,
 			'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
     ));
