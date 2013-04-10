@@ -101,7 +101,7 @@ class Firm extends CActiveRecord
 			'language_id' => Yii::t('delt', 'Language'),
 			'firm_parent_id' => Yii::t('delt', 'Parent firm'),
 			'create_date' => Yii::t('delt', 'Create Date'),
-			'license_confirmation' => Yii::t('delt', 'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)),
+			'license'=>Yii::t('delt', 'License'),
 		);
 	}
 

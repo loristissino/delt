@@ -193,9 +193,9 @@ class Controller extends CController
   }
   
   
-  public function createIcon($name, $alt='', $htmlOptions=array())
+  public function createIcon($name, $alt='', $htmlOptions=array(), $extension='.png')
   {
-    return CHtml::image(Yii::app()->request->baseUrl.'/images/' . $name . '.png', $alt, $htmlOptions);
+    return CHtml::image(Yii::app()->request->baseUrl.'/images/' . $name . $extension, $alt, $htmlOptions);
   }
   
 }

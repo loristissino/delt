@@ -52,8 +52,9 @@
   
   <?php if(!$model->id): ?>
     <div class="row checkbox">
-      <?php echo $form->checkBox($model, 'license_confirmation') ?>
-      <?php echo $form->label($model, 'license_confirmation') ?>
+      <?php echo $form->label($model, 'license') ?>
+      <?php echo $form->checkBox($model, 'license_confirmation') ?>&nbsp;
+      <?php echo Yii::t('delt', 'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
     </div>
   <?php endif ?>
   

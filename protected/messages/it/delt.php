@@ -153,7 +153,7 @@ return array(
   
   
   'Data to duplicate:' => 'Dati da duplicare:',
-  'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Sono consapevole del fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
   
   'Chart of Accounts' => 'Piano dei conti',
   'Chart of Accounts and Reasons' => 'Piano dei conti e causali contabili',
@@ -267,5 +267,10 @@ return array(
   'Get a new code.'=>'Procurati un codice nuovo',
   
   'Options' => 'Opzioni',
+  'License' => 'Licenza',
+  
+  'The firm is being created.' =>'L\'azienda è in fase di creazione.',
+  'Please wait a few seconds...' => 'Aspetta qualche secondo...',
+  'Copy of "{name}"' => 'Copia di "{name}"',
 );
 

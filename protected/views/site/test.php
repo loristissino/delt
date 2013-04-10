@@ -10,6 +10,8 @@ $this->pageTitle=Yii::app()->name;
 
 <?php
 
+  //sleep(5);
+  echo "done";
 
 ?>
 </pre>
