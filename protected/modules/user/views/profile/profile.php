@@ -22,8 +22,9 @@ $this->menutitle=UserModule::t('Profile');
 <?php endif; ?>
 
 <div>
-<?php echo CHtml::image(DELT::getGravatar($model->email), Yii::t('delt', 'Gravatar image'), array('width'=>80, 'height'=>80, 'title'=>Yii::t('delt', 'Image from gravatar.com'))) ?>
+<a href="http://www.gravatar.com"><?php echo CHtml::image(DELT::getGravatar($model->email), Yii::t('delt', 'Gravatar image'), array('width'=>80, 'height'=>80, 'title'=>Yii::t('delt', 'Image from gravatar.com'))) ?></a>
 </div>
+
 
 <table class="dataGrid">
 	<tr>

@@ -35,7 +35,7 @@ return array(
         'Lost Password?' => 'Password dimenticata?',
         'Profile' => 'Profilo',
         'activation key' => 'chiave di attivazione',
-        'User activation' => 'attivazione utente',
+        'User activation' => 'Attivazione utente',
         'You account is active.' => 'Il tuo account è attivo.',
         'You account is activated.' => 'Il tuo account è stato attivato.',
         'Incorrect activation URL.' => 'URL di attivazione non corretta',
