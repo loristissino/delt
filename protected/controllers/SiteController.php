@@ -59,9 +59,11 @@ class SiteController extends Controller
 	public function actionContact()
 	{
 		$model= Yii::app()->user->isGuest ? new ContactForm : new ContactFormForUsers;
-		if(isset($_POST['ContactForm']))
+    $formname=get_class($model);
+    
+		if(isset($_POST[$formname]))
 		{
-			$model->attributes=$_POST['ContactForm'];
+			$model->attributes=$_POST[$formname];
 			if($model->validate())
 			{
 				$name='=?UTF-8?B?'.base64_encode($model->name).'?=';

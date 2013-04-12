@@ -38,7 +38,7 @@ class ContactForm extends CFormModel
 		return array(
 			'verifyCode'=>Yii::t('delt', 'Verification Code'),
       'name'=>Yii::t('delt', 'Name'),
-      'email'=>Yii::t('delt', 'Email'),
+      'email'=>Yii::t('delt', 'Email where you want to receive a reply'),
       'subject'=>Yii::t('delt', 'Subject'),
       'body'=>Yii::t('delt', 'Body'),
 		);

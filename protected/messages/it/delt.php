@@ -260,11 +260,11 @@ return array(
   
   'Verification Code'=> 'Codice di verifica',
   'Name'=>'Nome',
-  'Email'=>'Email',
+  'Email where you want to receive a reply'=>'Email alla quale vuoi ricevere la risposta',
   'Subject'=>'Oggetto',
   'Body'=>'Testo',
   'We will use your address only to answer your question.'=>'Useremo il tuo indirizzo di posta elettronica solo per rispondere alla domanda.',
-  'Get a new code.'=>'Procurati un codice nuovo',
+  'Get a new code.'=>'Procurati un nuovo codice',
   
   'Options' => 'Opzioni',
   'License' => 'Licenza',
