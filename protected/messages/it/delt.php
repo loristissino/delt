@@ -273,5 +273,11 @@ return array(
   'The data are being imported.' =>'Importazione dei dati in corso.',
   'Please wait a few seconds...' => 'Aspetta qualche secondo...',
   'Copy of "{name}"' => 'Copia di "{name}"',
+  
+  
+  'For security reasons, do not use a password that you use on other sites.' => 'Per questioni di sicurezza, non usare una password che usi anche in altri siti.',
+  'Your email is going to be used only for passowrd recovery and for important news regarding the website.'=>'Il tuo indirizzo di posta elettronica verrà usato solo per l\'eventuale recupero della password e per l\'invio di notizie importanti riguardanti il sito.',
+  'We will not show it in the website nor give it away without your consent.'=>'Non verrà mostrato nel sito web né ceduto ad altri senza il tuo consenso.',
+  
 );
 

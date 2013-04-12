@@ -132,7 +132,7 @@ return array(
         'unselected (use browser\'s preferences)' => 'non selezionata (usa preferenze del browser)',
         
         'I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.' => 
-            'Ho preso visione di <a href="{tos}">Termini e condizioni</a> e dell\'<a href="{privacy}">Informativa sul trattamento dei dati personali</a>, e li accetto.',
+            'Dichiaro di accettare <a href="{tos}">i termini e le condizioni</a> e di aver preso visione dell\'<a href="{privacy}">informativa sul trattamento dei dati personali</a>.',
     
         'You must agree with the Terms of Service and the Privacy Policy.' => 'Devi accettare Termini e condizioni e dichiarare di aver preso visione dell\'Informativa sul trattamento dei dati personali.'
 

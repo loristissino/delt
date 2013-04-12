@@ -38,7 +38,8 @@ $this->breadcrumbs=array(
 	<?php echo $form->passwordField($model,'password'); ?>
 	<?php echo $form->error($model,'password'); ?>
 	<p class="hint">
-	<?php echo UserModule::t("Minimal password length 4 symbols."); ?>
+	<?php echo UserModule::t('Minimal password length 4 symbols.'); ?><br />
+	<?php echo Yii::t('delt', 'For security reasons, do not use a password that you use on other sites.') ?>
 	</p>
 	</div>
 	
@@ -52,6 +53,10 @@ $this->breadcrumbs=array(
 	<?php echo $form->labelEx($model,'email'); ?>
 	<?php echo $form->textField($model,'email'); ?>
 	<?php echo $form->error($model,'email'); ?>
+	<p class="hint">
+	<?php echo Yii::t('delt', 'Your email is going to be used only for passowrd recovery and for important news regarding the website.') ?><br />
+	<?php echo Yii::t('delt', 'We will not show it in the website nor give it away without your consent.') ?>
+	</p>
 	</div>
 	
 <?php 
