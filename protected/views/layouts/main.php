@@ -28,6 +28,8 @@ $mainmenu_items=array(
 	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
   
   <link rel="icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/doubleentry.png" type="image/png" />
+  
+  <link type="text/plain" rel="author" href="<?php echo Yii::app()->request->baseUrl; ?>/humans.txt" />
 
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 </head>
