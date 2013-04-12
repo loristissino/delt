@@ -65,6 +65,6 @@ $mainmenu_items=array(
 	</div><!-- footer -->
 
 </div><!-- page -->
-
+<?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
 </body>
 </html>
