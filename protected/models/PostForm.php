@@ -326,7 +326,7 @@ class PostForm extends CFormModel
        $this->addError('debitcredits', Yii::t('delt', 'No amounts specified.'));
     }
     
-    if($grandtotal_debit != $grandtotal_credit)
+    if(abs($grandtotal_debit - $grandtotal_credit)>0.001) // floating point operations may yeld differences like -5.8207660913467E-11...
     {
        $this->addError('debitcredits',
         Yii::t('delt', 'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).', array('{debits}'=>DELT::currency_value($grandtotal_debit, $this->currency, false, true), '{credits}'=>DELT::currency_value($grandtotal_credit, $this->currency, false, true)))
