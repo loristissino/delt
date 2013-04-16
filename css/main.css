@@ -418,14 +418,15 @@ span.negativeamount
   color: #8D0F0F;
 }
 
-span.jdebit
+div.jdebit
 {
   padding-left: 0px;
 }
 
-span.jcredit
+div.jcredit
 {
-  padding-left: 20px;
+/*  padding-left: 20px; */
+  margin-left: 20px;
 }
 
 .syncaccountstable
