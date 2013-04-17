@@ -1,8 +1,8 @@
 <?php /* @var $this Controller */ 
 
 $mainmenu_items=array(
-				array('label'=>Yii::t('delt', 'Home'), 'url'=>array('/site/page', 'view'=>Yii::app()->language . '.index')),
-				array('label'=>Yii::t('delt','About'), 'url'=>array('/site/page', 'view'=>Yii::app()->language . '.about')),
+				array('label'=>Yii::t('delt', 'Home'), 'url'=>array('/site/'. Yii::app()->language . '/index')),
+				array('label'=>Yii::t('delt','About'), 'url'=>array('/site/'. Yii::app()->language . '/about')),
 				array('label'=>Yii::t('delt','Contact'), 'url'=>array('/site/contact')),
 				array('label'=>Yii::t('delt','Bookkeeping'), 'url'=>array('/bookkeeping/index'), 'visible'=>!Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),

@@ -8,7 +8,7 @@
   
   foreach($languages as $id => $name)
   {
-    $links[]=CHtml::link($name, $this->createUrl('site/page', array('view'=>$id. '.'. $page)));
+    $links[]=CHtml::link($name, $this->createUrl('site/' . $id. '/'. $page));
   }
 
 ?>
