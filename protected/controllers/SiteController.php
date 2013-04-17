@@ -27,7 +27,7 @@ class SiteController extends Controller
 	 */
 	public function actionIndex()
 	{
-    return $this->redirect(array('site/page', 'view'=>Yii::app()->language . '.index'));
+    return $this->redirect(array('site/' . Yii::app()->language . '/index'));
 	}
 
 	/**
