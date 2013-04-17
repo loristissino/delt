@@ -9,17 +9,17 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Economic closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'E')),
+	array('label'=>Yii::t('delt', 'Economic closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'collocation'=>'E')),
 	array('label'=>Yii::t('delt', 'Profit/Loss'), 'url'=>array('bookkeeping/profitlosspost', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Patrimonial closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'P')),
-	array('label'=>Yii::t('delt', 'Memo closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'nature'=>'M')),
+	array('label'=>Yii::t('delt', 'Patrimonial closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'collocation'=>'P')),
+	array('label'=>Yii::t('delt', 'Memo closing'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug, 'collocation'=>'M')),
 );
 
 ?>
 <h1><?php echo Yii::t('delt', $this->postdescription) ?></h1>
 
-<?php if($nature): ?>
-<p><?php echo Yii::t('delt', 'This firm does not seem to have accounts of nature «{nature}» to close.', array('{nature}'=>Account::model()->getValidNatureByCode($nature))) ?></p>
+<?php if($collocation): ?>
+<p><?php echo Yii::t('delt', 'This firm does not seem to have accounts of «{collocation}» collocation to close.', array('{collocation}'=>Account::model()->getValidCollocationByCode($collocation))) ?></p>
 <?php else: ?>
 <p><?php echo Yii::t('delt', 'Please choose the kind of closing you need on the side menu.') ?></p>
 <?php endif ?>

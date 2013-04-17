@@ -27,20 +27,20 @@ return array(
   'Description' => 'Descrizione',
   'Comment' => 'Commento',
 
-  'Nature' => 'Natura',
-  'P<!-- nature -->' => 'P',  // conti patrimoniali (stato patrimoniale)
-  'E<!-- nature -->' => 'E',  // conti economici (reddito di esercizio)
-  'M<!-- nature -->' => 'O',  // conti d'ordine
-  'p<!-- nature -->' => 'p',  // transitorio patrimoniale
-  'e<!-- nature -->' => 'e',  // transitorio economica
-  'r<!-- nature -->' => 'r',  // risultato di esercizio
+  'Collocation' => 'Collocazione',
+  'FS<!-- collocation -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
+  'IS<!-- collocation -->' => 'CE',  // conti economici (reddito di esercizio)
+  'M<!-- collocation -->' => 'O',  // conti d'ordine
+  'p<!-- collocation -->' => 'p',  // transitorio patrimoniale
+  'e<!-- collocation -->' => 'e',  // transitorio economica
+  'r<!-- collocation -->' => 'r',  // risultato di esercizio
 
-  'Patrimonial (Asset / Liability / Equity)' => 'Patrimoniale (Attività / Passività / Capitale proprio)',
-  'Economic (Profit / Loss)' => 'Economica (Ricavo / Costo)',
-  'Memorandum' => 'Conto d\'ordine', 
-  'Transitory Patrimonial Account' => 'Conto transitorio patrimoniale',
-  'Transitory Economic Account' => 'Conto transitorio economico',
-  'Result Account (Net profit / Total loss)' => 'Risultato di esercizio',  
+  'Financial Statement (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
+  'Income Statement (Revenues / Expenses)' => 'Conto economico (Ricavi / Costi)',
+  'Memorandum Accounts Table' => 'Tavola dei Conti d\'ordine', 
+  'Transitory Financial Statement Accounts' => 'Conti transitori per la situazione patrimoniale',
+  'Transitory Income Statement Accounts' => 'Conti transitori per la situazione economica',
+  'Result Accounts (Net profit / Total loss)' => 'Risultato di esercizio',  
   'Assets'=>'Attività',
   'Liabilities and Equity' => 'Passività e patrimonio',
   'Revenues' => 'Ricavi',  
@@ -48,8 +48,9 @@ return array(
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',
-  'D<!-- outstanding balance -->' => 'D',  // "dare"
-  'C<!-- outstanding balance -->' => 'A',  // "avere"
+  'Dr.<!-- outstanding balance -->' => 'D',  // "dare"
+  'Cr.<!-- outstanding balance -->' => 'A',  // "avere"
+  // see http://blog.accountingcoach.com/debit-credit/
   'unset' => 'non impostata',
   'Debit' => 'Dare',
   'Credit' => 'Avere',
@@ -75,6 +76,9 @@ return array(
   'Add a row' => 'Aggiungi una riga',
   
   'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:' => 'L\'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
+  
+  'This firm does not have any journal post yet.'=>'Quest\'azienda non ha ancora nessuna registrazione in partita doppia.',
+  'Create a new one now.' => 'Preparane una adesso.', 
   
   'Row {row}: ' => 'Riga {row}: ',
   'the account with code "{code}" is not available.' => 'Il conto con codice "{code}" non è disponibile.',
@@ -114,7 +118,7 @@ return array(
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
   'Please fix the following errors:' => 'Devi correggere i seguenti errori:',
 
-  'This firm does not seem to have accounts of nature «{nature}» to close.'=> 'Questa azienda non sembra avere conti di natura «{nature}» da chiudere.',
+  'This firm does not seem to have accounts with «{collocation}» collocation to close.'=> 'Questa azienda non sembra avere conti con collocazione «{collocation}» da chiudere.',
   
   'Reasons' => 'Causali',
   'Create Reason' => 'Crea causale',

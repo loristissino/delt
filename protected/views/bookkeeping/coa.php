@@ -55,9 +55,9 @@ if($model->firm_parent_id)
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
-      'name'=>'nature',
-      'header'=>Yii::t('delt', 'Nature'),
-      'value'=>array($this, 'RenderNature'),
+      'name'=>'collocation',
+      'header'=>Yii::t('delt', 'Collocation'),
+      'value'=>array($this, 'RenderCollocation'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),

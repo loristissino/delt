@@ -68,7 +68,7 @@ class AccountController extends Controller
     {
       $parent = $this->loadAccount($id);
       $model->code = $parent->code . '.';
-      $model->nature = $parent->nature;
+      $model->collocation = $parent->collocation;
       $model->outstanding_balance = $parent->outstanding_balance;
     }
 

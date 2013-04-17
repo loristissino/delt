@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
 <?php echo Yii::t('delt', 'Examples of possible problems include:') ?>
 </p>
 <ul>
-  <li><?php echo Yii::t('delt', 'changes in the code or in the nature of an account, that must be propagated to the children') ?></li>
+  <li><?php echo Yii::t('delt', 'changes in the code or in the collocation of an account, that must be propagated to the children') ?></li>
   <li><?php echo Yii::t('delt', 'insertion of an account as a child of another account, that must be therefore be marked as unselectable') ?></li>
   <li><?php echo Yii::t('delt', 'deletion of all the children of an account, that must be therefore marked as selectable') ?></li>
 </ul>

@@ -11,7 +11,7 @@
  * @property string $code
  * @property string $rcode
  * @property integer $is_selectable
- * @property string $nature
+ * @property string $collocation
  * @property string $outstanding_balance
  * @property string $l10n_names
  * @property string $textnames
@@ -55,13 +55,13 @@ class Account extends CActiveRecord
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
-      array('nature', 'checkNature'),
+      array('collocation', 'checkCollocation'),
       array('comment', 'checkComment'),
-			array('nature,outstanding_balance', 'length', 'max'=>1),
+			array('collocation,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_parent_id, firm_id, level, code, is_selectable, nature, outstanding_balance', 'safe', 'on'=>'search'),
+			array('id, account_parent_id, firm_id, level, code, is_selectable, collocation, outstanding_balance', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -100,7 +100,7 @@ class Account extends CActiveRecord
 			'level' => 'Level',
 			'code' => Yii::t('delt', 'Code'),
 			'is_selectable' => 'Is Selectable',
-			'nature' => Yii::t('delt', 'Nature'),
+			'collocation' => Yii::t('delt', 'Collocation'),
 			'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
       'number_of_children' => Yii::t('delt', 'Number of children'),
@@ -109,27 +109,37 @@ class Account extends CActiveRecord
 	}
   
 	/**
-	 * @return array valid account natures (key=>label)
+	 * @return array valid account collocations (key=>label)
 	 */
-	public function validNatures()
+	public function validCollocations()
 	{
 		return array(
-      'P'=>Yii::t('delt', 'Patrimonial (Asset / Liability / Equity)'),
-      'E'=>Yii::t('delt', 'Economic (Profit / Loss)'),
-      'M'=>Yii::t('delt', 'Memorandum'),
-      'p'=>Yii::t('delt', 'Transitory Patrimonial Account'),
-      'e'=>Yii::t('delt', 'Transitory Economic Account'),
-      'r'=>Yii::t('delt', 'Result Account (Net profit / Total loss)'),
+      'P'=>Yii::t('delt', 'Financial Statement (Asset / Liability / Equity)'),
+      'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
+      'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
+      'p'=>Yii::t('delt', 'Transitory Financial Statement Accounts'),
+      'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
+      'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
       ); 
 	}
+  
+  public function getCollocationLabel()
+  {
+    switch($this->collocation)
+    {
+      case 'P': return 'FS';
+      case 'E': return 'IS';
+      default: return $this->collocation;
+    }
+  }
 
 	/**
-	 * @return array valid account natures
+	 * @return array valid account collocations
 	 */
-	public function getValidNatureByCode($code)
+	public function getValidCollocationByCode($code)
   {
-    $natures=$this->validNatures();
-    return isset($natures[$code]) ? $natures[$code] : null;
+    $collocations=$this->validCollocations();
+    return isset($collocations[$code]) ? $collocations[$code] : null;
   }
   
 
@@ -151,7 +161,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
-    $criteria->compare('nature',$this->nature);
+    $criteria->compare('collocation',$this->collocation);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
 		return new CActiveDataProvider($this, array(
@@ -477,7 +487,7 @@ class Account extends CActiveRecord
     $sort->attributes = array(
         'code'=>'code',
         'name'=>'currentname.name',
-        'nature'=>'nature',
+        'collocation'=>'collocation',
     );    
   */  
     return new CActiveDataProvider(Debitcredit::model()->with('post')->belongingTo($this->id), array(
@@ -489,11 +499,11 @@ class Account extends CActiveRecord
     );
   }
   
-  public function checkNature()
+  public function checkCollocation()
   {
-     if(!in_array($this->nature, array_keys($this->validNatures())))
+     if(!in_array($this->collocation, array_keys($this->validCollocations())))
      {
-       $this->addError('nature', Yii::t('delt', 'Not a valid nature.'));
+       $this->addError('collocation', Yii::t('delt', 'Not a valid collocation.'));
      } 
   }
 

@@ -24,7 +24,7 @@ if(isset($ancestor))
           $account->code, 
           nl2br($account->textnames), 
           nl2br($account->comment),
-          Yii::t('delt', $account->nature),
+          Yii::t('delt', $account->collocation),
           Yii::t('delt', $account->outstanding_balance),
         )
       ) . '</td>';
@@ -99,7 +99,7 @@ if(isset($ancestor))
         <th><?php echo Yii::t('delt', 'Code') ?></th>
         <th><?php echo Yii::t('delt', 'Name') ?></th>
         <th><?php echo Yii::t('delt', 'Comment') ?></th>
-        <th><?php echo Yii::t('delt', 'Nature') ?></th>
+        <th><?php echo Yii::t('delt', 'Collocation') ?></th>
         <th><?php echo Yii::t('delt', 'Outstanding balance') ?></th>
       </tr>
     <?php echo CHtml::checkBoxList(

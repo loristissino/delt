@@ -184,9 +184,9 @@ class BookkeepingController extends Controller
     ));
 	}
   
-  public function actionClosingpost($slug, $nature='')
+  public function actionClosingpost($slug, $collocation='')
   {
-    switch($nature)
+    switch($collocation)
     {
       case 'P':
         $this->postdescription=Yii::t('delt', 'Patrimonial closing post');
@@ -198,11 +198,11 @@ class BookkeepingController extends Controller
         $this->postdescription=Yii::t('delt', 'Memo closing post');
         break;
       default:
-        $nature='';
+        $collocation='';
         $this->postdescription=Yii::t('delt', 'Closing post');
     }
     $this->firm=$this->loadModelBySlug($slug);
-    $this->accounts = $this->firm->getAccountBalances($nature);
+    $this->accounts = $this->firm->getAccountBalances($collocation);
     $this->is_closing = true;
     
     if(sizeof($this->accounts))
@@ -211,7 +211,7 @@ class BookkeepingController extends Controller
       // we show the standard form
     }
     
-    $this->render('closingpost', array('nature'=>$nature, 'model'=>$this->firm));
+    $this->render('closingpost', array('collocation'=>$collocation, 'model'=>$this->firm));
     
   }
 
@@ -227,7 +227,7 @@ class BookkeepingController extends Controller
       // we show the standard form
     }
     
-    $this->render('closingpost', array('nature'=>'e', 'model'=>$this->firm));
+    $this->render('closingpost', array('collocation'=>'e', 'model'=>$this->firm));
   }
 
 	public function actionUpdatepost($id)
@@ -445,9 +445,9 @@ class BookkeepingController extends Controller
     return $this->renderPartial('../account/_name',array('account'=>$account),true);
   }
 
-  public function renderNature(Account $account, $row)
+  public function renderCollocation(Account $account, $row)
   {
-    return $this->renderPartial('../account/_nature',array('account'=>$account),true);
+    return $this->renderPartial('../account/_collocation',array('account'=>$account),true);
   }
   
   public function renderOutstandingBalance(Account $account, $row)

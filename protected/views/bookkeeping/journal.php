@@ -22,8 +22,12 @@ if(sizeof($model->posts))
     );  
 }
 
+$dp = $this->firm->getPostsAsDataProvider();
+
 ?>
 <h1><?php echo Yii::t('delt', 'Journal') ?></h1>
+
+<?php if(sizeof($dp->data)): ?>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'firm-grid',
@@ -85,3 +89,9 @@ if(sizeof($model->posts))
 	),
 )); ?>
 
+<?php else: ?>
+<p>
+<?php echo Yii::t('delt', 'This firm does not have any journal post yet.') ?> 
+<?php echo CHtml::link(Yii::t('delt', 'Create a new one now.'), array('bookkeeping/newpost', 'slug'=>$model->slug)) ?>
+</p>
+<?php endif ?>

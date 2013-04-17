@@ -18,8 +18,8 @@ $totalcredits=$this->firm->getTotalAmounts('C');
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
     array(
-      'name'=>'nature',
-      'header'=>Yii::t('delt', 'Nature'),
+      'name'=>'collocation',
+      'header'=>Yii::t('delt', 'Collocation'),
       'sortable'=>false,
       ),
     array(
