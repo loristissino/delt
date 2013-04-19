@@ -55,7 +55,7 @@ return array(
   'Debit' => 'Dare',
   'Credit' => 'Avere',
   'According to its definition, the account should not have this kind of outstanding balance.' => 'In base alla sua definizione, il conto non dovrebbe avere questo tipo di eccedenza.',
-  
+  'No.'=>'N.',
   
   'Total Debit' => 'Totale Dare',
   'Total Credit' => 'Totale Avere',
@@ -178,7 +178,7 @@ return array(
   
   'Row' => 'Riga',
   'The code cannot end with a dot.' => 'Il codice non può finire con un punto.',
-  'Total:' => 'Totale',
+  'Total:' => 'Totale:',
   
   'Delete' => 'Elimina',
   'Delete this firm' => 'Elimina questa azienda',

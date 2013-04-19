@@ -60,7 +60,12 @@ class FirmController extends Controller
 
   public function actionPublic($slug)
   {
-    throw new CHttpException(501, 'Not yet implemented.');
+    $this->firm=$this->loadFirmBySlug($slug, false);
+    $this->render('public', array(
+      'model'=>$this->firm
+    ));
+    
+    //throw new CHttpException(501, 'Not yet implemented.');
   }
 
   public function actionOwners($slug)
