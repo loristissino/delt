@@ -19,7 +19,7 @@ $available_firms = $this->DEUser->profile->allowed_firms - sizeof($this->DEUser-
   <h2><?php echo Yii::t('delt', 'Public firms') ?></h2>
   <ul>
   <?php foreach($publicfirms as $firm): ?>
-    <li><?php echo CHtml::link($firm, $this->createUrl('firm/fork', array('slug'=>$firm->slug)), array('title'=>Yii::t('delt', 'Fork this firm'))) ?></li>
+    <li><?php echo CHtml::link($firm, $this->createUrl('firm/fork', array('slug'=>$firm->slug)), array('title'=>Yii::t('delt', 'Fork the firm «{firm}»', array('{firm}'=>$firm->name)))) ?></li>
   <?php endforeach ?>
   </ul>
 
