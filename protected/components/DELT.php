@@ -82,7 +82,7 @@ class DELT
   
   public static function amount2type($amount, $with_html_comment=true)
   {
-    $type = $amount > 0 ? 'D' : ($amount < 0 ? 'C': null);
+    $type = $amount > 0 ? 'Dr.' : ($amount < 0 ? 'Cr.': null);
     if($with_html_comment)
     {
       $type .='<!-- outstanding balance -->';
