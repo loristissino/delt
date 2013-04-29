@@ -130,6 +130,7 @@ class BookkeepingController extends Controller
     
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
+    $postform->firm = $this->firm;  // FIXME: if we set the firm, we don't need to set the other values... here for compatibility only
     $postform->currency = $this->firm->currency;
     
     if(!$postform->date)

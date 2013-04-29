@@ -21,12 +21,16 @@ $totalcredits=$this->firm->getTotalAmounts('C');
       'name'=>'collocation',
       'header'=>Yii::t('delt', 'Collocation'),
       'sortable'=>false,
+      'value'=>array($this, 'RenderCollocation'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'centered')
       ),
     array(
       'name'=>'account',
       'header'=>Yii::t('delt', 'Account'),
       'value'=>array($this, 'RenderSingleAccount'),
       'type'=>'raw',
+      'cssClassExpression'=>'$data->collocation == \'?\' ? \'uncollocated\' : \'\'',
       ),
     array(
       'class'=>'CDataColumn',

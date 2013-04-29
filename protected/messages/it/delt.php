@@ -34,6 +34,7 @@ return array(
   'p<!-- collocation -->' => 'p',  // transitorio patrimoniale
   'e<!-- collocation -->' => 'e',  // transitorio economica
   'r<!-- collocation -->' => 'r',  // risultato di esercizio
+  'u<!-- collocation -->' => '?',  // non assegnata / sconosciuta
 
   'Financial Statement (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
   'Income Statement (Revenues / Expenses)' => 'Conto economico (Ricavi / Costi)',
@@ -45,6 +46,8 @@ return array(
   'Liabilities and Equity' => 'Passività e patrimonio',
   'Revenues' => 'Ricavi',  
   'Expenses' => 'Costi',  
+  'Unknown' => 'Sconosciuta',
+  'This account has not been correctly collocated.'=>'Questo conto non risulta correttamente collocato.',
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',

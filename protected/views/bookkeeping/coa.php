@@ -44,6 +44,7 @@ if($model->firm_parent_id)
       'value'=>array($this, 'RenderName'),
       // this will call the function RenderName() of the Controller, passing the current object and the row number as parameter
       'type'=>'raw',
+      'cssClassExpression'=>'$data->collocation == \'?\' ? \'uncollocated\' : \'\'',
       ),
     /* the following works, but we don't really need it
     array(

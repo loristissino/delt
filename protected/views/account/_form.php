@@ -38,7 +38,7 @@
      <?php echo $form->dropDownList(
         $model, 
         'collocation',
-        $model->validCollocations()
+        $model->validCollocations(false)
          )
       ?>
 		<?php echo $form->error($model,'collocation'); ?>

@@ -180,6 +180,8 @@ class FirmController extends Controller
 
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
+     
+     $old_language_id = $model->language_id;
 
 		if(isset($_POST['Firm']))
 		{
@@ -189,6 +191,10 @@ class FirmController extends Controller
         try
         {
           $model->save(false);
+          if($model->language_id != $old_language_id)
+          {
+            $model->fixAccountNames();
+          }
           Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
           $this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
         }

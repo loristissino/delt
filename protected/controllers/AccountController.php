@@ -63,6 +63,7 @@ class AccountController extends Controller
     $this->firm = $this->loadFirmBySlug($slug);
 		$model=new Account;
     $model->firm_id = $this->firm->id;
+    $model->firm = $this->firm;
 
     if($id)
     {
@@ -103,7 +104,7 @@ class AccountController extends Controller
 	{
 		$account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
-    if(!$account->textnames = $account->l10n_names)
+    if(!$account->textnames) //DELTOD = $account->l10n_names)
     {
       $account->setDefaultForNames();
     }

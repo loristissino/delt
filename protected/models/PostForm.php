@@ -4,6 +4,7 @@ class PostForm extends CFormModel
 {
 
   public $firm_id;
+  public $firm;
   public $date;
   public $description;
   public $raw_input;
@@ -119,12 +120,20 @@ class PostForm extends CFormModel
       $post->deleteDebitcredits();
       
       $rank = 1;
-      
       foreach($this->debitcredits as $debitcreditform)
       {
         if($debitcreditform->account_id)
         {
           $Debitcredit = new Debitcredit();
+          
+          
+          if(substr($debitcreditform->account_id, 0, 1)=='!')
+          {
+            $debitcreditform->account->cleanup($this->firm);
+            $debitcreditform->account->basicSave(false);
+            $debitcreditform->account_id = $debitcreditform->account->id;
+          }
+          
           $Debitcredit->post_id = $post->id;
           $Debitcredit->account_id = $debitcreditform->account_id;
           $Debitcredit->amount = $debitcreditform->debit - $debitcreditform->credit;
@@ -156,6 +165,7 @@ class PostForm extends CFormModel
     $errors=false;
     
     $used_accounts = array();
+    $bang_accounts = array();
 
     $line_number = 0;
     foreach($this->debitcredits as $row => $debitcredit)
@@ -168,11 +178,19 @@ class PostForm extends CFormModel
         // when the account name is not given, the whole line is completely ignored...
         continue;
       }
+
+      if(strpos($debitcredit['name'], '!')!==false)
+      {
+        // the bang sign means we have to create one (in the final transaction)
+        $account = $this->firm->createBangAccount($debitcredit['name']);
+      }
+      else
+      {
+        $info = explode(' - ', $debitcredit['name']);
+        $code = trim($info[0]);
+        $account = Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id, 'is_selectable'=>true));
+      }
       
-      $info = explode(' - ', $debitcredit['name']);
-      $code = trim($info[0]);
-      
-      $account = Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id, 'is_selectable'=>true));
       if(!$account)
       {
         $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" is not available.', array('{code}'=>$code)));

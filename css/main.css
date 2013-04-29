@@ -400,6 +400,11 @@ span.negativeamount
   background-color: #9AF29A;
 }
 
+.uncollocated
+{
+  background-color: #FFFF00;
+}
+
 .important
 {
   background:#fffbcc;

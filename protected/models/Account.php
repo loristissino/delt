@@ -15,6 +15,7 @@
  * @property string $outstanding_balance
  * @property string $l10n_names
  * @property string $textnames
+ * @property string $currentname
  * @property integer $number_of_children
  * @property string $comment
  *
@@ -55,10 +56,12 @@ class Account extends CActiveRecord
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
+      array('code', 'checkCode'),
       array('collocation', 'checkCollocation'),
       array('comment', 'checkComment'),
 			array('collocation,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'safe'),
+      array('currentname', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, account_parent_id, firm_id, level, code, is_selectable, collocation, outstanding_balance', 'safe', 'on'=>'search'),
@@ -75,8 +78,8 @@ class Account extends CActiveRecord
 		return array(
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
-      'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
-      'currentname' => array(self::HAS_ONE, 'AccountName', '', 'on' => 'currentname.account_id = t.id and currentname.language_id = firm.language_id'),
+      //DELTOD 'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
+      //DELTOD 'currentname' => array(self::HAS_ONE, 'AccountName', '', 'on' => 'currentname.account_id = t.id and currentname.language_id = firm.language_id'),
       'debitgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
         'select'=>'SUM(amount)',
         'condition'=>'amount > 0',
@@ -111,9 +114,9 @@ class Account extends CActiveRecord
 	/**
 	 * @return array valid account collocations (key=>label)
 	 */
-	public function validCollocations()
+	public function validCollocations($withUncollocated=true)
 	{
-		return array(
+    $collocations = array(
       'P'=>Yii::t('delt', 'Financial Statement (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
       'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
@@ -121,6 +124,11 @@ class Account extends CActiveRecord
       'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
       'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
       ); 
+    if($withUncollocated)
+    {
+      $collocations['?'] = Yii::t('delt', 'Unknown');
+    }
+    return $collocations;
 	}
   
   public function getCollocationLabel()
@@ -175,6 +183,10 @@ class Account extends CActiveRecord
 	 */
 	public function getName()
 	{
+    return $this->currentname;
+    
+    //DELTOD
+    /*
     //Yii::trace('getName() called, account ' . $this->id, 'delt.debug');
     if($record = AccountName::model()->findByAttributes(array('account_id'=>$this->id, 'language_id'=>$this->firm->language_id)))
     {
@@ -192,6 +204,7 @@ class Account extends CActiveRecord
         return '[unnamed]';
       }
     }
+    */
 	}
   
   public function getParent()
@@ -227,6 +240,8 @@ class Account extends CActiveRecord
     return $this;
   }
   
+  //DELTOD
+  /*
   public function getL10n_names()
   {
     $text='';
@@ -237,6 +252,7 @@ class Account extends CActiveRecord
     }
     return $text;
   }
+  */
   
   /**
 	 * Deletes the row corresponding to this active record.
@@ -244,6 +260,7 @@ class Account extends CActiveRecord
 	 * @throws CException if the record is new
    * @override parent::delete()
 	 */
+  /* DELTOD
 	public function delete()
 	{
 		if(!$this->getIsNewRecord())
@@ -273,7 +290,7 @@ class Account extends CActiveRecord
 		else
 			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
 	}
-  
+  */
   public function getNumberOfPosts()
   {
     return Debitcredit::model()->countByAttributes(array('account_id'=>$this->id));
@@ -296,18 +313,6 @@ class Account extends CActiveRecord
   
   protected function beforeSave()
   {
-    if($this->_codeContainsOnlyValidChars())
-    {
-      $this->addError('code', Yii::t('delt', 'The code contains illegal characters.'));
-      return false;
-    }
-    
-    if(substr($this->code, -1, 1)=='.')
-    {
-      $this->addError('code', Yii::t('delt', 'The code cannot end with a dot.'));
-      return false;
-    }
-    
     $this->level = sizeof(explode('.', $this->code));
     
     if($this->level > 1)
@@ -339,72 +344,31 @@ class Account extends CActiveRecord
   public function save($runValidation=true,$attributes=null)
   {
     $this->_computeRcode();
-    
+    $this->setName();
     try
     {
-      $transaction = $this->getDbConnection()->beginTransaction();
-
-      $result = parent::save($runValidation, $attributes);
-      
-      foreach($this->getNamesAsArray() as $locale=>$name)
-      {
-        if($language = Language::model()->findByLocale($locale))
-        {
-          // if we don't have a name, it means that it must be deleted
-          if($name=='')
-          {
-            try
-            {
-              AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id, 'language_id'=>$language->id));
-            }
-            catch(Exception $e1)
-            {
-              // this should'n happen...
-            }
-          }
-          else // we have a name, it means that we must maybe add it
-          {
-            $account_name = AccountName::model()->findByAttributes(array('account_id'=>$this->id, 'language_id'=>$language->id));
-            if(!$account_name)
-            {
-              $account_name = new AccountName();
-              $account_name->account_id = $this->id;
-              $account_name->language_id = $language->id;
-            }
-            if($account_name->name !== $name)
-            {
-              $account_name->name = $name;
-              try
-              {
-                $account_name->save();
-              }
-              catch(Exception $e2)
-              {
-                // shouldn't happen...
-              }
-            }
-          }
-        }
-      }
-
-
-      
-      $transaction->commit();
-
+      parent::save($runValidation, $attributes);
+      return true;
     }
-    catch (Exception $e)
+    catch(Exception $e)
     {
       $this->addError('code', Yii::t('delt', 'This code is already in use.'));
-      $result = false;
-      $transaction->rollback();
+      return false;
     }
-    return $result;
   }
   
   public function basicSave($runValidation=true,$attributes=null)
   {
     $this->_computeRcode();
-    return parent::save($runValidation, $attributes);
+    $this->setName();
+    try
+    {
+      return parent::save($runValidation, $attributes);
+    }
+    catch (Exception $e)
+    {
+      die($e->getMessage());
+    }
   }
   
   /*
@@ -424,7 +388,11 @@ class Account extends CActiveRecord
    */
   private function _codeContainsOnlyValidChars()
   {
-    return !preg_match('/^[a-zA-Z0-9\.]*$/', $this->code);
+    if($this->collocation=='?')
+    {
+      return !preg_match('/^[a-zA-Z0-9\.\!]*$/', $this->code);
+    }
+    return preg_match('/^[a-zA-Z0-9\.]*$/', $this->code);
   }
   
   /**
@@ -436,12 +404,25 @@ class Account extends CActiveRecord
   protected function afterConstruct()
   {
     parent::afterConstruct();
-    $this->setDefaultForNames();
+    $this->setDefaultForNames($this->firm);
   }
   
-  public function setDefaultForNames()
+  public function setDefaultForNames(Firm $firm=null, $name='')
   {
-    $this->textnames = implode(": \n", Language::model()->getAllLocales()) . ": ";
+    $languages = Language::model()->findAll();
+    $this->textnames = '';
+    {
+      foreach($languages as $language)
+      {
+        $this->textnames .= $language->locale . ': ';
+        if($firm && $language->id == $firm->language_id)
+        {
+          $this->textnames .= $name;
+        }
+        $this->textnames .= "\n";
+      }
+    }
+    $this->textnames = substr($this->textnames, 0, strlen($this->textnames)-1);
   }
   
   public function getNumberOfChildren()
@@ -498,6 +479,20 @@ class Account extends CActiveRecord
       )
     );
   }
+
+  public function checkCode()
+  {
+    if(!$this->_codeContainsOnlyValidChars())
+    {
+      $this->addError('code', Yii::t('delt', 'The code contains illegal characters.'));
+    }
+    
+    if(substr($this->code, -1, 1)=='.')
+    {
+      $this->addError('code', Yii::t('delt', 'The code cannot end with a dot.'));
+    }
+  }
+
   
   public function checkCollocation()
   {
@@ -505,6 +500,10 @@ class Account extends CActiveRecord
      {
        $this->addError('collocation', Yii::t('delt', 'Not a valid collocation.'));
      } 
+     if($this->collocation=='?' && substr($this->code, 0, 1)!='!')
+     {
+       $this->addError('collocation', Yii::t('delt', 'This collocation is allowed only for bang accounts.'));
+     }
   }
 
   public function checkComment()
@@ -529,7 +528,9 @@ class Account extends CActiveRecord
             
     return $amount;
   }
-  
+
+//DELTOD
+/*  
   public function safeDelete()
   {
     $transaction=$this->getDbConnection()->beginTransaction();
@@ -554,7 +555,7 @@ class Account extends CActiveRecord
     AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
     Yii::trace('names deleted for account ' . $this->id, 'delt.debug');
   }
-  
+*/
   public function getNamesAsArray()
   {
     $result=array();
@@ -571,6 +572,28 @@ class Account extends CActiveRecord
     }
     ksort($result);
     return $result;
+  }
+  
+  public function setName()
+  {
+    $names=$this->getNamesAsArray();
+    if(array_key_exists($this->firm->language->getLocale(), $names) && $names[$this->firm->language->getLocale()]!='')
+    {
+      $this->currentname = $names[$this->firm->language->getLocale()];
+    }
+    else
+    {
+      $this->currentname = array_shift(array_filter($names)) . '*'; 
+    }
+  }
+  
+  public function cleanup(Firm $firm)
+  {
+    $this->code = str_replace('!', '~', $this->id);
+    unset($this->id);
+    $this->currentname = trim(str_replace('!', '', $this->currentname));
+    $this->setDefaultForNames($firm, $this->currentname);
+//    $this->code = '!' . ($firm->countBangAccounts()+1);
   }
   
   

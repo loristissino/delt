@@ -12,6 +12,7 @@
  * @property string $currency
  * @property string $csymbol
  * @property integer $language_id
+ * @propertt Language $language
  * @property integer $firm_parent_id
  * @property string $create_date
  *
@@ -210,6 +211,7 @@ class Firm extends CActiveRecord
     return false;
   }
   
+  
   public function findDifferentAccounts(Firm $firm)
   {
     $own     = array();
@@ -328,11 +330,11 @@ class Firm extends CActiveRecord
     $sort->defaultOrder = 'code ASC';
     $sort->attributes = array(
         'code'=>'code',
-        'name'=>'currentname.name',
+        'name'=>'currentname',
         'collocation'=>'collocation',
     );    
     
-    return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'pagination'=>array(
           'pageSize'=>$number,
           ),
@@ -343,7 +345,7 @@ class Firm extends CActiveRecord
   
   public function getAccountBalancesAsDataProvider()
   {
-    return new CActiveDataProvider(Account::model()->with('firm')->with('currentname')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
           'condition'=>'is_selectable = 1',
           'order' => 'code ASC',
@@ -370,15 +372,14 @@ class Firm extends CActiveRecord
     
     $result=array();
     $accounts = Yii::app()->db->createCommand()
-      ->select('SUM(amount) as total, a.code as code, n.name')
+      ->select('SUM(amount) as total, a.code as code, a.currentname as name')
       ->from('{{debitcredit}}')
       ->leftJoin('{{account}} a', 'account_id = a.id')
-      ->leftJoin('{{account_name}} n', 'a.id = n.account_id AND n.language_id = ' . $this->language_id)
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('in', 'collocation', $collocations))
       ->order('a.code')
-      ->group('a.code, n.name')
+      ->group('a.code, a.currentname')
       ->having('total <> 0')
       ->queryAll();
     
@@ -444,7 +445,7 @@ class Firm extends CActiveRecord
   
   public function getPostsAsDataProvider()
   {
-    return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->with('account.names')->ofFirm($this->id), array(
+    return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
           'pageSize'=>100,
           ),
@@ -547,13 +548,13 @@ class Firm extends CActiveRecord
   public function findAccounts($term)
   {
     $accounts = Yii::app()->db->createCommand()
-      ->select('code, outstanding_balance, n.name')
+      ->select('code, outstanding_balance, currentname')
       ->from('{{account}}')
-      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
+//DELTOD      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('or', 
         array('like', 'code', '%' . $term . '%'),
-        array('like', 'n.name', '%' . $term . '%')
+        array('like', 'currentname', '%' . $term . '%')
         ))
       ->andWhere('is_selectable = 1')
       ->order('code')
@@ -562,7 +563,7 @@ class Firm extends CActiveRecord
     $result=array();
     foreach($accounts as $account)
     {
-      $result[]=$account['code']. ' - ' . $account['name'];
+      $result[]=$account['code']. ' - ' . $account['currentname'];
     }
     return $result;
   }
@@ -627,14 +628,14 @@ class Firm extends CActiveRecord
       {
         $newaccount = new Account;
         $newaccount->firm_id = $this->id;
+        $newaccount->firm = $this;
         $newaccount->account_parent_id = null;
         
-        foreach(array('code', 'level', 'collocation', 'is_selectable', 'outstanding_balance', 'number_of_children') as $property)
+        foreach(array('code', 'level', 'collocation', 'is_selectable', 'outstanding_balance', 'number_of_children', 'textnames') as $property)
         {
           $newaccount->$property = $account->$property ? $account->$property : '1';
         }
         $newaccount->comment = $account->comment;
-        $newaccount->textnames = $account->l10n_names;
         $newaccount->basicSave(false);
         
         $references[$account->id]=$newaccount->id;
@@ -1027,9 +1028,8 @@ class Firm extends CActiveRecord
     }
 
     $accounts = Yii::app()->db->createCommand()
-      ->select('id, code, level, name, is_selectable')
+      ->select('id, code, level, currentname as name, is_selectable')
       ->from('{{account}}')
-      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('in', 'collocation', $collocations))
       ->andWhere('level <= :level', array(':level'=>$level))
@@ -1090,6 +1090,28 @@ class Firm extends CActiveRecord
     $this->_deletePosts();
     return true;
   }
-
+  
+  public function createBangAccount($name)
+  {
+    $account = new Account();
+    $account->currentname = $name;
+    $account->firm_id = $this->id;
+    $account->firm = $this;
+    $account->collocation = '?';
+    $account->outstanding_balance = '/';
+    $account->id = '!' . md5($name);
+    return $account;
+  }
+  
+  public function countBangAccounts()
+  {
+    $number = Yii::app()->db->createCommand()
+      ->select('COUNT(*) as number')
+      ->from('{{account}}')
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('code LIKE :code', array(':code'=>'!*'))
+      ->queryScalar();
+    return $number;
+  }
 
 }
