@@ -18,6 +18,8 @@ $debitcredits = $this->firm->getPostsAsDataProvider()->data;
 <section>
 <h2><?php echo Yii::t('delt', 'Journal') ?></h2>
 
+<p>This is only a proof of concept. This page will contain all public information available about this firm.</p>
+
 <table>
   <tr>
     <th><?php echo Yii::t('delt', 'No.') ?></th>

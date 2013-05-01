@@ -199,16 +199,20 @@ class PostForm extends CFormModel
       }
       else
       {
+        /*
         if(!in_array($account->id, $used_accounts))
         {
+          */
           $this->debitcredits[$row]->account_id = $account->id;
           $this->debitcredits[$row]->account = $account;
           $used_accounts[] = $account->id;
-        }
+        /*
+         * }
         else
         {
           $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" makes the row a duplicate.', array('{code}'=>$code)));
         }
+        */
       }
       
       $errors=false;
@@ -301,7 +305,7 @@ class PostForm extends CFormModel
         }
       }
       
-      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account->collocation=='E')
+      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account && $this->debitcredits[$row]->account->collocation=='E')
       {
         if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
         {

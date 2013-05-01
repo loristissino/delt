@@ -17,7 +17,7 @@ $this->menu=array(
     )),
 	array('label'=>Yii::t('delt', 'Export'), 'url'=>array('/bookkeeping/export', 'slug'=>$model->slug)),
 	array('label'=>Yii::t('delt', 'Import'), 'url'=>array('/bookkeeping/import', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'View as published'), 'url'=>array('/firm/public', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Show'), 'url'=>array('/firm/public', 'slug'=>$model->slug)),
 );
 
 ?>
