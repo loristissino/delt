@@ -10,17 +10,24 @@
 class RunchecksCommand extends CConsoleCommand
 {
   
-  public function actionIndex()
+  public function actionIndex($id)
   {
-    $accounts=Account::model()->findAll();
-    foreach($accounts as $account)
+    if($firm = Firm::model()->findByPk($id))
     {
-      echo $account->id . "\n";
-      $account->setName();
-      $account->save();
+      echo "Firm: " . $firm->id . "\n";
+      $accounts = Account::model()->findAllByAttributes(array('firm_id'=>$id, 'currentname'=>''));
+      foreach($accounts as $account)
+      {
+        echo "account: ". $account->id . ": ";
+        $account->setName();
+        echo $account->currentname . "\n";
+        $account->save(false);
+      }
+    }
+    else
+    {
+      echo "Firm not found: " . $id . "\n";
     }
   }
-  
-  
   
 }
