@@ -443,11 +443,11 @@ class Firm extends CActiveRecord
     return $result;
   }
   
-  public function getPostsAsDataProvider()
+  public function getPostsAsDataProvider($size=100)
   {
     return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
-          'pageSize'=>100,
+          'pageSize'=>$size,
           ),
       )
     );
@@ -1099,7 +1099,7 @@ class Firm extends CActiveRecord
     $account->firm = $this;
     $account->collocation = '?';
     $account->outstanding_balance = '/';
-    $account->id = '!' . md5($name);
+    $account->id = '!' . md5($name . rand(0, 100000));
     return $account;
   }
   
