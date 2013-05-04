@@ -95,6 +95,10 @@ class FirmController extends Controller
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
           $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
         }
+        else
+        {
+          die('something wrong');
+        }
       }
       else
       {

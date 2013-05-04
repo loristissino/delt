@@ -429,7 +429,7 @@ class Firm extends CActiveRecord
     }
     elseif($grandtotal!=0)
     {
-      $closingaccounts=Account::model()->with('names')->findAllByAttributes(array('firm_id'=>$this->id, 'collocation'=>strtolower($collocation), 'is_selectable'=>true));
+      $closingaccounts=Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'collocation'=>strtolower($collocation), 'is_selectable'=>true));
       if(sizeof($closingaccounts)==1)
       { 
         $result[]=array(
@@ -731,6 +731,7 @@ class Firm extends CActiveRecord
     catch(Exception $e)
     {
       $transaction->rollback();
+      die($e->getMessage());
       return false;
     }
     
