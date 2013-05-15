@@ -70,6 +70,7 @@ return array(
   'Fix chart' => 'Sistema piano dei conti',
   'Create a new account as child of this one' => 'Crea un nuovo conto come figlio di questo',
   'Delete this account' => 'Elimina questo conto',
+  'The parent account, with code «%code%», does not exist.' => 'Il conto di livello superiore, con codice «%code%», non esiste.',
   
   
   'Edit'=>'Modifica',
