@@ -90,14 +90,24 @@ class FirmController extends Controller
       if($this->DEUser->canCreateFirms())
       {
         $model->attributes=$_POST['Firm'];
-        if($model->saveWithOwner($this->DEUser))
+        if($model->validate())
         {
-          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
-          $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
+          if($model->saveWithOwner($this->DEUser))
+          {
+            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
+            $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
+          }
+          else
+          {
+            die('something wrong');
+          }
         }
         else
         {
-          die('something wrong');
+          if(!$model->slug)
+          {
+            $model->slug = md5($model->name . rand(0, 100000));
+          }
         }
       }
       else
