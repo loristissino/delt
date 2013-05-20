@@ -5,7 +5,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.0.2beta';
+    return '1.0.3beta';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -265,5 +265,11 @@ class DELT
     $format = DELT::getConvertedJQueryUIDateFormat();
     return $date->format($format);
   }
+  
+  public static function delimittext($text, $delimiter)
+  {
+    return $delimiter . str_replace(array("'", '"'), array('’', '”'), $text) . $delimiter;
+    // we do the same replacements OpenOffice does...
+  } 
   
 }

@@ -343,7 +343,7 @@ class Firm extends CActiveRecord
     );
   }
   
-  public function getAccountBalancesAsDataProvider()
+  public function getAccountBalancesAsDataProvider($pagesize=100)
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
@@ -356,21 +356,25 @@ class Firm extends CActiveRecord
             )),
         ),
       'pagination'=>array(
-          'pageSize'=>100,
+          'pageSize'=>$pagesize,
           ),
       )
     );
   }
   
-  public function getAccountBalances($collocation='')
+  public function getAccountBalancesData($collocation='')
   {
+    // FIXME -- we should have an array parameter instead of this...
     $collocations=array($collocation);
     if($collocation=='P')
     {
       $collocations[]='r';
     }
+    if($collocation=='')
+    {
+      $collocations=array('P', 'r', 'E', 'e', 'M');
+    }
     
-    $result=array();
     $accounts = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total, a.code as code, a.currentname as name')
       ->from('{{debitcredit}}')
@@ -382,6 +386,19 @@ class Firm extends CActiveRecord
       ->group('a.code, a.currentname')
       ->having('total <> 0')
       ->queryAll();
+      //->text;
+    //print_r($accounts);
+    //die();
+    return $accounts;
+
+  }
+  
+  
+  public function getAccountBalances($collocation='')
+  {
+    
+    $result=array();
+    $accounts = $this->getAccountBalancesData($collocation);
     
     $grandtotal=0;  
     foreach($accounts as $account)

@@ -54,13 +54,48 @@ class BookkeepingController extends Controller
     ));
 	}
 
-	public function actionBalance($slug)
+	public function actionBalance($slug, $format='')
 	{
     $this->firm=$this->loadModelBySlug($slug);
-		$this->render('balance', array(
-      'model'=>$this->firm,
-      'dataProvider'=>$this->firm->getAccountBalancesAsDataProvider(),
-    ));
+    
+    switch($format)
+    {
+      case 'unknown':
+        $exportbalanceform = new ExportbalanceForm;
+        if(Yii::app()->request->getParam('export', false))
+        {
+          $exportbalanceform->attributes=$_GET['ExportbalanceForm'];
+          if($exportbalanceform->validate())
+          {
+            Yii::app()->getUser()->setState('separator', $exportbalanceform->separator);
+            Yii::app()->getUser()->setState('delimiter', $exportbalanceform->delimiter);
+            Yii::app()->getUser()->setState('type', $exportbalanceform->type);
+            $this->redirect(array('bookkeeping/balance','slug'=>$this->firm->slug, 'format'=>'csv'));
+          }
+        }
+        $this->render('exportbalance', array(
+          'model'=>$this->firm,
+          'exportbalanceform'=>$exportbalanceform,
+        ));
+        break;
+      case 'csv':
+        $content=$this->renderPartial('_balance_csv', array(
+          'accounts'=>$this->firm->getAccountBalancesData(''),
+          'separator'=>Yii::app()->getUser()->getState('separator', ','),
+          'delimiter'=>Yii::app()->getUser()->getState('delimiter', ''),
+          'type'=>Yii::app()->getUser()->getState('type', '2'),
+          ));
+        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.csv';
+        $this->sendDispositionHeader($filename);
+        $this->serveContent('text/csv', $content);
+        break;
+      default:
+        $this->render('balance', array(
+          'model'=>$this->firm,
+          'dataProvider'=>$this->firm->getAccountBalancesAsDataProvider(),
+        ));
+    }
+    
 	}
 
 	public function actionStatements($slug, $level=1)

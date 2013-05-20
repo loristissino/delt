@@ -7,6 +7,10 @@ $this->breadcrumbs=array(
   'Balance',
 );
 
+$this->menu=array(
+	array('label'=>Yii::t('delt', 'Export (CSV)'), 'url'=>array('bookkeeping/balance', 'slug'=>$model->slug, 'format'=>'unknown')),
+);
+
 $totaldebits=$this->firm->getTotalAmounts('D');
 $totalcredits=$this->firm->getTotalAmounts('C');
 
