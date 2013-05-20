@@ -5,6 +5,11 @@ if($separator=='t')
   $separator = chr(9);
 }
 
+if($delimiter=='none')
+{
+  $delimiter='';
+}
+
 echo pack('CCC', 0xEF, 0xBB, 0xBF);  /* BOM */
 
 $headers=array(
