@@ -4,11 +4,12 @@
 $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'Balance',
+  'Balance' => array('/bookkeeping/balance', 'slug'=>$model->slug),
+  'Export', 
 );
 
 ?>
-<h1><?php echo Yii::t('delt', 'Trial Balance') ?></h1>
+<h1><?php echo Yii::t('delt', 'Trial Balance Export to CSV file') ?></h1>
 
 <div class="form">
 
@@ -21,6 +22,28 @@ $this->breadcrumbs=array(
 	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
 
 	<?php echo $form->errorSummary($exportbalanceform); ?>
+
+	<div class="row">
+		<?php echo $form->labelEx($exportbalanceform, 'type') ?>
+     <?php echo $form->dropDownList(
+        $exportbalanceform, 
+        'type',
+        $exportbalanceform->types
+        )
+      ?>
+		<?php echo $form->error($model, 'type'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($exportbalanceform, 'charset') ?>
+     <?php echo $form->dropDownList(
+        $exportbalanceform, 
+        'charset',
+        $exportbalanceform->charsets
+        )
+      ?>
+		<?php echo $form->error($model, 'charset'); ?>
+	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($exportbalanceform, 'delimiter') ?>
@@ -42,17 +65,6 @@ $this->breadcrumbs=array(
         )
       ?>
 		<?php echo $form->error($model, 'separator'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($exportbalanceform, 'type') ?>
-     <?php echo $form->dropDownList(
-        $exportbalanceform, 
-        'type',
-        $exportbalanceform->types
-        )
-      ?>
-		<?php echo $form->error($model, 'type'); ?>
 	</div>
 
 	<div class="row buttons">

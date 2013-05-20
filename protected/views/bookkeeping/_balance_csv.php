@@ -10,24 +10,27 @@ if($delimiter=='none')
   $delimiter='';
 }
 
-echo pack('CCC', 0xEF, 0xBB, 0xBF);  /* BOM */
+if($charset=='utf-8')
+{
+  echo pack('CCC', 0xEF, 0xBB, 0xBF);  /* BOM */
+}
 
 $headers=array(
-  DELT::delimittext(Yii::t('delt', 'Code'), $delimiter),
-  DELT::delimittext(Yii::t('delt', 'Name'), $delimiter),
+  DELT::delimittext(Yii::t('delt', 'Code'), $delimiter, $charset),
+  DELT::delimittext(Yii::t('delt', 'Name'), $delimiter, $charset),
 );
 switch($type)
 {
   case 'S':
-    $headers[]=DELT::delimittext(Yii::t('delt', 'Amount'), $delimiter);
+    $headers[]=DELT::delimittext(Yii::t('delt', 'Amount'), $delimiter, $charset);
     break;
   case 'U':
-    $headers[]=DELT::delimittext(Yii::t('delt', 'Amount'), $delimiter);
-    $headers[]=DELT::delimittext(Yii::t('delt', 'Outstanding balance'), $delimiter);
+    $headers[]=DELT::delimittext(Yii::t('delt', 'Amount'), $delimiter, $charset);
+    $headers[]=DELT::delimittext(Yii::t('delt', 'Outstanding balance'), $delimiter, $charset);
     break;
   case '2':
-    $headers[]=DELT::delimittext(Yii::t('delt', 'Debit'), $delimiter);
-    $headers[]=DELT::delimittext(Yii::t('delt', 'Credit'), $delimiter);
+    $headers[]=DELT::delimittext(Yii::t('delt', 'Debit'), $delimiter, $charset);
+    $headers[]=DELT::delimittext(Yii::t('delt', 'Credit'), $delimiter, $charset);
     break;
 }
 
@@ -37,8 +40,8 @@ switch($type)
 <?php foreach($accounts as $account): ?><?php
 
 $values = array(
-  DELT::delimittext($account['code'], $delimiter),
-  DELT::delimittext($account['name'], $delimiter),
+  DELT::delimittext($account['code'], $delimiter, $charset),
+  DELT::delimittext($account['name'], $delimiter, $charset),
 );
 
 switch($type)

@@ -266,8 +266,13 @@ class DELT
     return $date->format($format);
   }
   
-  public static function delimittext($text, $delimiter)
+  public static function delimittext($text, $delimiter, $charset='')
   {
+    if($charset)
+    {
+      $text=@iconv('utf-8', $charset, $text);
+      // we need to silence it because otherwise we could have a PHP notice
+    }
     return $delimiter . str_replace(array("'", '"'), array('’', '”'), $text) . $delimiter;
     // we do the same replacements OpenOffice does...
   } 

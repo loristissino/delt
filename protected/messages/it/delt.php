@@ -288,5 +288,16 @@ return array(
   'Your email is going to be used only for passowrd recovery and for important news regarding the website.'=>'Il tuo indirizzo di posta elettronica verrà usato solo per l\'eventuale recupero della password e per l\'invio di notizie importanti riguardanti il sito.',
   'We will not show it in the website nor give it away without your consent.'=>'Non verrà mostrato nel sito web né ceduto ad altri senza il tuo consenso.',
   
+  'Trial Balance Export to CSV file' => 'Esportazione situazione contabile su file CSV',
+  'Export (CSV)' => 'Esporta (CSV)',
+  
+  'signed amount' => 'importo con segno',
+  'unsigned amount, with type' => 'importo senza segno, con tipo',
+  'two columns' => 'due colonne',
+  'Type' => 'Tipo',
+  'Text delimiter' => 'Delimitatore di testo',
+  'Field delimiter' => 'Delimitatore di campo',
+  'Character set' => 'Codifica dei caratteri',
+  
 );
 

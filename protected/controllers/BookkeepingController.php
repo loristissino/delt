@@ -70,13 +70,21 @@ class BookkeepingController extends Controller
             Yii::app()->getUser()->setState('separator', $exportbalanceform->separator);
             Yii::app()->getUser()->setState('delimiter', $exportbalanceform->delimiter);
             Yii::app()->getUser()->setState('type', $exportbalanceform->type);
+            Yii::app()->getUser()->setState('charset', $exportbalanceform->charset);
             $this->redirect(array('bookkeeping/balance','slug'=>$this->firm->slug, 'format'=>'csv'));
           }
         }
+        
+        $exportbalanceform->separator = Yii::app()->getUser()->getState('separator', ',');
+        $exportbalanceform->delimiter = Yii::app()->getUser()->getState('delimiter', '');
+        $exportbalanceform->type = Yii::app()->getUser()->getState('type', '2');
+        $exportbalanceform->charset = Yii::app()->getUser()->getState('charset', 'utf-8');
+        
         $this->render('exportbalance', array(
           'model'=>$this->firm,
           'exportbalanceform'=>$exportbalanceform,
         ));
+        
         break;
       case 'csv':
         $content=$this->renderPartial('_balance_csv', array(
@@ -84,10 +92,15 @@ class BookkeepingController extends Controller
           'separator'=>Yii::app()->getUser()->getState('separator', ','),
           'delimiter'=>Yii::app()->getUser()->getState('delimiter', ''),
           'type'=>Yii::app()->getUser()->getState('type', '2'),
+          'charset'=>Yii::app()->getUser()->getState('charset', 'utf-8'),
           ));
-        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.csv';
+        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . (Yii::app()->getUser()->getState('separator', ',')=='t' ? '.tsv' : '.csv');
         $this->sendDispositionHeader($filename);
-        $this->serveContent('text/csv', $content);
+        $this->serveContent(Yii::app()->getUser()->getState('separator', ',')=='t' ? 
+            'text/tab-separated-values'
+            :
+            'text/csv', 
+          $content);
         break;
       default:
         $this->render('balance', array(
