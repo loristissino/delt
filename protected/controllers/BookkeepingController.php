@@ -251,13 +251,15 @@ class BookkeepingController extends Controller
         $this->postdescription=Yii::t('delt', 'Closing post');
     }
     $this->firm=$this->loadModelBySlug($slug);
-    $this->accounts = $this->firm->getAccountBalances($collocation);
-    $this->is_closing = true;
-    
-    if(sizeof($this->accounts))
+    if($collocation)
     {
-      return $this->actionNewpost($slug);
-      // we show the standard form
+      $this->accounts = $this->firm->getAccountBalances($collocation);
+      $this->is_closing = true;
+      if(sizeof($this->accounts))
+      {
+        return $this->actionNewpost($slug);
+        // we show the standard form
+      }
     }
     
     $this->render('closingpost', array('collocation'=>$collocation, 'model'=>$this->firm));

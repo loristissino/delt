@@ -299,5 +299,7 @@ return array(
   'Field delimiter' => 'Delimitatore di campo',
   'Character set' => 'Codifica dei caratteri',
   
+  'This firm does not seem to have accounts of «{collocation}» collocation to close.' => 'Questa azienda non sembra avere conti con collocazione «{collocation}» da chiudere.',
+  
 );
 
