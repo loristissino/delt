@@ -14,13 +14,13 @@ class ActivationController extends Controller
 		if ($email&&$activkey) {
 			$find = User::model()->notsafe()->findByAttributes(array('email'=>$email));
 			if (isset($find)&&$find->status) {
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is active.")));
+			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is active.")));
 			} elseif(isset($find->activkey) && ($find->activkey==$activkey)) {
 				$find->activkey = UserModule::encrypting(microtime());
 				$find->status = 1;
 				$find->save();
-          UserModule::sendMail(Yii::app()->params['adminEmail'],UserModule::t("A new user has activated an account on {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("A new user (id={id}, username={username}, email={email}) has activated an account on {site_name}",array('{id}'=>$find->id, '{email}'=>$find->email, '{username}'=>$find->username)));
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is activated.")));
+          UserModule::sendMail(Yii::app()->params['adminEmail'],UserModule::t("A new user has activated an account on {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("A new user (id={id}, username={username}, email={email}) has activated an account on {site_name}",array('{id}'=>$find->id, '{email}'=>$find->email, '{username}'=>$find->username, '{site_name}'=>Yii::app()->name)));
+			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is activated.")));
 			} else {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
 			}
