@@ -19,9 +19,8 @@ class ActivationController extends Controller
 				$find->activkey = UserModule::encrypting(microtime());
 				$find->status = 1;
 				$find->save();
+          UserModule::sendMail(Yii::app()->params['adminEmail'],UserModule::t("A new user has activated an account on {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("A new user (id={id}, username={username}, email={email}) has activated an account on {site_name}",array('{id}'=>$find->id, '{email}'=>$find->email, '{username}'=>$find->username)));
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("You account is activated.")));
-          UserModule::sendMail(Yii::app()->params['adminEmail'],UserModule::t("A new user has activated an account on {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("A new user (id={id}, username={username}, email={email}) has activated an account on {site_name}",array('{activation_url}'=>$activation_url, '{id}'=>$find->id, '{email}'=>$find->email, '{username}'=>$find->username)));
-
 			} else {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
 			}
