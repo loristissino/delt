@@ -193,7 +193,7 @@ class PostForm extends CFormModel
       
       if(!$account)
       {
-        $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" is not available.', array('{code}'=>$code)));
+        $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by adding an exclamation mark to the name, like in "{code}!").', array('{code}'=>$code)));
         $this->debitcredits[$row]->name_errors=true;
         continue;
       }
