@@ -20,7 +20,7 @@ class ActivationController extends Controller
 				$find->status = 1;
 				$find->save();
           UserModule::sendMail(Yii::app()->params['adminEmail'],UserModule::t("A new user has activated an account on {site_name}",array('{site_name}'=>Yii::app()->name)),UserModule::t("A new user (id={id}, username={username}, email={email}) has activated an account on {site_name}",array('{id}'=>$find->id, '{email}'=>$find->email, '{username}'=>$find->username, '{site_name}'=>Yii::app()->name)));
-			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is activated.")));
+			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account has been activated. You can change your preferences editing your profile settings.")));
 			} else {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
 			}
