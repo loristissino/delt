@@ -232,7 +232,7 @@ class FirmController extends Controller
 	public function actionDelete($id)
 	{
     $firm=$this->loadFirm($id);
-    if($firm->safeDelete())
+    if($firm->softDelete())
     {
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been correctly deleted.'));
       $this->redirect(array('/bookkeeping/index'));

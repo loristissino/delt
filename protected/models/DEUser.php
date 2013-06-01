@@ -66,7 +66,7 @@ class DEUser extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'firms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)'),
+			'firms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0'),
 			'profiles' => array(self::HAS_ONE, 'Profiles', 'user_id'),
 			'id0' => array(self::BELONGS_TO, 'Profiles', 'id'),
 		);
@@ -141,6 +141,9 @@ class DEUser extends CActiveRecord
       )
     );
   }
+  
+  
+  
   
   public function getProfile()
   {

@@ -13,3 +13,7 @@ $this->breadcrumbs=array(
 <div class="error">
 <?php echo CHtml::encode($message); ?>
 </div>
+
+<?php if($code==418): ?>
+<?php echo $this->createIcon('teapot', Yii::t('delt', 'Teapot'), array('width'=>200, 'height'=>158)) ?>
+<?php endif ?>

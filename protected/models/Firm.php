@@ -26,6 +26,14 @@
 
 class Firm extends CActiveRecord
 {
+
+  // negative values for firms that we do not want to show
+  const STATUS_DELETED = -3; 
+  const STATUS_SUSPENDED = -4;
+  
+  // positive values for firms that we do want to show
+  const STATUS_SYSTEM = 1;
+  const STATUS_PRIVATE = 2;
   
   public $license_confirmation;
   
@@ -624,7 +632,7 @@ class Firm extends CActiveRecord
     {
       $this->$property = $source->$property;
     }
-    $this->status = 0;
+    $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
     
     $transaction = $this->getDbConnection()->beginTransaction();
@@ -735,6 +743,7 @@ class Firm extends CActiveRecord
     
     try
     {
+      $this->status = self::STATUS_PRIVATE;
       $this->save();
       
       $fu = new FirmUser();
@@ -1079,6 +1088,13 @@ class Firm extends CActiveRecord
     }
     
     return $accounts;
+  }
+  
+  public function softDelete()
+  {
+    $this->status=self::STATUS_DELETED;
+    $this->save();
+    return true;
   }
   
   public function safeDelete()

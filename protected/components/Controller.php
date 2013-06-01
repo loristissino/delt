@@ -71,16 +71,7 @@ class Controller extends CController
 	public function loadFirm($id, $check_manageability=true)
 	{
 		$firm=Firm::model()->findByPk($id);
-		if($firm===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-    if(!$this->DEUser)
-      throw new CHttpException(401,'You must be authenticated to access this page.');
-    if($check_manageability)
-    {
-      $this->checkManageability($firm);
-    }
-      
-		return $firm;
+    return $this->_loadFirm($firm, $check_manageability);
 	}
 
 	/**
@@ -92,17 +83,29 @@ class Controller extends CController
 	 */
 	public function loadFirmBySlug($slug, $check_manageability=true)
 	{
-		$model=Firm::model()->findByAttributes(array('slug'=>$slug));
-		if($model===null)
+		$firm=Firm::model()->findByAttributes(array('slug'=>$slug));
+    return $this->_loadFirm($firm, $check_manageability);
+	}
+  
+  private function _loadFirm($firm, $check_manageability)
+  {
+		if($firm===null)
 			throw new CHttpException(404,'The requested page does not exist.');
+    if($firm->status==Firm::STATUS_SUSPENDED)
+      throw new CHttpException(403, 'The access to this firm\'s data is currently suspended.');
+    if($firm->status==Firm::STATUS_DELETED)
+      throw new CHttpException(410, 'This firm has been deleted.');
+    if($firm->slug=='teapot')
+      throw new CHttpException(418, 'I am a teapot.');
     if(!$this->DEUser)
       throw new CHttpException(401,'You must be authenticated to access this page.');
     if($check_manageability)
     {
-      $this->checkManageability($model);
+      $this->checkManageability($firm);
     }
-		return $model;
-	}
+		return $firm;
+  }
+  
   
   /**
 	 * Returns the account model based on the primary key.
