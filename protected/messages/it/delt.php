@@ -109,6 +109,11 @@ return array(
   'Public firms' => 'Aziende pubbliche',
   'Your firms' => 'Le tue aziende', 
   'Create firm' => 'Crea un\'azienda', 
+  'A firm you know the slug of'=> 'Un\'azienda di cui conosci lo slug',
+  'Fork' => 'Duplica',
+  'Firm not found' => 'Azienda non trovata',
+  'Sorry, we could not find a firm with the slug «%slug%».' => 'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «%slug%».',
+  'Try forking another one.' => 'Prova a duplicarne un\'altra.',
   
   'Closing post' => 'Registrazione di chiusura',
   'Patrimonial closing post' => 'Registrazione di chiusura patrimoniale',

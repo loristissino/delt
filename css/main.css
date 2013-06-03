@@ -517,3 +517,23 @@ span.name
 {
   font-style: italic;
 }
+
+p.firm
+{
+  margin-bottom: 4px;
+}
+p.firm span.name
+{
+  font-weight: bold;
+}
+
+p.firm .description
+{
+  font-style: italic;
+}
+
+p.firm .nodescription
+{
+  font-style: italic;
+}
+

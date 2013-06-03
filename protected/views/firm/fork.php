@@ -16,20 +16,26 @@ $available_firms = $this->DEUser->profile->allowed_firms - sizeof($this->DEUser-
 <?php if($available_firms <= 0): ?>
   <?php echo $this->renderPartial('/firm/_available') ?>
 <?php else: ?>
-  <h2><?php echo Yii::t('delt', 'Public firms') ?></h2>
-  <ul>
-  <?php foreach($publicfirms as $firm): ?>
-    <li><?php echo CHtml::link($firm, $this->createUrl('firm/fork', array('slug'=>$firm->slug)), array('title'=>Yii::t('delt', 'Fork the firm «{firm}»', array('{firm}'=>$firm->name)))) ?></li>
-  <?php endforeach ?>
-  </ul>
+  <?php echo $this->renderPartial('_firms', array('title'=>'Public firms', 'firms'=>$publicfirms)) ?>
 
   <?php if(sizeof($ownfirms)): ?>
-  <h2><?php echo Yii::t('delt', 'Your firms') ?></h2>
-  <ul>
-  <?php foreach($ownfirms as $firm): ?>
-    <li><?php echo CHtml::link($firm, $this->createUrl('firm/fork', array('slug'=>$firm->slug)), array('title'=>Yii::t('delt', 'Fork this firm'))) ?></li>
-  <?php endforeach ?>
-  </ul>
+    <?php echo $this->renderPartial('_firms', array('title'=>'Your firms', 'firms'=>$ownfirms)) ?>
   <?php endif ?>
 <?php endif ?>
 
+<h2><?php echo Yii::t('delt', 'A firm you know the slug of') ?></h2>
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'chosefirmform',
+	'enableAjaxValidation'=>false,
+  'method'=>'GET',
+  'action'=>$this->createUrl('firm/prefork'),
+)); ?>
+
+	<div class="row">
+		<?php echo CHtml::label('slug', false) ?>
+		<?php echo CHtml::textField('slug', '', array('size'=>40)) ?>
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Fork'), array('name'=>'fork')) ?>
+	</div>
+
+<?php $this->endWidget() ?>

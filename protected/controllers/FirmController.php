@@ -34,7 +34,7 @@ class FirmController extends Controller
 			),
       */
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','fork','public','owners','delete'),
+				'actions'=>array('create','update','fork','prefork','public','owners','delete'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -121,6 +121,21 @@ class FirmController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	public function actionPrefork($slug=null)
+	{
+    $firm=Firm::model()->findByAttributes(array('slug'=>$slug));
+    if($firm)
+    {
+      $this->redirect(array('firm/fork', 'slug'=>$firm->slug));
+    }
+    else
+    {
+      $this->render('prefork',array(
+        'slug'=>$slug,
+      ));
+    }
+  }
 
 	/**
 	 * Forks an existing, public, firm, or a personal private firm.
