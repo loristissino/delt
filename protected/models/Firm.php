@@ -728,12 +728,9 @@ class Firm extends CActiveRecord
   
   public function isForkableBy(DEUser $user)
   {
-    if($this->status==1)
+    if($this->status>0)
       return true;
     
-    if($this->isManageableBy($user))
-      return true;
-      
     return false;
   }
   
