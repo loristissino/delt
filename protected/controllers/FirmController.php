@@ -16,6 +16,7 @@ class FirmController extends Controller
 		return array(
 			'accessControl', // perform access control for CRUD operations
 			'postOnly + delete', // we only allow deletion via POST request
+      'postOnly + invitation', 
 		);
 	}
 
@@ -34,7 +35,7 @@ class FirmController extends Controller
 			),
       */
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','fork','prefork','public','owners','delete'),
+				'actions'=>array('create','update','fork','prefork','public','owners','delete','share','invitation'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -238,6 +239,74 @@ class FirmController extends Controller
 			'model'=>$model,
 		));
 	}
+
+	/**
+	 * Shares a firm, by inviting another user.
+	 * If update is successful, the browser will be redirected to the 'view' page.
+	 * @param string $slug the slug of the firm to be shared
+	 */
+	public function actionShare($slug)
+	{
+    $model=$this->loadFirmBySlug($slug);
+    
+		if(isset($_POST['username']) && $username = $_POST['username'])
+		{
+      if($model->invite($username))
+      {
+          Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.', array('{username}'=>$username))); 
+          $this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'The invitation could not be sent to «{username}». Please check the username.', array('{username}'=>$username))); 
+      }
+		}
+    
+		$this->render('share',array(
+			'model'=>$model,
+		));
+	}
+
+	public function actionInvitation($slug)
+	{
+    $model=$this->loadFirmBySlug($slug, false);
+    
+    if(isset($_GET['action']) && $_GET['action']=='accept')
+    {
+      
+      if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'I')))
+      {
+        $fu->role='O';
+        $fu->save();
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You are now allowed to manage the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+    }
+
+    if(isset($_GET['action']) && $_GET['action']=='decline')
+    {
+      if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'I')))
+      {
+        $fu->delete();
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully declined the invitation to manage the firm «{firm}».', array('{firm}'=>$model->name)));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+    }
+
+    $this->redirect(array('bookkeeping/index'));
+
+    
+	}
+
+
+
+
 
 	/**
 	 * Deletes a particular model.

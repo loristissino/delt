@@ -25,7 +25,7 @@ class BookkeepingController extends Controller
 	{
     if($this->DEUser)
     {
-      $this->render('index', array('firms'=>$this->DEUser->firms));
+      $this->render('index', array('firms'=>$this->DEUser->firms, 'wfirms'=>$this->DEUser->wfirms));
     }
     else
     {

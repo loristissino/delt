@@ -149,6 +149,25 @@ class Firm extends CActiveRecord
 		return $this->name;
 	}
   
+  public function getAllOwnersExcept($user_id)
+  {
+    // FIXME: merge / integrate with Firm::getOwners()
+    
+    $users = Yii::app()->db->createCommand()
+      ->select('u.username, p.first_name, p.last_name')
+      ->from('{{users}} u')
+      ->leftJoin('{{firm_user}} fu', 'id = fu.user_id')
+      ->leftJoin('{{profiles}} p', 'u.id = p.user_id')
+      ->where('fu.firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('fu.role=:role', array(':role'=>'O'))
+      ->andWhere('not fu.user_id = :user', array(':user'=>$user_id))
+      ->order('p.last_name')
+      ->setFetchMode(PDO::FETCH_OBJ)
+      ->queryAll();
+      
+    return $users;    
+  }
+  
   public function validateSlug()
   {
     if(strlen($this->slug)>32)
@@ -298,7 +317,7 @@ class Firm extends CActiveRecord
     {
       return false;
     }
-    $fu=FirmUser::model()->findByAttributes(array('firm_id'=>$this->id, 'user_id'=>$user->id));
+    $fu=FirmUser::model()->findByAttributes(array('firm_id'=>$this->id, 'user_id'=>$user->id, 'role'=>'O'));
     return sizeof($fu) > 0;
   }
   
@@ -330,6 +349,37 @@ class Firm extends CActiveRecord
     }
     
     return $rows;
+  }
+  
+  public function invite($username)
+  {
+    if(!$user=DEUser::model()->findByAttributes(array('username'=>$username)))
+    {
+      return false;
+    }
+    
+    $rows = FirmUser::model()->findAllByAttributes(array('firm_id'=>$this->id, 'user_id'=>$user->id, 'role'=>'I'));
+    if(sizeof($rows))
+    {
+      return true; // already invited... we could send an email here...
+    }
+    else
+    {
+      try
+      {
+        $fu = new FirmUser();
+        $fu->firm_id = $this->id;
+        $fu->user_id = $user->id;
+        $fu->role = 'I';
+        $fu->save();
+        return true;
+      }
+      catch (Exception $e)
+      {
+        return false;
+      }
+    }
+    
   }
 
   public function getAccountsAsDataProvider($number=200)

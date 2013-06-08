@@ -303,8 +303,24 @@ return array(
   'Text delimiter' => 'Delimitatore di testo',
   'Field delimiter' => 'Delimitatore di campo',
   'Character set' => 'Codifica dei caratteri',
-  
+
+  'Share' => 'Condividi',
+  'Share the Firm «{name}»' => 'Condivisione azienda «{name}»',
   'This firm does not seem to have accounts of «{collocation}» collocation to close.' => 'Questa azienda non sembra avere conti con collocazione «{collocation}» da chiudere.',
+  'This firm is currently shared with another user:|This firm is currently shared with other {n} users:' => 'Questa azienda è correntemente condivisa con un altro utente:|Questa azienda è correntemente condivisa con altri {n} utenti:',
+
+  'This firm is not currently shared with any other user.'=>'Questa azienda non è correntemente condivisa con altri utenti.',
+  'You can share it with another user by inviting them with the form below.'=>'Puoi condividerla con un altro utente invitandolo con il modulo qui sotto.',
+  'You have been invited to manage the following firms:'=>'Sei stato invitato a gestire le seguenti aziende:',
+  'accept'=>'accetta',
+  'decline'=>'declina',
+  'Accept the invitation to share the management of this firm'=>'Accetta l\'invito a condividere la gestione di questa azienda',
+  'Decline the invitation to share the management of this firm'=>'Declina l\'invito a condividere la gestione di questa azienda',
+  'Are you sure you want to decline the invitation to share the management of this firm?'=>'Sei sicuro di voler declinare l\'invito a condividere la gestione di questa azienda?',
+  
+  'You are now allowed to manage the firm «{firm}».' => 'Adesso sei autorizzato a gestire l\'azienda «{firm}».',
+  'You successfully declined the invitation to manage the firm «{firm}».' => 'Hai declinato l\'offerta di condivisione della gestione dell\'azienda «{firm}».',
+  'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.' => 'Un invito è stato inviato a «{username}». Quando accettato, l\'azienda verrà considerata condivisa.',
   
 );
 
