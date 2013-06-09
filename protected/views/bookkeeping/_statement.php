@@ -1,9 +1,13 @@
-<h2><?php echo Yii::t('delt', $title) ?></h2>
+<?php
+  $tag0 = 'h' . $hlevel;
+  $tag1 = 'h' . ($hlevel+1);
+?>
+<<?php echo $tag0 ?>><?php echo Yii::t('delt', $title) ?></<?php echo $tag0 ?>>
 
 <?php $ggt = 0 ?>
 <?php foreach($order as $key=>$value): ?>
 <?php if($with_subtitles): ?>
-  <h3><?php echo Yii::t('delt', $value) ?></h3>
+  <<?php echo $tag1 ?>><?php echo Yii::t('delt', $value) ?></<?php echo $tag1 ?>>
 <?php endif ?>
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
@@ -15,7 +19,11 @@
         <?php if(!$account['is_selectable']): ?>
           <?php echo Yii::t('delt', 'Total:') ?>
         <?php endif ?>
-        <?php echo CHtml::link($account['name'], $this->createUrl('bookkeeping/ledger', array('id'=>$account['id'])), array('class'=>'hiddenlink')) ?>
+        <?php if($links): ?>
+          <?php echo CHtml::link($account['name'], $this->createUrl('bookkeeping/ledger', array('id'=>$account['id'])), array('class'=>'hiddenlink')) ?>
+        <?php else: ?>
+          <?php echo $account['name'] ?>
+        <?php endif ?>
       </td>
       <?php $found=false; for($i=$level; $i>=1; $i--): ?>
         <td class="currency<?php if($found) echo ' empty' ?><?php if($account['level']==$i-1 && $lastlevel==$i) echo ' secondtolast' ?>" style="width: 100px;">

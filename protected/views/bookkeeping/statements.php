@@ -26,6 +26,8 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
   'level'=>$level,
   'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
   'with_subtitles'=>true,
+  'hlevel'=>2,
+  'links'=>true,
   )) ?>
 <?php echo $this->renderPartial('_statement', array(
   'title'=>'Income Statement',
@@ -34,4 +36,6 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
   'level'=>$level,
   'order'=>array('+'=>'Value Added Income Statement'),
   'with_subtitles'=>false,
+  'hlevel'=>2,
+  'links'=>true,
   )) ?>

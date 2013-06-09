@@ -69,9 +69,13 @@ class FirmController extends Controller
     $this->firm=$this->loadFirmBySlug($slug, false);
     if(sizeof($debitcredits = $this->firm->getPostsAsDataProvider(100000)->data))
     {
+      $level = $this->firm->getCOAMaxLevel();
       $this->render('public', array(
         'model'=>$this->firm,
         'debitcredits'=>$debitcredits,
+        'financial'=>$this->firm->getFinancialStatement($level),
+        'economic'=>$this->firm->getEconomicStatement($level),
+        'level'=>$level,
       ));
     }
     else

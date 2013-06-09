@@ -53,5 +53,33 @@ $this->breadcrumbs=array(
   </tr>
 </table>
 </section>
+<hr />
+
+<section>
+<h2><?php echo Yii::t('delt', 'Statements') ?></h2>
+
+<?php echo $this->renderPartial('/bookkeeping/_statement', array(
+  'title'=>'Financial Statement',
+  'data'=>$financial,
+  'model'=>$model,
+  'level'=>$level,
+  'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
+  'with_subtitles'=>true,
+  'hlevel'=>3,
+  'links'=>false,
+  )) ?>
+<?php echo $this->renderPartial('/bookkeeping/_statement', array(
+  'title'=>'Income Statement',
+  'data'=>$economic,
+  'model'=>$model,
+  'level'=>$level,
+  'order'=>array('+'=>'Value Added Income Statement'),
+  'with_subtitles'=>false,
+  'hlevel'=>3,
+  'links'=>false,
+  )) ?>
+</section>  
+  
+
 
 </article>
