@@ -97,7 +97,7 @@ class Controller extends CController
       throw new CHttpException(410, 'This firm has been deleted.');
     if($firm->slug=='teapot')
       throw new CHttpException(418, 'I am a teapot.');
-    if(!$this->DEUser)
+    if($check_manageability && !$this->DEUser)
       throw new CHttpException(401,'You must be authenticated to access this page.');
     if($check_manageability)
     {

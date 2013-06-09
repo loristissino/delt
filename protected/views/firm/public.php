@@ -9,7 +9,6 @@ $this->breadcrumbs=array(
   'Public',
 );
 */
-$debitcredits = $this->firm->getPostsAsDataProvider(100000)->data;
 
 ?>
 
@@ -17,8 +16,6 @@ $debitcredits = $this->firm->getPostsAsDataProvider(100000)->data;
 <h1><?php echo $model->name ?></h1>
 <section>
 <h2><?php echo Yii::t('delt', 'Journal') ?></h2>
-
-<p>This is just a proof of concept, for now. This page will contain all public information available about this firm.</p>
 
 <table>
   <tr>

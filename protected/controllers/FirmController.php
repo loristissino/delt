@@ -34,15 +34,20 @@ class FirmController extends Controller
 				'users'=>array('*'),
 			),
       */
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','fork','prefork','public','owners','delete','share','invitation'),
+
+			array('allow', // allow authenticated user to perform the following actions
+				'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete'),
 				'users'=>array('admin'),
 			),
-			array('deny',  // deny all users
+      array('allow', // allow authenticated user to perform 'public' actions
+				'actions'=>array('public'),
+				'users'=>array('*'),
+        ),
+      array('deny',  // deny all users
 				'users'=>array('*'),
 			),
 		);
@@ -62,11 +67,19 @@ class FirmController extends Controller
   public function actionPublic($slug)
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
-    $this->render('public', array(
-      'model'=>$this->firm
-    ));
-    
-    //throw new CHttpException(501, 'Not yet implemented.');
+    if(sizeof($debitcredits = $this->firm->getPostsAsDataProvider(100000)->data))
+    {
+      $this->render('public', array(
+        'model'=>$this->firm,
+        'debitcredits'=>$debitcredits,
+      ));
+    }
+    else
+    {
+      $this->render('empty', array(
+        'model'=>$this->firm
+      ));
+    }
   }
 
   public function actionOwners($slug)

@@ -25,6 +25,11 @@ body
 	font: normal 10pt Arial,Helvetica,sans-serif;
 	background: #ffffff;
 }
+
+h1
+{
+  font-size: 2em;
+}
 td
 {
   padding-left: 5px;
@@ -49,6 +54,10 @@ td
   border-bottom-style: double;
   border-bottom-width: 3px;
 }
+.warning
+{
+  color: orange;
+}
 
 
   </style>
@@ -57,7 +66,7 @@ td
 
 <body>
   <header>
-    <div id="logo"><?php echo CHtml::encode(Yii::app()->name); ?></div>
+		<div id="logo"><?php echo $this->createIcon('LearnDoubleEntryHeading', 'LearnDoubleEntry.org', array('width'=>400, 'height'=>63, 'title'=>'Benvenuto su LearnDoubleEntry.org')) ?></div>
   </header>
   <?php if(isset($this->breadcrumbs)):?>
 		<nav>
@@ -72,7 +81,8 @@ td
 	<div class="clear"></div>
 
   <footer>
-    <p>Website: <a href="http://learndoubleentry.org">learndoubleentry.org</a></p>
+    <hr />
+    <p>This is an experimental HTML5 web page for one of the public firms created at <?php echo CHtml::link(Yii::app()->name, $this->createUrl('/')) ?>.</p>
   </footer>
 
   <?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
