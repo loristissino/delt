@@ -322,5 +322,10 @@ return array(
   'You successfully declined the invitation to manage the firm «{firm}».' => 'Hai declinato l\'offerta di condivisione della gestione dell\'azienda «{firm}».',
   'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.' => 'Un invito è stato inviato a «{username}». Quando accettato, l\'azienda verrà considerata condivisa.',
   
+  'regenerate' => 'rigenera',
+  'randomize' => 'rendi casuale',
+  'or' => 'oppure',
+  'Click here if you want to regenerate the slug from the name of the firm' => 'Fai clic qui se vuoi rigenerare lo slug a partire dal nome dell\'azienda',
+  'Click here if you want to create a random slug, which helps in keeping it somehow a bit more private' => 'Fai clic qui se vuoi far generare uno slug casuale, in modo da rendere l\'azienda un po\' più privata',
 );
 

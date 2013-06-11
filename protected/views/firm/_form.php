@@ -2,6 +2,74 @@
 /* @var $this FirmController */
 /* @var $model Firm */
 /* @var $form CActiveForm */
+
+$regenarate_anchor = addslashes(CHtml::link(Yii::t('delt', 'regenerate'), '#', array('id'=>'regenerate', 'title'=>Yii::t('delt', 'Click here if you want to regenerate the slug from the name of the firm'))));
+$or_text = addslashes(Yii::t('delt', 'or'));
+$randomize_anchor = addslashes(CHtml::link(Yii::t('delt', 'randomize'), '#', array('id'=>'randomize', 'title'=>Yii::t('delt', 'Click here if you want to create a random slug, which helps in keeping it somehow a bit more private'))));
+
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/slugifier.js', CClientScript::POS_END);
+$cs->registerScript(
+  'slugify-handler',
+  '
+    
+  var slugified = ' . ($model->slug ? 'true':'false') . ';
+  
+  function slugit()
+  {
+     $("#Firm_slug").val($("#Firm_name").val().slugify().substring(0,32));
+  }
+  
+  function randomString(len, charSet) {
+    charSet = charSet || "abcdefghijklmnopqrstuvwxyz0123456789";
+    var randomString = "";
+    for (var i = 0; i < len; i++) {
+    	var randomPoz = Math.floor(Math.random() * charSet.length);
+    	randomString += charSet.substring(randomPoz,randomPoz+1);
+    }
+    return randomString;
+  }
+  
+  $("#Firm_name").keyup(function()
+    {
+      if(!slugified)
+      {
+        slugit();
+      }
+    }
+  );
+  
+  $("#Firm_slug").change(function()
+    {
+      slugified=true;
+    }
+  );
+  
+  $("#Firm_slug").after("&nbsp;' . $or_text . '&nbsp;' . $randomize_anchor .'");
+  
+  $("#randomize").click(function()
+    {
+      slugified = true;
+      $("#Firm_slug").val(randomString(32));
+      return false;
+    }
+  );
+  
+  $("#Firm_slug").after("&nbsp;' . $regenarate_anchor .'");
+  
+  $("#regenerate").click(function()
+    {
+      slugit();
+      slugified = false;
+      return false;
+    }
+  );
+  
+  '
+  ,
+  CClientScript::POS_READY
+);
+
 ?>
 
 <div class="form">
