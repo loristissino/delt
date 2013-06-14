@@ -52,7 +52,7 @@ class Account extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firm_id, code, textnames', 'required'),
+			array('firm_id, code', 'required'),
 			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
 			array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
@@ -60,7 +60,7 @@ class Account extends CActiveRecord
       array('collocation', 'checkCollocation'),
       array('comment', 'checkComment'),
 			array('collocation,outstanding_balance', 'length', 'max'=>1),
-      array('textnames', 'safe'),
+      array('textnames', 'checkNames'),
       array('currentname', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
@@ -518,6 +518,23 @@ class Account extends CActiveRecord
      {
        $this->addError('comment', Yii::t('delt', 'The text cannot contain HTML tags.'));
      } 
+  }
+  
+  public function checkNames()
+  {
+    if($this->textnames == '')
+    {
+      $this->setDefaultForNames($this->firm);
+      $this->addError('textnames', Yii::t('delt', 'There must be at least one name for the account.'));
+      return;
+    }
+    
+    $names = $this->getNamesAsArray();
+    if(sizeof($names)==0)
+    {
+      $this->setDefaultForNames($this->firm, $this->textnames);
+      $this->addError('textnames', Yii::t('delt', 'You cannot remove the locale (language code). It was put it back.'));
+    }
   }
   
   public function getConsolidatedBalance($without_closing=false)

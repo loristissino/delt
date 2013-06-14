@@ -318,6 +318,9 @@ return array(
   'Decline the invitation to share the management of this firm'=>'Declina l\'invito a condividere la gestione di questa azienda',
   'Are you sure you want to decline the invitation to share the management of this firm?'=>'Sei sicuro di voler declinare l\'invito a condividere la gestione di questa azienda?',
   
+  'There must be at least one name for the account.' => 'Ci deve essere almeno un nome per il conto.',
+  'You cannot remove the locale (language code). It was put it back.' => 'Non puoi rimuovere il locale (codice della lingua). È stato ripristinato.',
+  
   'You are now allowed to manage the firm «{firm}».' => 'Adesso sei autorizzato a gestire l\'azienda «{firm}».',
   'You successfully declined the invitation to manage the firm «{firm}».' => 'Hai declinato l\'offerta di condivisione della gestione dell\'azienda «{firm}».',
   'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.' => 'Un invito è stato inviato a «{username}». Quando accettato, l\'azienda verrà considerata condivisa.',
