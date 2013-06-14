@@ -68,7 +68,7 @@ class RegistrationController extends Controller
 								} elseif(Yii::app()->controller->module->loginNotActiv) {
 									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email or login."));
 								} else {
-									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email."));
+									Yii::app()->user->setFlash('registration',UserModule::t("Thank you for your registration. Please check your email and follow the instructions there (be sure to check also your spam folder, because sometimes the message is put there)."));
 								}
 								$this->refresh();
 							}
