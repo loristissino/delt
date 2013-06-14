@@ -533,7 +533,7 @@ class Account extends CActiveRecord
     if(sizeof($names)==0)
     {
       $this->setDefaultForNames($this->firm, $this->textnames);
-      $this->addError('textnames', Yii::t('delt', 'You cannot remove the locale (language code). It was put it back.'));
+      $this->addError('textnames', Yii::t('delt', 'You cannot remove the locale (language code). It was put back.'));
     }
   }
   
