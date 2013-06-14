@@ -4,7 +4,10 @@ return array(
 
   'Welcome to <i>{name}</i>'=>'Benvenuti su <i>{name}</i>',
   'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.' => 'Puoi fare esperienza nella tenuta della contabilità con il metodo della partita doppia con una delle tue aziende, elencate sulla destra.',
-  'You have no firms that you can use to gain experience in bookkeeping with. Go create one.' => 'Non hai aziende che puoi usare per fare esperienza con la contabilità. Creane una.',
+  'You have no firms that you can use to gain experience in bookkeeping with.' => 'Non hai aziende che puoi usare per fare esperienza con la contabilità.',
+  'Create one.' => 'Creane una.',
+  'Or, even better,' => 'Oppure, ancora meglio,',
+  'fork an existing one.' => 'duplicane una esistente.',
   'Bookkeeping' => 'Contabilità',
   'Bookkeeping and accountancy' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
