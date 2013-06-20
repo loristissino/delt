@@ -677,13 +677,25 @@ class Firm extends CActiveRecord
   public function forkFrom(Firm $source, DEUser $user, $type)
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
-    $this->slug=md5($this->name + microtime());
+    
     foreach(array('language_id','currency','csymbol','description') as $property)
     {
       $this->$property = $source->$property;
     }
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
+
+    $slug=Yii::t('delt', 'copy-of-{slug}', array('{slug}'=>$source->slug));
+    
+    $number = $this->countFirmsWithSlugStartingWith(substr($slug, 0, 28));
+    if($number>0)
+    {
+      $this->slug=$slug . '-' . ++$number;
+    }
+    else
+    {
+      $this->slug=$slug;
+    }
     
     $transaction = $this->getDbConnection()->beginTransaction();
     
@@ -1194,5 +1206,16 @@ class Firm extends CActiveRecord
       ->queryScalar();
     return $number;
   }
+
+  public function countFirmsWithSlugStartingWith($text)
+  {
+    $number = Yii::app()->db->createCommand()
+      ->select('COUNT(*) as number')
+      ->from('{{firm}}')
+      ->where('slug LIKE :text', array(':text'=>$text.'%'))
+      ->queryScalar();
+    return $number;
+  }
+
 
 }

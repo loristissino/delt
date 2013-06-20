@@ -76,6 +76,7 @@ return array(
 			'urlFormat'=>'path',
 			'rules'=>array(
 				'/user/<controller:\w+>/<action:\w+>'=>'/user/<controller>/<action>',
+        '/firm/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
         '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>/collocation/<collocation:\w>'=>'<controller>/<action>',
