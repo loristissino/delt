@@ -93,7 +93,7 @@ class DELT
 
   public static function getConvertedJQueryUIDateFormat()
   {
-    $locale=strtolower(str_replace('_', '-', Yii::app()->request->getPreferredLanguage()));
+    $locale=strtolower(str_replace('_', '-', Yii::app()->language));
     
     if($format = self::_getConvertedJQueryUIDateFormat($locale))
     {
@@ -128,7 +128,8 @@ class DELT
         case 'cy-gb' : return 'd/m/Y'; 
         case 'da' : return 'd-m-Y'; 
         case 'de' : return 'd.m.Y'; 
-        case 'el' : return 'd/m/Y'; 
+        case 'el' : return 'd/m/Y';
+        case 'en-us': return 'm/d/Y';
         case 'en-au' : return 'd/m/Y'; 
         case 'en-gb' : return 'd/m/Y'; 
         case 'en-nz' : return 'd/m/Y'; 
