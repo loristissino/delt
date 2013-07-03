@@ -146,6 +146,7 @@ return array(
   'Fork the firm «{firm}»' => 'Duplica l\'azienda «{firm}»',
   'Do you want to proceed?' => 'Vuoi procedere?',
   'Yes, please, fork this firm' => 'Sì, crea un duplicato di questa azienda',
+  '(If you really need it, you can ask us to be allowed to manage other firms.)'=>'(Se ne hai veramente bisogno, puoi chiederci di essere autorizzato a gestire più aziende.)',
   
   'Edit Firm «{name}»' => 'Modifica azienda «{name}»',
   
