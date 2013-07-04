@@ -70,6 +70,13 @@ $cs->registerScript(
   CClientScript::POS_READY
 );
 
+
+$languages_options=array();
+foreach($model->languages as $language)
+{
+  $languages_options[$language->id] = array('selected'=>'selected');
+}
+
 ?>
 
 <div class="form">
@@ -109,13 +116,19 @@ $cs->registerScript(
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'language_id'); ?>
-     <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAll(),
+     <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAllSorted(),
         'id', //this is the attribute name for list option values 
         'complete_name' // this is the attribute name for list option texts 
          )
       ); ?>
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'The language is used for the names of the accounts, not for the user interface')?>)</span>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'languages'); ?>
+    
+     <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'width'=>500, 'options'=>$languages_options)) ?>
 	</div>
   
   <?php if(!$model->id): ?>

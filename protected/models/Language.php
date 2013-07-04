@@ -106,7 +106,14 @@ class Language extends CActiveRecord
   
   public function getComplete_name()
   {
-    return sprintf('%s_%s - %s (%s)', $this->language_code, $this->country_code, $this->english_name, $this->native_name);
+    if($this->native_name)
+    {
+      return sprintf('%s_%s - %s (%s)', $this->language_code, $this->country_code, $this->english_name, $this->native_name);
+    }
+    else
+    {
+      return sprintf('%s_%s - %s', $this->language_code, $this->country_code, $this->english_name);
+    }
   }
   
   public function getLocale()
@@ -140,13 +147,18 @@ class Language extends CActiveRecord
   
   public function getAllLocales()
   {
-    $languages = Language::model()->findAll();
+    $languages = Language::model()->findAllSorted();
     $locales=array();
     foreach($languages as $language)
     {
       $locales[]=$language->getLocale();
     }
     return $locales;
+  }
+  
+  public function findAllSorted()
+  {
+    return self::model()->findAll(array('order'=>'language_code, country_code'));
   }
   
 }

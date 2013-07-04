@@ -12,7 +12,7 @@
  * @property string $currency
  * @property string $csymbol
  * @property integer $language_id
- * @propertt Language $language
+ * @property Language $language
  * @property integer $firm_parent_id
  * @property string $create_date
  *
@@ -21,6 +21,7 @@
  * @property Users[] $tblUsers
  * @property Post[] $posts
  * @property Reason[] $reasons
+ * @property Language[] $languages
  *
  */
 
@@ -88,6 +89,7 @@ class Firm extends CActiveRecord
 		return array(
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
+      'languages' => array(self::MANY_MANY, 'Language', '{{firm_language}}(firm_id, language_id)'),
 			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'posts.date ASC'),
       'reasons' => array(self::HAS_MANY, 'Reason', 'firm_id', 'order'=>'reasons.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
@@ -108,6 +110,7 @@ class Firm extends CActiveRecord
 			'currency' => Yii::t('delt', 'Currency'),
 			'csymbol' => Yii::t('delt', 'Currency symbol'),
 			'language_id' => Yii::t('delt', 'Language'),
+			'languages' => Yii::t('delt', 'Languages'),
 			'firm_parent_id' => Yii::t('delt', 'Parent firm'),
 			'create_date' => Yii::t('delt', 'Create Date'),
 			'license'=>Yii::t('delt', 'License'),
@@ -1217,5 +1220,30 @@ class Firm extends CActiveRecord
     return $number;
   }
 
+  public function saveLanguages($values=array())
+  {
+    $old=array();
+    foreach($this->languages as $language)
+    {
+      $old[]=$language->id;
+    }
+    
+    $inserts=array_diff($values, $old);    
+    $deletes=array_diff($old, $values);
+    foreach($inserts as $id)
+    {
+      $fl=new FirmLanguage();
+      $fl->firm_id = $this->id;
+      $fl->language_id = $id;
+      $fl->save();
+    }
+    
+    foreach($deletes as $id)
+    {
+      //FIXME how to make a single query?
+      FirmLanguage::model()->deleteByPk(array('firm_id'=>$this->id, 'language_id'=>$id));
+    }
+    
+  }
 
 }

@@ -108,6 +108,10 @@ class AccountController extends Controller
     {
       $account->setDefaultForNames();
     }
+    else
+    {
+      $account->fixDefaultForNames();
+    }
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($account);
 

@@ -238,6 +238,13 @@ class FirmController extends Controller
         try
         {
           $model->save(false);
+          $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
+
+          if(!in_array($model->language_id, $languages))
+          {
+            $languages[]=$model->language_id;
+          }
+          $model->saveLanguages($languages);
           if($model->language_id != $old_language_id)
           {
             $model->fixAccountNames();
@@ -247,7 +254,7 @@ class FirmController extends Controller
         }
         catch(Exception $e)
         {
-          Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
+          Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.' . $e->getMessage()); 
         }
       }
 		}

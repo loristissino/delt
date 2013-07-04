@@ -409,7 +409,7 @@ class Account extends CActiveRecord
   
   public function setDefaultForNames(Firm $firm=null, $name='')
   {
-    $languages = Language::model()->findAll();
+    $languages = Language::model()->findAllSorted();
     $this->textnames = '';
     {
       foreach($languages as $language)
@@ -424,6 +424,29 @@ class Account extends CActiveRecord
     }
     $this->textnames = substr($this->textnames, 0, strlen($this->textnames)-1);
   }
+  
+  public function fixDefaultForNames()
+  {
+    $languages = Language::model()->findAllSorted();
+    
+    $names = $this->getNamesAsArray($languages);
+    
+    $this->textnames = '';
+    
+    foreach($languages as $language)
+    {
+      $this->textnames .= $language->locale . ': ';
+      if(isset($names[$language->locale]))
+      {
+        $this->textnames .= $names[$language->locale];
+      }
+      $this->textnames .= "\n";
+    }
+    $this->textnames = substr($this->textnames, 0, strlen($this->textnames)-1);
+  }
+  
+  
+  
   
   public function getNumberOfChildren()
   {
@@ -579,9 +602,11 @@ class Account extends CActiveRecord
     Yii::trace('names deleted for account ' . $this->id, 'delt.debug');
   }
 */
-  public function getNamesAsArray()
+  public function getNamesAsArray($languages=array())
   {
     $result=array();
+    $temp=array();
+    
     foreach(explode("\n", str_replace("\r", "", $this->textnames)) as $line)
     {
       $info = explode(':', $line);
@@ -590,11 +615,38 @@ class Account extends CActiveRecord
         continue;
       }
       $locale=trim($info[0]);
+      
+      $language = DELT::LocaleToLanguage($locale);
+      
       $name=strip_tags(trim($info[1]));
       $result[$locale]=$name;
+      DELT::array_add_if_unset($temp, $language, $name);
     }
+    
+    foreach($languages as $language)
+    {
+      if(!array_key_exists($language->locale, $result))
+      {
+        $result[$language->locale] = '';
+      }
+    }
+    
+    foreach($result as $key=>&$value)
+    {
+      if(trim($value)=='')
+      {
+        $tl=DELT::LocaleToLanguage($key);
+        
+        if(isset($temp[$tl]))
+        {
+          $value=$temp[$tl];
+        }
+      }
+    }
+    
     ksort($result);
     return $result;
+
   }
   
   public function setName()

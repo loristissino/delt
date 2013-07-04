@@ -276,6 +276,20 @@ class DELT
     }
     return $delimiter . str_replace(array("'", '"'), array('’', '”'), $text) . $delimiter;
     // we do the same replacements OpenOffice does...
-  } 
+  }
+  
+  public static function LocaleToLanguage($locale)
+  {
+    $info=explode('_', $locale);
+    return $info[0];
+  }
+  
+  public static function array_add_if_unset(&$array, $key, $value)
+  {
+    if(!array_key_exists($key, $array) or trim($array[$key])=='')
+    {
+      $array[$key]=$value;
+    }
+  }
   
 }
