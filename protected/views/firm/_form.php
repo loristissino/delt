@@ -82,7 +82,7 @@ foreach($model->languages as $language)
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'firm-form',
+	'id'=>'myform',
 	'enableAjaxValidation'=>false,
 )); ?>
 
@@ -127,8 +127,9 @@ foreach($model->languages as $language)
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'languages'); ?>
-    
-     <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'width'=>500, 'options'=>$languages_options)) ?>
+    <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'width'=>500, 'options'=>$languages_options)) ?>
+    <br />
+    <span class="hint">(<?php echo Yii::t('delt', 'Do you want other languages / locales to be supported? Just drop us a message!')?>)</span>
 	</div>
   
   <?php if(!$model->id): ?>
@@ -139,8 +140,8 @@ foreach($model->languages as $language)
     </div>
   <?php endif ?>
   
-	<div class="row buttons">
-		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save')); ?>
+	<div class="row buttons" id="submitDiv">
+		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
 	</div>
 
 <?php $this->endWidget(); ?>

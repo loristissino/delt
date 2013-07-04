@@ -64,6 +64,7 @@ class AccountController extends Controller
 		$model=new Account;
     $model->firm_id = $this->firm->id;
     $model->firm = $this->firm;
+    $model->setDefaultForNames();
 
     if($id)
     {

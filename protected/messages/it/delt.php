@@ -261,6 +261,9 @@ return array(
   'Changes' => 'Modifiche',
   'There are no accounts to synchronize.' => 'Non ci sono conti da sincronizzare.',
   
+  'Additional languages' => 'Lingue aggiuntive',
+  'Do you want other languages / locales to be supported? Just drop us a message!' => 'Vuoi che altre lingue / locali vengano supportati? Scrivici un messaggio!',
+  'The information about the firm is being saved.' => 'Memorizzazione delle informazioni relative all\'azienda in corso.',
   
   'Clear' => 'Svuota',
   'Delete all journal posts' => 'Elimina tutte le registrazioni contabili',

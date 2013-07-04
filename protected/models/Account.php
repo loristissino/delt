@@ -401,15 +401,17 @@ class Account extends CActiveRecord
 	 * It is here overridden to do postprocessing after model creation.
 	 * We call the parent implementation so that the event is raised properly.
 	 */  
+  /*
   protected function afterConstruct()
   {
     parent::afterConstruct();
     $this->setDefaultForNames($this->firm);
   }
+  */
   
   public function setDefaultForNames(Firm $firm=null, $name='')
   {
-    $languages = Language::model()->findAllSorted();
+    $languages = $this->firm->languages;
     $this->textnames = '';
     {
       foreach($languages as $language)
@@ -427,7 +429,7 @@ class Account extends CActiveRecord
   
   public function fixDefaultForNames()
   {
-    $languages = Language::model()->findAllSorted();
+    $languages = $this->firm->languages;
     
     $names = $this->getNamesAsArray($languages);
     
