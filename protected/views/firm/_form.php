@@ -70,6 +70,64 @@ $cs->registerScript(
   CClientScript::POS_READY
 );
 
+$cs->registerScript(
+  'language-handler',
+  '
+
+  var applyCss = function()
+  {
+    var id = $("#Firm_language_id").val();
+    $("#Firm_languages").children().each(function()
+    {
+      if($(this).val() == id)
+      {
+        $(this).attr("style", "padding: 2em; color: blue; font-weight: bold");
+      }
+      else
+      {
+        $(this).attr("style", "padding: 0em; color: black");
+      }
+    }
+    )
+    ;
+  }
+
+  applyCss();
+
+  var checkConsistency = function()
+  {
+    var id = $("#Firm_language_id").val();
+    var current = $("#Firm_languages").val();
+    if($.inArray(id, current)<=-1)
+    {
+      if ( null == current )
+      {
+        current = [ id ];
+      }
+      else
+      {
+        current.push(id);
+      }
+      $("#Firm_languages").val(current);
+    }
+    applyCss();
+  }
+
+    
+  $("#Firm_language_id").change(checkConsistency);
+
+  $("#Firm_languages").change(checkConsistency);
+
+
+  
+  '
+  ,
+  CClientScript::POS_READY
+);
+
+
+
+
 
 $languages_options=array();
 
