@@ -689,28 +689,43 @@ class Firm extends CActiveRecord
     $this->firm_parent_id = $source->id;
 
     $slug=Yii::t('delt', 'copy-of-{slug}', array('{slug}'=>$source->slug));
+    $testsubstr=substr($slug, 0, 28);
     
-    $number = $this->countFirmsWithSlugStartingWith(substr($slug, 0, 28));
+    $number = $this->countFirmsWithSlugStartingWith($testsubstr);
     if($number>0)
     {
-      $this->slug=$slug . '-' . ++$number;
+      $this->slug=$testsubstr . '-' . ++$number;
     }
     else
     {
       $this->slug=$slug;
     }
     
+    if(Firm::model()->findByAttributes(array('slug'=>$this->slug)))
+    {
+      $this->slug = md5(rand()+mktime());
+    }
+
     $transaction = $this->getDbConnection()->beginTransaction();
     
     try
     {
       $this->save(false);
-      
+            
       $fu = new FirmUser();
       $fu->firm_id=$this->id;
       $fu->user_id=$user->id;
       $fu->role='O';
       $fu->save(false);
+      
+      foreach($source->languages as $language)
+      {
+         $fl=new FirmLanguage();
+         $fl->firm_id = $this->id;
+         $fl->language_id = $language->id;
+         $fl->save();
+      }
+      
 
       $references = array();  // this will keep references between the old and the new codes of accounts
 
@@ -786,6 +801,8 @@ class Firm extends CActiveRecord
     {
       $transaction->rollBack();
       Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
+      echo $e->getMessage();
+      die();
       return false;
     }
     
@@ -888,7 +905,12 @@ class Firm extends CActiveRecord
     DELT::object2array($this, $data['base'], array('name', 'description', 'currency'));
 
     $data['base']['language'] = $this->language->locale;
-        
+    
+    foreach($this->languages as $language)
+    {
+      $data['base']['languages'][] = $language->locale;
+    }
+    
     $references = array();
     foreach($this->accounts as $account)
     {
@@ -980,12 +1002,29 @@ class Firm extends CActiveRecord
     try
     {
 
-      DELT::array2object($data['base'], $this, array('name', 'description', 'currency'));
+      DELT::array2object($data['base'], $this, array('name', 'description', 'currency', 'language', 'languages'));
 
       $language=Language::model()->findByLocale($data['base']['language']);
       $this->language_id = $language->id;
       
       $this->save(false);
+      
+      $languages = array($language->locale => $language->id);
+      foreach($data['base']['languages'] as $locale)
+      {
+        $language=Language::model()->findByLocale($locale);
+        $languages[$language->locale]= $language->id;
+      }
+      
+      
+      // FIXME -- we should have a addlanguages function
+      foreach($languages as $id)
+      {
+        $fl = new FirmLanguage();
+        $fl->firm_id = $this->id;
+        $fl->language_id = $id;
+        $fl->save();
+      }
      
       $references = array();
       foreach($data['accounts'] as $values)

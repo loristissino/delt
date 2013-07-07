@@ -10,6 +10,7 @@
  * @property string $english_name
  * @property string $native_name
  * @property string $locale
+ * @property integer $is_default (1 = generic default; 2 = main default)
  *
  * The followings are the available model relations:
  * @property Account[] $tblAccounts
@@ -43,11 +44,12 @@ class Language extends CActiveRecord
 		// will receive user inputs.
 		return array(
 			array('language_code, english_name, native_name', 'required'),
+      array('is_default', 'numerical', 'integerOnly'=>true),
 			array('language_code, country_code', 'length', 'max'=>3),
 			array('english_name, native_name', 'length', 'max'=>64),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, language_code, country_code, english_name, native_name', 'safe', 'on'=>'search'),
+			array('id, language_code, country_code, english_name, native_name, is_default', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -74,6 +76,7 @@ class Language extends CActiveRecord
 			'country_code' => 'Country Code',
 			'english_name' => 'English Name',
 			'native_name' => 'Native Name',
+      'is_default' => 'Is Default',
 		);
 	}
 
@@ -93,11 +96,21 @@ class Language extends CActiveRecord
 		$criteria->compare('country_code',$this->country_code,true);
 		$criteria->compare('english_name',$this->english_name,true);
 		$criteria->compare('native_name',$this->native_name,true);
+    $criteria->compare('is_default',$this->is_default);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+  
+  public function scopes()
+  {
+    return array(
+       'marked'=>array(
+          'condition'=>'is_default > 0',
+          ),
+      );
+  }
   
   public function __toString()
   {
@@ -108,7 +121,7 @@ class Language extends CActiveRecord
   {
     if($this->native_name)
     {
-      return sprintf('%s_%s - %s (%s)', $this->language_code, $this->country_code, $this->english_name, $this->native_name);
+      return sprintf('%s_%s - %s / %s', $this->language_code, $this->country_code, $this->english_name, $this->native_name);
     }
     else
     {
@@ -156,9 +169,9 @@ class Language extends CActiveRecord
     return $locales;
   }
   
-  public function findAllSorted()
+  public function findAllSorted($marked=false)
   {
-    return self::model()->findAll(array('order'=>'language_code, country_code'));
+    return $marked ? self::model()->marked()->findAll(array('order'=>'language_code, country_code')) : self::model()->findAll(array('order'=>'language_code, country_code'));
   }
-  
+    
 }

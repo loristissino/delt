@@ -262,8 +262,10 @@ return array(
   'There are no accounts to synchronize.' => 'Non ci sono conti da sincronizzare.',
   
   'Additional languages' => 'Lingue aggiuntive',
-  'Do you want other languages / locales to be supported? Just drop us a message!' => 'Vuoi che altre lingue / locali vengano supportati? Scrivici un messaggio!',
+  'You can select other languages to have a multilingual chart of accounts.' => 'Puoi selezionare altre lingue per avere un piano di conti multilingue.',
+  'Do you want other languages / locales to be supported?' => 'Vuoi che altre lingue / locali vengano supportati?',
   'The information about the firm is being saved.' => 'Memorizzazione delle informazioni relative all\'azienda in corso.',
+  'Just <a href="%url%">drop us a message</a>!'=>'Basta che ci <a href="%url%">invii un messaggio</a>!',
   
   'Clear' => 'Svuota',
   'Delete all journal posts' => 'Elimina tutte le registrazioni contabili',

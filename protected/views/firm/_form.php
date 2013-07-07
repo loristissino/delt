@@ -72,9 +72,22 @@ $cs->registerScript(
 
 
 $languages_options=array();
-foreach($model->languages as $language)
+
+if($model->isNewRecord)
 {
-  $languages_options[$language->id] = array('selected'=>'selected');
+  foreach(Language::model()->findAllSorted(true) as $language)
+  {
+    $languages_options[$language->id] = array('selected'=>'selected');
+  }
+  $model->language = Language::model()->findByAttributes(array('is_default'=>2));
+  $language_option = array($model->language->id => array('selected'=>'selected'));
+}
+else
+{
+  foreach($model->languages as $language)
+  {
+    $languages_options[$language->id] = array('selected'=>'selected');
+  } 
 }
 
 ?>
@@ -119,7 +132,8 @@ foreach($model->languages as $language)
      <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAllSorted(),
         'id', //this is the attribute name for list option values 
         'complete_name' // this is the attribute name for list option texts 
-         )
+         ),
+         (isset($language_option) ? array('options'=>$language_option) : array())
       ); ?>
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'The language is used for the names of the accounts, not for the user interface')?>)</span>
@@ -127,9 +141,11 @@ foreach($model->languages as $language)
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'languages'); ?>
-    <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'width'=>500, 'options'=>$languages_options)) ?>
+    <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'options'=>$languages_options)) ?>
     <br />
-    <span class="hint">(<?php echo Yii::t('delt', 'Do you want other languages / locales to be supported? Just drop us a message!')?>)</span>
+    <span class="hint">(<?php echo Yii::t('delt', 'You can select other languages to have a multilingual chart of accounts.') ?>
+    <?php echo Yii::t('delt', 'Do you want other languages / locales to be supported?')?>
+    <?php echo Yii::t('delt', 'Just <a href="%url%">drop us a message</a>!', array('%url%'=>$this->createUrl('site/contact'))) ?>)</span>
 	</div>
   
   <?php if(!$model->id): ?>

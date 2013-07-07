@@ -4,7 +4,7 @@
 
 $this->breadcrumbs=array(
 	'Firms'=>array('index'),
-	$model->name=>array('view','id'=>$model->id),
+	$model->name=>array('bookkeeping/manage','slug'=>$model->slug),
 	'Update',
 );
 

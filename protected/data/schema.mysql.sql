@@ -85,6 +85,20 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_firm_language`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_firm_language` (
+  `firm_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL,
+  PRIMARY KEY (`firm_id`,`language_id`),
+  KEY `firm_id` (`firm_id`),
+  KEY `language_id` (`language_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_firm_user`
 --
 
@@ -109,7 +123,9 @@ CREATE TABLE IF NOT EXISTS `tbl_language` (
   `country_code` char(3) CHARACTER SET utf8 DEFAULT NULL,
   `english_name` varchar(64) CHARACTER SET utf8 NOT NULL,
   `native_name` varchar(64) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`)
+  `is_default` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `is_default` (`is_default`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
@@ -275,9 +291,9 @@ ALTER TABLE `tbl_profiles`
 -- Dumping data for table `tbl_language`
 --
 
-INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name`, `native_name`) VALUES
-(1, 'en', 'US', 'English', 'English'),
-(2, 'it', 'IT', 'Italian', 'italiano');
+INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name`, `native_name`, `is_default`) VALUES
+(1, 'en', 'US', 'English', 'English', 2),
+(2, 'it', 'IT', 'Italian', 'italiano', 1);
   
 INSERT INTO `tbl_users` (`id`, `username`, `password`, `email`, `activkey`, `superuser`, `status`, `create_at`, `lastvisit_at`) VALUES
 (1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'info@example.com', '5bc1a418ca19f1b3f694612375a1afc9', 1, 1, '2013-02-24 13:41:09', '2013-06-09 19:56:21');
