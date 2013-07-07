@@ -1261,6 +1261,11 @@ class Firm extends CActiveRecord
 
   public function saveLanguages($values=array())
   {
+    if(!in_array($this->language_id, $values))
+    {
+      $values[]=$this->language_id;
+    }
+    
     $old=array();
     foreach($this->languages as $language)
     {

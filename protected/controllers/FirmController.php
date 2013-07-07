@@ -112,6 +112,9 @@ class FirmController extends Controller
         {
           if($model->saveWithOwner($this->DEUser))
           {
+            $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
+            $model->saveLanguages($languages);
+            
             Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
             $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
           }
@@ -238,13 +241,10 @@ class FirmController extends Controller
         try
         {
           $model->save(false);
+          
           $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
-
-          if(!in_array($model->language_id, $languages))
-          {
-            $languages[]=$model->language_id;
-          }
           $model->saveLanguages($languages);
+
           if($model->language_id != $old_language_id)
           {
             $model->fixAccountNames();
