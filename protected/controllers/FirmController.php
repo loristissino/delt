@@ -44,7 +44,7 @@ class FirmController extends Controller
 				'users'=>array('admin'),
 			),
       array('allow', // allow authenticated user to perform 'public' actions
-				'actions'=>array('public'),
+				'actions'=>array('public','index'),
 				'users'=>array('*'),
         ),
       array('deny',  // deny all users
@@ -355,11 +355,23 @@ class FirmController extends Controller
 	/**
 	 * Lists all models.
 	 */
-	public function actionIndex()
+	public function actionIndex($token)
 	{
+    
+    if(!isset(Yii::app()->params['list_token']) or $token!=Yii::app()->params['list_token'])
+    {
+      throw new CHttpException(404,'The requested page does not exist.');
+    }
+    
 		$dataProvider=new CActiveDataProvider('Firm');
+    $firm = new Firm('search');
+    $firm->unsetAttributes();
+    $firm->status = 2;
+
+    $this->layout='html5';
 		$this->render('index',array(
-			'dataProvider'=>$this->DEUser->getFirmsAsDataProvider(),
+			'dataProvider'=>$firm->search(),
+      
 		));
 	}
 
