@@ -89,6 +89,10 @@ class FirmController extends Controller
   public function actionCoa($slug)
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
+    if($this->firm->status != Firm::STATUS_SYSTEM)
+    {
+      throw new CHttpException(404, 'This page is available only for system firms');
+    }
     $this->render('coa', array(
       'model'=>$this->firm,
       'accounts'=>$this->firm->accounts,
