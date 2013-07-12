@@ -305,6 +305,7 @@ class BookkeepingController extends Controller
       if(isset($_POST['addrow']))
       {
         $postform->debitcredits[] = new DebitcreditForm();
+        $postform->show_explanation = false;
       }
       elseif(!$postform->raw_input)
       {

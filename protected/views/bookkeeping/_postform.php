@@ -377,12 +377,19 @@ $cs->registerScript(
 <div id="explanation" style="display: none">
 <h2>Explanation</h2>
 
-<p>
-<?php foreach($items as $item): ?>
-  <?php echo $item->explanation ?><br />
-<?php endforeach ?>
-</p>
+<?php if($postform->show_explanation): ?>
+  <p>
+  <?php foreach($items as $item): ?>
+    <?php if($item->explanation != 'none'): ?>
+      <?php echo $item->explanation ?><br />
+    <?php endif ?>
+  <?php endforeach ?>
+  </p>
 
-<p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the explanation is experimental and is based on a correct chart of accounts.') ?></p>
+  <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the explanation is experimental and is based on a correct chart of accounts.') ?></p>
+<?php else: ?>
+  <p><?php echo Yii::t('delt', 'The explanation is currently disabled. Please save the journal post first.') ?></p>
+
+<?php endif ?>
 
 </div>

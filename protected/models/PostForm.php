@@ -13,6 +13,7 @@ class PostForm extends CFormModel
   public $is_closing = false;
   public $is_adjustment = false;
   public $adjustment_checkbox_needed = false;
+  public $show_explanation = true;
   
   public $post = null; // the original Post instance
   
