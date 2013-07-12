@@ -231,9 +231,42 @@ class Account extends CActiveRecord
     return sprintf('%s - %s', $this->code, $this->name);
   }
   
-  public function getExplanation($amount)
+  public function getExplanation($amount, $currency='EUR')
   {
-    return "an explanation of me (" . $this->currentname . ") with amount $amount";
+    $parent = $this->getParent();
+    
+    $code =
+      $this->collocation .
+      ($parent ? $parent->outstanding_balance : '-') . 
+      ($this->outstanding_balance ? $this->outstanding_balance : '/') .
+      ($amount>0?'D':'C')
+    ;
+    
+    $explanations = array(
+      'PDDD' => 'Increase in Asset',
+      'PDDC' => 'Decrease in Asset',
+      'PD/C' => 'Decrease in Asset',
+      'PDCD' => 'Decrease in Asset Contra Account',
+      'PDCC' => 'Increase in Asset Contra Account',
+      'PCDD' => 'Increase in a Liability / Equity Contra Account',
+      'PCDC' => 'Decrease in a Liability / Equity Contra Account',
+      'PCCD' => 'Decrease in Liability / Equity',
+      'PCCC' => 'Increase in Liability / Equity',
+      'EDDD' => 'Increase in Cost / Expense / Loss',
+      'EDDC' => 'Decrease in Cost / Expense / Loss',
+      'EDCC' => 'Increase in Cost / Expense / Loss Contra Account',
+      'ECDD' => 'Increase in Revenue / Income / Gain Contra Account',
+      'ECCD' => 'Decrease in Revenue / Income / Gain',
+      'ECCC' => 'Increase in Revenue / Income / Gain',
+      'rDDD' => 'Net Loss recorded',
+      'rDCC' => 'Net Profit recorded',
+      'rCDD' => 'Net Loss recorded',
+      'rCCC' => 'Net Profit recorded',
+    );
+
+    $explanation = array_key_exists($code, $explanations) ? Yii::t('delt', $explanations[$code]) : Yii::t('delt', 'unexplained entry');
+    return sprintf('<strong>%s</strong> - %s for %s.', $this->currentname, $explanation, DELT::currency_value(abs($amount), $currency));
+    
   }
     
   public function belongingTo($firm_id)

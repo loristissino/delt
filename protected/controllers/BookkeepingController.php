@@ -289,6 +289,7 @@ class BookkeepingController extends Controller
     
     $postform = new PostForm();
     $postform->firm_id = $this->firm->id;
+    $postform->firm = $this->firm;
     $postform->currency = $this->firm->currency;
     if($this->post->is_adjustment)
     {

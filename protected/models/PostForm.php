@@ -89,7 +89,7 @@ class PostForm extends CFormModel
       $this->debitcredits[$debitcredit->id]->name = $debitcredit->account->__toString();
       $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
       $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
-      $this->debitcredits[$debitcredit->id]->explanation = $debitcredit->account->getExplanation($debitcredit->amount);
+      $this->debitcredits[$debitcredit->id]->explanation = $debitcredit->account->getExplanation($debitcredit->amount, $this->firm->currency);
     }
   }
   
@@ -334,7 +334,7 @@ class PostForm extends CFormModel
         $grandtotal_debit += $debit;
         $grandtotal_credit += $credit;
         
-        $this->debitcredits[$row]->explanation = $this->debitcredits[$row]->account->getExplanation($debit - $credit);
+        $this->debitcredits[$row]->explanation = $this->debitcredits[$row]->account->getExplanation($debit - $credit, $this->firm->currency);
         
       }
       

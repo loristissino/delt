@@ -33,9 +33,9 @@ $cs->registerScript(
   
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
-    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
     "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
-    "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" 
+    "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" +
+    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>"
     );
   $("#load_accounts").hide();
   
@@ -376,16 +376,13 @@ $cs->registerScript(
 
 <div id="explanation" style="display: none">
 <h2>Explanation</h2>
-<?php echo Yii::t('delt', 'Under development') ?>
-<?php /*
-<pre>
+
+<p>
 <?php foreach($items as $item): ?>
-  <?php var_dump($item->name) ?>
-  <?php var_dump($item->debit) ?>
-  <?php var_dump($item->credit) ?>
-  <?php var_dump($item->explanation) ?>
+  <?php echo $item->explanation ?><br />
 <?php endforeach ?>
-</pre>
-*/ ?>
+</p>
+
+<p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the explanation is experimental and is based on a correct chart of accounts.') ?></p>
 
 </div>
