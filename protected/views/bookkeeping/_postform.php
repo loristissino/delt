@@ -12,6 +12,7 @@ $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', '
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
 $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
 $sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort accounts, debits first'))));
+$explain_icon=addslashes($this->createIcon('explain', Yii::t('delt', 'Explain journal entries'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Explain journal entries'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -28,13 +29,23 @@ $cs->registerScript(
   var textfields_icon = "' . $textfields_icon . '";
   var load_accounts_icon = "' . $load_accounts_icon . '";
   var sort_icon = "' . $sort_icon . '";
+  var explain_icon = "' . $explain_icon . '";
   
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
     "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
-    "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>"
+    "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
+    "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" 
     );
   $("#load_accounts").hide();
+  
+  $("#explanation").hide();
+  
+  $("#explain").click(function()
+    {
+      $("#explanation").toggle(500);
+    }
+  );
   
   $("#load_accounts").click(function()
     {
@@ -125,12 +136,14 @@ $cs->registerScript(
       $("#load_accounts").hide();
     }
     $("#sort_accounts").hide();
+    $("#explain").hide();
   }
   
   function fromTextArea()
   {
     $("#load_accounts").hide();
     $("#sort_accounts").show();
+    $("#explain").show();
     text = $("#raw_input").val();
     $("#toggle").html(raw_input_icon);
     
@@ -360,3 +373,19 @@ $cs->registerScript(
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<div id="explanation" style="display: none">
+<h2>Explanation</h2>
+<?php echo Yii::t('delt', 'Under development') ?>
+<?php /*
+<pre>
+<?php foreach($items as $item): ?>
+  <?php var_dump($item->name) ?>
+  <?php var_dump($item->debit) ?>
+  <?php var_dump($item->credit) ?>
+  <?php var_dump($item->explanation) ?>
+<?php endforeach ?>
+</pre>
+*/ ?>
+
+</div>

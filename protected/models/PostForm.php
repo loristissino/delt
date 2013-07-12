@@ -74,9 +74,7 @@ class PostForm extends CFormModel
     foreach($values as $key => $value)
     {
       $this->debitcredits[$key] = new DebitcreditForm();
-      $this->debitcredits[$key]->name = $value['name'];
-      $this->debitcredits[$key]->debit = $value['debit']; 
-      $this->debitcredits[$key]->credit = $value['credit']; 
+      DELT::array2object($value, $this->debitcredits[$key], array('name', 'debit', 'credit'));
     }
   }
   
@@ -88,9 +86,10 @@ class PostForm extends CFormModel
     foreach($post->debitcredits as $debitcredit)
     {
       $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
-      $this->debitcredits[$debitcredit->id]->name = $debitcredit->account;
+      $this->debitcredits[$debitcredit->id]->name = $debitcredit->account->__toString();
       $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
       $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
+      $this->debitcredits[$debitcredit->id]->explanation = $debitcredit->account->getExplanation($debitcredit->amount);
     }
   }
   
@@ -334,7 +333,11 @@ class PostForm extends CFormModel
       {
         $grandtotal_debit += $debit;
         $grandtotal_credit += $credit;
+        
+        $this->debitcredits[$row]->explanation = $this->debitcredits[$row]->account->getExplanation($debit - $credit);
+        
       }
+      
     }
 
     if($errors)

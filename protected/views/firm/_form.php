@@ -126,9 +126,6 @@ $cs->registerScript(
 );
 
 
-
-
-
 $languages_options=array();
 
 if($model->isNewRecord)
@@ -147,6 +144,8 @@ else
     $languages_options[$language->id] = array('selected'=>'selected');
   } 
 }
+
+$languages_available = Language::model()->findAllSorted();
 
 ?>
 
@@ -199,7 +198,7 @@ else
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'languages'); ?>
-    <?php echo $form->listBox($model,'languages', CHtml::listData(Language::model()->findAllSorted(), 'id', 'complete_name'), array('multiple'=>'multiple', 'options'=>$languages_options)) ?>
+    <?php echo $form->listBox($model,'languages', CHtml::listData($languages_available, 'id', 'complete_name'), array('multiple'=>'multiple', 'size'=>sizeof($languages_available), 'options'=>$languages_options)) ?>
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'You can select other languages to have a multilingual chart of accounts.') ?>
     <?php echo Yii::t('delt', 'Do you want other languages / locales to be supported?')?>

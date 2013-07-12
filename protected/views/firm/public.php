@@ -60,7 +60,7 @@ $this->breadcrumbs=array(
 <h2><?php echo Yii::t('delt', 'Statements') ?></h2>
 
 <?php echo $this->renderPartial('/bookkeeping/_statement', array(
-  'title'=>'Financial Statement',
+  'title'=>'Balance Sheet',
   'data'=>$financial,
   'model'=>$model,
   'level'=>$level,

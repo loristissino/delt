@@ -117,7 +117,7 @@ class Account extends CActiveRecord
 	public function validCollocations($withUncollocated=true)
 	{
     $collocations = array(
-      'P'=>Yii::t('delt', 'Financial Statement (Asset / Liability / Equity)'),
+      'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
       'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
       'p'=>Yii::t('delt', 'Transitory Financial Statement Accounts'),
@@ -135,7 +135,7 @@ class Account extends CActiveRecord
   {
     switch($this->collocation)
     {
-      case 'P': return 'FS';
+      case 'P': return 'BS';
       case 'E': return 'IS';
       default: return $this->collocation;
     }
@@ -229,6 +229,11 @@ class Account extends CActiveRecord
   public function __toString()
   {
     return sprintf('%s - %s', $this->code, $this->name);
+  }
+  
+  public function getExplanation($amount)
+  {
+    return "an explanation of me (" . $this->currentname . ") with amount $amount";
   }
     
   public function belongingTo($firm_id)

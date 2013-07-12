@@ -17,7 +17,7 @@ return array(
   'Ledger' => 'Libro mastro',
   'Ledger for account «{name}»' => 'Libro mastro per il conto «{name}»',
   'Statements' => 'Bilancio',
-  'Financial Statement' => 'Situazione patrimoniale',
+  'Balance Sheet' => 'Situazione patrimoniale',
   'Income Statement' => 'Conto economico',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
@@ -31,7 +31,7 @@ return array(
   'Comment' => 'Commento',
 
   'Collocation' => 'Collocazione',
-  'FS<!-- collocation -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
+  'BS<!-- collocation -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
   'IS<!-- collocation -->' => 'CE',  // conti economici (reddito di esercizio)
   'M<!-- collocation -->' => 'O',  // conti d'ordine
   'p<!-- collocation -->' => 'p',  // transitorio patrimoniale
@@ -39,10 +39,10 @@ return array(
   'r<!-- collocation -->' => 'r',  // risultato di esercizio
   'u<!-- collocation -->' => '?',  // non assegnata / sconosciuta
 
-  'Financial Statement (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
+  'Balance Sheet (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
   'Income Statement (Revenues / Expenses)' => 'Conto economico (Ricavi / Costi)',
   'Memorandum Accounts Table' => 'Tavola dei Conti d\'ordine', 
-  'Transitory Financial Statement Accounts' => 'Conti transitori per la situazione patrimoniale',
+  'Transitory Balance Sheet Accounts' => 'Conti transitori per la situazione patrimoniale',
   'Transitory Income Statement Accounts' => 'Conti transitori per la situazione economica',
   'Result Accounts (Net profit / Total loss)' => 'Risultato di esercizio',  
   'Assets'=>'Attività',

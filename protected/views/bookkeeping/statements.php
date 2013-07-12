@@ -20,7 +20,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 
 <?php echo $this->renderPartial('_statement', array(
-  'title'=>'Financial Statement',
+  'title'=>'Balance Sheet',
   'data'=>$financial,
   'model'=>$model,
   'level'=>$level,

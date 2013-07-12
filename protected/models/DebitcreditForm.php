@@ -12,6 +12,7 @@ class DebitcreditForm extends CFormModel
   public $account_id;
   public $account;
   public $guessed=false;
+  public $explanation = "none";
   
   public function rules()
 	{
@@ -31,6 +32,11 @@ class DebitcreditForm extends CFormModel
 			'credit' => Yii::t('delt', 'Credit'),
 		);
 	}
+  
+  public function __toString()
+  {
+    return $this->name;
+  }
 
 }
 
