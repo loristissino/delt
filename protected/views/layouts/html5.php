@@ -140,6 +140,14 @@ span.negativeamount
   color: red;
 }
 
+span.accountname_normal
+{
+}
+
+span.accountname_indented
+{
+  padding-left: 20px;
+}
 
   </style>
 	<meta charset="utf-8" />
