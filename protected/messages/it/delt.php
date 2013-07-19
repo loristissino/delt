@@ -78,13 +78,13 @@ return array(
   
   'Edit'=>'Modifica',
   'Check the debits and the credits.'=>'Controlla gli addebiti e gli accrediti.',
-  'New journal post' => 'Nuova registrazione',
-  'Save journal post' => 'Registra nel giornale',
+  'New journal entry' => 'Nuova registrazione',
+  'Save journal entry' => 'Registra nel giornale',
   'Add a row' => 'Aggiungi una riga',
   
   'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:' => 'L\'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
   
-  'This firm does not have any journal post yet.'=>'Quest\'azienda non ha ancora nessuna registrazione in partita doppia.',
+  'This firm does not have any journal entry yet.'=>'Quest\'azienda non ha ancora nessuna registrazione in partita doppia.',
   'Create a new one now.' => 'Preparane una adesso.', 
   
   'Row {row}: ' => 'Riga {row}: ',
@@ -103,9 +103,9 @@ return array(
   
   'The children accounts won\'t be deleted, but they will remain orphans.' => 'I conti figli non verranno cancellati, ma resteranno orfani.',
   
-  'Edit journal post' => 'Modifica registrazione contabile',
+  'Edit journal entry' => 'Modifica registrazione contabile',
   'Delete' => 'Elimina',
-  'Are you sure you want to delete this journal post?' => 'Sei sicuro di voler eliminare questa registrazione contabile?',
+  'Are you sure you want to delete this journal entry?' => 'Sei sicuro di voler eliminare questa registrazione contabile?',
 
   
   'Fork an existing firm' => 'Duplica un\'azienda esistente',
@@ -118,10 +118,10 @@ return array(
   'Sorry, we could not find a firm with the slug «%slug%».' => 'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «%slug%».',
   'Try forking another one.' => 'Prova a duplicarne un\'altra.',
   
-  'Closing post' => 'Registrazione di chiusura',
-  'Patrimonial closing post' => 'Registrazione di chiusura patrimoniale',
-  'Economic closing post' => 'Registrazione di chiusura economica',
-  'Memo closing post' => 'Registrazione di chiusura conti d\'ordine',
+  'Closing journal entry' => 'Registrazione di chiusura',
+  'Patrimonial closing journal entry' => 'Registrazione di chiusura patrimoniale',
+  'Economic closing journal entry' => 'Registrazione di chiusura economica',
+  'Memo closing journal entry' => 'Registrazione di chiusura conti d\'ordine',
 
   'Patrimonial closing' => 'Chiusura patrimoniale',
   'Economic closing' => 'Chiusura economica',
@@ -134,8 +134,8 @@ return array(
   
   'Reasons' => 'Causali',
   'Create Reason' => 'Crea causale',
-  'Create a Reason based on this post' => 'Crea una causale basata su questa registrazione',
-  'Delete this post' => 'Elimina questa registrazione',
+  'Create a Reason based on this entry' => 'Crea una causale basata su questa registrazione',
+  'Delete this entry' => 'Elimina questa registrazione',
   'You are going to create a new reason with the following accounts:' => 'Stai per creare una nuova causale con i seguenti conti:',
   'Reason creation' => 'Creazione di causale',
   'The reason has been correctly saved.'=>'La causale è stata correttamente salvata.',
@@ -175,7 +175,7 @@ return array(
   
   'Chart of Accounts' => 'Piano dei conti',
   'Chart of Accounts and Reasons' => 'Piano dei conti e causali contabili',
-  'Chart of Accounts, Reasons and Posts' => 'Piano dei conti, causali contabili, registrazioni contabili',
+  'Chart of Accounts, Reasons and Journal entries' => 'Piano dei conti, causali contabili, registrazioni contabili',
   'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
   
   'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',
@@ -244,11 +244,11 @@ return array(
   'Sorry, you are not allowed to create firms at this time.' => 'Purtroppo, al momento non sei autorizzato a creare aziende.',
   
   
-  'The post has been successfully deleted.' => 'La registrazione è stata correttamente eliminata.',
+  'The journal entry has been successfully deleted.' => 'La registrazione è stata correttamente eliminata.',
   'you cannot do a debit to this kind of account' => 'non è possibile addebitare questo tipo di conto',
   'you cannot do a credit to this kind of account' => 'non è possibile accreditare questo tipo di conto',
-  '(unless the post is marked as adjustment)' => '(a meno che la registrazione non sia contrassegnata come rettifica)',
-  'Mark this post as adjustment, thus allowing exceptions in debit/credit checks'=>'Contrassegna questa registrazione come rettifica, ammettendo di conseguenza eccezioni nei controlli',
+  '(unless the journal entry is marked as adjustment)' => '(a meno che la registrazione non sia contrassegnata come rettifica)',
+  'Mark this journal entry as adjustment, thus allowing exceptions in debit/credit checks'=>'Contrassegna questa registrazione come rettifica, ammettendo di conseguenza eccezioni nei controlli',
   
   'Synchronize' => 'Sincronizza',
   'Syncronize accounts from ancestor firms' => 'Sincronizza conti da un\'azienda di cui questa è derivazione',
@@ -268,8 +268,8 @@ return array(
   'Just <a href="%url%">drop us a message</a>!'=>'Basta che ci <a href="%url%">invii un messaggio</a>!',
   
   'Clear' => 'Svuota',
-  'Delete all journal posts' => 'Elimina tutte le registrazioni contabili',
-  'Are you sure you want to delete all journal posts?' => 'Sei sicuro di voler eliminare tutte le registrazioni contabili?',
+  'Delete all journal entries' => 'Elimina tutte le registrazioni contabili',
+  'Are you sure you want to delete all journal entries?' => 'Sei sicuro di voler eliminare tutte le registrazioni contabili?',
   'The journal has been successfully cleared.'=> 'Le registrazioni contabili sono state correttamente eliminate.',
   
   'Contact Us'=>'Contattaci',

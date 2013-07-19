@@ -4,7 +4,7 @@
 $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'New journal post',
+  'New journal entry',
 );
 
 if(sizeof($model->reasons))
@@ -17,6 +17,6 @@ if(sizeof($model->reasons))
   }
 }
 ?>
-<h1><?php echo Yii::t('delt', 'New journal post') ?></h1>
+<h1><?php echo Yii::t('delt', 'New journal entry') ?></h1>
 
 <?php echo $this->renderPartial('_postform', array('postform'=>$postform, 'items'=>$items)) ?>

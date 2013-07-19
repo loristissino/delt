@@ -5,7 +5,7 @@ $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Journal' => array('/bookkeeping/journal', 'slug'=>$model->slug),
-  'Closing post',
+  'Closing entry',
 );
 
 $this->menu=array(

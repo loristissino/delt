@@ -12,7 +12,7 @@ $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', '
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
 $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
 $sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort accounts, debits first'))));
-$explain_icon=addslashes($this->createIcon('explain', Yii::t('delt', 'Explain journal entries'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Explain journal entries'))));
+$explain_icon=addslashes($this->createIcon('explain', Yii::t('delt', 'Explain the single postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Explain the single postings'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -349,11 +349,11 @@ $cs->registerScript(
     <?php if ($postform->adjustment_checkbox_needed): ?>
     <div class="row">
       <?php echo $form->labelEx($postform, 'options') ?>
-      <?php echo $form->checkBox($postform, 'is_adjustment', array('checked'=>$postform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this post as adjustment, thus allowing exceptions in debit/credit checks') ?>
+      <?php echo $form->checkBox($postform, 'is_adjustment', array('checked'=>$postform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this journal entry as adjustment, thus allowing exceptions in debit/credit checks') ?>
     </div>
     <?php endif ?>
     <div class="row buttons">
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Save journal post'), array('name'=>'save')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save journal entry'), array('name'=>'save')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>
     </div>
   </div><!-- rows_as_textfields -->
@@ -388,7 +388,7 @@ $cs->registerScript(
 
   <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the explanation is experimental and is based on a correct chart of accounts.') ?></p>
 <?php else: ?>
-  <p><?php echo Yii::t('delt', 'The explanation is currently disabled. Please save the journal post first.') ?></p>
+  <p><?php echo Yii::t('delt', 'The explanation is currently disabled. Please save the journal entry first.') ?></p>
 
 <?php endif ?>
 

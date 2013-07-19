@@ -238,17 +238,17 @@ class BookkeepingController extends Controller
     switch($collocation)
     {
       case 'P':
-        $this->postdescription=Yii::t('delt', 'Patrimonial closing post');
+        $this->postdescription=Yii::t('delt', 'Patrimonial closing entry entry');
         break;
       case 'E':
-        $this->postdescription=Yii::t('delt', 'Economic closing post');
+        $this->postdescription=Yii::t('delt', 'Economic closing journal entry');
         break;
       case 'M':
-        $this->postdescription=Yii::t('delt', 'Memo closing post');
+        $this->postdescription=Yii::t('delt', 'Memo closing journal entry');
         break;
       default:
         $collocation='';
-        $this->postdescription=Yii::t('delt', 'Closing post');
+        $this->postdescription=Yii::t('delt', 'Closing journal entry');
     }
     $this->firm=$this->loadModelBySlug($slug);
     if($collocation)
