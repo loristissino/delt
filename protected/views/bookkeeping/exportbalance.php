@@ -14,7 +14,7 @@ $this->breadcrumbs=array(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'reason-_reason-form',
+	'id'=>'template-_template-form',
   'method'=>'GET',
 	'enableAjaxValidation'=>false,
 )); ?>

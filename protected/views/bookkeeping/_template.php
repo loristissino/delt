@@ -1,13 +1,13 @@
 <?php
-/* @var $this ReasonController */
-/* @var $model Reason */
+/* @var $this TemplateController */
+/* @var $model Template */
 /* @var $form CActiveForm */
 ?>
 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'reason-_reason-form',
+	'id'=>'template-_template-form',
 	'enableAjaxValidation'=>false,
 )); ?>
 

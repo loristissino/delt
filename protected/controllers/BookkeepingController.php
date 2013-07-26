@@ -379,17 +379,17 @@ class BookkeepingController extends Controller
 
 
 
-  public function actionPostfromreason($id)
+  public function actionPostfromtemplate($id)
   {
-    $reason=$this->loadReason($id);
-    $this->firm=$reason->firm;
+    $template=$this->loadTemplate($id);
+    $this->firm=$template->firm;
     $this->checkManageability($this->firm);
     
-    $this->accounts = $reason->getAccountsInvolved($this->firm->currency);
+    $this->accounts = $template->getAccountsInvolved($this->firm->currency);
     
     if(sizeof($this->accounts))
     {
-      $this->postdescription=$reason->description;
+      $this->postdescription=$template->description;
       return $this->actionNewpost($this->firm->slug);
       // we show the standard form
     }
@@ -398,38 +398,38 @@ class BookkeepingController extends Controller
   }
 
 
-  public function actionCreatereason($id)
+  public function actionCreatetemplate($id)
   {
     $this->post = $this->loadPost($id);
     $this->firm=$this->post->firm;
     $this->checkManageability($this->firm);
     
-    $reason=new Reason;
+    $template=new Template;
 
-    if(isset($_POST['Reason']))
+    if(isset($_POST['Template']))
     {
-        $reason->attributes=$_POST['Reason'];
-        if($reason->validate())
+        $template->attributes=$_POST['Template'];
+        if($template->validate())
         {
-          $reason->firm_id = $this->firm->id;
-          $reason->post_id = $this->post->id;
-          if($reason->save())
+          $template->firm_id = $this->firm->id;
+          $template->post_id = $this->post->id;
+          if($template->save())
           {
-            Yii::app()->user->setFlash('delt_success','The reason has been correctly saved.'); 
+            Yii::app()->user->setFlash('delt_success','The template has been correctly saved.'); 
           }
           else
           {
-            Yii::app()->user->setFlash('delt_failure','The reason could not be saved.'); 
+            Yii::app()->user->setFlash('delt_failure','The template could not be saved.'); 
           }
           $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
         }
     }
-    if(!$reason->description)
+    if(!$template->description)
     {
-      $reason->description = $this->post->description;
+      $template->description = $this->post->description;
     }
 
-    $this->render('createreason',array('model'=>$this->firm, 'reason'=>$reason));
+    $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
   }
 
   /**
@@ -485,12 +485,12 @@ class BookkeepingController extends Controller
     return $this->loadFirmBySlug($slug);
 	}
   
-  public function loadReason($id)
+  public function loadTemplate($id)
   {
-		$reason=Reason::model()->findByPk($id);
-		if($reason===null)
+		$template=Template::model()->findByPk($id);
+		if($template===null)
 			throw new CHttpException(404,'The requested page does not exist.');
-		return $reason;
+		return $template;
   }
   
   public function renderName(Account $account, $row)

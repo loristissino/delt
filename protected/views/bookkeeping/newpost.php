@@ -7,13 +7,13 @@ $this->breadcrumbs=array(
   'New journal entry',
 );
 
-if(sizeof($model->reasons))
+if(sizeof($model->templates))
 {
-  $this->menutitle='Reasons';
+  $this->menutitle='Templates';
   $this->menu=array();
-  foreach($model->reasons as $reason)
+  foreach($model->templates as $template)
   {
-    $this->menu[]=array('label'=>$reason->description, 'url'=>array('bookkeeping/postfromreason', 'id'=>$reason->id));
+    $this->menu[]=array('label'=>$template->description, 'url'=>array('bookkeeping/postfromtemplate', 'id'=>$template->id));
   }
 }
 ?>

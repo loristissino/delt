@@ -211,10 +211,10 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_reason`
+-- Table structure for table `tbl_template`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_reason` (
+CREATE TABLE IF NOT EXISTS `tbl_template` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `firm_id` int(11) NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 NOT NULL,

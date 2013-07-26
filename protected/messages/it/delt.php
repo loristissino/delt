@@ -132,14 +132,14 @@ return array(
 
   'This firm does not seem to have accounts with «{position}» position to close.'=> 'Questa azienda non sembra avere conti con collocazione «{position}» da chiudere.',
   
-  'Reasons' => 'Causali',
-  'Create Reason' => 'Crea causale',
-  'Create a Reason based on this entry' => 'Crea una causale basata su questa registrazione',
+  'Templates' => 'Causali',
+  'Create Template' => 'Crea causale',
+  'Create a Template based on this entry' => 'Crea una causale basata su questa registrazione',
   'Delete this entry' => 'Elimina questa registrazione',
-  'You are going to create a new reason with the following accounts:' => 'Stai per creare una nuova causale con i seguenti conti:',
-  'Reason creation' => 'Creazione di causale',
-  'The reason has been correctly saved.'=>'La causale è stata correttamente salvata.',
-  'The reason could not be saved.'=>'La causale non è stata salvata.',
+  'You are going to create a new template with the following accounts:' => 'Stai per creare una nuova causale con i seguenti conti:',
+  'Template creation' => 'Creazione di causale',
+  'The template has been correctly saved.'=>'La causale è stata correttamente salvata.',
+  'The template could not be saved.'=>'La causale non è stata salvata.',
   
   'Create'=>'Crea',
   
@@ -174,8 +174,8 @@ return array(
   'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
   
   'Chart of Accounts' => 'Piano dei conti',
-  'Chart of Accounts and Reasons' => 'Piano dei conti e causali contabili',
-  'Chart of Accounts, Reasons and Journal entries' => 'Piano dei conti, causali contabili, registrazioni contabili',
+  'Chart of Accounts and Templates' => 'Piano dei conti e causali contabili',
+  'Chart of Accounts, Templates and Journal entries' => 'Piano dei conti, causali contabili, registrazioni contabili',
   'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
   
   'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',

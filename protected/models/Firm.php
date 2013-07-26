@@ -20,7 +20,7 @@
  * @property Account[] $accounts
  * @property Users[] $tblUsers
  * @property Post[] $posts
- * @property Reason[] $reasons
+ * @property Template[] $templates
  * @property Language[] $languages
  *
  */
@@ -91,7 +91,7 @@ class Firm extends CActiveRecord
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
       'languages' => array(self::MANY_MANY, 'Language', '{{firm_language}}(firm_id, language_id)', 'order'=>'language_code, country_code ASC'),
 			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'posts.date ASC'),
-      'reasons' => array(self::HAS_MANY, 'Reason', 'firm_id', 'order'=>'reasons.description ASC'),
+      'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
 		);
 	}
@@ -749,22 +749,22 @@ class Firm extends CActiveRecord
       
       if(substr($type, 1, 1)=='1')
       {
-        // we must fork reasons...
-        foreach($source->reasons as $reason)
+        // we must fork templates...
+        foreach($source->templates as $template)
         {
-          $newreason = new Reason;
-          $newreason->firm_id = $this->id;
+          $newtemplate = new Template;
+          $newtemplate->firm_id = $this->id;
           foreach(array('description') as $property)
           {
-            $newreason->$property = $reason->$property;
+            $newtemplate->$property = $template->$property;
           }
           $info=array();
-          foreach(unserialize($reason->info) as $id=>$value)
+          foreach(unserialize($template->info) as $id=>$value)
           {
             $info[$references[$id]]=$value;
           }
-          $newreason->info=serialize($info);
-          $newreason->save(false);
+          $newtemplate->info=serialize($info);
+          $newtemplate->save(false);
         }
       }
       
@@ -897,8 +897,8 @@ class Firm extends CActiveRecord
   {
     /* type can be:
      *   100 -- only accounts
-     *   110 -- accounts and reasons
-     *   111 -- accounts, reasons, posts
+     *   110 -- accounts and templates
+     *   111 -- accounts, templates, posts
      */
     
     $data=array();
@@ -921,21 +921,21 @@ class Firm extends CActiveRecord
       $references[$account->id]=$account->code;
     }
     
-    $data['reasons']=array();
+    $data['templates']=array();
     if(substr($type, 1, 1)=='1')
     {
-      // we must export reasons...
-      foreach($this->reasons as $reason)
+      // we must export templates...
+      foreach($this->templates as $template)
       {
         $values=array();
-        DELT::object2array($reason, $values, array('description'));
+        DELT::object2array($template, $values, array('description'));
         $info=array();
-        foreach(unserialize($reason->info) as $id=>$value)
+        foreach(unserialize($template->info) as $id=>$value)
         {
           $info[$references[$id]]=$value;
         }
         $values['accounts']=$info;
-        $data['reasons'][]=$values;
+        $data['templates'][]=$values;
       }
     }
     
@@ -995,7 +995,7 @@ class Firm extends CActiveRecord
 
     // the following do not need to be in the transaction:    
     $this->_deletePosts();
-    $this->_deleteReasons();
+    $this->_deleteTemplates();
     $this->_deleteAccounts();
     
     $transaction = $this->getDbConnection()->beginTransaction();
@@ -1038,11 +1038,11 @@ class Firm extends CActiveRecord
       }
       
       
-      foreach($data['reasons'] as $values)
+      foreach($data['templates'] as $values)
       {
-        $newreason = new Reason;
-        $newreason->firm_id = $this->id;
-        DELT::array2object($values, $newreason, array('description'));
+        $newtemplate = new Template;
+        $newtemplate->firm_id = $this->id;
+        DELT::array2object($values, $newtemplate, array('description'));
 
         $info=array();
         foreach($values['accounts'] as $id=>$value)
@@ -1050,8 +1050,8 @@ class Firm extends CActiveRecord
           $info[$references[$id]]=$value;
         }
         
-        $newreason->info=serialize($info);
-        $newreason->save(false);
+        $newtemplate->info=serialize($info);
+        $newtemplate->save(false);
       }
 
       foreach($data['posts'] as $values)
@@ -1102,7 +1102,7 @@ class Firm extends CActiveRecord
     
     $key = isset($export_info['key']) ? $export_info['key'] : '';
 
-    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['reasons'] . $data['posts'] . $data['meta'] . $key));
+    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['templates'] . $data['posts'] . $data['meta'] . $key));
     
     return $check ? $md5 == $data['md5sum'] : $md5;
     
@@ -1116,9 +1116,9 @@ class Firm extends CActiveRecord
     }
   }
 
-  private function _deleteReasons()
+  private function _deleteTemplates()
   {
-    Reason::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
+    Template::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
   private function _deleteUsers()
@@ -1202,7 +1202,7 @@ class Firm extends CActiveRecord
   public function safeDelete()
   {
     $this->_deletePosts();
-    $this->_deleteReasons();
+    $this->_deleteTemplates();
     $this->_deleteAccounts();
     $this->_deleteUsers();
 

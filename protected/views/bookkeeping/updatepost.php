@@ -9,8 +9,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>Yii::t('delt', 'Create Reason'), 'url'=>$this->createUrl('bookkeeping/createreason', array('id'=>$postform->post->id)),'linkOptions'=>array(
-    'title'=>Yii::t('delt', 'Create a Reason based on this journal entry'),
+  array('label'=>Yii::t('delt', 'Create Template'), 'url'=>$this->createUrl('bookkeeping/createtemplate', array('id'=>$postform->post->id)),'linkOptions'=>array(
+    'title'=>Yii::t('delt', 'Create a Template based on this journal entry'),
     ))
   );
 

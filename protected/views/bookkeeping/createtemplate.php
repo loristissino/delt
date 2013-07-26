@@ -5,16 +5,16 @@ $this->breadcrumbs=array(
 	'Bookkeeping'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Journal' =>array('/bookkeeping/journal', 'slug'=>$model->slug),
-  'Reason creation',
+  'Template creation',
 );
 
 $this->menu=array(
 );
 
 ?>
-<h1><?php echo Yii::t('delt', 'Reason creation') ?></h1>
+<h1><?php echo Yii::t('delt', 'Template creation') ?></h1>
 
-<p><?php echo Yii::t('delt', 'You are going to create a new reason with the following accounts:') ?></p>
+<p><?php echo Yii::t('delt', 'You are going to create a new template with the following accounts:') ?></p>
 <ul>
 <?php foreach($this->post->debitcredits as $debitcredit): $type=DELT::amount2type($debitcredit->amount) ?>
   <li>
@@ -22,4 +22,4 @@ $this->menu=array(
   </li>
 <?php endforeach ?>
 </ul>
-<?php echo $this->renderPartial('_reason', array('model'=>$reason)) ?>
+<?php echo $this->renderPartial('_template', array('model'=>$template)) ?>

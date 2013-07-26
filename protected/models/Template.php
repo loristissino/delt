@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{reason}}".
+ * This is the model class for table "{{template}}".
  *
- * The followings are the available columns in table '{{reason}}':
+ * The followings are the available columns in table '{{template}}':
  * @property integer $id
  * @property integer $firm_id
  * @property string $description
@@ -13,7 +13,7 @@
  * The followings are the available model relations:
  * @property Firm $firm
  */
-class Reason extends CActiveRecord
+class Template extends CActiveRecord
 {
   
   public $post_id;
@@ -21,7 +21,7 @@ class Reason extends CActiveRecord
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Reason the static model class
+	 * @return Template the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -33,7 +33,7 @@ class Reason extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{reason}}';
+		return '{{template}}';
 	}
 
 	/**
