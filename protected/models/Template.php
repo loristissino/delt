@@ -122,13 +122,14 @@ class Template extends CActiveRecord
       return $result;
     }
     
-    $accounts = Account::model()->with('names')->findAllByPk(array_keys($info));
+
+    $accounts = Account::model()->findAllByPk(array_keys($info));
     foreach($accounts as $account)
     {
       $result[$info[$account->id]['rank']]=array(
         'name'=> $account->code . ' - ' . $account->name,
-        'debit'=>$info[$account->id]['type']=='D' ? DELT::currency_value(0, $currency, false, true): '',
-        'credit'=>$info[$account->id]['type']=='C' ? DELT::currency_value(0, $currency, false, true): '',
+        'debit'=>$info[$account->id]['type']=='Dr.' ? DELT::currency_value(0, $currency, false, true): '',
+        'credit'=>$info[$account->id]['type']=='Cr.' ? DELT::currency_value(0, $currency, false, true): '',
       );
     }
     ksort($result);
