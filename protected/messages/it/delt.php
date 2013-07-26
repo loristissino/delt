@@ -9,7 +9,7 @@ return array(
   'Or, even better,' => 'Oppure, ancora meglio,',
   'fork an existing one.' => 'duplicane una esistente.',
   'Bookkeeping' => 'Contabilità',
-  'Bookkeeping and accountancy' => 'Gestione contabile',
+  'Bookkeeping and accounting' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
   'Chart of accounts' => 'Piano dei conti',
   'Trial Balance' => 'Situazione contabile',
@@ -30,14 +30,14 @@ return array(
   'Description' => 'Descrizione',
   'Comment' => 'Commento',
 
-  'Collocation' => 'Collocazione',
-  'BS<!-- collocation -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
-  'IS<!-- collocation -->' => 'CE',  // conti economici (reddito di esercizio)
-  'M<!-- collocation -->' => 'O',  // conti d'ordine
-  'p<!-- collocation -->' => 'p',  // transitorio patrimoniale
-  'e<!-- collocation -->' => 'e',  // transitorio economica
-  'r<!-- collocation -->' => 'r',  // risultato di esercizio
-  'u<!-- collocation -->' => '?',  // non assegnata / sconosciuta
+  'Position' => 'Collocazione',
+  'BS<!-- position -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
+  'IS<!-- position -->' => 'CE',  // conti economici (reddito di esercizio)
+  'M<!-- position -->' => 'O',  // conti d'ordine
+  'p<!-- position -->' => 'p',  // transitorio patrimoniale
+  'e<!-- position -->' => 'e',  // transitorio economica
+  'r<!-- position -->' => 'r',  // risultato di esercizio
+  'u<!-- position -->' => '?',  // non assegnata / sconosciuta
 
   'Balance Sheet (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
   'Income Statement (Revenues / Expenses)' => 'Conto economico (Ricavi / Costi)',
@@ -50,7 +50,7 @@ return array(
   'Revenues' => 'Ricavi',  
   'Expenses' => 'Costi',  
   'Unknown' => 'Sconosciuta',
-  'This account has not been correctly collocated.'=>'Questo conto non risulta correttamente collocato.',
+  'This account has not been correctly positioned.'=>'Questo conto non risulta correttamente collocato.',
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',
@@ -130,7 +130,7 @@ return array(
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
   'Please fix the following errors:' => 'Devi correggere i seguenti errori:',
 
-  'This firm does not seem to have accounts with «{collocation}» collocation to close.'=> 'Questa azienda non sembra avere conti con collocazione «{collocation}» da chiudere.',
+  'This firm does not seem to have accounts with «{position}» position to close.'=> 'Questa azienda non sembra avere conti con collocazione «{position}» da chiudere.',
   
   'Reasons' => 'Causali',
   'Create Reason' => 'Crea causale',
@@ -315,7 +315,7 @@ return array(
 
   'Share' => 'Condividi',
   'Share the Firm «{name}»' => 'Condivisione azienda «{name}»',
-  'This firm does not seem to have accounts of «{collocation}» collocation to close.' => 'Questa azienda non sembra avere conti con collocazione «{collocation}» da chiudere.',
+  'This firm does not seem to have accounts of «{position}» position to close.' => 'Questa azienda non sembra avere conti con collocazione «{position}» da chiudere.',
   'This firm is currently shared with another user:|This firm is currently shared with other {n} users:' => 'Questa azienda è correntemente condivisa con un altro utente:|Questa azienda è correntemente condivisa con altri {n} utenti:',
 
   'This firm is not currently shared with any other user.'=>'Questa azienda non è correntemente condivisa con altri utenti.',

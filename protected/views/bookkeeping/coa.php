@@ -44,7 +44,7 @@ if($model->firm_parent_id)
       'value'=>array($this, 'RenderName'),
       // this will call the function RenderName() of the Controller, passing the current object and the row number as parameter
       'type'=>'raw',
-      'cssClassExpression'=>'$data->collocation == \'?\' ? \'uncollocated\' : \'\'',
+      'cssClassExpression'=>'$data->position == \'?\' ? \'unpositioned\' : \'\'',
       ),
     /* the following works, but we don't really need it
     array(
@@ -56,9 +56,9 @@ if($model->firm_parent_id)
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
-      'name'=>'collocation',
-      'header'=>Yii::t('delt', 'Collocation'),
-      'value'=>array($this, 'RenderCollocation'),
+      'name'=>'position',
+      'header'=>Yii::t('delt', 'position'),
+      'value'=>array($this, 'RenderPosition'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),

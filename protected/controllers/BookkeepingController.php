@@ -233,9 +233,9 @@ class BookkeepingController extends Controller
     ));
 	}
   
-  public function actionClosingpost($slug, $collocation='')
+  public function actionClosingpost($slug, $position='')
   {
-    switch($collocation)
+    switch($position)
     {
       case 'P':
         $this->postdescription=Yii::t('delt', 'Patrimonial closing entry entry');
@@ -247,13 +247,13 @@ class BookkeepingController extends Controller
         $this->postdescription=Yii::t('delt', 'Memo closing journal entry');
         break;
       default:
-        $collocation='';
+        $position='';
         $this->postdescription=Yii::t('delt', 'Closing journal entry');
     }
     $this->firm=$this->loadModelBySlug($slug);
-    if($collocation)
+    if($position)
     {
-      $this->accounts = $this->firm->getAccountBalances($collocation);
+      $this->accounts = $this->firm->getAccountBalances($position);
       $this->is_closing = true;
       if(sizeof($this->accounts))
       {
@@ -262,7 +262,7 @@ class BookkeepingController extends Controller
       }
     }
     
-    $this->render('closingpost', array('collocation'=>$collocation, 'model'=>$this->firm));
+    $this->render('closingpost', array('position'=>$position, 'model'=>$this->firm));
     
   }
 
@@ -278,7 +278,7 @@ class BookkeepingController extends Controller
       // we show the standard form
     }
     
-    $this->render('closingpost', array('collocation'=>'e', 'model'=>$this->firm));
+    $this->render('closingpost', array('position'=>'e', 'model'=>$this->firm));
   }
 
 	public function actionUpdatepost($id)
@@ -498,9 +498,9 @@ class BookkeepingController extends Controller
     return $this->renderPartial('../account/_name',array('account'=>$account),true);
   }
 
-  public function renderCollocation(Account $account, $row)
+  public function renderposition(Account $account, $row)
   {
-    return $this->renderPartial('../account/_collocation',array('account'=>$account),true);
+    return $this->renderPartial('../account/_position',array('account'=>$account),true);
   }
   
   public function renderOutstandingBalance(Account $account, $row)

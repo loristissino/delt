@@ -80,7 +80,7 @@ return array(
         '/firms/<slug:[a-z0-9\-]*>/coa'=>'/firm/coa/slug/<slug>',
 				'<controller:\w+>/<id:\d+>'=>'<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
-        '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>/collocation/<collocation:\w>'=>'<controller>/<action>',
+        '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>/position/<position:\w>'=>'<controller>/<action>',
         '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>'=>'<controller>/<action>',
 				'<controller:\w+>/<action:\w+>'=>'<controller>/<action>',
 			),

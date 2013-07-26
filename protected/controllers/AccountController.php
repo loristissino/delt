@@ -70,7 +70,7 @@ class AccountController extends Controller
     {
       $parent = $this->loadAccount($id);
       $model->code = $parent->code . '.';
-      $model->collocation = $parent->collocation;
+      $model->position = $parent->position;
       $model->outstanding_balance = $parent->outstanding_balance;
     }
 

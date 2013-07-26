@@ -260,7 +260,7 @@ class Firm extends CActiveRecord
       }
       else
       {
-        if($differences = DELT::compareObjects($account, $own[$account->code], array('comment', 'collocation', 'outstanding_balance', 'textnames')))
+        if($differences = DELT::compareObjects($account, $own[$account->code], array('comment', 'position', 'outstanding_balance', 'textnames')))
         {
           $changes[] = array('account'=>$account, 'differences'=>$differences);
         }
@@ -282,7 +282,7 @@ class Firm extends CActiveRecord
         {
           $account = Account::model()->findByPk($id);
           $newaccount = new Account;
-          DELT::object2object($account, $newaccount, array('code', 'textnames', 'collocation', 'outstanding_balance','comment'));
+          DELT::object2object($account, $newaccount, array('code', 'textnames', 'position', 'outstanding_balance','comment'));
           $newaccount->firm_id = $this->id;
           $newaccount->basicSave(false);
         }
@@ -294,7 +294,7 @@ class Firm extends CActiveRecord
         {
           $account = Account::model()->findByPk($id);
           $oldaccount = Account::model()->findByAttributes(array('firm_id'=>$this->id, 'code'=>$account->code));
-          DELT::object2object($account, $oldaccount, array('code', 'textnames', 'collocation', 'outstanding_balance','comment'));
+          DELT::object2object($account, $oldaccount, array('code', 'textnames', 'position', 'outstanding_balance','comment'));
           $oldaccount->basicSave(false);
         }
       }
@@ -393,7 +393,7 @@ class Firm extends CActiveRecord
     $sort->attributes = array(
         'code'=>'code',
         'name'=>'currentname',
-        'collocation'=>'collocation',
+        'position'=>'position',
     );    
     
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
@@ -424,17 +424,17 @@ class Firm extends CActiveRecord
     );
   }
   
-  public function getAccountBalancesData($collocation='')
+  public function getAccountBalancesData($position='')
   {
     // FIXME -- we should have an array parameter instead of this...
-    $collocations=array($collocation);
-    if($collocation=='P')
+    $positions=array($position);
+    if($position=='P')
     {
-      $collocations[]='r';
+      $positions[]='r';
     }
-    if($collocation=='')
+    if($position=='')
     {
-      $collocations=array('P', 'r', 'E', 'e', 'M');
+      $positions=array('P', 'r', 'E', 'e', 'M');
     }
     
     $accounts = Yii::app()->db->createCommand()
@@ -443,7 +443,7 @@ class Firm extends CActiveRecord
       ->leftJoin('{{account}} a', 'account_id = a.id')
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
-      ->andWhere(array('in', 'collocation', $collocations))
+      ->andWhere(array('in', 'position', $positions))
       ->order('a.code')
       ->group('a.code, a.currentname')
       ->having('total <> 0')
@@ -456,11 +456,11 @@ class Firm extends CActiveRecord
   }
   
   
-  public function getAccountBalances($collocation='')
+  public function getAccountBalances($position='')
   {
     
     $result=array();
-    $accounts = $this->getAccountBalancesData($collocation);
+    $accounts = $this->getAccountBalancesData($position);
     
     $grandtotal=0;  
     foreach($accounts as $account)
@@ -485,11 +485,11 @@ class Firm extends CActiveRecord
       }
       $result[]=$row;
     }
-    if($collocation=='e')
+    if($position=='e')
     {
       $ob=$grandtotal>0 ? 'D': 'C';
       
-      $resultAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'collocation'=>'r', 'outstanding_balance'=>$ob));
+      $resultAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>'r', 'outstanding_balance'=>$ob));
       if(sizeof($resultAccounts)==1)
       {
         $account=$resultAccounts[0];
@@ -508,7 +508,7 @@ class Firm extends CActiveRecord
     }
     elseif($grandtotal!=0)
     {
-      $closingaccounts=Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'collocation'=>strtolower($collocation), 'is_selectable'=>true));
+      $closingaccounts=Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'is_selectable'=>true));
       if(sizeof($closingaccounts)==1)
       { 
         $result[]=array(
@@ -569,9 +569,9 @@ class Firm extends CActiveRecord
     {
       foreach($info['children'] as $child_id)
       {
-        if($a[$child_id]['model']->collocation!='r')
+        if($a[$child_id]['model']->position!='r')
         {
-          $a[$child_id]['model']->collocation = $info['model']->collocation;
+          $a[$child_id]['model']->position = $info['model']->position;
         }
         $a[$child_id]['model']->setParentCode($info['model']->code);
       }
@@ -737,7 +737,7 @@ class Firm extends CActiveRecord
         $newaccount->firm = $this;
         $newaccount->account_parent_id = null;
         
-        foreach(array('code', 'level', 'collocation', 'is_selectable', 'outstanding_balance', 'number_of_children', 'textnames') as $property)
+        foreach(array('code', 'level', 'position', 'is_selectable', 'outstanding_balance', 'number_of_children', 'textnames') as $property)
         {
           $newaccount->$property = $account->$property ? $account->$property : '1';
         }
@@ -916,7 +916,7 @@ class Firm extends CActiveRecord
     foreach($this->accounts as $account)
     {
       $values=array();
-      DELT::object2array($account, $values, array('code', 'textnames', 'collocation', 'outstanding_balance', 'comment'));
+      DELT::object2array($account, $values, array('code', 'textnames', 'position', 'outstanding_balance', 'comment'));
       $data['accounts'][]=$values;
       $references[$account->id]=$account->code;
     }
@@ -1032,7 +1032,7 @@ class Firm extends CActiveRecord
       {
         $newaccount = new Account;
         $newaccount->firm_id = $this->id;
-        DELT::array2object($values, $newaccount, array('code', 'textnames', 'collocation', 'outstanding_balance', 'comment'));
+        DELT::array2object($values, $newaccount, array('code', 'textnames', 'position', 'outstanding_balance', 'comment'));
         $newaccount->basicSave(false);
         $references[$values['code']]=$newaccount->id;
       }
@@ -1148,19 +1148,19 @@ class Firm extends CActiveRecord
     return $this->_getStatement('E', $level);
   }
   
-  private function _getStatement($collocation, $level=1)
+  private function _getStatement($position, $level=1)
   {
-    $collocations=array($collocation);
-    if($collocation=='P')
+    $positions=array($position);
+    if($position=='P')
     {
-      $collocations[]='r';
+      $positions[]='r';
     }
 
     $accounts = Yii::app()->db->createCommand()
       ->select('id, code, level, currentname as name, is_selectable')
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
-      ->andWhere(array('in', 'collocation', $collocations))
+      ->andWhere(array('in', 'position', $positions))
       ->andWhere('level <= :level', array(':level'=>$level))
       ->order('rcode')
       ->queryAll();
@@ -1175,13 +1175,13 @@ class Firm extends CActiveRecord
         unset($accounts[$key]);  // we remove items that yeld a zero value...
       }
       
-      if($collocation=='P')
+      if($position=='P')
       {
         $ob = ($ancestor=$account->firstAncestor) ? $ancestor->outstanding_balance : $account->outstanding_balance;
         $item['type']= $ob=='D' ? '+': '-';
       }
       
-      if($collocation=='E')
+      if($position=='E')
       {
         $item['type'] = '+';
         $item['amount'] = -$item['amount'];
@@ -1233,7 +1233,7 @@ class Firm extends CActiveRecord
     $account->currentname = $name;
     $account->firm_id = $this->id;
     $account->firm = $this;
-    $account->collocation = '?';
+    $account->position = '?';
     $account->outstanding_balance = '/';
     $account->id = '!' . md5($name . rand(0, 100000));
     return $account;

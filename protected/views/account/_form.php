@@ -34,14 +34,14 @@
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($model,'collocation') ?>
+		<?php echo $form->labelEx($model,'position') ?>
      <?php echo $form->dropDownList(
         $model, 
-        'collocation',
-        $model->validCollocations(false)
+        'position',
+        $model->validpositions(false)
          )
       ?>
-		<?php echo $form->error($model,'collocation'); ?>
+		<?php echo $form->error($model,'position'); ?>
 	</div>
   
   <div class="row">

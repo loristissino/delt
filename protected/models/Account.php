@@ -11,7 +11,7 @@
  * @property string $code
  * @property string $rcode
  * @property integer $is_selectable
- * @property string $collocation
+ * @property string $position
  * @property string $outstanding_balance
  * @property string $l10n_names
  * @property string $textnames
@@ -57,14 +57,14 @@ class Account extends CActiveRecord
 			array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
       array('code', 'checkCode'),
-      array('collocation', 'checkCollocation'),
+      array('position', 'checkposition'),
       array('comment', 'checkComment'),
-			array('collocation,outstanding_balance', 'length', 'max'=>1),
+			array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
       array('currentname', 'safe'),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_parent_id, firm_id, level, code, is_selectable, collocation, outstanding_balance', 'safe', 'on'=>'search'),
+			array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -103,7 +103,7 @@ class Account extends CActiveRecord
 			'level' => 'Level',
 			'code' => Yii::t('delt', 'Code'),
 			'is_selectable' => 'Is Selectable',
-			'collocation' => Yii::t('delt', 'Collocation'),
+			'position' => Yii::t('delt', 'position'),
 			'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
       'number_of_children' => Yii::t('delt', 'Number of children'),
@@ -112,11 +112,11 @@ class Account extends CActiveRecord
 	}
   
 	/**
-	 * @return array valid account collocations (key=>label)
+	 * @return array valid account positions (key=>label)
 	 */
-	public function validCollocations($withUncollocated=true)
+	public function validpositions($withUnpositioned=true)
 	{
-    $collocations = array(
+    $positions = array(
       'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
       'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
@@ -124,30 +124,30 @@ class Account extends CActiveRecord
       'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
       'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
       ); 
-    if($withUncollocated)
+    if($withUnpositioned)
     {
-      $collocations['?'] = Yii::t('delt', 'Unknown');
+      $positions['?'] = Yii::t('delt', 'Unknown');
     }
-    return $collocations;
+    return $positions;
 	}
   
-  public function getCollocationLabel()
+  public function getPositionLabel()
   {
-    switch($this->collocation)
+    switch($this->position)
     {
       case 'P': return 'BS';
       case 'E': return 'IS';
-      default: return $this->collocation;
+      default: return $this->position;
     }
   }
 
 	/**
-	 * @return array valid account collocations
+	 * @return array valid account positions
 	 */
-	public function getValidCollocationByCode($code)
+	public function getValidpositionByCode($code)
   {
-    $collocations=$this->validCollocations();
-    return isset($collocations[$code]) ? $collocations[$code] : null;
+    $positions=$this->validpositions();
+    return isset($positions[$code]) ? $positions[$code] : null;
   }
   
 
@@ -169,7 +169,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
-    $criteria->compare('collocation',$this->collocation);
+    $criteria->compare('position',$this->position);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
 		return new CActiveDataProvider($this, array(
@@ -236,7 +236,7 @@ class Account extends CActiveRecord
     $parent = $this->getParent();
     
     $code =
-      $this->collocation .
+      $this->position .
       ($parent ? $parent->outstanding_balance : '-') . 
       ($this->outstanding_balance ? $this->outstanding_balance : '/') .
       ($amount>0?'D':'C')
@@ -426,7 +426,7 @@ class Account extends CActiveRecord
    */
   private function _codeContainsOnlyValidChars()
   {
-    if($this->collocation=='?')
+    if($this->position=='?')
     {
       return !preg_match('/^[a-zA-Z0-9\.\!]*$/', $this->code);
     }
@@ -531,7 +531,7 @@ class Account extends CActiveRecord
     $sort->attributes = array(
         'code'=>'code',
         'name'=>'currentname.name',
-        'collocation'=>'collocation',
+        'position'=>'position',
     );    
   */  
     return new CActiveDataProvider(Debitcredit::model()->with('post')->belongingTo($this->id), array(
@@ -563,15 +563,15 @@ class Account extends CActiveRecord
   }
 
   
-  public function checkCollocation()
+  public function checkposition()
   {
-     if(!in_array($this->collocation, array_keys($this->validCollocations())))
+     if(!in_array($this->position, array_keys($this->validpositions())))
      {
-       $this->addError('collocation', Yii::t('delt', 'Not a valid collocation.'));
+       $this->addError('position', Yii::t('delt', 'Not a valid position.'));
      } 
-     if($this->collocation=='?' && substr($this->code, 0, 1)!='!')
+     if($this->position=='?' && substr($this->code, 0, 1)!='!')
      {
-       $this->addError('collocation', Yii::t('delt', 'This collocation is allowed only for bang accounts.'));
+       $this->addError('position', Yii::t('delt', 'This position is allowed only for bang accounts.'));
      }
   }
 

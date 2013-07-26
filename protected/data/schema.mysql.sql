@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `code` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'the code to be used in searching and sorting',
   `rcode` varchar(16) CHARACTER SET utf8 NOT NULL,
   `is_selectable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, it will be possibile to post amounts in this account',
-  `collocation` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
+  `position` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
   `currentname` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',

@@ -22,10 +22,10 @@ $totalcredits=$this->firm->getTotalAmounts('C');
 	'dataProvider'=>$dataProvider,
 	'columns'=>array(
     array(
-      'name'=>'collocation',
-      'header'=>Yii::t('delt', 'Collocation'),
+      'name'=>'position',
+      'header'=>Yii::t('delt', 'position'),
       'sortable'=>false,
-      'value'=>array($this, 'RenderCollocation'),
+      'value'=>array($this, 'RenderPosition'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),
@@ -34,7 +34,7 @@ $totalcredits=$this->firm->getTotalAmounts('C');
       'header'=>Yii::t('delt', 'Account'),
       'value'=>array($this, 'RenderSingleAccount'),
       'type'=>'raw',
-      'cssClassExpression'=>'$data->collocation == \'?\' ? \'uncollocated\' : \'\'',
+      'cssClassExpression'=>'$data->position == \'?\' ? \'unpositioned\' : \'\'',
       ),
     array(
       'class'=>'CDataColumn',

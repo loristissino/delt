@@ -23,7 +23,7 @@ $this->breadcrumbs=array(
     <div style="padding-left: 10px">
     <strong><?php echo nl2br($account->textnames) ?></strong>
     <?php echo $this->renderPartial('../account/_clevercomment', array('account'=>$account), true) ?>
-    <?php echo Yii::t('delt', 'Collocation') ?>: <?php echo $this->renderPartial('../account/_collocation',array('account'=>$account),true) ?><br /> 
+    <?php echo Yii::t('delt', 'Position') ?>: <?php echo $this->renderPartial('../account/_position',array('account'=>$account),true) ?><br /> 
     <?php echo Yii::t('delt', 'Ordinary outstanding balance') ?>: 
     
     <?php if($account->outstanding_balance===null and $account->is_selectable) echo '/'; else switch($account->outstanding_balance){

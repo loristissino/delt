@@ -4,8 +4,8 @@
   <?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?>
   </span>
 <?php endif ?>
-<?php if($account->collocation =='?'): ?>
-  <span class="warning" title="<?php echo Yii::t('delt', 'This account has not been correctly collocated.') ?>">
+<?php if($account->position =='?'): ?>
+  <span class="warning" title="<?php echo Yii::t('delt', 'This account has not been correctly positioned.') ?>">
   <?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?>
   </span>
 <?php endif ?></div>

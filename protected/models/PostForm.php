@@ -305,7 +305,7 @@ class PostForm extends CFormModel
         }
       }
       
-      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account && $this->debitcredits[$row]->account->collocation=='E')
+      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account && $this->debitcredits[$row]->account->position=='E')
       {
         if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
         {
