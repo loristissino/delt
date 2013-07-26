@@ -57,7 +57,7 @@ if($model->firm_parent_id)
       'class'=>'CDataColumn',
       'sortable'=>true,
       'name'=>'position',
-      'header'=>Yii::t('delt', 'position'),
+      'header'=>Yii::t('delt', 'Position'),
       'value'=>array($this, 'RenderPosition'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')

@@ -23,7 +23,7 @@ $totalcredits=$this->firm->getTotalAmounts('C');
 	'columns'=>array(
     array(
       'name'=>'position',
-      'header'=>Yii::t('delt', 'position'),
+      'header'=>Yii::t('delt', 'Position'),
       'sortable'=>false,
       'value'=>array($this, 'RenderPosition'),
       'type'=>'raw',
