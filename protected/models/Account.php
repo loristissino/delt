@@ -231,7 +231,7 @@ class Account extends CActiveRecord
     return sprintf('%s - %s', $this->code, $this->name);
   }
   
-  public function getExplanation($amount, $currency='EUR')
+  public function getAnalysis($amount, $currency='EUR')
   {
     $parent = $this->getParent();
     

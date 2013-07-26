@@ -12,7 +12,7 @@ class DebitcreditForm extends CFormModel
   public $account_id;
   public $account;
   public $guessed=false;
-  public $explanation = "none";
+  public $analysis = "none";
   
   public function rules()
 	{

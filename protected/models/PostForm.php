@@ -13,7 +13,7 @@ class PostForm extends CFormModel
   public $is_closing = false;
   public $is_adjustment = false;
   public $adjustment_checkbox_needed = false;
-  public $show_explanation = true;
+  public $show_analysis = true;
   
   public $post = null; // the original Post instance
   
@@ -35,7 +35,7 @@ class PostForm extends CFormModel
 	{
 		return array(
 			'date' => Yii::t('delt', 'Date'),
-			'description' => Yii::t('delt', 'Description'),
+			'description' => Yii::t('delt', 'Description / Explanation'),
       'raw_input' => Yii::t('delt', 'Raw input'),
       'options' => Yii::t('delt', 'Options')
       );
@@ -90,7 +90,7 @@ class PostForm extends CFormModel
       $this->debitcredits[$debitcredit->id]->name = $debitcredit->account->__toString();
       $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
       $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
-      $this->debitcredits[$debitcredit->id]->explanation = $debitcredit->account->getExplanation($debitcredit->amount, $this->firm->currency);
+      $this->debitcredits[$debitcredit->id]->analysis = $debitcredit->account->getAnalysis($debitcredit->amount, $this->firm->currency);
     }
   }
   
@@ -335,7 +335,7 @@ class PostForm extends CFormModel
         $grandtotal_debit += $debit;
         $grandtotal_credit += $credit;
         
-        $this->debitcredits[$row]->explanation = $this->debitcredits[$row]->account->getExplanation($debit - $credit, $this->firm->currency);
+        $this->debitcredits[$row]->analysis = $this->debitcredits[$row]->account->getAnalysis($debit - $credit, $this->firm->currency);
         
       }
       

@@ -11,8 +11,8 @@ $down_icon=addslashes($this->createIcon('arrow_down', Yii::t('delt', 'Down'), ar
 $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
 $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
-$sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort accounts, debits first'))));
-$explain_icon=addslashes($this->createIcon('explain', Yii::t('delt', 'Explain the single postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Explain the single postings'))));
+$sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort postings, debits first'))));
+$explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -39,11 +39,11 @@ $cs->registerScript(
     );
   $("#load_accounts").hide();
   
-  $("#explanation").hide();
+  $("#analysis").hide();
   
   $("#explain").click(function()
     {
-      $("#explanation").toggle(500);
+      $("#analysis").toggle(500);
     }
   );
   
@@ -374,21 +374,21 @@ $cs->registerScript(
 
 </div><!-- form -->
 
-<div id="explanation" style="display: none">
-<h2>Explanation</h2>
+<div id="analysis" style="display: none">
+<h2><?php echo Yii::t('delt', 'Transaction analysis') ?></h2>
 
-<?php if($postform->show_explanation): ?>
+<?php if($postform->show_analysis): ?>
   <p>
   <?php foreach($items as $item): ?>
-    <?php if($item->explanation != 'none'): ?>
-      <?php echo $item->explanation ?><br />
+    <?php if($item->analysis != 'none'): ?>
+      <?php echo $item->analysis ?><br />
     <?php endif ?>
   <?php endforeach ?>
   </p>
 
-  <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the explanation is experimental and is based on a correct chart of accounts.') ?></p>
+  <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the transaction analysis is experimental and is based on a correct chart of accounts.') ?></p>
 <?php else: ?>
-  <p><?php echo Yii::t('delt', 'The explanation is currently disabled. Please save the journal entry first.') ?></p>
+  <p><?php echo Yii::t('delt', 'Transaction analysis is currently disabled. Please save the journal entry first.') ?></p>
 
 <?php endif ?>
 
