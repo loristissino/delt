@@ -174,13 +174,13 @@ $languages_available = Language::model()->findAllSorted();
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'slug'); ?>
-		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?') ?>)</span>
+		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords." target="_blank">slug</a> is?') ?>)</span>
 		<?php echo $form->error($model,'slug'); ?>
 	</div>
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'currency'); ?>
-		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>, like EUR, USD, or GBP')?>)</span>
+		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP')?>)</span>
 		<?php echo $form->error($model,'currency'); ?>
 	</div>
 
@@ -202,14 +202,16 @@ $languages_available = Language::model()->findAllSorted();
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'You can select other languages to have a multilingual chart of accounts.') ?>
     <?php echo Yii::t('delt', 'Do you want other languages / locales to be supported?')?>
-    <?php echo Yii::t('delt', 'Just <a href="%url%">drop us a message</a>!', array('%url%'=>$this->createUrl('site/contact'))) ?>)</span>
+    <?php echo Yii::t('delt', 'Just <a href="{url}" target="_blank">drop us a message</a>!', array('{url}'=>$this->createUrl('site/contact'))) ?>)</span>
 	</div>
   
   <?php if(!$model->id): ?>
     <div class="row checkbox">
       <?php echo $form->label($model, 'license') ?>
       <?php echo $form->checkBox($model, 'license_confirmation') ?>&nbsp;
-      <?php echo Yii::t('delt', 'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
+      <?php echo Yii::t('delt', 'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
+    <br />
+    <span class="hint">(<?php echo Yii::t('delt', 'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Common License?', array('{url}'=>$this->createUrl('site/en/cclicense'))) ?>)</span>
     </div>
   <?php endif ?>
   

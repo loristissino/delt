@@ -19,10 +19,10 @@ if($available_firms > 0)
 <h1><?php echo Yii::t('delt', 'Bookkeeping and Accounting') ?></h1>
 
 <?php if(sizeof($firms)): ?>
-  <p><?php echo Yii::t('delt', 'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.') ?></p>
+  <p><?php echo Yii::t('delt', 'You can gain experience in bookkeping and accounting with the Double Entry method with your firms, listed on the right side.') ?></p>
 <?php else: ?>
   <p>
-    <?php echo Yii::t('delt', 'You have no firms that you can use to gain experience in bookkeeping with.') ?>
+    <?php echo Yii::t('delt', 'You have no firms that you can use to gain experience in bookkeeping/accounting with.') ?>
     <?php echo CHtml::link(Yii::t('delt', 'Create one.'), $this->createUrl('firm/create')) ?>
     <?php echo Yii::t('delt', 'Or, even better,') ?>
     <?php echo CHtml::link(Yii::t('delt', 'fork an existing one.'), $this->createUrl('firm/fork')) ?>

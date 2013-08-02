@@ -81,6 +81,8 @@ $this->breadcrumbs=array(
   )) ?>
 </section>  
   
+<hr />
 
+<?php echo $model->getLicenseCode($this) ?>
 
 </article>

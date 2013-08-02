@@ -3,8 +3,8 @@
 return array(
 
   'Welcome to <i>{name}</i>'=>'Benvenuti su <i>{name}</i>',
-  'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.' => 'Puoi fare esperienza nella tenuta della contabilità con il metodo della partita doppia con una delle tue aziende, elencate sulla destra.',
-  'You have no firms that you can use to gain experience in bookkeeping with.' => 'Non hai aziende che puoi usare per fare esperienza con la contabilità.',
+  'You can gain experience in bookkeping and accounting with the Double Entry method with your firms, listed on the right side.' => 'Puoi fare esperienza nella tenuta della contabilità con il metodo della partita doppia con una delle tue aziende, elencate sulla destra.',
+  'You have no firms that you can use to gain experience in bookkeeping/accounting with.' => 'Non hai aziende che puoi usare per fare esperienza con la contabilità.',
   'Create one.' => 'Creane una.',
   'Or, even better,' => 'Oppure, ancora meglio,',
   'fork an existing one.' => 'duplicane una esistente.',
@@ -161,8 +161,8 @@ return array(
   'Import' => 'Importa',
   'Show' => 'Mostra',
   
-  'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords.">slug</a> is?' => 'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani.">slug</a>?',
-  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia">ISO 4217 code</a>, like EUR, USD, or GBP' => 'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
+  'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords." target="_blank">slug</a> is?' => 'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani." target="_blank">slug</a>?',
+  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP' => 'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia" target="_blank">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
 
   
   'The information about the firm has been correctly saved.'=>'Le informazioni sull\'azienda sono state correttamente salvate.',
@@ -173,7 +173,7 @@ return array(
   
   
   'Data to duplicate:' => 'Dati da duplicare:',
-  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
   
   'Chart of Accounts' => 'Piano dei conti',
   'Chart of Accounts and Templates' => 'Piano dei conti e causali contabili',
@@ -267,7 +267,7 @@ return array(
   'You can select other languages to have a multilingual chart of accounts.' => 'Puoi selezionare altre lingue per avere un piano di conti multilingue.',
   'Do you want other languages / locales to be supported?' => 'Vuoi che altre lingue / locali vengano supportati?',
   'The information about the firm is being saved.' => 'Memorizzazione delle informazioni relative all\'azienda in corso.',
-  'Just <a href="%url%">drop us a message</a>!'=>'Basta che ci <a href="%url%">invii un messaggio</a>!',
+  'Just <a href="{url}" target="_blank">drop us a message</a>!'=>'Basta che ci <a href="{url}" target="_blank">invii un messaggio</a>!',
   
   'Clear' => 'Svuota',
   'Delete all journal entries' => 'Elimina tutte le registrazioni contabili',
