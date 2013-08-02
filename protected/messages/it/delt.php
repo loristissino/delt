@@ -29,6 +29,7 @@ return array(
   'Date' => 'Data',
   'Description' => 'Descrizione',
   'Comment' => 'Commento',
+  'Done' => 'Fatto',
   
   'Description / Explanation' => 'Descrizione / Spiegazione',
 
@@ -82,7 +83,7 @@ return array(
   'Check the debits and the credits.'=>'Controlla gli addebiti e gli accrediti.',
   'New journal entry' => 'Nuova registrazione',
   'Save journal entry' => 'Registra nel giornale',
-  'Add a row' => 'Aggiungi una riga',
+  'Add a line' => 'Aggiungi una riga',
   
   'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:' => 'L\'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
   
@@ -99,7 +100,7 @@ return array(
   'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).' => 'Il totale degli addebiti ({debits}) non corrisponde al totale degli accrediti ({credits}).',
   
   'Fields with <span class="required">*</span> are required.' => 'I campi indicati con <span class="required"> * </span> sono obbligatori.',
-  'The rows in which the account field is empty are ignored.' => 'Le righe in cui il campo del conto è vuoto vengono ignorate.',
+  'The lines in which the account field is empty are ignored.' => 'Le righe in cui il campo del conto è vuoto vengono ignorate.',
   'The imbalance is: {amount}.'=> 'Lo sbilancio è: {amount}.',
   'Edit account «{name}»' => 'Modifica del conto «{name}»',
   

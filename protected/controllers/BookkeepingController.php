@@ -180,6 +180,7 @@ class BookkeepingController extends Controller
     $postform->firm_id = $this->firm->id;
     $postform->firm = $this->firm;  // FIXME: if we set the firm, we don't need to set the other values... here for compatibility only
     $postform->currency = $this->firm->currency;
+    $postform->show_analysis = false;
     
     if(!$postform->date)
     {
@@ -207,7 +208,7 @@ class BookkeepingController extends Controller
       {
         $postform->acquireItems($_POST['DebitcreditForm']);
       }
-      if(isset($_POST['addrow']))
+      if(isset($_POST['addline']))
       {
         $postform->debitcredits[] = new DebitcreditForm();
       }
@@ -218,7 +219,14 @@ class BookkeepingController extends Controller
           if($postform->save())
           {
             Yii::app()->getUser()->setState('lastpostdate', $postform->date);
-            $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+            if(isset($_POST['done']))
+            {
+              $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+            }
+            else
+            {
+              $this->redirect(array('bookkeeping/updatepost','slug'=>$this->firm->slug, 'id'=>$postform->post->id));
+            }
           }
         }
       }
@@ -302,7 +310,7 @@ class BookkeepingController extends Controller
 		{
 			$postform->attributes=$_POST['PostForm'];
       $postform->acquireItems($_POST['DebitcreditForm']);
-      if(isset($_POST['addrow']))
+      if(isset($_POST['addline']))
       {
         $postform->debitcredits[] = new DebitcreditForm();
         $postform->show_analysis = false;
@@ -314,7 +322,10 @@ class BookkeepingController extends Controller
           if($postform->save())
           {
             Yii::app()->getUser()->setState('lastpostdate', $postform->date);
-            $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+            if(isset($_POST['done']))
+            {
+              $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+            }
           }
         }
       }

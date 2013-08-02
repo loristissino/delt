@@ -97,27 +97,27 @@ class PostForm extends CFormModel
   public function save()
   {
     $this->is_new = !isset($this->post);
-    $post = $this->is_new ? new Post() : $this->post;
+    $this->post = $this->is_new ? new Post() : $this->post;
     
-    $transaction = $post->getDbConnection()->beginTransaction();
+    $transaction = $this->post->getDbConnection()->beginTransaction();
     try
     {
       // we must convert the date from the user input
       // since we use jquery.ui.datepicker and its i18n features, we
       // use the browser locale to know the format used
       
-      DELT::object2object($this, $post, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
+      DELT::object2object($this, $this->post, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
       $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
-      $post->date= $date ? $date->format('Y-m-d'): $this->date;
+      $this->post->date= $date ? $date->format('Y-m-d'): $this->date;
       
       if($this->is_new)
       {
-        $post->rank = $post->getCurrentMaxRank() + 1;
+        $this->post->rank = $this->post->getCurrentMaxRank() + 1;
       }
       
-      $post->save(true);
+      $this->post->save(true);
       
-      $post->deleteDebitcredits();
+      $this->post->deleteDebitcredits();
       
       $rank = 1;
       foreach($this->debitcredits as $debitcreditform)
@@ -134,7 +134,7 @@ class PostForm extends CFormModel
             $debitcreditform->account_id = $debitcreditform->account->id;
           }
           
-          $Debitcredit->post_id = $post->id;
+          $Debitcredit->post_id = $this->post->id;
           $Debitcredit->account_id = $debitcreditform->account_id;
           $Debitcredit->amount = $debitcreditform->debit - $debitcreditform->credit;
           $Debitcredit->rank = $rank++;

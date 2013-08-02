@@ -272,7 +272,7 @@ $cs->registerScript(
 
 	<p class="note">
     <?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
-    <?php echo Yii::t('delt', 'The rows in which the account field is empty are ignored.') ?>
+    <?php echo Yii::t('delt', 'The lines in which the account field is empty are ignored.') ?>
   </p>
 
 	<?php echo $form->errorSummary($postform, Yii::t('delt', 'Please fix the following errors:')); ?>
@@ -353,8 +353,9 @@ $cs->registerScript(
     </div>
     <?php endif ?>
     <div class="row buttons">
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Save journal entry'), array('name'=>'save')); ?>
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Add a row'), array('name'=>'addrow')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Add a line'), array('name'=>'addline')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Done'), array('name'=>'done')); ?>
     </div>
   </div><!-- rows_as_textfields -->
   <div id="rows_as_textarea" style="display: none">
