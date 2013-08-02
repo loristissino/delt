@@ -51,7 +51,7 @@ else
 	<div id="sidebar">
 	<?php
 		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>Yii::t('delt', 'Bookkeeping'),
+			'title'=>Yii::t('delt', 'Bookkeeping/Accounting'),
 		));
 		$this->widget('zii.widgets.CMenu', array(
 			'items'=>$this->firmmenu,

@@ -5,7 +5,7 @@ $mainmenu_items=array(
 				array('label'=>Yii::t('delt','About'), 'url'=>array('/site/'. Yii::app()->language . '/about')),
 				array('label'=>Yii::t('delt','Contact'), 'url'=>array('/site/contact')),
         array('label'=>Yii::t('delt','Blog'), 'url'=>Yii::app()->params['blog'], 'visible'=>Yii::app()->params['blog']!=''),
-        array('label'=>Yii::t('delt','Bookkeeping'), 'url'=>array('/bookkeeping/index'), 'visible'=>!Yii::app()->user->isGuest),
+        array('label'=>Yii::t('delt','Bookkeeping/Accounting'), 'url'=>array('/bookkeeping/index'), 'visible'=>!Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Sign up"), 'visible'=>Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->profileUrl, 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),

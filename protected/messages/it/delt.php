@@ -8,8 +8,8 @@ return array(
   'Create one.' => 'Creane una.',
   'Or, even better,' => 'Oppure, ancora meglio,',
   'fork an existing one.' => 'duplicane una esistente.',
-  'Bookkeeping' => 'Contabilità',
-  'Bookkeeping and accounting' => 'Gestione contabile',
+  'Bookkeeping/Accounting' => 'Contabilità',
+  'Bookkeeping and Accounting' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
   'Chart of accounts' => 'Piano dei conti',
   'Trial Balance' => 'Situazione contabile',
@@ -177,7 +177,7 @@ return array(
   
   'Chart of Accounts' => 'Piano dei conti',
   'Chart of Accounts and Templates' => 'Piano dei conti e causali contabili',
-  'Chart of Accounts, Templates and Journal entries' => 'Piano dei conti, causali contabili, registrazioni contabili',
+  'Chart of Accounts, Templates, and Journal Entries' => 'Piano dei conti, causali contabili, registrazioni contabili',
   'You must confirm that you accept the license for the contents.' => 'Devi confermare di accettare la licenza per i contenuti.',
   
   'The firm has been successfully forked.' => 'L\'azienda è stata correttamente duplicata.',

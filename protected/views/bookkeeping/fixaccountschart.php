@@ -2,7 +2,7 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping'=>array('/bookkeeping'),
+	'Bookkeeping/Accounting'=>array('/bookkeeping'),
 	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$model->slug),
   'Fix',

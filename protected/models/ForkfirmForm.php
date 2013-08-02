@@ -31,7 +31,7 @@ class ForkfirmForm extends CFormModel
     return array(
       '100' =>Yii::t('delt', 'Chart of Accounts'),
       '110' => Yii::t('delt', 'Chart of Accounts and Templates'),
-      '111' => Yii::t('delt', 'Chart of Accounts, Templates and Posts'),
+      '111' => Yii::t('delt', 'Chart of Accounts, Templates, and Journal Entries'),
     );
   }
   

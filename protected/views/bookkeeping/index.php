@@ -2,7 +2,7 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping'=>array('/bookkeeping'),
+	'Bookkeeping/Accounting'=>array('/bookkeeping'),
 );
 
 $available_firms = $this->DEUser->profile->allowed_firms - sizeof($firms);
@@ -16,7 +16,7 @@ if($available_firms > 0)
 }
 
 ?>
-<h1><?php echo Yii::t('delt', 'Bookkeeping and accounting') ?></h1>
+<h1><?php echo Yii::t('delt', 'Bookkeeping and Accounting') ?></h1>
 
 <?php if(sizeof($firms)): ?>
   <p><?php echo Yii::t('delt', 'You can gain experience in bookkeping with the Double Entry method with your firms, listed on the right side.') ?></p>
