@@ -105,7 +105,7 @@ class Debitcredit extends CActiveRecord
   public function belongingTo($account_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'account_id = ' . $account_id,
+        'condition'=>'post.is_included = 1 and account_id = ' . $account_id,
         'order'=>'post.date ASC, post.rank ASC',
     ));
     return $this;

@@ -29,9 +29,13 @@ $dp = $this->firm->getPostsAsDataProvider();
 
 <?php if(sizeof($dp->data)): ?>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+echo CHtml::beginForm('','post',array('id'=>'journal-form'));
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'firm-grid',
 	'dataProvider'=>$this->firm->getPostsAsDataProvider(),
+  'selectableRows'=>2, // multiple rows can be selected
+  'rowCssClassExpression'=>'($row%2 ? "even" : "odd") . ($data->post->is_included==0 ? " excluded" : "")',
 	'columns'=>array(
     array(
       'class'=>'CDataColumn',
@@ -68,8 +72,6 @@ $dp = $this->firm->getPostsAsDataProvider();
       'value'=>array($this, 'RenderCredit'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'currency'),
-      //'footer'=>DELT::currency_value(-$creditgrandtotal, $this->firm->currency),
-      //'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
       ),
 		array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
@@ -86,9 +88,33 @@ $dp = $this->firm->getPostsAsDataProvider();
         )
       )
 		),
-	),
-)); ?>
+    array(
+      'class'=>'ECCheckBoxColumn',
+      'id'=>'id',
+      'value'=>'$data->post->id',
+      'controller'=>$this,
+      ),
 
+	),
+)); 
+echo CHtml::endForm(); ?>
+
+<p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?> 
+<?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+    'formId'=>'journal-form',
+    'checkBoxId'=>'id',
+//    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
+    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
+//    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
+    'items'=>array(
+        array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
+        array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+//        array('label'=>Yii::t('delt','delete'),'url'=>array('bookkeeping/updateJournal','op'=>'delete')),
+    ),
+    'htmlOptions'=>array('class'=>'actionBar'),
+    'containerTag'=>'span',
+));
+?></p>
 <?php else: ?>
 <p>
 <?php echo Yii::t('delt', 'This firm does not have any journal entry yet.') ?> 

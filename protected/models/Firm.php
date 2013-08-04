@@ -409,13 +409,20 @@ class Firm extends CActiveRecord
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
-          'condition'=>'is_selectable = 1',
+          'condition'=>'is_selectable = 1 and posts.is_included = 1',
           'order' => 'code ASC',
-          'with'=>array('debitcredits'=>array(
-            'on'=>'t.id = debitcredits.account_id',
-            'together'=>true,
-            'joinType' => 'INNER JOIN',
-            )),
+          'with'=>array(
+            'debitcredits'=>array(
+              'on'=>'t.id = debitcredits.account_id',
+              'together'=>true,
+              'joinType' => 'INNER JOIN',
+              ),
+            'posts'=>array(
+              'on'=>'debitcredits.post_id = posts.id',
+              'together'=>true,
+              'joinType' => 'INNER JOIN',
+              )
+            ),
         ),
       'pagination'=>array(
           'pageSize'=>$pagesize,
@@ -444,6 +451,7 @@ class Firm extends CActiveRecord
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('in', 'position', $positions))
+      ->andWhere('p.is_included = 1')
       ->order('a.code')
       ->group('a.code, a.currentname')
       ->having('total <> 0')
@@ -656,6 +664,7 @@ class Firm extends CActiveRecord
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere('amount ' . $type='D'? '>0' : '<0')
+      ->andWhere('p.is_included = 1')
       ->queryScalar();
             
     return $type='D' ? $amount : -$amount;
@@ -1138,12 +1147,12 @@ class Firm extends CActiveRecord
     Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
-  public function getFinancialStatement($level=1)
+  public function getBalanceSheet($level=1)
   {
     return $this->_getStatement('P', $level);
   }
   
-  public function getEconomicStatement($level=1)  // aka Profit and Loss statement
+  public function getIncomeStatement($level=1)  // aka Profit and Loss statement
   {
     return $this->_getStatement('E', $level);
   }

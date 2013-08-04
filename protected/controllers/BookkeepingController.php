@@ -118,8 +118,8 @@ class BookkeepingController extends Controller
       throw new CHttpException(404,'The requested page does not exist.');
 		$this->render('statements', array(
       'model'=>$this->firm,
-      'financial'=>$this->firm->getFinancialStatement($level),
-      'economic'=>$this->firm->getEconomicStatement($level),
+      'bs'=>$this->firm->getBalanceSheet($level),
+      'is'=>$this->firm->getIncomeStatement($level),
       'level'=>$level,
     ));
 	}
@@ -387,6 +387,44 @@ class BookkeepingController extends Controller
 
 	}
 
+  
+	public function actionUpdatejournal($slug, $op)
+	{
+    $this->firm=$this->loadFirmBySlug($slug);
+    
+		if(Yii::app()->getRequest()->isPostRequest)
+		{
+      if($op=='include' or $op=='exclude')
+      {
+        $affected_rows = Yii::app()->db->createCommand()
+        ->update('{{post}}', array('is_included'=>$op=='include'?1:0),
+          array('and',
+            array('firm_id=:firm_id' , array(':firm_id'=>$this->firm->id)),
+            array('in', 'id', $_POST['id'])
+            )
+          );
+        if($affected_rows==0)
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been modified.'));
+        }
+        else
+        {
+          if($op=='include')
+          {
+            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Number of journal entries that have been included:') . ' ' . $affected_rows);
+          }
+          else
+          {
+            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Number of journal entries that have been excluded:') . ' ' . $affected_rows);
+          }
+        }
+       } 
+        
+      $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+		}
+    throw new CHttpException(404, 'The requested page does not exist.');
+
+	}
 
 
 

@@ -78,15 +78,16 @@ class Account extends CActiveRecord
 		return array(
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
-      //DELTOD 'names' => array(self::HAS_MANY, 'AccountName', 'account_id'),
-      //DELTOD 'currentname' => array(self::HAS_ONE, 'AccountName', '', 'on' => 'currentname.account_id = t.id and currentname.language_id = firm.language_id'),
+      'posts' => array(self::MANY_MANY, 'Post', '{{debitcredit}}(account_id, post_id)'),
       'debitgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
         'select'=>'SUM(amount)',
-        'condition'=>'amount > 0',
+        'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
+        'condition'=>'{{post}}.is_included = 1 and amount > 0',
         ),
       'creditgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
         'select'=>'SUM(amount)',
-        'condition'=>'amount < 0',
+        'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
+        'condition'=>'{{post}}.is_included = 1 and amount < 0',
         ),
 		);
 	}
@@ -272,7 +273,7 @@ class Account extends CActiveRecord
   public function belongingTo($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'firm_id = ' . $firm_id,
+        'condition'=>'t.firm_id = ' . $firm_id,
         'order'=>'code ASC',
     ));
     return $this;
@@ -610,6 +611,7 @@ class Account extends CActiveRecord
       ->where('a.code REGEXP "^' . $this->code .'"')
       ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
       ->andWhere($without_closing ? 'p.is_closing = 0': 'true')
+      ->andWhere('p.is_included = 1')
       ->queryScalar();
             
     return $amount;

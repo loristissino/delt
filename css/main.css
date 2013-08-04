@@ -537,3 +537,13 @@ p.firm .nodescription
   font-style: italic;
 }
 
+.excluded
+{
+  color: #888888;
+  text-decoration:line-through;
+}
+
+tr.excluded a
+{
+  color: #888888;
+}

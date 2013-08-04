@@ -21,7 +21,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
 
 <?php echo $this->renderPartial('_statement', array(
   'title'=>'Balance Sheet',
-  'data'=>$financial,
+  'data'=>$bs,
   'model'=>$model,
   'level'=>$level,
   'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
@@ -31,7 +31,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
   )) ?>
 <?php echo $this->renderPartial('_statement', array(
   'title'=>'Income Statement',
-  'data'=>$economic,
+  'data'=>$is,
   'model'=>$model,
   'level'=>$level,
   'order'=>array('+'=>'Value Added Income Statement'),
