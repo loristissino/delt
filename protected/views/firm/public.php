@@ -26,9 +26,9 @@ $this->breadcrumbs=array(
     <th><?php echo Yii::t('delt', 'Debit') ?></th>
     <th><?php echo Yii::t('delt', 'Credit') ?></th>
   </tr>
-<?php $n=0; $postid=0; $td=0; $tc=0; foreach($debitcredits as $debitcredit): ?>
+<?php $n=0; $postid=0; $td=0; $tc=0; foreach($debitcredits as $debitcredit): $excluded=!$debitcredit->post->is_included ?>
   <?php if($postid!=$debitcredit->post_id): $postid=$debitcredit->post_id ?>
-  <tr>
+  <tr <?php if($excluded) echo 'class="excluded"' ?>>
     <td class="firstpostrow"><?php echo ++$n ?></td>
     <td class="firstpostrow">
       <?php echo Yii::app()->dateFormatter->formatDateTime($debitcredit->post->date, 'short', null) ?>
@@ -39,9 +39,9 @@ $this->breadcrumbs=array(
     <td class="firstpostrow"></td>
     <td class="firstpostrow"></td>
   </tr>
-  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit)); if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount ?>
+  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit, 'excluded'=>$excluded)); if(!$excluded) {if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount;} ?>
   <?php else: ?>
-  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit)); if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount ?>
+  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit, 'excluded'=>$excluded)); if(!$excluded) {if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount;} ?>
   <?php endif ?>
 <?php endforeach ?>
   <tr>
@@ -61,7 +61,7 @@ $this->breadcrumbs=array(
 
 <?php echo $this->renderPartial('/bookkeeping/_statement', array(
   'title'=>'Balance Sheet',
-  'data'=>$financial,
+  'data'=>$bs,
   'model'=>$model,
   'level'=>$level,
   'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
@@ -71,7 +71,7 @@ $this->breadcrumbs=array(
   )) ?>
 <?php echo $this->renderPartial('/bookkeeping/_statement', array(
   'title'=>'Income Statement',
-  'data'=>$economic,
+  'data'=>$is,
   'model'=>$model,
   'level'=>$level,
   'order'=>array('+'=>'Value Added Income Statement'),

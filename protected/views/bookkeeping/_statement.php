@@ -67,8 +67,8 @@
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">
-    <td style="width: 300px;"><?php echo Yii::t('delt', 'Aggregate Grandtotal') ?></td>
-    <td class="currency"><?php echo DELT::currency_value($ggt, $model->currency) ?></td>
+    <td style="width: 500px;"><?php echo Yii::t('delt', 'Aggregate Grandtotal') ?></td>
+    <td class="currency" style="width: 100px;"><?php echo DELT::currency_value($ggt, $model->currency) ?></td>
   </tr>
 </table>
 </div>

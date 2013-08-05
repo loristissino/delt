@@ -1,4 +1,4 @@
-<tr>
+<tr <?php if($excluded) echo 'class="excluded"' ?>>
   <td></td>
   <td></td>
   <td>

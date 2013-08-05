@@ -149,6 +149,12 @@ span.accountname_indented
   padding-left: 20px;
 }
 
+tr.excluded
+{
+  color: #888888;
+  text-decoration:line-through;
+}
+
   </style>
 	<meta charset="utf-8" />
 </head>

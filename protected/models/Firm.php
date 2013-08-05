@@ -955,7 +955,7 @@ class Firm extends CActiveRecord
       foreach($this->posts as $post)
       {
         $values = array();
-        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank'));
+        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
         
         foreach($post->debitcredits as $debitcredit)
         {
@@ -999,10 +999,11 @@ class Firm extends CActiveRecord
     {
       return false;
     }
-    
+
     // data are valid, we can proceed...
 
-    // the following do not need to be in the transaction:    
+    // the following do not need to be in the transaction:
+    $this->_deleteLanguages();    
     $this->_deletePosts();
     $this->_deleteTemplates();
     $this->_deleteAccounts();
@@ -1014,16 +1015,22 @@ class Firm extends CActiveRecord
 
       DELT::array2object($data['base'], $this, array('name', 'description', 'currency', 'language', 'languages'));
 
+      $languages = array();
       $language=Language::model()->findByLocale($data['base']['language']);
-      $this->language_id = $language->id;
       
+      if($language)
+      {
+        $this->language_id = $language->id;
+        $languages = array($language->locale => $language->id);
+      }
       $this->save(false);
       
-      $languages = array($language->locale => $language->id);
       foreach($data['base']['languages'] as $locale)
       {
-        $language=Language::model()->findByLocale($locale);
-        $languages[$language->locale]= $language->id;
+        if($language=Language::model()->findByLocale($locale))
+        {
+          $languages[$language->locale]= $language->id;
+        }
       }
       
       
@@ -1067,7 +1074,7 @@ class Firm extends CActiveRecord
       {
         $newpost = new Post;
         $newpost->firm_id = $this->id;
-        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank'));
+        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
         
         $newpost->save(false);
         
@@ -1123,6 +1130,11 @@ class Firm extends CActiveRecord
     {
       $post->safeDelete();
     }
+  }
+  
+  private function _deleteLanguages()
+  {
+    FirmLanguage::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
   private function _deleteTemplates()

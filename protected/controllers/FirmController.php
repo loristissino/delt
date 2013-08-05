@@ -73,8 +73,8 @@ class FirmController extends Controller
       $this->render('public', array(
         'model'=>$this->firm,
         'debitcredits'=>$debitcredits,
-        'financial'=>$this->firm->getFinancialStatement($level),
-        'economic'=>$this->firm->getEconomicStatement($level),
+        'bs'=>$this->firm->getBalanceSheet($level),
+        'is'=>$this->firm->getIncomeStatement($level),
         'level'=>$level,
       ));
     }

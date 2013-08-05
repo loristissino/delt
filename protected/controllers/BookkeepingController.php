@@ -351,11 +351,11 @@ class BookkeepingController extends Controller
 		{
       if($this->post->safeDelete())
       {
-        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The post has been successfully deleted.'));
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal entry has been successfully deleted.'));
       }
       else
       {
-        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The post could not be deleted.'));
+        Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The journal entry could not be deleted.'));
       }
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
       
@@ -411,11 +411,11 @@ class BookkeepingController extends Controller
         {
           if($op=='include')
           {
-            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Number of journal entries that have been included:') . ' ' . $affected_rows);
+            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been included. | {n} journal entries have been included.', $affected_rows));
           }
           else
           {
-            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Number of journal entries that have been excluded:') . ' ' . $affected_rows);
+            Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been excluded. | {n} journal entries have been excluded.', $affected_rows));
           }
         }
        } 
