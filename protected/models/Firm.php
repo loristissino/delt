@@ -784,7 +784,7 @@ class Firm extends CActiveRecord
         {
           $newpost = new Post;
           $newpost->firm_id = $this->id;
-          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'rank') as $property)
+          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank') as $property)
           {
             $newpost->$property = $post->$property;
           }
