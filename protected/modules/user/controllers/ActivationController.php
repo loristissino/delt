@@ -25,7 +25,6 @@ class ActivationController extends Controller
           Yii::t('delt', Yii::app()->params['mail']['welcome']['subject']),
           Yii::t('delt', Yii::app()->params['mail']['welcome']['body'],
             array(
-              '{activation_url}'=>$activation_url,
               '{name}'=>$find->username
               )
             )
