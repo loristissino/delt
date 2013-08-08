@@ -54,6 +54,7 @@ class UserModule extends CWebModule
 	
 	public $registrationUrl = array("/user/registration");
 	public $recoveryUrl = array("/user/recovery/recovery");
+	public $resendactivationUrl = array("/user/recovery/resend");
 	public $loginUrl = array("/user/login");
 	public $logoutUrl = array("/user/logout");
 	public $profileUrl = array("/user/profile");
@@ -221,9 +222,16 @@ class UserModule extends CWebModule
 	public static function sendMail($email,$subject,$message) {
     	$adminEmail = Yii::app()->params['adminEmail'];
 	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
+      
+      if(Yii::app()->params['mail']['bcc_admin'])
+      {
+        $headers .= "\r\nBcc: $adminEmail";
+      }
+      
 	    $message = wordwrap($message, 70);
 	    $message = str_replace("\n.", "\n..", $message);
-	    return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
+      
+      return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
 	}
 	
 	/**

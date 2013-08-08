@@ -1,15 +1,15 @@
-<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Restore");
+<?php $this->pageTitle=Yii::app()->name . ' - '.UserModule::t("Resend activation link");
 $this->breadcrumbs=array(
 	UserModule::t("Login") => array('/user/login'),
-	UserModule::t("Restore"),
+	UserModule::t("Resend activation link"),
 );
 ?>
 
-<h1><?php echo UserModule::t("Restore"); ?></h1>
+<h1><?php echo UserModule::t("Resend activation link"); ?></h1>
 
-<?php if(Yii::app()->user->hasFlash('recoveryMessage')): ?>
+<?php if(Yii::app()->user->hasFlash('resendMessage')): ?>
 <div class="success">
-<?php echo Yii::app()->user->getFlash('recoveryMessage'); ?>
+<?php echo Yii::app()->user->getFlash('resendMessage'); ?>
 </div>
 <?php else: ?>
 
@@ -25,7 +25,7 @@ $this->breadcrumbs=array(
 	</div>
 	
 	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Restore")); ?>
+		<?php echo CHtml::submitButton(UserModule::t("Resend activation link")); ?>
 	</div>
 
 <?php echo CHtml::endForm(); ?>

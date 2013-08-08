@@ -56,7 +56,7 @@ return array(
         'Thank you for your registration. Please {{login}}.' =>  'Grazie per la registrazione. {{login}}.',
         'Thank you for your registration. Contact Admin to activate your account.' =>  'Grazie per la registrazione. Contatta l\'amministratore per l\'attivazione dell\'account.',
         'Restore' => 'Ripristina',
-        'Please enter your login or email addres.' => 'Inserisci il nome utente o l\'indirizzo email.',
+        'Please enter your login or email address.' => 'Inserisci il nome utente o l\'indirizzo email.',
         'Incorrect recovery link.' => 'Link di recupero non corretto.',
         'Already exists.' => 'Già esistente.',
         'First Name' => 'Nome',

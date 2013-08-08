@@ -64,4 +64,50 @@ class RecoveryController extends Controller
 		    }
 	}
 
+	/**
+	 * Resend activation link
+	 */
+	public function actionResend () {
+		$form = new UserRecoveryForm;
+		if (Yii::app()->user->id) {
+		    	$this->redirect(Yii::app()->controller->module->returnUrl);
+		    } else {
+			    	if(isset($_POST['UserRecoveryForm'])) {
+			    		$form->attributes=$_POST['UserRecoveryForm'];
+			    		if($form->validate()) {
+			    			$user = User::model()->notsafe()->findbyPk($form->user_id);
+                
+                if($user->status!=User::STATUS_NOACTIVE)
+                {
+                  Yii::app()->user->setFlash('resendMessage',UserModule::t("Your account is not waiting for activation."));
+                  $this->refresh();
+                }
+                
+                else
+                {
+                  $user->activkey=UserModule::encrypting(microtime().$user->password);
+                  $user->save();
+                  
+                  $activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
+                  UserModule::sendMail(
+                    $user->email,
+                    Yii::t('delt', Yii::app()->params['mail']['resend']['subject']),
+                    Yii::t('delt', Yii::app()->params['mail']['resend']['body'],
+                      array(
+                        '{activation_url}'=>$activation_url,
+                        '{name}'=>$user->username
+                        )
+                      )
+                    );
+                  Yii::app()->user->setFlash('resendMessage',UserModule::t("Please check your email. We resent the activation link to the address you specified."));
+                  $this->refresh();
+                  
+                }
+                
+			    		}
+			    	}
+		    		$this->render('resend',array('form'=>$form));
+		    	}
+		    }
+
 }
