@@ -230,6 +230,7 @@ class UserModule extends CWebModule
       
 	    $message = wordwrap($message, 70);
 	    $message = str_replace("\n.", "\n..", $message);
+      $message = str_replace("\n", "\r\n", $message);
       
       return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
 	}
