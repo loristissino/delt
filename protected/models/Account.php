@@ -121,7 +121,7 @@ class Account extends CActiveRecord
       'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
       'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
-      'p'=>Yii::t('delt', 'Transitory Financial Statement Accounts'),
+      'p'=>Yii::t('delt', 'Transitory Balance Sheet Accounts'),
       'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
       'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
       ); 
