@@ -1132,6 +1132,29 @@ class Firm extends CActiveRecord
     }
   }
   
+  public function deleteSelectedPosts($ids=array())
+  {
+    $posts=$this->_findPosts($ids);
+    $number=sizeof($posts);
+    foreach($posts as $post)
+    {
+      $post->safeDelete();
+    }
+    return $number;
+  }
+  
+  private function _findPosts($ids=array())
+  {
+    
+    $criteria = new CDbCriteria();
+    $criteria->condition = 'firm_id = :firm_id';
+    $criteria->params = array(':firm_id'=>$this->id);
+    $criteria->addInCondition('id',$ids);
+    
+    return Post::model()->findAll($criteria);
+  }
+  
+  
   private function _deleteLanguages()
   {
     FirmLanguage::model()->deleteAllByAttributes(array('firm_id'=>$this->id));

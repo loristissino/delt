@@ -99,7 +99,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 )); 
 echo CHtml::endForm(); ?>
 
-<p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?> 
+<p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?>
 <?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
@@ -109,12 +109,26 @@ echo CHtml::endForm(); ?>
     'items'=>array(
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
         array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
-//        array('label'=>Yii::t('delt','delete'),'url'=>array('bookkeeping/updateJournal','op'=>'delete')),
     ),
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',
 ));
-?></p>
+?> | 
+<?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+    'formId'=>'journal-form',
+    'checkBoxId'=>'id',
+//    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
+    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
+    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
+    'items'=>array(
+        array('label'=>Yii::t('delt','delete'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'delete'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+    ),
+    'htmlOptions'=>array('class'=>'actionBar'),
+    'containerTag'=>'span',
+));
+?>
+
+</p>
 <?php else: ?>
 <p>
 <?php echo Yii::t('delt', 'This firm does not have any journal entry yet.') ?> 

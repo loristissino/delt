@@ -418,10 +418,24 @@ class BookkeepingController extends Controller
             Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been excluded. | {n} journal entries have been excluded.', $affected_rows));
           }
         }
-       } 
-        
+       }
+       
+      if($op=='delete')
+      {
+        $affected_rows = $this->firm->deleteSelectedPosts($_POST['id']);
+        if($affected_rows==0)
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been deleted.'));
+        }
+        else
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been deleted. | {n} journal entries have been deleted.', $affected_rows));
+        }
+      }  
+
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
 		}
+    
     throw new CHttpException(404, 'The requested page does not exist.');
 
 	}
