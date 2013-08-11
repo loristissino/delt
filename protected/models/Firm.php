@@ -431,7 +431,7 @@ class Firm extends CActiveRecord
     );
   }
   
-  public function getAccountBalancesData($position='')
+  public function getAccountBalancesData($position='', $ids=array())
   {
     // FIXME -- we should have an array parameter instead of this...
     $positions=array($position);
@@ -452,6 +452,7 @@ class Firm extends CActiveRecord
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('in', 'position', $positions))
       ->andWhere('p.is_included = 1')
+      ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
       ->order('a.code')
       ->group('a.code, a.currentname')
       ->having('total <> 0')
@@ -464,15 +465,19 @@ class Firm extends CActiveRecord
   }
   
   
-  public function getAccountBalances($position='')
+  public function getAccountBalances($position='', $ids=array(), $reverse=true)
   {
     
     $result=array();
-    $accounts = $this->getAccountBalancesData($position);
+    $accounts = $this->getAccountBalancesData($position, $ids);
     
     $grandtotal=0;  
     foreach($accounts as $account)
     {
+      if(!$reverse)
+      {
+        $account['total']=-$account['total'];
+      }
       $grandtotal+=$account['total'];
       $row=array();
       $row['name']=$account['code'] . ' - ' . $account['name'];

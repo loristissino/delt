@@ -268,6 +268,7 @@ $cs->registerScript(
 	'id'=>'postform',
 	'enableAjaxValidation'=>false,
   'focus'=> (isset($postform->post) ? null : array($postform, 'description')),
+  'action'=>$this->form_action_required, //array('bookkeeping/' . ($postform->post? 'updatepost': 'newpost'), 'slug'=>$postform->firm->slug),
 )); ?>
 
 	<p class="note">

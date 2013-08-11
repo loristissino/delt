@@ -21,6 +21,8 @@ class BookkeepingController extends Controller
   public $postdescription;
   public $is_closing = 0;
   
+  public $form_action_required = null;  // used in actionPrepareentry
+  
 	public function actionIndex()
 	{
     if($this->DEUser)
@@ -287,6 +289,23 @@ class BookkeepingController extends Controller
     }
     
     $this->render('closingpost', array('position'=>'e', 'model'=>$this->firm));
+  }
+  
+  public function actionPrepareentry($slug, $op)
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->postdescription=Yii::t('delt', 'Journal entry from balances');
+    $this->postdescription .= ' (' . Yii::t('delt', $op) . ')';
+    
+    $this->accounts = $this->firm->getAccountBalances('', $_POST['id'], $op!='snapshot');
+
+    if(sizeof($this->accounts))
+    {
+      $this->form_action_required = $this->createUrl('bookkeeping/newpost', array('slug'=>$this->firm->slug));
+      return $this->actionNewpost($this->firm->slug);
+      // we show the standard form
+    }
+    $this->render('closingpost', array('position'=>'', 'model'=>$this->firm));
   }
 
 	public function actionUpdatepost($id)

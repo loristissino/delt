@@ -17,9 +17,14 @@ $totalcredits=$this->firm->getTotalAmounts('C');
 ?>
 <h1><?php echo Yii::t('delt', 'Trial Balance') ?></h1>
 
-<?php $this->widget('zii.widgets.grid.CGridView', array(
+<?php
+echo CHtml::beginForm('','post',array('id'=>'balance-form'));
+
+$this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'firm-grid',
 	'dataProvider'=>$dataProvider,
+  'selectableRows'=>2, // multiple rows can be selected
+
 	'columns'=>array(
     array(
       'name'=>'position',
@@ -80,10 +85,32 @@ $totalcredits=$this->firm->getTotalAmounts('C');
       'htmlOptions'=>array('class'=>'currency'),
       'header'=>Yii::t('delt', 'Notes'),
       ),
+    array(
+      'class'=>'CCheckBoxColumn',
+      'id'=>'id',
+      'value'=>'$data->id',
+      ),
 	),
-)); ?>
+)); 
+echo CHtml::endForm();
+?>
 
 <div style="display: none">
 <p>Grandtotal Debit: <?php echo DELT::currency_value($this->debit_sum, $this->firm->currency) ?>.</p>
 <p>Grandtotal Credit: <?php echo DELT::currency_value(-$this->credit_sum, $this->firm->currency) ?>.</p>
 </div>
+
+<p><?php echo Yii::t('delt', 'With the selected accounts:') ?>
+<?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+    'formId'=>'balance-form',
+    'checkBoxId'=>'id',
+//    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
+    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
+    'items'=>array(
+        array('label'=>Yii::t('delt','prepare closing entry'),'url'=>array('bookkeeping/prepareentry', 'slug'=>$model->slug, 'op'=>'closing'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Prepare a journal entry that will close the selected accounts'))),
+        array('label'=>Yii::t('delt','prepare snapshot entry'),'url'=>array('bookkeeping/prepareentry', 'slug'=>$model->slug, 'op'=>'snapshot'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Prepare a journal entry that will open the selected accounts with the current outstanding balance'))),
+    ),
+    'htmlOptions'=>array('class'=>'actionBar'),
+    'containerTag'=>'span',
+));
+?>
