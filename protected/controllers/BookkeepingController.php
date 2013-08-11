@@ -600,6 +600,18 @@ class BookkeepingController extends Controller
     return $this->renderPartial('_checkedoutstandingbalance', array('account'=>$account, 'value'=>$value), true);
   }
 
+  public function renderCheckedOutstandingBalanceDr(Account $account, $row)
+  {
+    $value = max($account->debitgrandtotal + $account->creditgrandtotal,0);
+    return $this->renderPartial('_value', array('value'=>$value), true);
+  }
+
+  public function renderCheckedOutstandingBalanceCr(Account $account, $row)
+  {
+    $value = min($account->debitgrandtotal + $account->creditgrandtotal,0);
+    return $this->renderPartial('_value', array('value'=>-$value), true);
+  }
+
   public function renderDate(Debitcredit $debitcredit, $row)
   {
     if($debitcredit->post_id != $this->last_post_id)

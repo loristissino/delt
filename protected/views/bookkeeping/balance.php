@@ -58,11 +58,27 @@ $totalcredits=$this->firm->getTotalAmounts('C');
       ),
     array(
       'class'=>'CDataColumn',
+      'name'=>'account.computedoutstandingbalancedr',
+      'value'=>array($this, 'RenderCheckedOutstandingBalanceDr'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'currency'),
+      'header'=>Yii::t('delt', 'Balance (Dr.)'),
+      ),
+    array(
+      'class'=>'CDataColumn',
+      'name'=>'account.computedoutstandingbalancecr',
+      'value'=>array($this, 'RenderCheckedOutstandingBalanceCr'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'currency'),
+      'header'=>Yii::t('delt', 'Balance (Cr.)'),
+      ),
+    array(
+      'class'=>'CDataColumn',
       'name'=>'account.computedoutstandingbalance',
       'value'=>array($this, 'RenderCheckedOutstandingBalance'),
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'currency'),
-      'header'=>Yii::t('delt', 'Outstanding balance'),
+      'header'=>Yii::t('delt', 'Notes'),
       ),
 	),
 )); ?>
