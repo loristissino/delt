@@ -121,14 +121,15 @@ return array(
   'Sorry, we could not find a firm with the slug «%slug%».' => 'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «%slug%».',
   'Try forking another one.' => 'Prova a duplicarne un\'altra.',
   
-  'Closing journal entry' => 'Registrazione di chiusura',
-  'Patrimonial closing journal entry' => 'Registrazione di chiusura patrimoniale',
-  'Economic closing journal entry' => 'Registrazione di chiusura economica',
-  'Memo closing journal entry' => 'Registrazione di chiusura conti d\'ordine',
+  'Closing entry' => 'Registrazione di chiusura',
+  'Closing journal entry' => 'Registrazione di chiusura contabile',
+  'Assets and Claims closing entry' => 'Registrazione di chiusura patrimoniale',
+  'Income Summary closing entry' => 'Registrazione di chiusura conto economico',
+  'Memo closing entry' => 'Registrazione di chiusura conti d\'ordine',
 
-  'Patrimonial closing' => 'Chiusura patrimoniale',
-  'Economic closing' => 'Chiusura economica',
-  'Memo closing' => 'Chiusura conti d\'ordine',
+  'Assets and Claims<!-- closing entry -->' => 'Chiusura patrimoniale',
+  'Income Summary' => 'Chiusura economica',
+  'Memos<!-- closing entry -->' => 'Chiusura conti d\'ordine',
 
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
   'Please fix the following errors:' => 'Devi correggere i seguenti errori:',

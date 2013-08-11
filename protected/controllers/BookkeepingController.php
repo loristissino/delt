@@ -246,13 +246,13 @@ class BookkeepingController extends Controller
     switch($position)
     {
       case 'P':
-        $this->postdescription=Yii::t('delt', 'Patrimonial closing entry entry');
+        $this->postdescription=Yii::t('delt', 'Assets and Claims closing entry');
         break;
       case 'E':
-        $this->postdescription=Yii::t('delt', 'Economic closing journal entry');
+        $this->postdescription=Yii::t('delt', 'Income Summary closing entry');
         break;
       case 'M':
-        $this->postdescription=Yii::t('delt', 'Memo closing journal entry');
+        $this->postdescription=Yii::t('delt', 'Memo closing entry');
         break;
       default:
         $position='';
