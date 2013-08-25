@@ -25,7 +25,8 @@ class ActivationController extends Controller
           Yii::t('delt', Yii::app()->params['mail']['welcome']['subject']),
           Yii::t('delt', Yii::app()->params['mail']['welcome']['body'],
             array(
-              '{name}'=>($find->profile && $find->profile->first_name ? $find->profile->first_name: $find->username)
+              '{name}'=>($find->profile && $find->profile->first_name ? $find->profile->first_name: $find->username),
+              '{username}'=>$find->username,
               )
             )
           );
