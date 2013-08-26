@@ -186,6 +186,7 @@ $cs->registerScript(
   }
   
   addArrows();
+  addDoubleClickEventManager();
   
   function addArrows()
   {
@@ -227,6 +228,24 @@ $cs->registerScript(
         })(i));
     }
   }
+
+
+  function addDoubleClickEventManager()
+  {
+    for(i=1; i<= n; i++)
+    {
+      $("#name" +i).dblclick((function(index)
+        {
+          return function()
+          {
+            row_number = index;
+            $("#chooseaccountdialog").dialog("open");
+            return false;
+          }
+        })(i));
+    }
+  }
+  
   
   function swaprows(a,b)
   {
@@ -258,6 +277,22 @@ $cs->registerScript(
   
   ,
   CClientScript::POS_READY
+);
+
+$cs->registerScript(
+  'dialog-handler',
+  '
+  
+  var row_number;
+  
+  function chooseAccount(name)
+  {
+    $("#name" + row_number).val(name);
+    $("#chooseaccountdialog").dialog("close");
+  }
+
+  ',
+  CClientScript::POS_HEAD
 );
 
 ?>
@@ -376,6 +411,21 @@ $cs->registerScript(
 
 </div><!-- form -->
 
+<?php
+$this->beginWidget('zii.widgets.jui.CJuiDialog',array(
+    'id'=>'chooseaccountdialog',
+    // additional javascript options for the dialog plugin
+    'options'=>array(
+        'title'=>'Choose an account',
+        'autoOpen'=>false,
+    ),
+));
+
+echo $this->renderPartial('_accounts_tree', array('slug'=>$postform->firm->slug));
+
+$this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
+
+
 <div id="analysis" style="display: none">
 <h2><?php echo Yii::t('delt', 'Transaction analysis') ?></h2>
 
@@ -394,4 +444,9 @@ $cs->registerScript(
 
 <?php endif ?>
 
+</div>
+
+
+<div>
+<?php echo $this->renderPartial('_accounts_tree'); ?>
 </div>

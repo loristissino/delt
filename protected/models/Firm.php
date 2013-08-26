@@ -1339,5 +1339,58 @@ class Firm extends CActiveRecord
     }
     
   }
+  
+  public function getCoatree($id=null)
+  {
+    $result=array();
+    
+    if($id)
+    {
+      $accounts=Account::model()->childrenOf($id)->findAll();
+    }
+    else
+    {
+      $accounts=Account::model()->belongingTo($this->id)->ofLevel(1)->findAll();
+    }
+    
+    foreach($accounts as $account)
+    {
+      // see http://www.yiiframework.com/doc/api/1.1/CTreeView#data-detail
+      $result[]=array(
+        'text'=>$account->currentname, 
+        'expanded'=>false,
+        'id'=>$account->id,
+        'hasChildren'=>$account->number_of_children>0
+        );
+    }
+    return $result;
+    
+    /*
+    $tree=array();
+    $level=0;
+    foreach($this->accounts as $account)
+    {
+      if($account->level > $level)
+      {
+        $item=array('text'=>$account->currentname);
+        $level = $account->level;
+      }
+    }
+    return $tree;
+    */
+    
+    return array(
+      array(
+        'text'=>'ddd',
+//        'hasChildren'=>true,
+        'children'=>array(
+          array(
+            'text'=>'eee',
+  //          'hasChildren'=>false,
+            ),
+          )
+        )
+      );
+  }
 
 }

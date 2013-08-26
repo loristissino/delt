@@ -279,6 +279,24 @@ class Account extends CActiveRecord
     return $this;
   }
   
+  public function ofLevel($level)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.level = ' . $level,
+    ));
+    return $this;
+  }
+
+  public function childrenOf($id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.account_parent_id = ' . $id,
+    ));
+    return $this;
+  }
+
+  
+  
   //DELTOD
   /*
   public function getL10n_names()
