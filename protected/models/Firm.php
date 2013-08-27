@@ -1348,7 +1348,7 @@ class Firm extends CActiveRecord
     
     if($id)
     {
-      $accounts=Account::model()->childrenOf($id)->findAll();
+      $accounts=Account::model()->belongingTo($this->id)->childrenOf($id)->findAll();
     }
     else
     {
