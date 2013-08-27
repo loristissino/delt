@@ -421,7 +421,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     ),
 ));
 
-echo $this->renderPartial('_accounts_tree', array('slug'=>$postform->firm->slug));
+echo $this->renderPartial('_accounts_tree');
 
 $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
 
@@ -444,9 +444,4 @@ $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
 
 <?php endif ?>
 
-</div>
-
-
-<div>
-<?php echo $this->renderPartial('_accounts_tree'); ?>
 </div>

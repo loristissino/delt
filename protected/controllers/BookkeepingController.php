@@ -58,17 +58,15 @@ class BookkeepingController extends Controller
   
   public function actionCoatree($slug, $root='source')
   {
-    /*
     if (!Yii::app()->request->isAjaxRequest)
     {
-      throw new CHttpException(404,'The requested page does not exist.');
+      //throw new CHttpException(404,'The requested page does not exist.');
     }
-    */
-    
+        
     $this->firm=$this->loadModelBySlug($slug);
     
     $id= $root && $root!='source' ? (int) $root : null;
-    $items= $this->firm->getCoaTree($id);
+    $items= $this->firm->getCoaTree($this, $id);
     
     echo CTreeView::saveDataAsJson($items);
   }

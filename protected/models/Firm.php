@@ -1340,8 +1340,10 @@ class Firm extends CActiveRecord
     
   }
   
-  public function getCoatree($id=null)
+  public function getCoatree($controller, $id=null)
   {
+    //FIXME -- we need an instance of controller so that we can use the createIcon function and other stuff -- this violates MVC, and should maybe fixed.
+    
     $result=array();
     
     if($id)
@@ -1356,8 +1358,23 @@ class Firm extends CActiveRecord
     foreach($accounts as $account)
     {
       // see http://www.yiiframework.com/doc/api/1.1/CTreeView#data-detail
+      
+      if($account->number_of_children==0)
+      {
+        $text = '<a href="#" onclick="chooseAccount(\'' . $account->__toString() . '\');">'. $account->currentname . '</a>';
+      }
+      else
+      {
+        $text = $account->currentname;
+      }
+      
+      if($account->comment)
+      {
+        $text .= $controller->createIcon('comment', Yii::t('delt', 'Comment'), array('width'=>16, 'height'=>12, 'title'=>$account->comment));
+      }
+      
       $result[]=array(
-        'text'=>$account->currentname, 
+        'text'=>$text, 
         'expanded'=>false,
         'id'=>$account->id,
         'hasChildren'=>$account->number_of_children>0
@@ -1365,32 +1382,6 @@ class Firm extends CActiveRecord
     }
     return $result;
     
-    /*
-    $tree=array();
-    $level=0;
-    foreach($this->accounts as $account)
-    {
-      if($account->level > $level)
-      {
-        $item=array('text'=>$account->currentname);
-        $level = $account->level;
-      }
-    }
-    return $tree;
-    */
-    
-    return array(
-      array(
-        'text'=>'ddd',
-//        'hasChildren'=>true,
-        'children'=>array(
-          array(
-            'text'=>'eee',
-  //          'hasChildren'=>false,
-            ),
-          )
-        )
-      );
   }
 
 }
