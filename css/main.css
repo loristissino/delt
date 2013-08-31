@@ -260,6 +260,18 @@ td.centered
   color: blue;
 }
 
+.valuesok
+{
+  background-color: #C8FFC8;
+}
+
+.valueswrong
+{
+  background-color: #FFEECF;
+}
+
+
+
 div.success
 {
   background-color: #90EE90;

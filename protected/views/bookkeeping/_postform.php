@@ -16,15 +16,23 @@ $explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze th
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
+$currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
+
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
   'swap-rows-handler',
   '
   
+  var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
+  
+  var thousand_separator = decimal_separator=="." ? ",":".";
+
+  var currency = "' . $currency_test_string . '".replace(/[\d\.,]/g, "");
+
   var view_as_textfields = true;
   var n = ' . $n . ';
   var fields = new Array("name", "debit", "credit");
-  
+
   var raw_input_icon = "' . $raw_input_icon . '";
   var textfields_icon = "' . $textfields_icon . '";
   var load_accounts_icon = "' . $load_accounts_icon . '";
@@ -186,7 +194,7 @@ $cs->registerScript(
   }
   
   addArrows();
-  addDoubleClickEventManager();
+  addEventManagers();
   
   function addArrows()
   {
@@ -230,7 +238,7 @@ $cs->registerScript(
   }
 
 
-  function addDoubleClickEventManager()
+  function addEventManagers()
   {
     for(i=1; i<= n; i++)
     {
@@ -243,6 +251,10 @@ $cs->registerScript(
             return false;
           }
         })(i));
+        
+      $("#debit" +i).blur(updatetotals);
+      $("#credit" +i).blur(updatetotals);
+        
     }
   }
   
@@ -263,7 +275,32 @@ $cs->registerScript(
     $(b).val(c);
   }
   
-  
+  function updatetotals()
+  {
+    total_debit=0;
+    total_credit=0;
+    
+    for(i=1; i<=n; i++)
+    {
+      total_debit += accounting.unformat($("#debit"+i).val(), decimal_separator);
+      total_credit += accounting.unformat($("#credit"+i).val(), decimal_separator);
+    }
+    
+    if(total_debit == total_credit)
+    {
+      $("#td_total_debit").addClass("valuesok").removeClass("valueswrong");
+      $("#td_total_credit").addClass("valuesok").removeClass("valueswrong");
+    }
+    else
+    {
+      $("#td_total_debit").removeClass("valuesok").addClass("valueswrong");
+      $("#td_total_credit").removeClass("valuesok").addClass("valueswrong");
+    }
+    
+    $("#total_debit").html(accounting.formatMoney(total_debit, currency, 2, thousand_separator, decimal_separator));
+    $("#total_credit").html(accounting.formatMoney(total_credit, currency, 2, thousand_separator, decimal_separator));
+    
+  }
   
   
   '
@@ -292,6 +329,11 @@ $cs->registerScript(
   }
 
   ',
+  CClientScript::POS_HEAD
+);
+
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/accounting.min.js',
   CClientScript::POS_HEAD
 );
 
@@ -351,6 +393,9 @@ $cs->registerScript(
       <thead>
       <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
       </thead>
+      <tfoot>
+      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency valuesok" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($postform->total_debit, $this->firm->currency) ?></span></th><th class="currency valuesok" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($postform->total_credit, $this->firm->currency) ?></span></th></tr>
+      </tfoot>
       <tbody>
       <?php $row=0; foreach($items as $i=>$item): ?>
       <tr id="row<?php echo ++$row ?>">

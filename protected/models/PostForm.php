@@ -15,6 +15,9 @@ class PostForm extends CFormModel
   public $adjustment_checkbox_needed = false;
   public $show_analysis = true;
   
+  public $total_debit = 0;
+  public $total_credit = 0;
+  
   public $post = null; // the original Post instance
   
   private $is_new = true;
@@ -91,6 +94,10 @@ class PostForm extends CFormModel
       $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
       $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
       $this->debitcredits[$debitcredit->id]->analysis = $debitcredit->account->getAnalysis($debitcredit->amount, $this->firm->currency);
+      
+      $this->total_debit += $debitcredit->amount > 0 ? $debitcredit->amount : 0;
+      $this->total_credit += $debitcredit->amount < 0 ? -$debitcredit->amount : 0;
+      
     }
   }
   
@@ -365,6 +372,9 @@ class PostForm extends CFormModel
     {
       $this->_fixAmounts();
     }
+    
+    $this->total_debit = $grandtotal_debit;
+    $this->total_credit = $grandtotal_credit;
     
   }
   
