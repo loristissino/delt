@@ -394,7 +394,7 @@ $cs->registerScriptFile(
       <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
       </thead>
       <tfoot>
-      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency valuesok" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($postform->total_debit, $this->firm->currency) ?></span></th><th class="currency valuesok" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($postform->total_credit, $this->firm->currency) ?></span></th></tr>
+      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency <?php echo $class=$postform->total_debit==$postform->total_credit? 'valuesok':'valueswrong' ?>" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($postform->total_debit, $this->firm->currency) ?></span></th><th class="currency <?php echo $class ?>" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($postform->total_credit, $this->firm->currency) ?></span></th></tr>
       </tfoot>
       <tbody>
       <?php $row=0; foreach($items as $i=>$item): ?>

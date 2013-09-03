@@ -79,6 +79,8 @@ class PostForm extends CFormModel
     {
       $this->debitcredits[$key] = new DebitcreditForm();
       DELT::array2object($value, $this->debitcredits[$key], array('name', 'debit', 'credit'));
+      $this->total_debit += DELT::currency2decimal($this->debitcredits[$key]->debit, $this->firm->currency);
+      $this->total_credit += DELT::currency2decimal($this->debitcredits[$key]->credit, $this->firm->currency);
     }
   }
   
