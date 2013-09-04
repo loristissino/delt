@@ -43,11 +43,11 @@ class RecoveryController extends Controller
 			    			$user = User::model()->notsafe()->findbyPk($form->user_id);
 							$activation_url = 'http://' . $_SERVER['HTTP_HOST'].$this->createUrl(implode(Yii::app()->controller->module->recoveryUrl),array("activkey" => $user->activkey, "email" => $user->email));
 							
-							$subject = UserModule::t("You have requested the password recovery site {site_name}",
+							$subject = UserModule::t("Password recovery for {site_name}",
 			    					array(
 			    						'{site_name}'=>Yii::app()->name,
 			    					));
-			    			$message = UserModule::t("You have requested the password recovery site {site_name}. To receive a new password, go to {activation_url}.",
+			    			$message = UserModule::t("You have requested the password recovery for the site {site_name}.\r\n To set a new password, go to {activation_url}.",
 			    					array(
 			    						'{site_name}'=>Yii::app()->name,
 			    						'{activation_url}'=>$activation_url,
@@ -55,7 +55,7 @@ class RecoveryController extends Controller
 							
 			    			UserModule::sendMail($user->email,$subject,$message);
 			    			
-							Yii::app()->user->setFlash('recoveryMessage',UserModule::t("Please check your email. An instructions was sent to your email address."));
+							Yii::app()->user->setFlash('recoveryMessage',UserModule::t("Please check your email. Instructions have been sent to your email address."));
 			    			$this->refresh();
 			    		}
 			    	}

@@ -52,7 +52,7 @@ return array(
         'Your profile' => 'Il tuo profilo',
         'Thank you for your registration. Please check your email or login.' => 'Grazie per la registrazione. Controlla la posta o effettua il login.',
         'Thank you for your registration. Please check your email and follow the instructions there (be sure to check also your spam folder, because sometimes the message is put there).' => 'Grazie per la registrazione. Controlla la posta per attivare l\'account (guarda anche nella cartella spam, perché a volte succede che il messaggio finisca lì).',
-        'Please check your email. An instructions was sent to your email address.' => 'Controlla la posta. Ti è stata inviata un\'email di istruzioni per proseguire',
+        'Please check your email. Instructions have been sent to your email address.' => 'Controlla la posta. Ti è stata inviata un\'email di istruzioni per proseguire',
         'Thank you for your registration. Please {{login}}.' =>  'Grazie per la registrazione. {{login}}.',
         'Thank you for your registration. Contact Admin to activate your account.' =>  'Grazie per la registrazione. Contatta l\'amministratore per l\'attivazione dell\'account.',
         'Restore' => 'Ripristina',
