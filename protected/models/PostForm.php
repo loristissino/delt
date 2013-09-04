@@ -64,6 +64,7 @@ class PostForm extends CFormModel
             {
               $this->debitcredits[$count]->$property = $$property;
             }
+            
             $count++;
           }
         }

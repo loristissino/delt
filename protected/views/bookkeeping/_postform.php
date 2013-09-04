@@ -49,6 +49,8 @@ $cs->registerScript(
   
   $("#analysis").hide();
   
+  updatetotals();
+  
   $("#explain").click(function()
     {
       $("#analysis").toggle(500);
@@ -183,6 +185,7 @@ $cs->registerScript(
         );
       }
       text = $("#raw_input").val("");
+      updatetotals();
 
     }
     else  // we have extra lines, we need to do a post...

@@ -93,6 +93,7 @@ class FirmController extends Controller
     {
       throw new CHttpException(404, 'This page is available only for system firms.');
     }
+    
     $this->render('coa', array(
       'model'=>$this->firm,
       'accounts'=>$this->firm->accounts,
