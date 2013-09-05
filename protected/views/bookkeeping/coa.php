@@ -9,6 +9,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
 	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Import accounts'), 'url'=>array('account/import', 'slug'=>$model->slug)),
 	//array('label'=>Yii::t('delt', 'Text list'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug, 'template'=>'coatextlist')),
 	//array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
 );

@@ -424,7 +424,7 @@ class Account extends CActiveRecord
     }
     catch (Exception $e)
     {
-      die($e->getMessage());
+      throw $e;
     }
   }
   

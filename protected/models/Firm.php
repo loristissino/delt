@@ -1383,5 +1383,68 @@ class Firm extends CActiveRecord
     return $result;
     
   }
+  
+  public function importAccountsFrom(ImportAccountsForm $form)
+  {
+    $count = 0;
+    
+    $lines=explode("\n", $form->content);
+    
+    foreach($lines as $line)
+    {
+      $items=array();
+      if(strpos($line, "\t")===false)
+      {
+        $name=trim($line);
+      }
+      else
+      {
+        $items=explode("\t", trim($line));
+        $name=$items[0];
+      }
+      
+      if($name)
+      {
+        $account = $this->createBangAccount(trim($name));
+        $account->cleanup($this);
+        
+        if(sizeof($items))
+        {
+          if(isset($items[1]))  // the code
+          {
+            $account->code = $items[1];
+          }
+          if(isset($items[2]))  // position
+          {
+            $account->position = $items[2];
+          }
+          if(isset($items[3]))  // outstanding balance
+          {
+            $account->outstanding_balance = $items[3];
+          }
+        }
+        
+      }
+      
+      if(isset($account))
+      {
+        try
+        {
+          $account->basicSave(false) && $count++;
+        }
+        catch(Exception $e)
+        {
+          // we just silently ignore accounts that can't be imported
+        }
+        
+        unset($account);
+      }
+      
+    }
+    
+    
+    return $count;
+  }
+  
 
 }

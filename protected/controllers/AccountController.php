@@ -28,7 +28,7 @@ class AccountController extends Controller
 	{
 		return array(
 			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','synchronize'),
+				'actions'=>array('create','update','delete','synchronize','import'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -204,6 +204,31 @@ class AccountController extends Controller
       ));
     }
 	}
+
+	public function actionImport($slug)
+	{
+    $this->firm = $this->loadFirmBySlug($slug);
+    
+    $import_accounts_form = new ImportAccountsForm;
+    
+    if(Yii::app()->getRequest()->isPostRequest)
+    {
+      $import_accounts_form->attributes=$_POST['ImportAccountsForm'];
+      if($import_accounts_form->validate())
+      {
+        $count = $this->firm->importAccountsFrom($import_accounts_form);
+        Yii::app()->getUser()->setFlash('delt_success', 'Accounts correctly imported: ' . $count);
+        $this->firm->fixAccounts();
+        $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
+      }
+    }
+      
+    $this->render('import',array(
+      'firm'=>$this->firm,
+      'model'=>$import_accounts_form,
+    ));
+	}
+
 
 	/**
 	 * Manages all models.
