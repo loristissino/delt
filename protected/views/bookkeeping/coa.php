@@ -24,7 +24,7 @@ if($model->firm_parent_id)
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'account-grid',
-	'dataProvider'=>$model->getAccountsAsDataProvider(200),
+	'dataProvider'=>$dataProvider,
 //	'filter'=>$model,
 	'columns'=>array(
 /*    array(

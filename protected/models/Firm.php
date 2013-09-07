@@ -386,7 +386,7 @@ class Firm extends CActiveRecord
     
   }
 
-  public function getAccountsAsDataProvider($number=200)
+  public function getAccountsAsDataProvider($pagesize=5000)
   {
     $sort = new CSort;
     $sort->defaultOrder = 'code ASC';
@@ -398,14 +398,14 @@ class Firm extends CActiveRecord
     
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'pagination'=>array(
-          'pageSize'=>$number,
+          'pageSize'=>$pagesize,
           ),
       'sort'=>$sort,
       )
     );
   }
   
-  public function getAccountBalancesAsDataProvider($pagesize=100)
+  public function getAccountBalancesAsDataProvider($pagesize=5000)
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
