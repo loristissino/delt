@@ -1384,7 +1384,7 @@ class Firm extends CActiveRecord
     
   }
   
-  public function importAccountsFrom(ImportAccountsForm $form)
+  public function importAccountsFrom(IEAccountsForm $form)
   {
     $count = 0;
     

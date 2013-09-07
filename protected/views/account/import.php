@@ -20,7 +20,8 @@ $this->breadcrumbs=array(
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
+	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
+  <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance.') ?></p>
 
 	<?php echo $form->errorSummary($model, Yii::t('delt', 'Please fix the following errors:')); ?>
   
