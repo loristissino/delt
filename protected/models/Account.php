@@ -714,7 +714,7 @@ class Account extends CActiveRecord
     $names=$this->getNamesAsArray();
     if(array_key_exists($this->firm->language->getLocale(), $names) && $names[$this->firm->language->getLocale()]!='')
     {
-      $this->currentname = $names[$this->firm->language->getLocale()];
+      $this->currentname = str_replace('--', '—', $names[$this->firm->language->getLocale()]);
     }
     else
     {

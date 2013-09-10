@@ -1222,6 +1222,13 @@ class Firm extends CActiveRecord
     foreach($accounts as $key=>&$item)
     {
       $account=Account::model()->findByPk($item['id']);
+      
+      if(($pos=mb_strpos($item['name'], '—')) !== false)
+      {
+        $item['name']=mb_substr($item['name'], 0, $pos); 
+      }
+      
+      
       $item['amount']=$account->getConsolidatedBalance(true);
       
       if($item['amount'] == 0)
