@@ -36,7 +36,7 @@ class FirmController extends Controller
       */
 
 			array('allow', // allow authenticated user to perform the following actions
-				'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation'),
+				'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation','disown'),
 				'users'=>array('@'),
 			),
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -241,7 +241,7 @@ class FirmController extends Controller
 	public function actionUpdate($id=null)
 	{
     $model=$this->loadFirm($id);
-
+    
 		// Uncomment the following line if AJAX validation is needed
 		 $this->performAjaxValidation($model);
      
@@ -274,7 +274,7 @@ class FirmController extends Controller
 		}
 
 		$this->render('update',array(
-			'model'=>$model,
+			'model'=>$model
 		));
 	}
 
@@ -311,17 +311,25 @@ class FirmController extends Controller
     
     if(isset($_GET['action']) && $_GET['action']=='accept')
     {
-      
-      if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'I')))
+      if($this->DEUser->profile->allowed_firms - sizeof($this->DEUser->firms)>0)
       {
-        $fu->role='O';
-        $fu->save();
-        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You are now allowed to manage the firm «{firm}».', array('{firm}'=>$model->name))); 
+        if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'I')))
+        {
+          $fu->role='O';
+          $fu->save();
+          Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You are now allowed to manage the firm «{firm}».', array('{firm}'=>$model->name))); 
+        }
+        else
+        {
+          Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+        }
       }
       else
       {
-        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Sorry, you already reached the number of allowed firms.')); 
       }
+      
+      
     }
 
     if(isset($_GET['action']) && $_GET['action']=='decline')
@@ -333,7 +341,7 @@ class FirmController extends Controller
       }
       else
       {
-        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
       }
     }
 
@@ -342,6 +350,37 @@ class FirmController extends Controller
     
 	}
 
+	public function actionDisown($slug)
+	{
+    $model=$this->loadFirmBySlug($slug, false);
+    
+    if(isset($_POST['disown']))
+    {
+      if($model->getOwners()>=1)
+      {
+        if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'O')))
+        {
+          $fu->delete();
+          Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully disowned the firm «{firm}».', array('{firm}'=>$model->name)));
+        }
+        else
+        {
+          Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the firm «{firm}».', array('{firm}'=>$model->name))); 
+        }
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'You are not allowed to disown the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+      
+      $this->redirect(array('bookkeeping/index'));
+    }
+    
+    $this->render('disown',array(
+			'model'=>$model
+		));
+    
+	}
 
 
 

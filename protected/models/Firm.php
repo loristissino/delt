@@ -329,7 +329,7 @@ class Firm extends CActiveRecord
   {
     // FIXME This should be done with one query, I must study how the model from the plugin works...
     
-    $rows = FirmUser::model()->findAllByAttributes(array('firm_id'=>$this->id));
+    $rows = FirmUser::model()->findAllByAttributes(array('firm_id'=>$this->id, 'role'=>'O'));
     
     if($as_text)
     {
@@ -345,7 +345,12 @@ class Firm extends CActiveRecord
       {
         foreach($profiles as $profile)
         {
-          $lines[]=$profile->first_name . ' ' . $profile->last_name;
+          $text=$profile->first_name . ' ' . $profile->last_name;
+          if($text==' ')
+          {
+            $text='[Incognito user]';
+          }
+          $lines[]=ltrim(rtrim($text));
         }
       }
            
