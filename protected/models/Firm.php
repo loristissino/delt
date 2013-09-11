@@ -417,13 +417,13 @@ class Firm extends CActiveRecord
           'condition'=>'is_selectable = 1 and posts.is_included = 1',
           'order' => 'code ASC',
           'with'=>array(
-            'debitcredits'=>array(
-              'on'=>'t.id = debitcredits.account_id',
+            'postings'=>array(
+              'on'=>'t.id = postings.account_id',
               'together'=>true,
               'joinType' => 'INNER JOIN',
               ),
             'posts'=>array(
-              'on'=>'debitcredits.post_id = posts.id',
+              'on'=>'postings.post_id = posts.id',
               'together'=>true,
               'joinType' => 'INNER JOIN',
               )
@@ -451,7 +451,7 @@ class Firm extends CActiveRecord
     
     $accounts = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total, a.code as code, a.currentname as name')
-      ->from('{{debitcredit}}')
+      ->from('{{posting}}')
       ->leftJoin('{{account}} a', 'account_id = a.id')
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
@@ -542,7 +542,7 @@ class Firm extends CActiveRecord
   
   public function getPostsAsDataProvider($size=100)
   {
-    return new CActiveDataProvider(Debitcredit::model()->with('post')->with('account')->ofFirm($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('post')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
           'pageSize'=>$size,
           ),
@@ -670,7 +670,7 @@ class Firm extends CActiveRecord
   {
     $amount = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total')
-      ->from('{{debitcredit}}')
+      ->from('{{posting}}')
       ->leftJoin('{{post}} p', 'post_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere('amount ' . $type='D'? '>0' : '<0')
@@ -799,16 +799,16 @@ class Firm extends CActiveRecord
             $newpost->$property = $post->$property;
           }
           $newpost->save(false);
-          foreach($post->debitcredits as $debitcredit)
+          foreach($post->postings as $posting)
           {
-            $newdebitcredit = new Debitcredit;
-            $newdebitcredit->post_id = $newpost->id;
+            $newposting = new Posting;
+            $newposting->post_id = $newpost->id;
             foreach(array('amount', 'rank') as $property)
             {
-              $newdebitcredit->$property = $debitcredit->$property;
+              $newposting->$property = $posting->$property;
             }
-            $newdebitcredit->account_id = $references[$debitcredit->account_id];
-            $newdebitcredit->save(false);
+            $newposting->account_id = $references[$posting->account_id];
+            $newposting->save(false);
           }
         }
       }
@@ -967,12 +967,12 @@ class Firm extends CActiveRecord
         $values = array();
         DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
         
-        foreach($post->debitcredits as $debitcredit)
+        foreach($post->postings as $posting)
         {
           $info = array();
-          DELT::object2array($debitcredit, $info, array('amount', 'rank'));
-          $info['account_code'] = $references[$debitcredit->account_id];
-          $values['debitcredits'][]=$info;
+          DELT::object2array($posting, $info, array('amount', 'rank'));
+          $info['account_code'] = $references[$posting->account_id];
+          $values['postings'][]=$info;
         }
 
         $data['posts'][]=$values;
@@ -1088,13 +1088,13 @@ class Firm extends CActiveRecord
         
         $newpost->save(false);
         
-        foreach($values['debitcredits'] as $debitcredit)
+        foreach($values['postings'] as $posting)
         {
-          $newdebitcredit = new Debitcredit;
-          $newdebitcredit->post_id = $newpost->id;
-          DELT::array2object($debitcredit, $newdebitcredit, array('amount', 'rank'));
-          $newdebitcredit->account_id = $references[$debitcredit['account_code']];
-          $newdebitcredit->save(false);
+          $newposting = new Posting;
+          $newposting->post_id = $newpost->id;
+          DELT::array2object($posting, $newposting, array('amount', 'rank'));
+          $newposting->account_id = $references[$posting['account_code']];
+          $newposting->save(false);
         }
       }
       

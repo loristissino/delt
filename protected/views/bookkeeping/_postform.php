@@ -408,7 +408,7 @@ $cs->registerScriptFile(
       </td>
       <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
         'id'=>'name'.$row,
-        'name'=>"DebitcreditForm[$i][name]",
+        'name'=>"PostingForm[$i][name]",
         'value'=>$item->name,
         'source'=>$this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)),
          'options'=>array(

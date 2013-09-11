@@ -22,7 +22,7 @@
  * The followings are the available model relations:
  * @property Firm $firm
  * @property Language[] $tblLanguages
- * @property Debitcredit[] $debitcredits
+ * @property Posting[] $postings
  */
 class Account extends CActiveRecord
 {
@@ -77,14 +77,14 @@ class Account extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
-			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'account_id'),
-      'posts' => array(self::MANY_MANY, 'Post', '{{debitcredit}}(account_id, post_id)'),
-      'debitgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
+			'postings' => array(self::HAS_MANY, 'Posting', 'account_id'),
+      'posts' => array(self::MANY_MANY, 'Post', '{{posting}}(account_id, post_id)'),
+      'debitgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
         'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
         'condition'=>'{{post}}.is_included = 1 and amount > 0',
         ),
-      'creditgrandtotal' => array(self::STAT, 'Debitcredit', 'account_id', 
+      'creditgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
         'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
         'condition'=>'{{post}}.is_included = 1 and amount < 0',
@@ -350,7 +350,7 @@ class Account extends CActiveRecord
   */
   public function getNumberOfPosts()
   {
-    return Debitcredit::model()->countByAttributes(array('account_id'=>$this->id));
+    return Posting::model()->countByAttributes(array('account_id'=>$this->id));
   }
   
   /**
@@ -543,7 +543,7 @@ class Account extends CActiveRecord
     return $this->number_of_children == 0;
   }
 
-  public function getDebitcreditsAsDataProvider()
+  public function getPostingsAsDataProvider()
   {
 /*    $sort = new CSort;
     $sort->defaultOrder = 'code ASC';
@@ -553,7 +553,7 @@ class Account extends CActiveRecord
         'position'=>'position',
     );    
   */  
-    return new CActiveDataProvider(Debitcredit::model()->with('post')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('post')->belongingTo($this->id), array(
       'pagination'=>array(
           'pageSize'=>30,
           ),
@@ -623,7 +623,7 @@ class Account extends CActiveRecord
   {
     $amount = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total')
-      ->from('{{debitcredit}} dc')
+      ->from('{{posting}} dc')
       ->leftJoin('{{account}} a', 'dc.account_id = a.id')
       ->leftJoin('{{post}} p', 'dc.post_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')

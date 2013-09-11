@@ -276,10 +276,10 @@ INSERT INTO `tbl_account_name` (`account_id`, `language_id`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_debitcredit`
+-- Struttura della tabella `tbl_posting`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_debitcredit` (
+CREATE TABLE IF NOT EXISTS `tbl_posting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `tbl_debitcredit` (
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=45 ;
 
 --
--- Dump dei dati per la tabella `tbl_debitcredit`
+-- Dump dei dati per la tabella `tbl_posting`
 --
 
 
@@ -524,11 +524,11 @@ ALTER TABLE `tbl_account_name`
   ADD CONSTRAINT `tbl_account_name_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `tbl_language` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_debitcredit`
+-- Limiti per la tabella `tbl_posting`
 --
-ALTER TABLE `tbl_debitcredit`
-  ADD CONSTRAINT `tbl_debitcredit_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_debitcredit_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `tbl_posting`
+  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`) ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `tbl_firm_user`

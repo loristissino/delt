@@ -1,6 +1,6 @@
 <?php
 
-class DebitcreditForm extends CFormModel
+class PostingForm extends CFormModel
 {
 
   public $name;

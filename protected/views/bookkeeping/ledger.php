@@ -60,7 +60,7 @@ if($deletable)
 <?php if($account->number_of_children==0): ?>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'firm-grid',
-	'dataProvider'=>$account->getDebitcreditsAsDataProvider(),
+	'dataProvider'=>$account->getPostingsAsDataProvider(),
 	'columns'=>array(
     array(
       'class'=>'CDataColumn',

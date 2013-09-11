@@ -26,22 +26,22 @@ $this->breadcrumbs=array(
     <th><?php echo Yii::t('delt', 'Debit') ?></th>
     <th><?php echo Yii::t('delt', 'Credit') ?></th>
   </tr>
-<?php $n=0; $postid=0; $td=0; $tc=0; foreach($debitcredits as $debitcredit): $excluded=!$debitcredit->post->is_included ?>
-  <?php if($postid!=$debitcredit->post_id): $postid=$debitcredit->post_id ?>
+<?php $n=0; $postid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->post->is_included ?>
+  <?php if($postid!=$posting->post_id): $postid=$posting->post_id ?>
   <tr <?php if($excluded) echo 'class="excluded"' ?>>
     <td class="firstpostrow"><?php echo ++$n ?></td>
     <td class="firstpostrow">
-      <?php echo Yii::app()->dateFormatter->formatDateTime($debitcredit->post->date, 'short', null) ?>
+      <?php echo Yii::app()->dateFormatter->formatDateTime($posting->post->date, 'short', null) ?>
     </td>
     <td class="journaldescription firstpostrow">
-      <?php echo $debitcredit->post->description ?>
+      <?php echo $posting->post->description ?>
     </td>
     <td class="firstpostrow"></td>
     <td class="firstpostrow"></td>
   </tr>
-  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit, 'excluded'=>$excluded)); if(!$excluded) {if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount;} ?>
+  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   <?php else: ?>
-  <?php echo $this->renderPartial('_debitcreditrow', array('debitcredit'=>$debitcredit, 'excluded'=>$excluded)); if(!$excluded) {if($debitcredit->amount>0) $td+=$debitcredit->amount; else $tc-=$debitcredit->amount;} ?>
+  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   <?php endif ?>
 <?php endforeach ?>
   <tr>

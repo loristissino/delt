@@ -8,7 +8,7 @@ class PostForm extends CFormModel
   public $date;
   public $description;
   public $raw_input;
-  public $debitcredits;
+  public $postings;
   public $currency;
   public $is_closing = false;
   public $is_adjustment = false;
@@ -27,7 +27,7 @@ class PostForm extends CFormModel
 		return array(
 			array('date, description, is_closing', 'required'),
       array('raw_input, is_adjustment', 'safe'),
-      array('debitcredits', 'checkDebitcredits'),
+      array('postings', 'checkPostings'),
 		);
 	}
 
@@ -47,7 +47,7 @@ class PostForm extends CFormModel
   
   public function acquireItems($values)
   {
-    $this->debitcredits=array();
+    $this->postings=array();
 
     if($this->raw_input)
     {
@@ -59,10 +59,10 @@ class PostForm extends CFormModel
           list($name, $debit, $credit) = $fields;
           if(is_numeric(DELT::currency2decimal($debit, $this->currency)) or is_numeric(DELT::currency2decimal($credit, $this->currency)))
           {
-            $this->debitcredits[$count] = new DebitcreditForm();
+            $this->postings[$count] = new PostingForm();
             foreach(array('name', 'debit', 'credit') as $index=>$property)
             {
-              $this->debitcredits[$count]->$property = $$property;
+              $this->postings[$count]->$property = $$property;
             }
             
             $count++;
@@ -71,17 +71,17 @@ class PostForm extends CFormModel
       }
       for($i=$count+1; $i<=2; $i++)
       {
-        $this->debitcredits[] = new DebitcreditForm();
+        $this->postings[] = new PostingForm();
       }
       return;
     }
     
     foreach($values as $key => $value)
     {
-      $this->debitcredits[$key] = new DebitcreditForm();
-      DELT::array2object($value, $this->debitcredits[$key], array('name', 'debit', 'credit'));
-      $this->total_debit += DELT::currency2decimal($this->debitcredits[$key]->debit, $this->firm->currency);
-      $this->total_credit += DELT::currency2decimal($this->debitcredits[$key]->credit, $this->firm->currency);
+      $this->postings[$key] = new PostingForm();
+      DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit'));
+      $this->total_debit += DELT::currency2decimal($this->postings[$key]->debit, $this->firm->currency);
+      $this->total_credit += DELT::currency2decimal($this->postings[$key]->credit, $this->firm->currency);
     }
   }
   
@@ -90,16 +90,16 @@ class PostForm extends CFormModel
     $this->post = $post;
     DELT::object2object($post, $this, array('description', 'is_closing', 'is_adjustment'));
     $this->date = $post->getDateForFormWidget();
-    foreach($post->debitcredits as $debitcredit)
+    foreach($post->postings as $posting)
     {
-      $this->debitcredits[$debitcredit->id] = new DebitcreditForm();
-      $this->debitcredits[$debitcredit->id]->name = $debitcredit->account->__toString();
-      $this->debitcredits[$debitcredit->id]->debit = $debitcredit->amount > 0 ? DELT::currency_value($debitcredit->amount, $this->currency) : '';
-      $this->debitcredits[$debitcredit->id]->credit = $debitcredit->amount < 0 ? DELT::currency_value(-$debitcredit->amount, $this->currency) : '';
-      $this->debitcredits[$debitcredit->id]->analysis = $debitcredit->account->getAnalysis($debitcredit->amount, $this->firm->currency);
+      $this->postings[$posting->id] = new PostingForm();
+      $this->postings[$posting->id]->name = $posting->account->__toString();
+      $this->postings[$posting->id]->debit = $posting->amount > 0 ? DELT::currency_value($posting->amount, $this->currency) : '';
+      $this->postings[$posting->id]->credit = $posting->amount < 0 ? DELT::currency_value(-$posting->amount, $this->currency) : '';
+      $this->postings[$posting->id]->analysis = $posting->account->getAnalysis($posting->amount, $this->firm->currency);
       
-      $this->total_debit += $debitcredit->amount > 0 ? $debitcredit->amount : 0;
-      $this->total_credit += $debitcredit->amount < 0 ? -$debitcredit->amount : 0;
+      $this->total_debit += $posting->amount > 0 ? $posting->amount : 0;
+      $this->total_credit += $posting->amount < 0 ? -$posting->amount : 0;
       
     }
   }
@@ -127,29 +127,29 @@ class PostForm extends CFormModel
       
       $this->post->save(true);
       
-      $this->post->deleteDebitcredits();
+      $this->post->deletePostings();
       
       $rank = 1;
-      foreach($this->debitcredits as $debitcreditform)
+      foreach($this->postings as $postingform)
       {
-        if($debitcreditform->account_id)
+        if($postingform->account_id)
         {
-          $Debitcredit = new Debitcredit();
+          $Posting = new Posting();
           
           
-          if(substr($debitcreditform->account_id, 0, 1)=='!')
+          if(substr($postingform->account_id, 0, 1)=='!')
           {
-            $debitcreditform->account->cleanup($this->firm);
-            $debitcreditform->account->basicSave(false);
-            $debitcreditform->account_id = $debitcreditform->account->id;
+            $postingform->account->cleanup($this->firm);
+            $postingform->account->basicSave(false);
+            $postingform->account_id = $postingform->account->id;
           }
           
-          $Debitcredit->post_id = $this->post->id;
-          $Debitcredit->account_id = $debitcreditform->account_id;
-          $Debitcredit->amount = $debitcreditform->debit - $debitcreditform->credit;
-          $Debitcredit->rank = $rank++;
+          $Posting->post_id = $this->post->id;
+          $Posting->account_id = $postingform->account_id;
+          $Posting->amount = $postingform->debit - $postingform->credit;
+          $Posting->rank = $rank++;
           
-          $Debitcredit->save(true);
+          $Posting->save(true);
         }
       }
       
@@ -167,7 +167,7 @@ class PostForm extends CFormModel
     
   }
   
-  public function checkDebitcredits() // $attribute,$params)
+  public function checkPostings() // $attribute,$params)
   {
     
     $grandtotal_debit = 0;
@@ -178,33 +178,33 @@ class PostForm extends CFormModel
     $bang_accounts = array();
 
     $line_number = 0;
-    foreach($this->debitcredits as $row => $debitcredit)
+    foreach($this->postings as $row => $posting)
     {
       $last_line = $row;  //we use this later, for an amount proposal...
       $row_message = Yii::t('delt', 'Row {row}: ', array('{row}'=> ++$line_number));
       
-      if($debitcredit['name']=='')
+      if($posting['name']=='')
       {
         // when the account name is not given, the whole line is completely ignored...
         continue;
       }
 
-      if(strpos($debitcredit['name'], '!')!==false)
+      if(strpos($posting['name'], '!')!==false)
       {
         // the bang sign means we have to create one (in the final transaction)
-        $account = $this->firm->createBangAccount($debitcredit['name']);
+        $account = $this->firm->createBangAccount($posting['name']);
       }
       else
       {
-        $info = explode(' - ', $debitcredit['name']);
+        $info = explode(' - ', $posting['name']);
         $code = trim($info[0]);
         $account = Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id, 'is_selectable'=>true));
       }
       
       if(!$account)
       {
-        $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by adding an exclamation mark to the name, like in "{code}!").', array('{code}'=>$code)));
-        $this->debitcredits[$row]->name_errors=true;
+        $this->addError('postings', $row_message . Yii::t('delt', 'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by adding an exclamation mark to the name, like in "{code}!").', array('{code}'=>$code)));
+        $this->postings[$row]->name_errors=true;
         continue;
       }
       else
@@ -213,14 +213,14 @@ class PostForm extends CFormModel
         if(!in_array($account->id, $used_accounts))
         {
           */
-          $this->debitcredits[$row]->account_id = $account->id;
-          $this->debitcredits[$row]->account = $account;
+          $this->postings[$row]->account_id = $account->id;
+          $this->postings[$row]->account = $account;
           $used_accounts[] = $account->id;
         /*
          * }
         else
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'the account with code "{code}" makes the row a duplicate.', array('{code}'=>$code)));
+          $this->addError('postings', $row_message . Yii::t('delt', 'the account with code "{code}" makes the row a duplicate.', array('{code}'=>$code)));
         }
         */
       }
@@ -230,22 +230,22 @@ class PostForm extends CFormModel
       
       foreach(array('debit', 'credit') as $type)
       {
-        $question = trim($debitcredit[$type])=='?' ? true : $question;
+        $question = trim($posting[$type])=='?' ? true : $question;
 
-        $debitcredit[$type]=DELT::currency2decimal($debitcredit[$type], $this->currency);
-        $value=$debitcredit[$type];
+        $posting[$type]=DELT::currency2decimal($posting[$type], $this->currency);
+        $value=$posting[$type];
 
         $error=$type . '_errors';
         if($value!='' and !is_numeric($value))
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'the value "{value}" is not numeric.', array('{value}'=>$value)));
-          $this->debitcredits[$row]->$error=true;
+          $this->addError('postings', $row_message . Yii::t('delt', 'the value "{value}" is not numeric.', array('{value}'=>$value)));
+          $this->postings[$row]->$error=true;
           $errors=true;
         }
         if($value<0)
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'the value "{value}" cannot be negative.', array('{value}'=>$value)));
-          $this->debitcredits[$row]->$error=true;
+          $this->addError('postings', $row_message . Yii::t('delt', 'the value "{value}" cannot be negative.', array('{value}'=>$value)));
+          $this->postings[$row]->$error=true;
           $errors=true;
         }
       }
@@ -255,14 +255,14 @@ class PostForm extends CFormModel
         continue;
       }
       
-      $debit = $this->debitcredits[$row]['debit'];
-      $credit = $this->debitcredits[$row]['credit'];
+      $debit = $this->postings[$row]['debit'];
+      $credit = $this->postings[$row]['credit'];
       
       if($debit and $credit)
       {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you cannot have both a debit and a credit.'));
-          $this->debitcredits[$row]->debit_errors=true;
-          $this->debitcredits[$row]->credit_errors=true;
+          $this->addError('postings', $row_message . Yii::t('delt', 'you cannot have both a debit and a credit.'));
+          $this->postings[$row]->debit_errors=true;
+          $this->postings[$row]->credit_errors=true;
           $errors=true;
       }
       
@@ -270,70 +270,70 @@ class PostForm extends CFormModel
       {
         if($question)
         {
-          $v = $this->debitcredits[$row]->account->consolidatedBalance;
+          $v = $this->postings[$row]->account->consolidatedBalance;
           if($v > 0)
           {
             $credit = $v;
-            $this->debitcredits[$row]['credit']=$credit;
-            $this->debitcredits[$row]->guessed = true;
-            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the credit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
+            $this->postings[$row]['credit']=$credit;
+            $this->postings[$row]->guessed = true;
+            $this->addError('postings', $row_message . Yii::t('delt', 'the amount of the credit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
           }
           if($v < 0)
           {
             $debit = -$v;
-            $this->debitcredits[$row]['debit']=$debit;
-            $this->debitcredits[$row]->guessed = true;
-            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the debit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
+            $this->postings[$row]['debit']=$debit;
+            $this->postings[$row]->guessed = true;
+            $this->addError('postings', $row_message . Yii::t('delt', 'the amount of the debit has been computed as a balance for the account;'). ' ' . Yii::t('delt', 'it must be checked.'));
           }
         }
-        elseif($line_number==(sizeof($this->debitcredits)))
+        elseif($line_number==(sizeof($this->postings)))
         {
           // it is the last line, we can make a guess...
           if($grandtotal_debit > $grandtotal_credit)
           {
             $credit = $grandtotal_debit - $grandtotal_credit;
-            $this->debitcredits[$row]['credit']=$credit;
-            $this->debitcredits[$row]->guessed = true;
+            $this->postings[$row]['credit']=$credit;
+            $this->postings[$row]->guessed = true;
             
-            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the credit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
+            $this->addError('postings', $row_message . Yii::t('delt', 'the amount of the credit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
           }
           if($grandtotal_debit < $grandtotal_credit)
           {
             $debit = $grandtotal_credit - $grandtotal_debit;
-            $this->debitcredits[$row]['debit']=$debit;
-            $this->debitcredits[$row]->guessed = true;
+            $this->postings[$row]['debit']=$debit;
+            $this->postings[$row]->guessed = true;
 
-            $this->addError('debitcredits', $row_message . Yii::t('delt', 'the amount of the debit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
+            $this->addError('postings', $row_message . Yii::t('delt', 'the amount of the debit has been computed by difference;'). ' ' . Yii::t('delt', 'it must be checked.'));
           }
         }
         else
         {
-          $this->addError('debitcredits', $row_message . Yii::t('delt', 'you must have a debit or a credit.'));
-          $this->debitcredits[$row]->debit_errors=true;
-          $this->debitcredits[$row]->credit_errors=true;
+          $this->addError('postings', $row_message . Yii::t('delt', 'you must have a debit or a credit.'));
+          $this->postings[$row]->debit_errors=true;
+          $this->postings[$row]->credit_errors=true;
           $errors=true;
         }
       }
       
-      if(!$this->is_closing && !$this->is_adjustment && $this->debitcredits[$row]->account && $this->debitcredits[$row]->account->position=='E')
+      if(!$this->is_closing && !$this->is_adjustment && $this->postings[$row]->account && $this->postings[$row]->account->position=='E')
       {
-        if($this->debitcredits[$row]->account->outstanding_balance == 'D' && $credit>0)
+        if($this->postings[$row]->account->outstanding_balance == 'D' && $credit>0)
         {
-          $this->addError('debitcredits', $row_message . 
+          $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a credit to this kind of account') . ' ' .
             Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
             );
-          $this->debitcredits[$row]->credit_errors=true;
+          $this->postings[$row]->credit_errors=true;
           $errors=true;
           $this->adjustment_checkbox_needed = true;
         }
-        if($this->debitcredits[$row]->account->outstanding_balance == 'C' && $debit>0)
+        if($this->postings[$row]->account->outstanding_balance == 'C' && $debit>0)
         {
-          $this->addError('debitcredits', $row_message . 
+          $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a debit to this kind of account') . ' ' .
             Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
             );
-          $this->debitcredits[$row]->debit_errors=true;
+          $this->postings[$row]->debit_errors=true;
           $errors=true;
           $this->adjustment_checkbox_needed = true;
         }
@@ -345,7 +345,7 @@ class PostForm extends CFormModel
         $grandtotal_debit += $debit;
         $grandtotal_credit += $credit;
         
-        $this->debitcredits[$row]->analysis = $this->debitcredits[$row]->account->getAnalysis($debit - $credit, $this->firm->currency);
+        $this->postings[$row]->analysis = $this->postings[$row]->account->getAnalysis($debit - $credit, $this->firm->currency);
         
       }
       
@@ -359,12 +359,12 @@ class PostForm extends CFormModel
     
     if($grandtotal_debit==0 and $grandtotal_credit==0)
     {
-       $this->addError('debitcredits', Yii::t('delt', 'No amounts specified.'));
+       $this->addError('postings', Yii::t('delt', 'No amounts specified.'));
     }
     
     if(abs($grandtotal_debit - $grandtotal_credit)>0.001) // floating point operations may yeld differences like -5.8207660913467E-11...
     {
-       $this->addError('debitcredits',
+       $this->addError('postings',
         Yii::t('delt', 'The total amount of debits ({debits}) does not match the total amounts of credits ({credits}).', array('{debits}'=>DELT::currency_value($grandtotal_debit, $this->currency, false, true), '{credits}'=>DELT::currency_value($grandtotal_credit, $this->currency, false, true)))
         . ' ' .
         Yii::t('delt', 'The imbalance is: {amount}.', array('{amount}'=>DELT::currency_value($grandtotal_debit - $grandtotal_credit, $this->currency, true)))
@@ -383,11 +383,11 @@ class PostForm extends CFormModel
   
   private function _fixAmounts()
   {
-    foreach($this->debitcredits as $row => $debitcredit)
+    foreach($this->postings as $row => $posting)
     {
       foreach(array('debit', 'credit') as $type)
       {
-        $this->debitcredits[$row][$type]=$debitcredit[$type] ? DELT::currency_value($debitcredit[$type], $this->currency) : '';
+        $this->postings[$row][$type]=$posting[$type] ? DELT::currency_value($posting[$type], $this->currency) : '';
       }
     }
   }

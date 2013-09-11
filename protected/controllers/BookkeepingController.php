@@ -215,19 +215,19 @@ class BookkeepingController extends Controller
     }
     else
     {
-      $postform->debitcredits = array(new DebitcreditForm(), new Debitcreditform());
+      $postform->postings = array(new PostingForm(), new Postingform());
     }
         
 		if(isset($_POST['PostForm']))
 		{
 			$postform->attributes=$_POST['PostForm'];
-      if(isset($_POST['DebitcreditForm']))
+      if(isset($_POST['PostingForm']))
       {
-        $postform->acquireItems($_POST['DebitcreditForm']);
+        $postform->acquireItems($_POST['PostingForm']);
       }
       if(isset($_POST['addline']))
       {
-        $postform->debitcredits[] = new DebitcreditForm();
+        $postform->postings[] = new PostingForm();
       }
       elseif(!$postform->raw_input)
       {
@@ -254,7 +254,7 @@ class BookkeepingController extends Controller
 		$this->render('newpost', array(
       'model'=>$this->loadModelBySlug($slug),
       'postform'=>$postform,
-      'items'=>$postform->debitcredits,
+      'items'=>$postform->postings,
     ));
 	}
   
@@ -343,10 +343,10 @@ class BookkeepingController extends Controller
 		if(isset($_POST['PostForm']))
 		{
 			$postform->attributes=$_POST['PostForm'];
-      $postform->acquireItems($_POST['DebitcreditForm']);
+      $postform->acquireItems($_POST['PostingForm']);
       if(isset($_POST['addline']))
       {
-        $postform->debitcredits[] = new DebitcreditForm();
+        $postform->postings[] = new PostingForm();
         $postform->show_analysis = false;
       }
       elseif(!$postform->raw_input)
@@ -369,7 +369,7 @@ class BookkeepingController extends Controller
 		$this->render('updatepost', array(
       'model'=>$this->firm,
       'postform'=>$postform,
-      'items'=>$postform->debitcredits,
+      'items'=>$postform->postings,
     ));
 
 	}
@@ -605,15 +605,15 @@ class BookkeepingController extends Controller
     return $this->renderPartial('../account/_outstanding_balance',array('account'=>$account),true);
   }
 
-  public function renderDebit(Debitcredit $debitcredit, $row)
+  public function renderDebit(Posting $posting, $row)
   {
-    $this->last_post_id = $debitcredit->post_id;
-    return $this->renderPartial('_debit',array('debitcredit'=>$debitcredit),true);
+    $this->last_post_id = $posting->post_id;
+    return $this->renderPartial('_debit',array('posting'=>$posting),true);
   }
   
-  public function renderCredit(Debitcredit $debitcredit, $row)
+  public function renderCredit(Posting $posting, $row)
   {
-    return $this->renderPartial('_credit',array('debitcredit'=>$debitcredit),true);
+    return $this->renderPartial('_credit',array('posting'=>$posting),true);
   }
 
   public function renderSingleDebit(Account $account, $row)
@@ -646,21 +646,21 @@ class BookkeepingController extends Controller
     return $this->renderPartial('_value', array('value'=>-$value), true);
   }
 
-  public function renderDate(Debitcredit $debitcredit, $row)
+  public function renderDate(Posting $posting, $row)
   {
-    if($debitcredit->post_id != $this->last_post_id)
+    if($posting->post_id != $this->last_post_id)
     {
-      return $this->renderPartial('_date',array('debitcredit'=>$debitcredit),true);
+      return $this->renderPartial('_date',array('posting'=>$posting),true);
     }
     return '';
   }
   
-  public function renderDescription(Debitcredit $debitcredit, $row)
+  public function renderDescription(Posting $posting, $row)
   {
-    if($debitcredit->post_id != $this->last_post_id)
+    if($posting->post_id != $this->last_post_id)
     {
       $this->line_shown = true;
-      return $this->renderPartial('_description', array('debitcredit'=>$debitcredit), true);
+      return $this->renderPartial('_description', array('posting'=>$posting), true);
     }
     $this->line_shown = false;
     return '';
@@ -673,9 +673,9 @@ class BookkeepingController extends Controller
   }
 
   
-  public function renderAccount(Debitcredit $debitcredit, $row)
+  public function renderAccount(Posting $posting, $row)
   {
-    return $this->renderPartial('_account',array('account'=>$debitcredit->account, 'post'=>$debitcredit->post, 'amount'=>$debitcredit->amount),true);
+    return $this->renderPartial('_account',array('account'=>$posting->account, 'post'=>$posting->post, 'amount'=>$posting->amount),true);
   }
   
   public function renderSingleAccount(Account $account, $row)

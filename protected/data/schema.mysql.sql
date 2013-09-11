@@ -44,10 +44,10 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_debitcredit`
+-- Table structure for table `tbl_posting`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_debitcredit` (
+CREATE TABLE IF NOT EXISTS `tbl_posting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
   `post_id` int(11) NOT NULL,
@@ -262,11 +262,11 @@ ALTER TABLE `tbl_account_name`
   ADD CONSTRAINT `tbl_account_name_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `tbl_language` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `tbl_debitcredit`
+-- Constraints for table `tbl_posting`
 --
-ALTER TABLE `tbl_debitcredit`
-  ADD CONSTRAINT `tbl_debitcredit_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_debitcredit_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `tbl_posting`
+  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_firm_user`

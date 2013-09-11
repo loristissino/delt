@@ -16,7 +16,7 @@
  * @property integer $maxrank
  *
  * The followings are the available model relations:
- * @property Debitcredit[] $debitcredits
+ * @property Posting[] $postings
  * @property Firm $firm
  */
 class Post extends CActiveRecord
@@ -67,7 +67,7 @@ class Post extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'debitcredits' => array(self::HAS_MANY, 'Debitcredit', 'post_id', 'order'=>'debitcredits.rank ASC'),
+			'postings' => array(self::HAS_MANY, 'Posting', 'post_id', 'order'=>'postings.rank ASC'),
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 		);
 	}
@@ -119,7 +119,7 @@ class Post extends CActiveRecord
   public function belongingTo($post_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'{{debitcredit}}.post_id = ' . $post_id,
+        'condition'=>'{{posting}}.post_id = ' . $post_id,
         'order'=>'code ASC',
     ));
     return $this;
@@ -141,9 +141,9 @@ class Post extends CActiveRecord
     return $result->maxrank;
   }
   
-  public function deleteDebitcredits()
+  public function deletePostings()
   {
-    Debitcredit::model()->deleteAllByAttributes(array('post_id'=>$this->id));
+    Posting::model()->deleteAllByAttributes(array('post_id'=>$this->id));
   }
   
   public function safeDelete()
@@ -152,7 +152,7 @@ class Post extends CActiveRecord
     
     try
     {
-      $this->deleteDebitcredits();
+      $this->deletePostings();
       $this->delete();
       $transaction->commit();
       return true;

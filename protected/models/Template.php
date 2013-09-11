@@ -104,9 +104,9 @@ class Template extends CActiveRecord
     if($post = Post::model()->findByPk($this->post_id))
     {
       $accounts = array();
-      foreach($post->debitcredits as $debitcredit)
+      foreach($post->postings as $posting)
       {
-        $accounts[$debitcredit->account_id] = array('rank'=>$debitcredit->rank, 'type'=>DELT::amount2type($debitcredit->amount, false));
+        $accounts[$posting->account_id] = array('rank'=>$posting->rank, 'type'=>DELT::amount2type($posting->amount, false));
       }
       $this->info=serialize($accounts);
     }

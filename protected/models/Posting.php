@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{debitcredit}}".
+ * This is the model class for table "{{posting}}".
  *
- * The followings are the available columns in table '{{debitcredit}}':
+ * The followings are the available columns in table '{{posting}}':
  * @property integer $id
  * @property integer $account_id
  * @property integer $post_id
@@ -14,12 +14,12 @@
  * @property Account $account
  * @property Post $post
  */
-class Debitcredit extends CActiveRecord
+class Posting extends CActiveRecord
 {
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return DebitCredit the static model class
+	 * @return Posting the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -31,7 +31,7 @@ class Debitcredit extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{debitcredit}}';
+		return '{{posting}}';
 	}
 
 	/**
