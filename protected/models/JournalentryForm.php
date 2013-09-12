@@ -23,26 +23,26 @@ class JournalentryForm extends CFormModel
   private $is_new = true;
   
   public function rules()
-	{
-		return array(
-			array('date, description, is_closing', 'required'),
+  {
+    return array(
+      array('date, description, is_closing', 'required'),
       array('raw_input, is_adjustment', 'safe'),
       array('postings', 'checkPostings'),
-		);
-	}
+    );
+  }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'date' => Yii::t('delt', 'Date'),
-			'description' => Yii::t('delt', 'Description / Explanation'),
+  /**
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'date' => Yii::t('delt', 'Date'),
+      'description' => Yii::t('delt', 'Description / Explanation'),
       'raw_input' => Yii::t('delt', 'Raw input'),
       'options' => Yii::t('delt', 'Options')
       );
-	}
+  }
 
   
   public function acquireItems($values)

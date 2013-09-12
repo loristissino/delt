@@ -3,8 +3,8 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	'Create',
+  'Firms'=>array('index'),
+  'Create',
 );
 
 $this->menu=array();

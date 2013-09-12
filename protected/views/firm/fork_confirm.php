@@ -3,8 +3,8 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	'Fork',
+  'Firms'=>array('index'),
+  'Fork',
 );
 
 $ajax_loader_icon=addslashes($this->createIcon('ajax-loader', Yii::t('delt', 'Please wait...'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Please wait')), '.gif'));
@@ -49,7 +49,7 @@ $cs->registerScript(
 <div class="form">
 <?php $form=$this->beginWidget('CActiveForm', array('id'=>'myform')); ?>
 
-	<?php echo $form->errorSummary($forkfirmform, Yii::t('delt', 'Please fix the following errors:')); ?>
+  <?php echo $form->errorSummary($forkfirmform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
     <div class="row buttons">
       <?php echo $form->label($forkfirmform, 'type'); ?><?php echo $form->dropDownList($forkfirmform,

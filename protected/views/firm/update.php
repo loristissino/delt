@@ -3,9 +3,9 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	$model->name=>array('bookkeeping/manage','slug'=>$model->slug),
-	'Update',
+  'Firms'=>array('index'),
+  $model->name=>array('bookkeeping/manage','slug'=>$model->slug),
+  'Update',
 );
 
 if(sizeof($model->getOwners()) > 1)

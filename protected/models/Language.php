@@ -17,91 +17,91 @@
  */
 class Language extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Language the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+  /**
+   * Returns the static model of the specified AR class.
+   * @param string $className active record class name.
+   * @return Language the static model class
+   */
+  public static function model($className=__CLASS__)
+  {
+    return parent::model($className);
+  }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{language}}';
-	}
+  /**
+   * @return string the associated database table name
+   */
+  public function tableName()
+  {
+    return '{{language}}';
+  }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('language_code, english_name, native_name', 'required'),
+  /**
+   * @return array validation rules for model attributes.
+   */
+  public function rules()
+  {
+    // NOTE: you should only define rules for those attributes that
+    // will receive user inputs.
+    return array(
+      array('language_code, english_name, native_name', 'required'),
       array('is_default', 'numerical', 'integerOnly'=>true),
-			array('language_code, country_code', 'length', 'max'=>3),
-			array('english_name, native_name', 'length', 'max'=>64),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, language_code, country_code, english_name, native_name, is_default', 'safe', 'on'=>'search'),
-		);
-	}
+      array('language_code, country_code', 'length', 'max'=>3),
+      array('english_name, native_name', 'length', 'max'=>64),
+      // The following rule is used by search().
+      // Please remove those attributes that should not be searched.
+      array('id, language_code, country_code, english_name, native_name, is_default', 'safe', 'on'=>'search'),
+    );
+  }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'tblAccounts' => array(self::MANY_MANY, 'Account', '{{account_name}}(language_id, account_id)'),
-		);
-	}
+  /**
+   * @return array relational rules.
+   */
+  public function relations()
+  {
+    // NOTE: you may need to adjust the relation name and the related
+    // class name for the relations automatically generated below.
+    return array(
+      'tblAccounts' => array(self::MANY_MANY, 'Account', '{{account_name}}(language_id, account_id)'),
+    );
+  }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'language_code' => 'Language Code',
-			'country_code' => 'Country Code',
-			'english_name' => 'English Name',
-			'native_name' => 'Native Name',
+  /**
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'id' => 'ID',
+      'language_code' => 'Language Code',
+      'country_code' => 'Country Code',
+      'english_name' => 'English Name',
+      'native_name' => 'Native Name',
       'is_default' => 'Is Default',
-		);
-	}
+    );
+  }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+  /**
+   * Retrieves a list of models based on the current search/filter conditions.
+   * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+   */
+  public function search()
+  {
+    // Warning: Please modify the following code to remove attributes that
+    // should not be searched.
 
-		$criteria=new CDbCriteria;
+    $criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('language_code',$this->language_code,true);
-		$criteria->compare('country_code',$this->country_code,true);
-		$criteria->compare('english_name',$this->english_name,true);
-		$criteria->compare('native_name',$this->native_name,true);
+    $criteria->compare('id',$this->id);
+    $criteria->compare('language_code',$this->language_code,true);
+    $criteria->compare('country_code',$this->country_code,true);
+    $criteria->compare('english_name',$this->english_name,true);
+    $criteria->compare('native_name',$this->native_name,true);
     $criteria->compare('is_default',$this->is_default);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+    return new CActiveDataProvider($this, array(
+      'criteria'=>$criteria,
+    ));
+  }
   
   public function scopes()
   {
@@ -134,10 +134,10 @@ class Language extends CActiveRecord
     return $this->language_code . '_' . $this->country_code;
   }
   
-	/**
-	 * Retrieves a language based on the locale provided.
-	 * @return Language the language found.
-	 */
+  /**
+   * Retrieves a language based on the locale provided.
+   * @return Language the language found.
+   */
   public function findByLocale($locale)
   {
     $info=explode('_', $locale);

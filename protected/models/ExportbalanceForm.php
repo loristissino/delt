@@ -32,9 +32,9 @@ class ExportbalanceForm extends CFormModel
       'iso-8859-9' => 'Turkish Alphabet (ISO 8859-9)',
       'iso-8859-10' => 'Nordic Alphabet (ISO 8859-10)',
       'iso-8859-15' => 'Western Alphabet / Euro (ISO 8859-15)',
-      'iso-2022-jp' => 'Latin/Japanese part 1	(ISO 2022-JP)',
-      'iso-2022-jp-2' => 'Latin/Japanese part 2	(ISO 2022-JP)',
-      'iso-2022-kr' => 'Latin/Korean part 1	(ISO 2022-KR)',
+      'iso-2022-jp' => 'Latin/Japanese part 1 (ISO 2022-JP)',
+      'iso-2022-jp-2' => 'Latin/Japanese part 2 (ISO 2022-JP)',
+      'iso-2022-kr' => 'Latin/Korean part 1 (ISO 2022-KR)',
       'koi8-r' => 'Cyrillic Alphabet (KOI8-R)',
       'shift-jis' => 'Japanese (Shift-JIS)',
       'x-euc' => 'Japanese (EUC)',
@@ -54,26 +54,26 @@ class ExportbalanceForm extends CFormModel
   }
   
   public function rules()
-	{
-		return array(
+  {
+    return array(
       array('delimiter', 'ArrayValidator', 'values'=>$this->delimiters, 'message'=>'You must select a valid delimiter'),
       array('separator', 'ArrayValidator', 'values'=>$this->separators, 'message'=>'You must select a valid separator'),
       array('type', 'ArrayValidator', 'values'=>$this->types, 'message'=>'You must select a valid type'),
       array('charset', 'ArrayValidator', 'values'=>$this->charsets, 'message'=>'You must select a valid charset'),
-		);
-	}
+    );
+  }
   
   /**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'type' => Yii::t('delt', 'Type'),
-			'delimiter' => Yii::t('delt', 'Text delimiter'),
-			'separator' => Yii::t('delt', 'Field delimiter'),
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'type' => Yii::t('delt', 'Type'),
+      'delimiter' => Yii::t('delt', 'Text delimiter'),
+      'separator' => Yii::t('delt', 'Field delimiter'),
       'charset' => Yii::t('delt', 'Character set'),
-		);
-	}
+    );
+  }
   
 }

@@ -3,8 +3,8 @@
 /* @var $firm Firm */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
   'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$firm->slug),
   'Export accounts',
 );
@@ -15,17 +15,17 @@ $this->breadcrumbs=array(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'export-accounts-form',
-	'enableAjaxValidation'=>false,
+  'id'=>'export-accounts-form',
+  'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note"><?php echo Yii::t('delt', 'You can copy the contents of the following area into a spreadsheet.') ?><br />
+  <p class="note"><?php echo Yii::t('delt', 'You can copy the contents of the following area into a spreadsheet.') ?><br />
   <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance.') ?>
   </p>
 
-	<div class="row">
+  <div class="row">
     <?php echo $form->textArea($model, 'content', array('rows' => 10, 'cols' => 70)); ?>
-	</div>
+  </div>
   
 <?php $this->endWidget(); ?>
 

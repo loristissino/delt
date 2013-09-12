@@ -3,9 +3,9 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	$model->name=>array('public','slug'=>$model->slug),
-	'Disown',
+  'Firms'=>array('index'),
+  $model->name=>array('public','slug'=>$model->slug),
+  'Disown',
 );
 
 $other_owners = $model->getAllOwnersExcept($this->DEUser->id);

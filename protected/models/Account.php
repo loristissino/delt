@@ -26,58 +26,58 @@
  */
 class Account extends CActiveRecord
 {
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Account the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+  /**
+   * Returns the static model of the specified AR class.
+   * @param string $className active record class name.
+   * @return Account the static model class
+   */
+  public static function model($className=__CLASS__)
+  {
+    return parent::model($className);
+  }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{account}}';
-	}
+  /**
+   * @return string the associated database table name
+   */
+  public function tableName()
+  {
+    return '{{account}}';
+  }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('firm_id, code', 'required'),
-			array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
-			array('code', 'length', 'max'=>16),
+  /**
+   * @return array validation rules for model attributes.
+   */
+  public function rules()
+  {
+    // NOTE: you should only define rules for those attributes that
+    // will receive user inputs.
+    return array(
+      array('firm_id, code', 'required'),
+      array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
+      array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
       array('code', 'checkCode'),
       array('position', 'checkposition'),
       array('comment', 'checkComment'),
-			array('position,outstanding_balance', 'length', 'max'=>1),
+      array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
       array('currentname', 'safe'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
-		);
-	}
+      // The following rule is used by search().
+      // Please remove those attributes that should not be searched.
+      array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
+    );
+  }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
-			'postings' => array(self::HAS_MANY, 'Posting', 'account_id'),
+  /**
+   * @return array relational rules.
+   */
+  public function relations()
+  {
+    // NOTE: you may need to adjust the relation name and the related
+    // class name for the relations automatically generated below.
+    return array(
+      'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
+      'postings' => array(self::HAS_MANY, 'Posting', 'account_id'),
       'journalentries' => array(self::MANY_MANY, 'Journalentry', '{{posting}}(account_id, journalentry_id)'),
       'debitgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
@@ -89,34 +89,34 @@ class Account extends CActiveRecord
         'join'=> 'INNER JOIN {{journalentry}} ON t.journalentry_id = {{journalentry}}.id',
         'condition'=>'{{journalentry}}.is_included = 1 and amount < 0',
         ),
-		);
-	}
+    );
+  }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'account_parent_id' => 'Account Parent',
-			'firm_id' => 'Firm',
-			'level' => 'Level',
-			'code' => Yii::t('delt', 'Code'),
-			'is_selectable' => 'Is Selectable',
-			'position' => Yii::t('delt', 'position'),
-			'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
+  /**
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'id' => 'ID',
+      'account_parent_id' => 'Account Parent',
+      'firm_id' => 'Firm',
+      'level' => 'Level',
+      'code' => Yii::t('delt', 'Code'),
+      'is_selectable' => 'Is Selectable',
+      'position' => Yii::t('delt', 'position'),
+      'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
       'number_of_children' => Yii::t('delt', 'Number of children'),
       'comment'=> Yii::t('delt', 'Comment'),
-		);
-	}
+    );
+  }
   
-	/**
-	 * @return array valid account positions (key=>label)
-	 */
-	public function validpositions($withUnpositioned=true)
-	{
+  /**
+   * @return array valid account positions (key=>label)
+   */
+  public function validpositions($withUnpositioned=true)
+  {
     $positions = array(
       'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
@@ -130,7 +130,7 @@ class Account extends CActiveRecord
       $positions['?'] = Yii::t('delt', 'Unknown');
     }
     return $positions;
-	}
+  }
   
   public function getPositionLabel()
   {
@@ -142,24 +142,24 @@ class Account extends CActiveRecord
     }
   }
 
-	/**
-	 * @return array valid account positions
-	 */
-	public function getValidpositionByCode($code)
+  /**
+   * @return array valid account positions
+   */
+  public function getValidpositionByCode($code)
   {
     $positions=$this->validpositions();
     return isset($positions[$code]) ? $positions[$code] : null;
   }
   
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+  /**
+   * Retrieves a list of models based on the current search/filter conditions.
+   * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+   */
+  public function search()
+  {
+    // Warning: Please modify the following code to remove attributes that
+    // should not be searched.
 
     $criteria=new CDbCriteria;
 
@@ -173,17 +173,17 @@ class Account extends CActiveRecord
     $criteria->compare('position',$this->position);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+    return new CActiveDataProvider($this, array(
+      'criteria'=>$criteria,
+    ));
+  }
   
-	/**
+  /**
    * Retrieves the name of the account in the language of the firm (if available)
-	 * @return string the name of the account
-	 */
-	public function getName()
-	{
+   * @return string the name of the account
+   */
+  public function getName()
+  {
     return $this->currentname;
     
     //DELTOD
@@ -206,7 +206,7 @@ class Account extends CActiveRecord
       }
     }
     */
-	}
+  }
   
   public function getParent()
   {
@@ -312,19 +312,19 @@ class Account extends CActiveRecord
   */
   
   /**
-	 * Deletes the row corresponding to this active record.
-	 * @return boolean whether the deletion is successful.
-	 * @throws CException if the record is new
+   * Deletes the row corresponding to this active record.
+   * @return boolean whether the deletion is successful.
+   * @throws CException if the record is new
    * @override parent::delete()
-	 */
+   */
   /* DELTOD
-	public function delete()
-	{
-		if(!$this->getIsNewRecord())
-		{
-			Yii::trace(get_class($this).'.delete()','system.db.ar.CActiveRecord');
-			if($this->beforeDelete())
-			{
+  public function delete()
+  {
+    if(!$this->getIsNewRecord())
+    {
+      Yii::trace(get_class($this).'.delete()','system.db.ar.CActiveRecord');
+      if($this->beforeDelete())
+      {
         $transaction = $this->getDbConnection()->beginTransaction();
         try
         {
@@ -340,13 +340,13 @@ class Account extends CActiveRecord
         $this->afterDelete();
         return true;
 
-			}
-			else
-				return false;
-		}
-		else
-			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-	}
+      }
+      else
+        return false;
+    }
+    else
+      throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
+  }
   */
   public function getNumberOfJournalentries()
   {
@@ -354,18 +354,18 @@ class Account extends CActiveRecord
   }
   
   /**
-	 * This method is invoked before deleting a record.
-	 * @return boolean whether the record should be deleted. Defaults to true.
-	 */
-	protected function beforeDelete()
-	{
-		if($this->getNumberOfJournalentries() > 0)
-		{
+   * This method is invoked before deleting a record.
+   * @return boolean whether the record should be deleted. Defaults to true.
+   */
+  protected function beforeDelete()
+  {
+    if($this->getNumberOfJournalentries() > 0)
+    {
       return false;
-		}
-		else
-			return parent::beforeDelete();
-	}
+    }
+    else
+      return parent::beforeDelete();
+  }
   
   
   protected function beforeSave()
@@ -453,11 +453,11 @@ class Account extends CActiveRecord
   }
   
   /**
-	 * This method is invoked after a model instance is created by new operator.
-	 * The default implementation raises the {@link onAfterConstruct} event.
-	 * It is here overridden to do postprocessing after model creation.
-	 * We call the parent implementation so that the event is raised properly.
-	 */  
+   * This method is invoked after a model instance is created by new operator.
+   * The default implementation raises the {@link onAfterConstruct} event.
+   * It is here overridden to do postprocessing after model creation.
+   * We call the parent implementation so that the event is raised properly.
+   */  
   /*
   protected function afterConstruct()
   {

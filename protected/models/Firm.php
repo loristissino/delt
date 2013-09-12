@@ -38,120 +38,120 @@ class Firm extends CActiveRecord
   
   public $license_confirmation;
   
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Firm the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+  /**
+   * Returns the static model of the specified AR class.
+   * @param string $className active record class name.
+   * @return Firm the static model class
+   */
+  public static function model($className=__CLASS__)
+  {
+    return parent::model($className);
+  }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{firm}}';
-	}
+  /**
+   * @return string the associated database table name
+   */
+  public function tableName()
+  {
+    return '{{firm}}';
+  }
   
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('name, slug, language_id', 'required'),
-			array('status, language_id, firm_parent_id', 'numerical', 'integerOnly'=>true),
-			array('name', 'length', 'max'=>128),
-			array('currency', 'length', 'max'=>5),
-			array('csymbol', 'length', 'max'=>1),
+  /**
+   * @return array validation rules for model attributes.
+   */
+  public function rules()
+  {
+    // NOTE: you should only define rules for those attributes that
+    // will receive user inputs.
+    return array(
+      array('name, slug, language_id', 'required'),
+      array('status, language_id, firm_parent_id', 'numerical', 'integerOnly'=>true),
+      array('name', 'length', 'max'=>128),
+      array('currency', 'length', 'max'=>5),
+      array('csymbol', 'length', 'max'=>1),
       array('description', 'safe'),
       array('slug', 'validateSlug'),
       array('currency', 'validateCurrency'),
       array('license_confirmation', 'checkLicense'),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
-		);
-	}
+      // The following rule is used by search().
+      // Please remove those attributes that should not be searched.
+      array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
+    );
+  }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
-			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
+  /**
+   * @return array relational rules.
+   */
+  public function relations()
+  {
+    // NOTE: you may need to adjust the relation name and the related
+    // class name for the relations automatically generated below.
+    return array(
+      'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
+      'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
       'languages' => array(self::MANY_MANY, 'Language', '{{firm_language}}(firm_id, language_id)', 'order'=>'language_code, country_code ASC'),
-			'journalentries' => array(self::HAS_MANY, 'Journalentry', 'firm_id', 'order'=>'journalentries.date ASC'),
+      'journalentries' => array(self::HAS_MANY, 'Journalentry', 'firm_id', 'order'=>'journalentries.date ASC'),
       'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
-		);
-	}
+    );
+  }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => Yii::t('delt', 'ID'),
-			'name' => Yii::t('delt', 'Name'),
-			'slug' => Yii::t('delt', 'Slug'),
+  /**
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'id' => Yii::t('delt', 'ID'),
+      'name' => Yii::t('delt', 'Name'),
+      'slug' => Yii::t('delt', 'Slug'),
       'description' => Yii::t('delt', 'Description'),
-			'status' => Yii::t('delt', 'Status'),
-			'currency' => Yii::t('delt', 'Currency'),
-			'csymbol' => Yii::t('delt', 'Currency symbol'),
-			'language_id' => Yii::t('delt', 'Language'),
-			'languages' => Yii::t('delt', 'Additional languages'),
-			'firm_parent_id' => Yii::t('delt', 'Parent firm'),
-			'create_date' => Yii::t('delt', 'Create Date'),
-			'license'=>Yii::t('delt', 'License'),
-		);
-	}
+      'status' => Yii::t('delt', 'Status'),
+      'currency' => Yii::t('delt', 'Currency'),
+      'csymbol' => Yii::t('delt', 'Currency symbol'),
+      'language_id' => Yii::t('delt', 'Language'),
+      'languages' => Yii::t('delt', 'Additional languages'),
+      'firm_parent_id' => Yii::t('delt', 'Parent firm'),
+      'create_date' => Yii::t('delt', 'Create Date'),
+      'license'=>Yii::t('delt', 'License'),
+    );
+  }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+  /**
+   * Retrieves a list of models based on the current search/filter conditions.
+   * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+   */
+  public function search()
+  {
+    // Warning: Please modify the following code to remove attributes that
+    // should not be searched.
 
-		$criteria=new CDbCriteria;
+    $criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('name',$this->name,true);
-		$criteria->compare('slug',$this->slug,true);
+    $criteria->compare('id',$this->id);
+    $criteria->compare('name',$this->name,true);
+    $criteria->compare('slug',$this->slug,true);
     $criteria->compare('description',$this->description,true);
-		$criteria->compare('status',$this->status);
-		$criteria->compare('currency',$this->currency,true);
-		$criteria->compare('csymbol',$this->csymbol,true);
-		$criteria->compare('language_id',$this->language_id);
-		$criteria->compare('firm_parent_id',$this->firm_parent_id);
-		$criteria->compare('create_date',$this->create_date,true);
+    $criteria->compare('status',$this->status);
+    $criteria->compare('currency',$this->currency,true);
+    $criteria->compare('csymbol',$this->csymbol,true);
+    $criteria->compare('language_id',$this->language_id);
+    $criteria->compare('firm_parent_id',$this->firm_parent_id);
+    $criteria->compare('create_date',$this->create_date,true);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
+    return new CActiveDataProvider($this, array(
+      'criteria'=>$criteria,
       'pagination'=>array('pageSize'=>100),
-		));
-	}
+    ));
+  }
 
-	/**
-	 * @return string a textual description of the firm
-	 */
-	public function __toString()
-	{
-		return $this->name;
-	}
+  /**
+   * @return string a textual description of the firm
+   */
+  public function __toString()
+  {
+    return $this->name;
+  }
   
   public function getAllOwnersExcept($user_id)
   {
@@ -311,10 +311,10 @@ class Firm extends CActiveRecord
   }
   
   
-	/**
-	 * @param DEUser $user the user to check
-	 * @return boolean true if the firm is manageable by $user, false otherwise
-	 */
+  /**
+   * @param DEUser $user the user to check
+   * @return boolean true if the firm is manageable by $user, false otherwise
+   */
   public function isManageableBy(DEUser $user=null)
   {
     if(!$user)

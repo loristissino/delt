@@ -2,17 +2,17 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Journal' => array('/bookkeeping/journal', 'slug'=>$model->slug),
   'Closing entry',
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Income Summary'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'E')),
-	array('label'=>Yii::t('delt', 'Profit/Loss'), 'url'=>array('bookkeeping/profitlossjournalentry', 'slug'=>$model->slug)),
-	array('label'=>strip_tags(Yii::t('delt', 'Assets and Claims<!-- closing entry -->')), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'P')),
-	array('label'=>strip_tags(Yii::t('delt', 'Memos<!-- closing entry -->')), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'M')),
+  array('label'=>Yii::t('delt', 'Income Summary'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'E')),
+  array('label'=>Yii::t('delt', 'Profit/Loss'), 'url'=>array('bookkeeping/profitlossjournalentry', 'slug'=>$model->slug)),
+  array('label'=>strip_tags(Yii::t('delt', 'Assets and Claims<!-- closing entry -->')), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'P')),
+  array('label'=>strip_tags(Yii::t('delt', 'Memos<!-- closing entry -->')), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>'M')),
 );
 
 ?>

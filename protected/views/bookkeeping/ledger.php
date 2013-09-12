@@ -2,8 +2,8 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Ledger',
 );
 
@@ -26,7 +26,7 @@ else
 $this->show_link_on_description = true;
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),
+  array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('account/update', 'id'=>$account->id)),
   );
 
 if($deletable)
@@ -59,9 +59,9 @@ if($deletable)
 
 <?php if($account->number_of_children==0): ?>
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'firm-grid',
-	'dataProvider'=>$account->getPostingsAsDataProvider(),
-	'columns'=>array(
+  'id'=>'firm-grid',
+  'dataProvider'=>$account->getPostingsAsDataProvider(),
+  'columns'=>array(
     array(
       'class'=>'CDataColumn',
       'name'=>'date',
@@ -94,7 +94,7 @@ if($deletable)
       'footer'=>DELT::currency_value(-$creditgrandtotal, $this->firm->currency),
       'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
       ),
-	),
+  ),
 )); ?>
 <?php else: ?>
 <p><?php echo Yii::t('delt', 'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:') ?></p>

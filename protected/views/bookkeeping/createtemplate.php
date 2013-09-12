@@ -2,8 +2,8 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Journal' =>array('/bookkeeping/journal', 'slug'=>$model->slug),
   'Template creation',
 );

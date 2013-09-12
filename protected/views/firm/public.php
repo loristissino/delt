@@ -4,8 +4,8 @@
 $this->layout='//layouts/html5';
 /*
 $this->breadcrumbs=array(
-	'Firms'=>array('/firm/index'),
-	$model->name => array('/firm/public', 'slug'=>$model->slug),
+  'Firms'=>array('/firm/index'),
+  $model->name => array('/firm/public', 'slug'=>$model->slug),
   'Public',
 );
 */

@@ -23,98 +23,98 @@ class Journalentry extends CActiveRecord
 {
   public $maxrank;
   
-	/**
-	 * Returns the static model of the specified AR class.
-	 * @param string $className active record class name.
-	 * @return Journalentry the static model class
-	 */
-	public static function model($className=__CLASS__)
-	{
-		return parent::model($className);
-	}
+  /**
+   * Returns the static model of the specified AR class.
+   * @param string $className active record class name.
+   * @return Journalentry the static model class
+   */
+  public static function model($className=__CLASS__)
+  {
+    return parent::model($className);
+  }
 
-	/**
-	 * @return string the associated database table name
-	 */
-	public function tableName()
-	{
-		return '{{journalentry}}';
-	}
+  /**
+   * @return string the associated database table name
+   */
+  public function tableName()
+  {
+    return '{{journalentry}}';
+  }
 
-	/**
-	 * @return array validation rules for model attributes.
-	 */
-	public function rules()
-	{
-		// NOTE: you should only define rules for those attributes that
-		// will receive user inputs.
-		return array(
-			array('firm_id, date, description', 'required'),
-			array('firm_id, is_confirmed, is_closing, rank', 'numerical', 'integerOnly'=>true),
+  /**
+   * @return array validation rules for model attributes.
+   */
+  public function rules()
+  {
+    // NOTE: you should only define rules for those attributes that
+    // will receive user inputs.
+    return array(
+      array('firm_id, date, description', 'required'),
+      array('firm_id, is_confirmed, is_closing, rank', 'numerical', 'integerOnly'=>true),
       array('is_adjustment, is_included', 'safe'),
-			array('description', 'length', 'max'=>255),
-			// The following rule is used by search().
-			// Please remove those attributes that should not be searched.
-			array('id, firm_id, date, description, is_confirmed, is_closing, is_included, rank', 'safe', 'on'=>'search'),
-		);
-	}
+      array('description', 'length', 'max'=>255),
+      // The following rule is used by search().
+      // Please remove those attributes that should not be searched.
+      array('id, firm_id, date, description, is_confirmed, is_closing, is_included, rank', 'safe', 'on'=>'search'),
+    );
+  }
 
-	/**
-	 * @return array relational rules.
-	 */
-	public function relations()
-	{
-		// NOTE: you may need to adjust the relation name and the related
-		// class name for the relations automatically generated below.
-		return array(
-			'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id', 'order'=>'postings.rank ASC'),
-			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
-		);
-	}
+  /**
+   * @return array relational rules.
+   */
+  public function relations()
+  {
+    // NOTE: you may need to adjust the relation name and the related
+    // class name for the relations automatically generated below.
+    return array(
+      'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id', 'order'=>'postings.rank ASC'),
+      'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
+    );
+  }
 
-	/**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'id' => 'ID',
-			'firm_id' => 'Firm',
-			'date' => 'Date',
-			'description' => 'Description',
-			'is_confirmed' => 'Is Confirmed',
+  /**
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'id' => 'ID',
+      'firm_id' => 'Firm',
+      'date' => 'Date',
+      'description' => 'Description',
+      'is_confirmed' => 'Is Confirmed',
       'is_closing' => 'Is Closing',
       'is_adjustment' => 'Are Exceptions Allowed',
       'is_included' => 'Is Included',
-			'rank' => 'Rank',
-		);
-	}
+      'rank' => 'Rank',
+    );
+  }
 
-	/**
-	 * Retrieves a list of models based on the current search/filter conditions.
-	 * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
-	 */
-	public function search()
-	{
-		// Warning: Please modify the following code to remove attributes that
-		// should not be searched.
+  /**
+   * Retrieves a list of models based on the current search/filter conditions.
+   * @return CActiveDataProvider the data provider that can return the models based on the search/filter conditions.
+   */
+  public function search()
+  {
+    // Warning: Please modify the following code to remove attributes that
+    // should not be searched.
 
-		$criteria=new CDbCriteria;
+    $criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id);
-		$criteria->compare('firm_id',$this->firm_id);
-		$criteria->compare('date',$this->date,true);
-		$criteria->compare('description',$this->description,true);
-		$criteria->compare('is_confirmed',$this->is_confirmed);
-		$criteria->compare('is_closing',$this->is_closing);
+    $criteria->compare('id',$this->id);
+    $criteria->compare('firm_id',$this->firm_id);
+    $criteria->compare('date',$this->date,true);
+    $criteria->compare('description',$this->description,true);
+    $criteria->compare('is_confirmed',$this->is_confirmed);
+    $criteria->compare('is_closing',$this->is_closing);
     $criteria->compare('is_adjustment',$this->is_adjustment);
     $criteria->compare('is_included',$this->is_included);
-		$criteria->compare('rank',$this->rank);
+    $criteria->compare('rank',$this->rank);
 
-		return new CActiveDataProvider($this, array(
-			'criteria'=>$criteria,
-		));
-	}
+    return new CActiveDataProvider($this, array(
+      'criteria'=>$criteria,
+    ));
+  }
   
   public function belongingTo($journalentry_id)
   {

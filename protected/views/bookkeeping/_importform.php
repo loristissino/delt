@@ -40,24 +40,24 @@ $cs->registerScript(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'myform',
-	'enableAjaxValidation'=>false,
+  'id'=>'myform',
+  'enableAjaxValidation'=>false,
   'htmlOptions' => array('enctype' => 'multipart/form-data'),
 )); ?>
 
-	<p class="note"><?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/exclamation.png') ?> <?php echo Yii::t('delt', 'Importing data to a firm will erase all current content.') ?></p>
+  <p class="note"><?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/exclamation.png') ?> <?php echo Yii::t('delt', 'Importing data to a firm will erase all current content.') ?></p>
 
-	<?php echo $form->errorSummary($model); ?>
+  <?php echo $form->errorSummary($model); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'file'); ?>
-		<?php echo $form->fileField($model,'file',array('size'=>50)); ?>
-		<?php echo $form->error($model,'file'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($model,'file'); ?>
+    <?php echo $form->fileField($model,'file',array('size'=>50)); ?>
+    <?php echo $form->error($model,'file'); ?>
+  </div>
   
-	<div class="row buttons" id="submitDiv">
-		<?php echo CHtml::submitButton(Yii::t('delt', 'Import'), array('id'=>'submitButton')); ?>
-	</div>
+  <div class="row buttons" id="submitDiv">
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Import'), array('id'=>'submitButton')); ?>
+  </div>
 
 <?php $this->endWidget(); ?>
 

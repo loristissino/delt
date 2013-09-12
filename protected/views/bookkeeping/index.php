@@ -2,7 +2,7 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
 );
 
 $available_firms = $this->DEUser->profile->allowed_firms - sizeof($firms);

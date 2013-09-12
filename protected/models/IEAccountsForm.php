@@ -7,30 +7,30 @@
  */
 class IEAccountsForm extends CFormModel
 {
-	public $content;
+  public $content;
 
-	/**
-	 * Declares the validation rules.
-	 */
-	public function rules()
-	{
-		return array(
-			// content is required
-			array('content', 'required'),
-		);
-	}
+  /**
+   * Declares the validation rules.
+   */
+  public function rules()
+  {
+    return array(
+      // content is required
+      array('content', 'required'),
+    );
+  }
 
-	/**
-	 * Declares customized attribute labels.
-	 * If not declared here, an attribute would have a label that is
-	 * the same as its name with the first letter in upper case.
-	 */
-	public function attributeLabels()
-	{
-		return array(
+  /**
+   * Declares customized attribute labels.
+   * If not declared here, an attribute would have a label that is
+   * the same as its name with the first letter in upper case.
+   */
+  public function attributeLabels()
+  {
+    return array(
       'content'=>Yii::t('delt', 'Content'),
-		);
-	}
+    );
+  }
   
   public function loadAccounts(Firm $firm)
   {

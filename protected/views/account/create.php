@@ -4,8 +4,8 @@
 /* @var $firm Firm */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
   'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$firm->slug),
   $account->name,
 );

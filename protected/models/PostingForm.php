@@ -15,23 +15,23 @@ class PostingForm extends CFormModel
   public $analysis = "none";
   
   public function rules()
-	{
-		return array(
-			array('name', 'required'),
-		);
-	}
+  {
+    return array(
+      array('name', 'required'),
+    );
+  }
   
   /**
-	 * @return array customized attribute labels (name=>label)
-	 */
-	public function attributeLabels()
-	{
-		return array(
-			'name' => Yii::t('delt', 'Account'),
-			'debit' => Yii::t('delt', 'Debit'),
-			'credit' => Yii::t('delt', 'Credit'),
-		);
-	}
+   * @return array customized attribute labels (name=>label)
+   */
+  public function attributeLabels()
+  {
+    return array(
+      'name' => Yii::t('delt', 'Account'),
+      'debit' => Yii::t('delt', 'Debit'),
+      'credit' => Yii::t('delt', 'Credit'),
+    );
+  }
   
   public function __toString()
   {

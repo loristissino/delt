@@ -3,8 +3,8 @@
 /* @var $firm Firm */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
   'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$firm->slug),
   'Synchronize',
 );
@@ -144,8 +144,8 @@ if(isset($ancestor))
   <?php endif ?>
   
   <div class="row buttons">
-		<?php echo CHtml::submitButton(Yii::t('delt', 'Synchronize')); ?>
-	</div>
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Synchronize')); ?>
+  </div>
 
   <?php $this->endWidget(); ?>
   </div>

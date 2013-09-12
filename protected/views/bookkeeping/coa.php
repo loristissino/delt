@@ -2,17 +2,17 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Chart of accounts',
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Import accounts'), 'url'=>array('account/import', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Export accounts'), 'url'=>array('account/export', 'slug'=>$model->slug)),
-	//array('label'=>Yii::t('delt', 'Text list'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug, 'template'=>'coatextlist')),
-	//array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Create new account'), 'url'=>array('account/create', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Import accounts'), 'url'=>array('account/import', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Export accounts'), 'url'=>array('account/export', 'slug'=>$model->slug)),
+  //array('label'=>Yii::t('delt', 'Text list'), 'url'=>array('bookkeeping/coa', 'slug'=>$model->slug, 'template'=>'coatextlist')),
+  //array('label'=>Yii::t('delt', 'Fix chart'), 'url'=>array('bookkeeping/fixaccountschart', 'slug'=>$model->slug)),
 );
 if($model->firm_parent_id)
 {
@@ -23,10 +23,10 @@ if($model->firm_parent_id)
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'account-grid',
-	'dataProvider'=>$dataProvider,
-//	'filter'=>$model,
-	'columns'=>array(
+  'id'=>'account-grid',
+  'dataProvider'=>$dataProvider,
+//  'filter'=>$model,
+  'columns'=>array(
 /*    array(
       'class'=>'CCheckBoxColumn',
       'selectableRows'=>2,
@@ -54,7 +54,7 @@ if($model->firm_parent_id)
       'value'=>'$data->l10nnames',
       ),
     */
-		//'is_economic',
+    //'is_economic',
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
@@ -73,9 +73,9 @@ if($model->firm_parent_id)
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),
-		array(
+    array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
-			'class'=>'CButtonColumn',
+      'class'=>'CButtonColumn',
       'template'=>'{view}{update}{new}',
       'viewButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/ledger",array("id"=>$data->primaryKey))',
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/update",array("id"=>$data->primaryKey))',
@@ -102,8 +102,8 @@ if($model->firm_parent_id)
         ),*/
       )
       
-		),
-	),
+    ),
+  ),
 )); ?>
 
 

@@ -280,7 +280,7 @@ return array(
   'If you have questions about DELT Project or this website, please fill out the following form to contact us. Thank you.'=>'Se hai domande sul progetto DELT o su questo sito, compila il modulo seguente per contattarci. Grazie.',
   'Thank you for contacting us. We will respond to you as soon as possible.'=>'Grazie per averci contattato. Ti risponderemo il più presto possibile.',
   
-  'Please enter the letters as they are shown in the image above.'=>'Inserisci le lettere dell\'immagine qui sopra.	',
+  'Please enter the letters as they are shown in the image above.'=>'Inserisci le lettere dell\'immagine qui sopra. ',
   'Letters are not case-sensitive.'=>'Non viene tenuta in considerata la differenza tra maiuscole e minuscole.',
   'Submit'=>'Invia',
   'Thank you for contacting us. We will respond to you as soon as possible.'=>'Grazie per averci contattato. Ti risponderemo il più presto possibile.',

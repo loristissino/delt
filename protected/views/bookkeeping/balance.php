@@ -2,13 +2,13 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Balance',
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'Export (CSV)'), 'url'=>array('bookkeeping/balance', 'slug'=>$model->slug, 'format'=>'unknown')),
+  array('label'=>Yii::t('delt', 'Export (CSV)'), 'url'=>array('bookkeeping/balance', 'slug'=>$model->slug, 'format'=>'unknown')),
 );
 
 $totaldebits=$this->firm->getTotalAmounts('D');
@@ -21,11 +21,11 @@ $totalcredits=$this->firm->getTotalAmounts('C');
 echo CHtml::beginForm('','post',array('id'=>'balance-form'));
 
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'firm-grid',
-	'dataProvider'=>$dataProvider,
+  'id'=>'firm-grid',
+  'dataProvider'=>$dataProvider,
   'selectableRows'=>2, // multiple rows can be selected
 
-	'columns'=>array(
+  'columns'=>array(
     array(
       'name'=>'position',
       'header'=>Yii::t('delt', 'Position'),
@@ -90,7 +90,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'id'=>'id',
       'value'=>'$data->id',
       ),
-	),
+  ),
 )); 
 echo CHtml::endForm();
 ?>

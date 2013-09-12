@@ -345,22 +345,22 @@ $cs->registerScriptFile(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'journalentryform',
-	'enableAjaxValidation'=>false,
+  'id'=>'journalentryform',
+  'enableAjaxValidation'=>false,
   'focus'=> (isset($journalentryform->journalentry) ? null : array($journalentryform, 'description')),
   'action'=>$this->form_action_required, //array('bookkeeping/' . ($journalentryform->journalentry? 'updatejournalentry': 'newjournalentry'), 'slug'=>$journalentryform->firm->slug),
 )); ?>
 
-	<p class="note">
+  <p class="note">
     <?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
     <?php echo Yii::t('delt', 'The lines in which the account field is empty are ignored.') ?>
   </p>
 
-	<?php echo $form->errorSummary($journalentryform, Yii::t('delt', 'Please fix the following errors:')); ?>
+  <?php echo $form->errorSummary($journalentryform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($journalentryform,'date'); ?>
-		<?php // echo $form->textField($journalentryform,'date'); ?>
+  <div class="row">
+    <?php echo $form->labelEx($journalentryform,'date'); ?>
+    <?php // echo $form->textField($journalentryform,'date'); ?>
     
     <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
       'name'=>'JournalentryForm[date]',
@@ -379,14 +379,14 @@ $cs->registerScriptFile(
       ),
     ));
    ?>
-		<?php echo $form->error($journalentryform,'date'); ?>
-	</div>
+    <?php echo $form->error($journalentryform,'date'); ?>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($journalentryform,'description'); ?>
-		<?php echo $form->textField($journalentryform,'description', array('size'=>80)); ?>
-		<?php echo $form->error($journalentryform,'description'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($journalentryform,'description'); ?>
+    <?php echo $form->textField($journalentryform,'description', array('size'=>80)); ?>
+    <?php echo $form->error($journalentryform,'description'); ?>
+  </div>
 
   <div id="commands"></div>
 

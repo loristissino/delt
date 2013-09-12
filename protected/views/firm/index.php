@@ -3,18 +3,18 @@
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Firms',
+  'Firms',
 );
 
 $this->menu=array(
-	array('label'=>'Create Firm', 'url'=>array('create')),
-	array('label'=>'Manage Firm', 'url'=>array('admin')),
+  array('label'=>'Create Firm', 'url'=>array('create')),
+  array('label'=>'Manage Firm', 'url'=>array('admin')),
 );
 ?>
 
 <h1>Firms</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
-	'dataProvider'=>$dataProvider,
-	'itemView'=>'_view',
+  'dataProvider'=>$dataProvider,
+  'itemView'=>'_view',
 )); ?>

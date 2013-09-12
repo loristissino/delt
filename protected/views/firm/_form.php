@@ -24,8 +24,8 @@ $cs->registerScript(
     charSet = charSet || "abcdefghijklmnopqrstuvwxyz0123456789";
     var randomString = "";
     for (var i = 0; i < len; i++) {
-    	var randomPoz = Math.floor(Math.random() * charSet.length);
-    	randomString += charSet.substring(randomPoz,randomPoz+1);
+      var randomPoz = Math.floor(Math.random() * charSet.length);
+      randomString += charSet.substring(randomPoz,randomPoz+1);
     }
     return randomString;
   }
@@ -152,40 +152,40 @@ $languages_available = Language::model()->findAllSorted();
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'myform',
-	'enableAjaxValidation'=>false,
+  'id'=>'myform',
+  'enableAjaxValidation'=>false,
 )); ?>
 
-	<p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
+  <p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?></p>
 
-	<?php echo $form->errorSummary($model, Yii::t('delt', 'Please fix the following errors:')); ?>
+  <?php echo $form->errorSummary($model, Yii::t('delt', 'Please fix the following errors:')); ?>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'name'); ?>
-		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'name'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($model,'name'); ?>
+    <?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>128)); ?>
+    <?php echo $form->error($model,'name'); ?>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'description'); ?>
-		<?php echo $form->textArea($model,'description',array('cols'=>60, 'rows'=>5)); ?>
-		<?php echo $form->error($model,'description'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($model,'description'); ?>
+    <?php echo $form->textArea($model,'description',array('cols'=>60, 'rows'=>5)); ?>
+    <?php echo $form->error($model,'description'); ?>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'slug'); ?>
-		<?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords." target="_blank">slug</a> is?') ?>)</span>
-		<?php echo $form->error($model,'slug'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($model,'slug'); ?>
+    <?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords." target="_blank">slug</a> is?') ?>)</span>
+    <?php echo $form->error($model,'slug'); ?>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'currency'); ?>
-		<?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP')?>)</span>
-		<?php echo $form->error($model,'currency'); ?>
-	</div>
+  <div class="row">
+    <?php echo $form->labelEx($model,'currency'); ?>
+    <?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP')?>)</span>
+    <?php echo $form->error($model,'currency'); ?>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'language_id'); ?>
+  <div class="row">
+    <?php echo $form->labelEx($model,'language_id'); ?>
      <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAllSorted(),
         'id', //this is the attribute name for list option values 
         'complete_name' // this is the attribute name for list option texts 
@@ -194,16 +194,16 @@ $languages_available = Language::model()->findAllSorted();
       ); ?>
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'The language is used for the names of the accounts, not for the user interface')?>)</span>
-	</div>
+  </div>
 
-	<div class="row">
-		<?php echo $form->labelEx($model,'languages'); ?>
+  <div class="row">
+    <?php echo $form->labelEx($model,'languages'); ?>
     <?php echo $form->listBox($model,'languages', CHtml::listData($languages_available, 'id', 'complete_name'), array('multiple'=>'multiple', 'size'=>sizeof($languages_available), 'options'=>$languages_options)) ?>
     <br />
     <span class="hint">(<?php echo Yii::t('delt', 'You can select other languages to have a multilingual chart of accounts.') ?>
     <?php echo Yii::t('delt', 'Do you want other languages / locales to be supported?')?>
     <?php echo Yii::t('delt', 'Just <a href="{url}" target="_blank">drop us a message</a>!', array('{url}'=>$this->createUrl('site/contact'))) ?>)</span>
-	</div>
+  </div>
   
   <?php if(!$model->id): ?>
     <div class="row checkbox">
@@ -215,9 +215,9 @@ $languages_available = Language::model()->findAllSorted();
     </div>
   <?php endif ?>
   
-	<div class="row buttons" id="submitDiv">
-		<?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
-	</div>
+  <div class="row buttons" id="submitDiv">
+    <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
+  </div>
 
 <?php $this->endWidget(); ?>
 

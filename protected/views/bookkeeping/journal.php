@@ -2,14 +2,14 @@
 /* @var $this BookkeepingController */
 
 $this->breadcrumbs=array(
-	'Bookkeeping/Accounting'=>array('/bookkeeping'),
-	$model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
   'Journal',
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug)),
   );
 
 if(sizeof($model->journalentries))
@@ -32,11 +32,11 @@ $dp = $this->firm->getJournalentriesAsDataProvider();
 <?php
 echo CHtml::beginForm('','post',array('id'=>'journal-form'));
 $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'firm-grid',
-	'dataProvider'=>$this->firm->getJournalentriesAsDataProvider(),
+  'id'=>'firm-grid',
+  'dataProvider'=>$this->firm->getJournalentriesAsDataProvider(),
   'selectableRows'=>2, // multiple rows can be selected
   'rowCssClassExpression'=>'($row%2 ? "even" : "odd") . ($data->journalentry->is_included==0 ? " excluded" : "")',
-	'columns'=>array(
+  'columns'=>array(
     array(
       'class'=>'CDataColumn',
       'name'=>'journalentry.date',
@@ -73,9 +73,9 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'currency'),
       ),
-		array(
+    array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
-			'class'=>'CButtonColumn',
+      'class'=>'CButtonColumn',
       'template'=>'{update}',
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/updatejournalentry",array("id"=>$data->journalentry_id))',
       'headerHtmlOptions'=>array('style'=>'width: 20px;', 'class'=>'buttons'),
@@ -87,7 +87,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
           'visible'=>array($this, 'isLineShown'),
         )
       )
-		),
+    ),
     array(
       'class'=>'ECCheckBoxColumn',
       'id'=>'id',
@@ -95,7 +95,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'controller'=>$this,
       ),
 
-	),
+  ),
 )); 
 echo CHtml::endForm(); ?>
 

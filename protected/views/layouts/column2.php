@@ -23,7 +23,7 @@ else
 
 
 <div class="span-19">
-	<div id="content">
+  <div id="content">
   
   <?php if($this->firm): ?>
     <div id="firm_info">
@@ -44,31 +44,31 @@ else
     </div>
   <?php endif ?>
 
-		<?php echo $content; ?>
-	</div><!-- content -->
+    <?php echo $content; ?>
+  </div><!-- content -->
 </div>
 <div class="span-5 last">
-	<div id="sidebar">
-	<?php
-		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>Yii::t('delt', 'Bookkeeping/Accounting'),
-		));
-		$this->widget('zii.widgets.CMenu', array(
-			'items'=>$this->firmmenu,
-			'htmlOptions'=>array('class'=>'operations'),
-		));
-		$this->endWidget();
-	?>
-	<?php
-		$this->beginWidget('zii.widgets.CPortlet', array(
-			'title'=>Yii::t('delt', $this->menutitle),
-		));
-		$this->widget('zii.widgets.CMenu', array(
-			'items'=>$this->menu,
-			'htmlOptions'=>array('class'=>'operations'),
-		));
-		$this->endWidget();
-	?>
+  <div id="sidebar">
+  <?php
+    $this->beginWidget('zii.widgets.CPortlet', array(
+      'title'=>Yii::t('delt', 'Bookkeeping/Accounting'),
+    ));
+    $this->widget('zii.widgets.CMenu', array(
+      'items'=>$this->firmmenu,
+      'htmlOptions'=>array('class'=>'operations'),
+    ));
+    $this->endWidget();
+  ?>
+  <?php
+    $this->beginWidget('zii.widgets.CPortlet', array(
+      'title'=>Yii::t('delt', $this->menutitle),
+    ));
+    $this->widget('zii.widgets.CMenu', array(
+      'items'=>$this->menu,
+      'htmlOptions'=>array('class'=>'operations'),
+    ));
+    $this->endWidget();
+  ?>
 
   <?php
   /*
@@ -79,6 +79,6 @@ else
       'popup' => true,
   )) */?><span class="socialhint">&nbsp;<?php //echo Yii::t('delt', 'Spread the word!') ?></span> 
   
-	</div><!-- sidebar -->
+  </div><!-- sidebar -->
 </div>
 <?php $this->endContent(); ?>

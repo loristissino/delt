@@ -3,25 +3,25 @@
 /* @var $model Account */
 
 $this->breadcrumbs=array(
-	'Accounts'=>array('index'),
-	'Manage',
+  'Accounts'=>array('index'),
+  'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'List Account', 'url'=>array('index')),
-	array('label'=>'Create Account', 'url'=>array('create')),
+  array('label'=>'List Account', 'url'=>array('index')),
+  array('label'=>'Create Account', 'url'=>array('create')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
-	$('.search-form').toggle();
-	return false;
+  $('.search-form').toggle();
+  return false;
 });
 $('.search-form form').submit(function(){
-	$('#account-grid').yiiGridView('update', {
-		data: $(this).serialize()
-	});
-	return false;
+  $('#account-grid').yiiGridView('update', {
+    data: $(this).serialize()
+  });
+  return false;
 });
 ");
 ?>
@@ -36,27 +36,27 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 <?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
 <div class="search-form" style="display:none">
 <?php $this->renderPartial('_search',array(
-	'model'=>$model,
+  'model'=>$model,
 )); ?>
 </div><!-- search-form -->
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'account-grid',
-	'dataProvider'=>$model->search(),
-	'filter'=>$model,
-	'columns'=>array(
-		'id',
-		'account_parent_id',
-		'firm_id',
-		'level',
-		'code',
-		'is_selectable',
-		/*
-		'is_economic',
-		'outstanding_balance',
-		*/
-		array(
-			'class'=>'CButtonColumn',
-		),
-	),
+  'id'=>'account-grid',
+  'dataProvider'=>$model->search(),
+  'filter'=>$model,
+  'columns'=>array(
+    'id',
+    'account_parent_id',
+    'firm_id',
+    'level',
+    'code',
+    'is_selectable',
+    /*
+    'is_economic',
+    'outstanding_balance',
+    */
+    array(
+      'class'=>'CButtonColumn',
+    ),
+  ),
 )); ?>

@@ -5,7 +5,7 @@
 
 <div class="view">
 
-	<?php echo CHtml::link(CHtml::encode($data->name), array('firms/'.$data->slug)) ?> by <?php echo $data->getOwners(true) ?>
-	<br />
+  <?php echo CHtml::link(CHtml::encode($data->name), array('firms/'.$data->slug)) ?> by <?php echo $data->getOwners(true) ?>
+  <br />
 
 </div>

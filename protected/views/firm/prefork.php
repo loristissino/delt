@@ -3,8 +3,8 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-	'Firms'=>array('index'),
-	'Fork'=>array('firm/fork'),
+  'Firms'=>array('index'),
+  'Fork'=>array('firm/fork'),
   'Error'
 );
 

@@ -23,8 +23,8 @@ class BookkeepingController extends Controller
   
   public $form_action_required = null;  // used in actionPrepareentry
   
-	public function actionIndex()
-	{
+  public function actionIndex()
+  {
     if($this->DEUser)
     {
       $this->render('index', array('firms'=>$this->DEUser->firms, 'wfirms'=>$this->DEUser->wfirms));
@@ -33,28 +33,28 @@ class BookkeepingController extends Controller
     {
       $this->redirect(array('site/index'));
     }
-	}
+  }
 
-	/**
-	 * Displays the actions available for a particular model.
-	 * @param string $slug the slug of the model to be displayed
-	 */
-	public function actionManage($slug)
-	{
+  /**
+   * Displays the actions available for a particular model.
+   * @param string $slug the slug of the model to be displayed
+   */
+  public function actionManage($slug)
+  {
     $this->firm = $this->loadModelBySlug($slug);
-		$this->render('manage', array(
+    $this->render('manage', array(
       'model'=>$this->firm
     ));
   }
 
-	public function actionCoa($slug, $template='coa')
-	{
+  public function actionCoa($slug, $template='coa')
+  {
     $this->firm=$this->loadModelBySlug($slug);
-		$this->render($template, array(
+    $this->render($template, array(
       'model'=>$this->firm,
-			'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
+      'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
     ));
-	}
+  }
   
   public function actionCoatree($slug, $root='source')
   {
@@ -71,8 +71,8 @@ class BookkeepingController extends Controller
     echo CTreeView::saveDataAsJson($items);
   }
   
-	public function actionBalance($slug, $format='')
-	{
+  public function actionBalance($slug, $format='')
+  {
     $this->firm=$this->loadModelBySlug($slug);
     
     switch($format)
@@ -126,29 +126,29 @@ class BookkeepingController extends Controller
         ));
     }
     
-	}
+  }
 
-	public function actionStatements($slug, $level=1)
-	{
+  public function actionStatements($slug, $level=1)
+  {
     $this->firm=$this->loadModelBySlug($slug);
     if($level>$this->firm->getCOAMaxLevel())
       throw new CHttpException(404,'The requested page does not exist.');
-		$this->render('statements', array(
+    $this->render('statements', array(
       'model'=>$this->firm,
       'bs'=>$this->firm->getBalanceSheet($level),
       'is'=>$this->firm->getIncomeStatement($level),
       'level'=>$level,
     ));
-	}
+  }
 
-	public function actionJournal($slug, $journalentry=null)
-	{
+  public function actionJournal($slug, $journalentry=null)
+  {
     $this->firm=$this->loadModelBySlug($slug);
     $this->journalentry_id = $journalentry;
-		$this->render('journal', array(
+    $this->render('journal', array(
       'model'=>$this->firm,
     ));
-	}
+  }
   
   public function actionExport($slug)
   {
@@ -166,7 +166,7 @@ class BookkeepingController extends Controller
     $this->firm=$this->loadModelBySlug($slug);
     
     if(isset($_POST['Firm']))
-		{
+    {
       //throw new CHttpException(501, 'Not yet implemented.');
       $file=CUploadedFile::getInstance($this->firm, 'file');
       if (is_object($file) && get_class($file)==='CUploadedFile')
@@ -181,16 +181,16 @@ class BookkeepingController extends Controller
           $this->firm->addError('file', Yii::t('delt', 'The file seems to be invalid.'));
         }
 
-    	}
-		}
+      }
+    }
     
     $this->render('import', array(
       'model'=>$this->firm,
     ));
   }
 
-	public function actionNewjournalentry($slug)
-	{
+  public function actionNewjournalentry($slug)
+  {
     $this->firm=$this->loadModelBySlug($slug);
     
     $journalentryform = new JournalentryForm();
@@ -218,9 +218,9 @@ class BookkeepingController extends Controller
       $journalentryform->postings = array(new PostingForm(), new Postingform());
     }
         
-		if(isset($_POST['JournalentryForm']))
-		{
-			$journalentryform->attributes=$_POST['JournalentryForm'];
+    if(isset($_POST['JournalentryForm']))
+    {
+      $journalentryform->attributes=$_POST['JournalentryForm'];
       if(isset($_POST['PostingForm']))
       {
         $journalentryform->acquireItems($_POST['PostingForm']);
@@ -247,16 +247,16 @@ class BookkeepingController extends Controller
           }
         }
       }
-		}
+    }
     
     $journalentryform->raw_input='';
     $journalentryform->is_closing = $this->is_closing;
-		$this->render('newjournalentry', array(
+    $this->render('newjournalentry', array(
       'model'=>$this->loadModelBySlug($slug),
       'journalentryform'=>$journalentryform,
       'items'=>$journalentryform->postings,
     ));
-	}
+  }
   
   public function actionClosingjournalentry($slug, $position='')
   {
@@ -323,8 +323,8 @@ class BookkeepingController extends Controller
     $this->render('closingjournalentry', array('position'=>'', 'model'=>$this->firm));
   }
 
-	public function actionUpdatejournalentry($id)
-	{
+  public function actionUpdatejournalentry($id)
+  {
     $this->journalentry = $this->loadJournalentry($id);
     $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
@@ -340,9 +340,9 @@ class BookkeepingController extends Controller
     
     $journalentryform->loadFromJournalentry($this->journalentry);
         
-		if(isset($_POST['JournalentryForm']))
-		{
-			$journalentryform->attributes=$_POST['JournalentryForm'];
+    if(isset($_POST['JournalentryForm']))
+    {
+      $journalentryform->attributes=$_POST['JournalentryForm'];
       $journalentryform->acquireItems($_POST['PostingForm']);
       if(isset($_POST['addline']))
       {
@@ -363,26 +363,26 @@ class BookkeepingController extends Controller
           }
         }
       }
-		}
+    }
     
     $journalentryform->raw_input='';
-		$this->render('updatejournalentry', array(
+    $this->render('updatejournalentry', array(
       'model'=>$this->firm,
       'journalentryform'=>$journalentryform,
       'items'=>$journalentryform->postings,
     ));
 
-	}
+  }
 
 
-	public function actionDeletejournalentry($id)
-	{
+  public function actionDeletejournalentry($id)
+  {
     $this->journalentry = $this->loadJournalentry($id);
     $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
     
-		if(Yii::app()->getRequest()->isPostRequest)
-		{
+    if(Yii::app()->getRequest()->isPostRequest)
+    {
       if($this->journalentry->safeDelete())
       {
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal entry has been successfully deleted.'));
@@ -393,18 +393,18 @@ class BookkeepingController extends Controller
       }
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
       
-		}
+    }
     throw new CHttpException(404, 'The requested page does not exist.');
 
-	}
+  }
 
 
-	public function actionClearjournal($slug)
-	{
+  public function actionClearjournal($slug)
+  {
     $this->firm=$this->loadFirmBySlug($slug);
     
-		if(Yii::app()->getRequest()->isPostRequest)
-		{
+    if(Yii::app()->getRequest()->isPostRequest)
+    {
       if($this->firm->clearJournal())
       {
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal has been successfully cleared.'));
@@ -416,18 +416,18 @@ class BookkeepingController extends Controller
       
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
       
-		}
+    }
     throw new CHttpException(404, 'The requested page does not exist.');
 
-	}
+  }
 
   
-	public function actionUpdatejournal($slug, $op)
-	{
+  public function actionUpdatejournal($slug, $op)
+  {
     $this->firm=$this->loadFirmBySlug($slug);
     
-		if(Yii::app()->getRequest()->isPostRequest)
-		{
+    if(Yii::app()->getRequest()->isPostRequest)
+    {
       if($op=='include' or $op=='exclude')
       {
         $affected_rows = Yii::app()->db->createCommand()
@@ -468,11 +468,11 @@ class BookkeepingController extends Controller
       }  
 
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
-		}
+    }
     
     throw new CHttpException(404, 'The requested page does not exist.');
 
-	}
+  }
 
 
 
@@ -542,17 +542,17 @@ class BookkeepingController extends Controller
   }
 
 
-	public function actionLedger($id /* account_id */, $journalentry=null)
-	{
+  public function actionLedger($id /* account_id */, $journalentry=null)
+  {
     $account=$this->loadAccount($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     
     $this->journalentry_id = $journalentry;
-		$this->render('ledger', array(
+    $this->render('ledger', array(
       'model'=>$this->firm,
       'account'=>$account,
     ));
-	}
+  }
   
   public function actionFixAccountsChart($slug)
   {
@@ -572,22 +572,22 @@ class BookkeepingController extends Controller
       $this->redirect(array('bookkeeping/coa','slug'=>$firm->slug));
     }
     
-		$this->render('fixaccountschart', array(
+    $this->render('fixaccountschart', array(
       'model'=>$this->loadModelBySlug($slug)
     ));
   }
   
-	public function loadModelBySlug($slug)
-	{
+  public function loadModelBySlug($slug)
+  {
     return $this->loadFirmBySlug($slug);
-	}
+  }
   
   public function loadTemplate($id)
   {
-		$template=Template::model()->findByPk($id);
-		if($template===null)
-			throw new CHttpException(404,'The requested page does not exist.');
-		return $template;
+    $template=Template::model()->findByPk($id);
+    if($template===null)
+      throw new CHttpException(404,'The requested page does not exist.');
+    return $template;
   }
   
   public function renderName(Account $account, $row)

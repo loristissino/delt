@@ -2,66 +2,66 @@
 
 class AccountController extends Controller
 {
-	/**
-	 * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-	 * using two-column layout. See 'protected/views/layouts/column2.php'.
-	 */
-	public $layout='//layouts/column2';
+  /**
+   * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+   * using two-column layout. See 'protected/views/layouts/column2.php'.
+   */
+  public $layout='//layouts/column2';
 
-	/**
-	 * @return array action filters
-	 */
-	public function filters()
-	{
-		return array(
-			'accessControl', // perform access control for CRUD operations
-			'postOnly + delete', // we only allow deletion via POST request
-		);
-	}
+  /**
+   * @return array action filters
+   */
+  public function filters()
+  {
+    return array(
+      'accessControl', // perform access control for CRUD operations
+      'postOnly + delete', // we only allow deletion via POST request
+    );
+  }
 
-	/**
-	 * Specifies the access control rules.
-	 * This method is used by the 'accessControl' filter.
-	 * @return array access control rules
-	 */
-	public function accessRules()
-	{
-		return array(
-			array('allow', // allow authenticated user to perform 'create' and 'update' actions
-				'actions'=>array('create','update','delete','synchronize','import','export'),
-				'users'=>array('@'),
-			),
-			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin'),
-				'users'=>array('admin'),
-			),
-			array('deny',  // deny all users
-				'users'=>array('*'),
-			),
-		);
-	}
+  /**
+   * Specifies the access control rules.
+   * This method is used by the 'accessControl' filter.
+   * @return array access control rules
+   */
+  public function accessRules()
+  {
+    return array(
+      array('allow', // allow authenticated user to perform 'create' and 'update' actions
+        'actions'=>array('create','update','delete','synchronize','import','export'),
+        'users'=>array('@'),
+      ),
+      array('allow', // allow admin user to perform 'admin' and 'delete' actions
+        'actions'=>array('admin'),
+        'users'=>array('admin'),
+      ),
+      array('deny',  // deny all users
+        'users'=>array('*'),
+      ),
+    );
+  }
 
-	/**
-	 * Displays a particular model.
-	 * @param integer $id the ID of the model to be displayed
-	 */
+  /**
+   * Displays a particular model.
+   * @param integer $id the ID of the model to be displayed
+   */
   /*
-	public function actionView($id)
-	{
-		$this->render('view',array(
-			'model'=>$this->loadModel($id),
-		));
-	}
+  public function actionView($id)
+  {
+    $this->render('view',array(
+      'model'=>$this->loadModel($id),
+    ));
+  }
   */
 
-	/**
-	 * Creates a new model.
-	 * If creation is successful, the browser will be redirected to the 'view' page.
-	 */
-	public function actionCreate($slug, $id=null)
-	{
+  /**
+   * Creates a new model.
+   * If creation is successful, the browser will be redirected to the 'view' page.
+   */
+  public function actionCreate($slug, $id=null)
+  {
     $this->firm = $this->loadFirmBySlug($slug);
-		$model=new Account;
+    $model=new Account;
     $model->firm_id = $this->firm->id;
     $model->firm = $this->firm;
     $model->setDefaultForNames();
@@ -74,12 +74,12 @@ class AccountController extends Controller
       $model->outstanding_balance = $parent->outstanding_balance;
     }
 
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($model);
+    // Uncomment the following line if AJAX validation is needed
+    // $this->performAjaxValidation($model);
 
-		if(isset($_POST['Account']))
-		{
-			$model->attributes=$_POST['Account'];
+    if(isset($_POST['Account']))
+    {
+      $model->attributes=$_POST['Account'];
       if($model->validate())
       {
         if($model->save())
@@ -88,22 +88,22 @@ class AccountController extends Controller
           $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
-		}
+    }
 
-		$this->render('create',array(
-			'account'=>$model,
+    $this->render('create',array(
+      'account'=>$model,
       'firm'=>$this->firm,
-		));
-	}
+    ));
+  }
 
-	/**
-	 * Updates a particular model.
-	 * If update is successful, the browser will be redirected to the 'view' page.
-	 * @param integer $id the ID of the model to be updated
-	 */
-	public function actionUpdate($id)
-	{
-		$account=$this->loadModel($id);
+  /**
+   * Updates a particular model.
+   * If update is successful, the browser will be redirected to the 'view' page.
+   * @param integer $id the ID of the model to be updated
+   */
+  public function actionUpdate($id)
+  {
+    $account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     if(!$account->textnames) //DELTOD = $account->l10n_names)
     {
@@ -113,12 +113,12 @@ class AccountController extends Controller
     {
       $account->fixDefaultForNames();
     }
-		// Uncomment the following line if AJAX validation is needed
-		// $this->performAjaxValidation($account);
+    // Uncomment the following line if AJAX validation is needed
+    // $this->performAjaxValidation($account);
 
-		if(isset($_POST['Account']))
-		{
-			$account->attributes=$_POST['Account'];
+    if(isset($_POST['Account']))
+    {
+      $account->attributes=$_POST['Account'];
       if($account->validate())
       {
         if($account->save())
@@ -127,21 +127,21 @@ class AccountController extends Controller
           $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
-		}
+    }
 
-		$this->render('update',array(
-			'account'=>$account,
+    $this->render('update',array(
+      'account'=>$account,
       'firm'=>$this->firm,
-		));
-	}
+    ));
+  }
 
-	/**
-	 * Deletes a particular model.
-	 * If deletion is successful, the browser will be redirected to the 'admin' page.
-	 * @param integer $id the ID of the model to be deleted
-	 */
-	public function actionDelete($id)
-	{
+  /**
+   * Deletes a particular model.
+   * If deletion is successful, the browser will be redirected to the 'admin' page.
+   * @param integer $id the ID of the model to be deleted
+   */
+  public function actionDelete($id)
+  {
     $account=$this->loadAccount($id);
     $this->checkManageability($firm=$this->loadFirm($account->firm_id));
     
@@ -160,17 +160,17 @@ class AccountController extends Controller
       return false;
     }
 
-		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('bookkeeping/coa', 'slug'=>$firm->slug));
+    // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+    if(!isset($_GET['ajax']))
+      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('bookkeeping/coa', 'slug'=>$firm->slug));
     
-	}
+  }
 
-	/**
-	 * Synchronizes the whole chart of accounts from parent firm or other ancestor.
-	 */
-	public function actionSynchronize($slug, $ancestor='')
-	{
+  /**
+   * Synchronizes the whole chart of accounts from parent firm or other ancestor.
+   */
+  public function actionSynchronize($slug, $ancestor='')
+  {
     $this->firm = $this->loadFirmBySlug($slug);
     
     if($ancestor and $ancestor=$this->loadFirmBySlug($ancestor, false) and $this->firm->isDescendantOf($ancestor))
@@ -203,10 +203,10 @@ class AccountController extends Controller
         'ancestors'=>$this->firm->ancestors,
       ));
     }
-	}
+  }
 
-	public function actionImport($slug)
-	{
+  public function actionImport($slug)
+  {
     $this->firm = $this->loadFirmBySlug($slug);
     
     $accounts_form = new IEAccountsForm;
@@ -227,10 +227,10 @@ class AccountController extends Controller
       'firm'=>$this->firm,
       'model'=>$accounts_form,
     ));
-	}
+  }
 
-	public function actionExport($slug)
-	{
+  public function actionExport($slug)
+  {
     $this->firm = $this->loadFirmBySlug($slug);
 
     $accounts_form = new IEAccountsForm;
@@ -240,48 +240,48 @@ class AccountController extends Controller
       'firm'=>$this->firm,
       'model'=>$accounts_form,
     ));
-	}
+  }
 
-	/**
-	 * Manages all models.
-	 */
+  /**
+   * Manages all models.
+   */
   /*
-	public function actionAdmin()
-	{
-		$model=new Account('search');
-		$model->unsetAttributes();  // clear any default values
-		if(isset($_GET['Account']))
-			$model->attributes=$_GET['Account'];
+  public function actionAdmin()
+  {
+    $model=new Account('search');
+    $model->unsetAttributes();  // clear any default values
+    if(isset($_GET['Account']))
+      $model->attributes=$_GET['Account'];
 
-		$this->render('admin',array(
-			'model'=>$model,
-		));
-	}
+    $this->render('admin',array(
+      'model'=>$model,
+    ));
+  }
   */
 
-	/**
-	 * Returns the data model based on the primary key given in the GET variable.
-	 * If the data model is not found, an HTTP exception will be raised.
-	 * @param integer $id the ID of the model to be loaded
-	 * @return Account the loaded model
-	 * @throws CHttpException
-	 */
-	public function loadModel($id)
-	{
+  /**
+   * Returns the data model based on the primary key given in the GET variable.
+   * If the data model is not found, an HTTP exception will be raised.
+   * @param integer $id the ID of the model to be loaded
+   * @return Account the loaded model
+   * @throws CHttpException
+   */
+  public function loadModel($id)
+  {
     return $this->loadAccount($id);
     // we define this in the parent class, because it is of common use...
-	}
+  }
 
-	/**
-	 * Performs the AJAX validation.
-	 * @param Account $model the model to be validated
-	 */
-	protected function performAjaxValidation($model)
-	{
-		if(isset($_POST['ajax']) && $_POST['ajax']==='account-form')
-		{
-			echo CActiveForm::validate($model);
-			Yii::app()->end();
-		}
-	}
+  /**
+   * Performs the AJAX validation.
+   * @param Account $model the model to be validated
+   */
+  protected function performAjaxValidation($model)
+  {
+    if(isset($_POST['ajax']) && $_POST['ajax']==='account-form')
+    {
+      echo CActiveForm::validate($model);
+      Yii::app()->end();
+    }
+  }
 }
