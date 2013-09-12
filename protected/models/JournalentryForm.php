@@ -1,6 +1,6 @@
 <?php
 
-class PostForm extends CFormModel
+class JournalentryForm extends CFormModel
 {
 
   public $firm_id;
@@ -18,7 +18,7 @@ class PostForm extends CFormModel
   public $total_debit = 0;
   public $total_credit = 0;
   
-  public $post = null; // the original Post instance
+  public $journalentry = null; // the original Journalentry instance
   
   private $is_new = true;
   
@@ -85,12 +85,12 @@ class PostForm extends CFormModel
     }
   }
   
-  public function loadFromPost(Post $post)
+  public function loadFromJournalentry(Journalentry $journalentry)
   {
-    $this->post = $post;
-    DELT::object2object($post, $this, array('description', 'is_closing', 'is_adjustment'));
-    $this->date = $post->getDateForFormWidget();
-    foreach($post->postings as $posting)
+    $this->journalentry = $journalentry;
+    DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment'));
+    $this->date = $journalentry->getDateForFormWidget();
+    foreach($journalentry->postings as $posting)
     {
       $this->postings[$posting->id] = new PostingForm();
       $this->postings[$posting->id]->name = $posting->account->__toString();
@@ -106,28 +106,28 @@ class PostForm extends CFormModel
   
   public function save()
   {
-    $this->is_new = !isset($this->post);
-    $this->post = $this->is_new ? new Post() : $this->post;
+    $this->is_new = !isset($this->journalentry);
+    $this->journalentry = $this->is_new ? new Journalentry() : $this->journalentry;
     
-    $transaction = $this->post->getDbConnection()->beginTransaction();
+    $transaction = $this->journalentry->getDbConnection()->beginTransaction();
     try
     {
       // we must convert the date from the user input
       // since we use jquery.ui.datepicker and its i18n features, we
       // use the browser locale to know the format used
       
-      DELT::object2object($this, $this->post, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
+      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
       $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
-      $this->post->date= $date ? $date->format('Y-m-d'): $this->date;
+      $this->journalentry->date= $date ? $date->format('Y-m-d'): $this->date;
       
       if($this->is_new)
       {
-        $this->post->rank = $this->post->getCurrentMaxRank() + 1;
+        $this->journalentry->rank = $this->journalentry->getCurrentMaxRank() + 1;
       }
       
-      $this->post->save(true);
+      $this->journalentry->save(true);
       
-      $this->post->deletePostings();
+      $this->journalentry->deletePostings();
       
       $rank = 1;
       foreach($this->postings as $postingform)
@@ -144,7 +144,7 @@ class PostForm extends CFormModel
             $postingform->account_id = $postingform->account->id;
           }
           
-          $Posting->post_id = $this->post->id;
+          $Posting->journalentry_id = $this->journalentry->id;
           $Posting->account_id = $postingform->account_id;
           $Posting->amount = $postingform->debit - $postingform->credit;
           $Posting->rank = $rank++;
@@ -321,7 +321,7 @@ class PostForm extends CFormModel
         {
           $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a credit to this kind of account') . ' ' .
-            Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
+            Yii::t('delt', '(unless the journalentry is marked as adjustment)') . '.'
             );
           $this->postings[$row]->credit_errors=true;
           $errors=true;
@@ -331,7 +331,7 @@ class PostForm extends CFormModel
         {
           $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a debit to this kind of account') . ' ' .
-            Yii::t('delt', '(unless the post is marked as adjustment)') . '.'
+            Yii::t('delt', '(unless the journalentry is marked as adjustment)') . '.'
             );
           $this->postings[$row]->debit_errors=true;
           $errors=true;

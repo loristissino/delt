@@ -45,7 +45,7 @@ class Controller extends CController
   protected function beforeAction($action)
   {
     $this->DEUser = DEUser::model()->findByPK(Yii::app()->user->id);
-    return true;
+    return parent::beforeAction($action);
   }
 
   /**

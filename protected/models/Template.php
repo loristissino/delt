@@ -8,7 +8,7 @@
  * @property integer $firm_id
  * @property string $description
  * @property string $info
- * @property integer $post_id the original post id (not stored in the db) 
+ * @property integer $journalentry_id the original journalentry id (not stored in the db) 
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -16,7 +16,7 @@
 class Template extends CActiveRecord
 {
   
-  public $post_id;
+  public $journalentry_id;
   
 	/**
 	 * Returns the static model of the specified AR class.
@@ -101,10 +101,10 @@ class Template extends CActiveRecord
   
   public function beforeSave()
   {
-    if($post = Post::model()->findByPk($this->post_id))
+    if($journalentry = Journalentry::model()->findByPk($this->journalentry_id))
     {
       $accounts = array();
-      foreach($post->postings as $posting)
+      foreach($journalentry->postings as $posting)
       {
         $accounts[$posting->account_id] = array('rank'=>$posting->rank, 'type'=>DELT::amount2type($posting->amount, false));
       }

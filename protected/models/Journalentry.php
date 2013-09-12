@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{post}}".
+ * This is the model class for table "{{journalentry}}".
  *
- * The followings are the available columns in table '{{post}}':
+ * The followings are the available columns in table '{{journalentry}}':
  * @property integer $id
  * @property integer $firm_id
  * @property string $date
@@ -19,14 +19,14 @@
  * @property Posting[] $postings
  * @property Firm $firm
  */
-class Post extends CActiveRecord
+class Journalentry extends CActiveRecord
 {
   public $maxrank;
   
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
-	 * @return Post the static model class
+	 * @return Journalentry the static model class
 	 */
 	public static function model($className=__CLASS__)
 	{
@@ -38,7 +38,7 @@ class Post extends CActiveRecord
 	 */
 	public function tableName()
 	{
-		return '{{post}}';
+		return '{{journalentry}}';
 	}
 
 	/**
@@ -67,7 +67,7 @@ class Post extends CActiveRecord
 		// NOTE: you may need to adjust the relation name and the related
 		// class name for the relations automatically generated below.
 		return array(
-			'postings' => array(self::HAS_MANY, 'Posting', 'post_id', 'order'=>'postings.rank ASC'),
+			'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id', 'order'=>'postings.rank ASC'),
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 		);
 	}
@@ -116,10 +116,10 @@ class Post extends CActiveRecord
 		));
 	}
   
-  public function belongingTo($post_id)
+  public function belongingTo($journalentry_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'{{posting}}.post_id = ' . $post_id,
+        'condition'=>'{{posting}}.journalentry_id = ' . $journalentry_id,
         'order'=>'code ASC',
     ));
     return $this;
@@ -143,7 +143,7 @@ class Post extends CActiveRecord
   
   public function deletePostings()
   {
-    Posting::model()->deleteAllByAttributes(array('post_id'=>$this->id));
+    Posting::model()->deleteAllByAttributes(array('journalentry_id'=>$this->id));
   }
   
   public function safeDelete()

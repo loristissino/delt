@@ -6,13 +6,13 @@
  * The followings are the available columns in table '{{posting}}':
  * @property integer $id
  * @property integer $account_id
- * @property integer $post_id
+ * @property integer $journalentry_id
  * @property string $amount
  * @property integer $rank
  *
  * The followings are the available model relations:
  * @property Account $account
- * @property Post $post
+ * @property Journalentry $journalentry
  */
 class Posting extends CActiveRecord
 {
@@ -42,12 +42,12 @@ class Posting extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('account_id, post_id, amount', 'required'),
-			array('account_id, post_id, rank', 'numerical', 'integerOnly'=>true),
+			array('account_id, journalentry_id, amount', 'required'),
+			array('account_id, journalentry_id, rank', 'numerical', 'integerOnly'=>true),
 			array('amount', 'length', 'max'=>10),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, account_id, post_id, amount, rank', 'safe', 'on'=>'search'),
+			array('id, account_id, journalentry_id, amount, rank', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -60,7 +60,7 @@ class Posting extends CActiveRecord
 		// class name for the relations automatically generated below.
 		return array(
 			'account' => array(self::BELONGS_TO, 'Account', 'account_id'),
-			'post' => array(self::BELONGS_TO, 'Post', 'post_id'),
+			'journalentry' => array(self::BELONGS_TO, 'Journalentry', 'journalentry_id'),
 		);
 	}
 
@@ -72,7 +72,7 @@ class Posting extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'account_id' => 'Account',
-			'post_id' => 'Post',
+			'journalentry_id' => 'Journalentry',
 			'amount' => 'Amount',
 			'rank' => 'Rank',
       'debit' => Yii::t('delt', 'Debit'),
@@ -93,7 +93,7 @@ class Posting extends CActiveRecord
 
 		$criteria->compare('id',$this->id);
 		$criteria->compare('account_id',$this->account_id);
-		$criteria->compare('post_id',$this->post_id);
+		$criteria->compare('journalentry_id',$this->journalentry_id);
 		$criteria->compare('amount',$this->amount,true);
 		$criteria->compare('rank',$this->rank);
 
@@ -105,8 +105,8 @@ class Posting extends CActiveRecord
   public function belongingTo($account_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'post.is_included = 1 and account_id = ' . $account_id,
-        'order'=>'post.date ASC, post.rank ASC',
+        'condition'=>'journalentry.is_included = 1 and account_id = ' . $account_id,
+        'order'=>'journalentry.date ASC, journalentry.rank ASC',
     ));
     return $this;
   }
@@ -114,8 +114,8 @@ class Posting extends CActiveRecord
   public function ofFirm($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'post.firm_id = ' . $firm_id,
-        'order'=>'post.date ASC, post.rank ASC',
+        'condition'=>'journalentry.firm_id = ' . $firm_id,
+        'order'=>'journalentry.date ASC, journalentry.rank ASC',
     ));
     return $this;
   }

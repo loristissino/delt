@@ -70,10 +70,10 @@ if($deletable)
       'header'=>Yii::t('delt', 'Date'),
       ),
     array(
-      'name'=>'post.description',
+      'name'=>'journalentry.description',
       'header'=>Yii::t('delt', 'Description'),
       'value'=>array($this, 'RenderDescription'),
-      'cssClassExpression'=>'$data->post->is_closing? \'closing\' : \'\'',
+      'cssClassExpression'=>'$data->journalentry->is_closing? \'closing\' : \'\'',
       'type'=>'raw',
       ),
     array(

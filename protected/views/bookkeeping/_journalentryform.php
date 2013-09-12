@@ -190,7 +190,7 @@ $cs->registerScript(
     }
     else  // we have extra lines, we need to do a post...
     {
-      $("form#postform").submit();
+      $("form#journalentryform").submit();
     }
     
     
@@ -345,10 +345,10 @@ $cs->registerScriptFile(
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'postform',
+	'id'=>'journalentryform',
 	'enableAjaxValidation'=>false,
-  'focus'=> (isset($postform->post) ? null : array($postform, 'description')),
-  'action'=>$this->form_action_required, //array('bookkeeping/' . ($postform->post? 'updatepost': 'newpost'), 'slug'=>$postform->firm->slug),
+  'focus'=> (isset($journalentryform->journalentry) ? null : array($journalentryform, 'description')),
+  'action'=>$this->form_action_required, //array('bookkeeping/' . ($journalentryform->journalentry? 'updatejournalentry': 'newjournalentry'), 'slug'=>$journalentryform->firm->slug),
 )); ?>
 
 	<p class="note">
@@ -356,15 +356,15 @@ $cs->registerScriptFile(
     <?php echo Yii::t('delt', 'The lines in which the account field is empty are ignored.') ?>
   </p>
 
-	<?php echo $form->errorSummary($postform, Yii::t('delt', 'Please fix the following errors:')); ?>
+	<?php echo $form->errorSummary($journalentryform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
 	<div class="row">
-		<?php echo $form->labelEx($postform,'date'); ?>
-		<?php // echo $form->textField($postform,'date'); ?>
+		<?php echo $form->labelEx($journalentryform,'date'); ?>
+		<?php // echo $form->textField($journalentryform,'date'); ?>
     
     <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
-      'name'=>'PostForm[date]',
-      'value'=>$postform->date,
+      'name'=>'JournalentryForm[date]',
+      'value'=>$journalentryform->date,
       'language'=>Yii::app()->language,
       'options'=>array(
           'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
@@ -379,13 +379,13 @@ $cs->registerScriptFile(
       ),
     ));
    ?>
-		<?php echo $form->error($postform,'date'); ?>
+		<?php echo $form->error($journalentryform,'date'); ?>
 	</div>
 
 	<div class="row">
-		<?php echo $form->labelEx($postform,'description'); ?>
-		<?php echo $form->textField($postform,'description', array('size'=>80)); ?>
-		<?php echo $form->error($postform,'description'); ?>
+		<?php echo $form->labelEx($journalentryform,'description'); ?>
+		<?php echo $form->textField($journalentryform,'description', array('size'=>80)); ?>
+		<?php echo $form->error($journalentryform,'description'); ?>
 	</div>
 
   <div id="commands"></div>
@@ -397,7 +397,7 @@ $cs->registerScriptFile(
       <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
       </thead>
       <tfoot>
-      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency <?php echo $class=$postform->total_debit==$postform->total_credit? 'valuesok':'valueswrong' ?>" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($postform->total_debit, $this->firm->currency) ?></span></th><th class="currency <?php echo $class ?>" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($postform->total_credit, $this->firm->currency) ?></span></th></tr>
+      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency <?php echo $class=$journalentryform->total_debit==$journalentryform->total_credit? 'valuesok':'valueswrong' ?>" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($journalentryform->total_debit, $this->firm->currency) ?></span></th><th class="currency <?php echo $class ?>" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($journalentryform->total_credit, $this->firm->currency) ?></span></th></tr>
       </tfoot>
       <tbody>
       <?php $row=0; foreach($items as $i=>$item): ?>
@@ -429,11 +429,11 @@ $cs->registerScriptFile(
       </table>
     </div><!--accountsrows -->
 
-    <?php echo CHtml::activeHiddenField($postform, 'is_closing', array('value'=>$postform->is_closing)) ?>
-    <?php if ($postform->adjustment_checkbox_needed): ?>
+    <?php echo CHtml::activeHiddenField($journalentryform, 'is_closing', array('value'=>$journalentryform->is_closing)) ?>
+    <?php if ($journalentryform->adjustment_checkbox_needed): ?>
     <div class="row">
-      <?php echo $form->labelEx($postform, 'options') ?>
-      <?php echo $form->checkBox($postform, 'is_adjustment', array('checked'=>$postform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this journal entry as adjustment, thus allowing exceptions in debit/credit checks') ?>
+      <?php echo $form->labelEx($journalentryform, 'options') ?>
+      <?php echo $form->checkBox($journalentryform, 'is_adjustment', array('checked'=>$journalentryform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this journal entry as adjustment, thus allowing exceptions in debit/credit checks') ?>
     </div>
     <?php endif ?>
     <div class="row buttons">
@@ -444,14 +444,14 @@ $cs->registerScriptFile(
   </div><!-- rows_as_textfields -->
   <div id="rows_as_textarea" style="display: none">
     <div class="row">
-      <?php echo $form->labelEx($postform, 'raw_input'); ?>
+      <?php echo $form->labelEx($journalentryform, 'raw_input'); ?>
       <br />
       <span class="hint">
       <?php echo Yii::t('delt', 'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).')?><br />
       <?php echo Yii::t('delt', 'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.')?>
       </span>
-      <?php echo $form->textArea($postform, 'raw_input', array('id'=>'raw_input', 'maxlength' => 10000, 'rows' => $n, 'cols' => 65)); ?>
-      <?php echo $form->error($postform,'raw_input'); ?>
+      <?php echo $form->textArea($journalentryform, 'raw_input', array('id'=>'raw_input', 'maxlength' => 10000, 'rows' => $n, 'cols' => 65)); ?>
+      <?php echo $form->error($journalentryform,'raw_input'); ?>
     </div>
   </div><!-- rows_as_textarea -->
 
@@ -477,7 +477,7 @@ $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
 <div id="analysis" style="display: none">
 <h2><?php echo Yii::t('delt', 'Transaction analysis') ?></h2>
 
-<?php if($postform->show_analysis): ?>
+<?php if($journalentryform->show_analysis): ?>
   <p>
   <?php foreach($items as $item): ?>
     <?php if($item->analysis != 'none'): ?>

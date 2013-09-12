@@ -44,12 +44,12 @@ td
 {
   font-style: italic;
 }
-.firstpostrow
+.firstjournalentryrow
 {
   border-top-style: solid;
   border-top-width: 1px;
 }
-.lastpostrow
+.lastjournalentryrow
 {
   border-bottom-style: double;
   border-bottom-width: 3px;

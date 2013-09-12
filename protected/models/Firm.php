@@ -19,7 +19,7 @@
  * The followings are the available model relations:
  * @property Account[] $accounts
  * @property Users[] $tblUsers
- * @property Post[] $posts
+ * @property Journalentry[] $journalentries
  * @property Template[] $templates
  * @property Language[] $languages
  *
@@ -90,7 +90,7 @@ class Firm extends CActiveRecord
 			'accounts' => array(self::HAS_MANY, 'Account', 'firm_id', 'order'=>'accounts.code ASC'),
 			'tblUsers' => array(self::MANY_MANY, 'User', '{{firm_user}}(firm_id, user_id)'),
       'languages' => array(self::MANY_MANY, 'Language', '{{firm_language}}(firm_id, language_id)', 'order'=>'language_code, country_code ASC'),
-			'posts' => array(self::HAS_MANY, 'Post', 'firm_id', 'order'=>'posts.date ASC'),
+			'journalentries' => array(self::HAS_MANY, 'Journalentry', 'firm_id', 'order'=>'journalentries.date ASC'),
       'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
 		);
@@ -414,7 +414,7 @@ class Firm extends CActiveRecord
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
-          'condition'=>'is_selectable = 1 and posts.is_included = 1',
+          'condition'=>'is_selectable = 1 and journalentries.is_included = 1',
           'order' => 'code ASC',
           'with'=>array(
             'postings'=>array(
@@ -422,8 +422,8 @@ class Firm extends CActiveRecord
               'together'=>true,
               'joinType' => 'INNER JOIN',
               ),
-            'posts'=>array(
-              'on'=>'postings.post_id = posts.id',
+            'journalentries'=>array(
+              'on'=>'postings.journalentry_id = journalentries.id',
               'together'=>true,
               'joinType' => 'INNER JOIN',
               )
@@ -453,7 +453,7 @@ class Firm extends CActiveRecord
       ->select('SUM(amount) as total, a.code as code, a.currentname as name')
       ->from('{{posting}}')
       ->leftJoin('{{account}} a', 'account_id = a.id')
-      ->leftJoin('{{post}} p', 'post_id = p.id')
+      ->leftJoin('{{journalentry}} p', 'journalentry_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('in', 'position', $positions))
       ->andWhere('p.is_included = 1')
@@ -540,9 +540,9 @@ class Firm extends CActiveRecord
     return $result;
   }
   
-  public function getPostsAsDataProvider($size=100)
+  public function getJournalentriesAsDataProvider($size=100)
   {
-    return new CActiveDataProvider(Posting::model()->with('post')->with('account')->ofFirm($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
           'pageSize'=>$size,
           ),
@@ -671,7 +671,7 @@ class Firm extends CActiveRecord
     $amount = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total')
       ->from('{{posting}}')
-      ->leftJoin('{{post}} p', 'post_id = p.id')
+      ->leftJoin('{{journalentry}} p', 'journalentry_id = p.id')
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere('amount ' . $type='D'? '>0' : '<0')
       ->andWhere('p.is_included = 1')
@@ -789,20 +789,20 @@ class Firm extends CActiveRecord
       
       if(substr($type, 2, 1)=='1')
       {
-        // we must fork posts...
-        foreach($source->posts as $post)
+        // we must fork journalentries...
+        foreach($source->journalentries as $journalentry)
         {
-          $newpost = new Post;
-          $newpost->firm_id = $this->id;
+          $newjournalentry = new Journalentry;
+          $newjournalentry->firm_id = $this->id;
           foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank') as $property)
           {
-            $newpost->$property = $post->$property;
+            $newjournalentry->$property = $journalentry->$property;
           }
-          $newpost->save(false);
-          foreach($post->postings as $posting)
+          $newjournalentry->save(false);
+          foreach($journalentry->postings as $posting)
           {
             $newposting = new Posting;
-            $newposting->post_id = $newpost->id;
+            $newposting->journalentry_id = $newjournalentry->id;
             foreach(array('amount', 'rank') as $property)
             {
               $newposting->$property = $posting->$property;
@@ -917,7 +917,7 @@ class Firm extends CActiveRecord
     /* type can be:
      *   100 -- only accounts
      *   110 -- accounts and templates
-     *   111 -- accounts, templates, posts
+     *   111 -- accounts, templates, journalentries
      */
     
     $data=array();
@@ -958,16 +958,16 @@ class Firm extends CActiveRecord
       }
     }
     
-    $data['posts'] = array();
+    $data['journalentries'] = array();
     if(substr($type, 2, 1)=='1')
     {
-      // we must export posts...
-      foreach($this->posts as $post)
+      // we must export journalentries...
+      foreach($this->journalentries as $journalentry)
       {
         $values = array();
-        DELT::object2array($post, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
+        DELT::object2array($journalentry, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
         
-        foreach($post->postings as $posting)
+        foreach($journalentry->postings as $posting)
         {
           $info = array();
           DELT::object2array($posting, $info, array('amount', 'rank'));
@@ -975,12 +975,12 @@ class Firm extends CActiveRecord
           $values['postings'][]=$info;
         }
 
-        $data['posts'][]=$values;
+        $data['journalentries'][]=$values;
       }
     }
     else
     {
-      $data['posts']=array();
+      $data['journalentries']=array();
     }
 
     $data['meta']=array(
@@ -1014,7 +1014,7 @@ class Firm extends CActiveRecord
 
     // the following do not need to be in the transaction:
     $this->_deleteLanguages();    
-    $this->_deletePosts();
+    $this->_deleteJournalentries();
     $this->_deleteTemplates();
     $this->_deleteAccounts();
     
@@ -1080,18 +1080,18 @@ class Firm extends CActiveRecord
         $newtemplate->save(false);
       }
 
-      foreach($data['posts'] as $values)
+      foreach($data['journalentries'] as $values)
       {
-        $newpost = new Post;
-        $newpost->firm_id = $this->id;
-        DELT::array2object($values, $newpost, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
+        $newjournalentry = new Journalentry;
+        $newjournalentry->firm_id = $this->id;
+        DELT::array2object($values, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
         
-        $newpost->save(false);
+        $newjournalentry->save(false);
         
         foreach($values['postings'] as $posting)
         {
           $newposting = new Posting;
-          $newposting->post_id = $newpost->id;
+          $newposting->journalentry_id = $newjournalentry->id;
           DELT::array2object($posting, $newposting, array('amount', 'rank'));
           $newposting->account_id = $references[$posting['account_code']];
           $newposting->save(false);
@@ -1128,32 +1128,32 @@ class Firm extends CActiveRecord
     
     $key = isset($export_info['key']) ? $export_info['key'] : '';
 
-    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['templates'] . $data['posts'] . $data['meta'] . $key));
+    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['templates'] . $data['journalentries'] . $data['meta'] . $key));
     
     return $check ? $md5 == $data['md5sum'] : $md5;
     
   }
   
-  private function _deletePosts()
+  private function _deleteJournalentries()
   {
-    foreach($this->posts as $post)
+    foreach($this->journalentries as $journalentry)
     {
-      $post->safeDelete();
+      $journalentry->safeDelete();
     }
   }
   
-  public function deleteSelectedPosts($ids=array())
+  public function deleteSelectedJournalentries($ids=array())
   {
-    $posts=$this->_findPosts($ids);
-    $number=sizeof($posts);
-    foreach($posts as $post)
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    foreach($journalentries as $journalentry)
     {
-      $post->safeDelete();
+      $journalentry->safeDelete();
     }
     return $number;
   }
   
-  private function _findPosts($ids=array())
+  private function _findJournalentries($ids=array())
   {
     
     $criteria = new CDbCriteria();
@@ -1161,7 +1161,7 @@ class Firm extends CActiveRecord
     $criteria->params = array(':firm_id'=>$this->id);
     $criteria->addInCondition('id',$ids);
     
-    return Post::model()->findAll($criteria);
+    return Journalentry::model()->findAll($criteria);
   }
   
   
@@ -1262,7 +1262,7 @@ class Firm extends CActiveRecord
   
   public function safeDelete()
   {
-    $this->_deletePosts();
+    $this->_deleteJournalentries();
     $this->_deleteTemplates();
     $this->_deleteAccounts();
     $this->_deleteUsers();
@@ -1284,7 +1284,7 @@ class Firm extends CActiveRecord
   
   public function clearJournal()
   {
-    $this->_deletePosts();
+    $this->_deleteJournalentries();
     return true;
   }
   

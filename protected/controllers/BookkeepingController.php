@@ -10,15 +10,15 @@ class BookkeepingController extends Controller
   
   public $show_link_on_description = false;
   
-  public $last_post_id = null;
+  public $last_journalentry_id = null;
   
-  public $post_id = null;
+  public $journalentry_id = null;
   
   public $debit_sum = 0;
   public $credit_sum = 0;
   
   public $accounts;
-  public $postdescription;
+  public $journalentrydescription;
   public $is_closing = 0;
   
   public $form_action_required = null;  // used in actionPrepareentry
@@ -141,10 +141,10 @@ class BookkeepingController extends Controller
     ));
 	}
 
-	public function actionJournal($slug, $post=null)
+	public function actionJournal($slug, $journalentry=null)
 	{
     $this->firm=$this->loadModelBySlug($slug);
-    $this->post_id = $post;
+    $this->journalentry_id = $journalentry;
 		$this->render('journal', array(
       'model'=>$this->firm,
     ));
@@ -189,91 +189,91 @@ class BookkeepingController extends Controller
     ));
   }
 
-	public function actionNewpost($slug)
+	public function actionNewjournalentry($slug)
 	{
     $this->firm=$this->loadModelBySlug($slug);
     
-    $postform = new PostForm();
-    $postform->firm_id = $this->firm->id;
-    $postform->firm = $this->firm;  // FIXME: if we set the firm, we don't need to set the other values... here for compatibility only
-    $postform->currency = $this->firm->currency;
-    $postform->show_analysis = false;
+    $journalentryform = new JournalentryForm();
+    $journalentryform->firm_id = $this->firm->id;
+    $journalentryform->firm = $this->firm;  // FIXME: if we set the firm, we don't need to set the other values... here for compatibility only
+    $journalentryform->currency = $this->firm->currency;
+    $journalentryform->show_analysis = false;
     
-    if(!$postform->date)
+    if(!$journalentryform->date)
     {
-      $postform->date = Yii::app()->getUser()->getState('lastpostdate', DELT::getDateForFormWidget(date('Y-m-d')));
+      $journalentryform->date = Yii::app()->getUser()->getState('lastjournalentrydate', DELT::getDateForFormWidget(date('Y-m-d')));
     }
     
-    if(isset($this->postdescription))
+    if(isset($this->journalentrydescription))
     {
-      $postform->description = $this->postdescription;
+      $journalentryform->description = $this->journalentrydescription;
     }
     
     if(isset($this->accounts) and sizeof($this->accounts)>0)
     {
-      $postform->acquireItems($this->accounts);
+      $journalentryform->acquireItems($this->accounts);
     }
     else
     {
-      $postform->postings = array(new PostingForm(), new Postingform());
+      $journalentryform->postings = array(new PostingForm(), new Postingform());
     }
         
-		if(isset($_POST['PostForm']))
+		if(isset($_POST['JournalentryForm']))
 		{
-			$postform->attributes=$_POST['PostForm'];
+			$journalentryform->attributes=$_POST['JournalentryForm'];
       if(isset($_POST['PostingForm']))
       {
-        $postform->acquireItems($_POST['PostingForm']);
+        $journalentryform->acquireItems($_POST['PostingForm']);
       }
       if(isset($_POST['addline']))
       {
-        $postform->postings[] = new PostingForm();
+        $journalentryform->postings[] = new PostingForm();
       }
-      elseif(!$postform->raw_input)
+      elseif(!$journalentryform->raw_input)
       {
-        if($postform->validate())
+        if($journalentryform->validate())
         {
-          if($postform->save())
+          if($journalentryform->save())
           {
-            Yii::app()->getUser()->setState('lastpostdate', $postform->date);
+            Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
             }
             else
             {
-              $this->redirect(array('bookkeeping/updatepost','slug'=>$this->firm->slug, 'id'=>$postform->post->id));
+              $this->redirect(array('bookkeeping/updatejournalentry','slug'=>$this->firm->slug, 'id'=>$journalentryform->journalentry->id));
             }
           }
         }
       }
 		}
     
-    $postform->raw_input='';
-    $postform->is_closing = $this->is_closing;
-		$this->render('newpost', array(
+    $journalentryform->raw_input='';
+    $journalentryform->is_closing = $this->is_closing;
+		$this->render('newjournalentry', array(
       'model'=>$this->loadModelBySlug($slug),
-      'postform'=>$postform,
-      'items'=>$postform->postings,
+      'journalentryform'=>$journalentryform,
+      'items'=>$journalentryform->postings,
     ));
 	}
   
-  public function actionClosingpost($slug, $position='')
+  public function actionClosingjournalentry($slug, $position='')
   {
     switch($position)
     {
       case 'P':
-        $this->postdescription=Yii::t('delt', 'Assets and Claims closing entry');
+        $this->journalentrydescription=Yii::t('delt', 'Assets and Claims closing entry');
         break;
       case 'E':
-        $this->postdescription=Yii::t('delt', 'Income Summary closing entry');
+        $this->journalentrydescription=Yii::t('delt', 'Income Summary closing entry');
         break;
       case 'M':
-        $this->postdescription=Yii::t('delt', 'Memo closing entry');
+        $this->journalentrydescription=Yii::t('delt', 'Memo closing entry');
         break;
       default:
         $position='';
-        $this->postdescription=Yii::t('delt', 'Closing journal entry');
+        $this->journalentrydescription=Yii::t('delt', 'Closing journal entry');
     }
     $this->firm=$this->loadModelBySlug($slug);
     if($position)
@@ -282,71 +282,71 @@ class BookkeepingController extends Controller
       $this->is_closing = true;
       if(sizeof($this->accounts))
       {
-        return $this->actionNewpost($slug);
+        return $this->actionNewjournalentry($slug);
         // we show the standard form
       }
     }
     
-    $this->render('closingpost', array('position'=>$position, 'model'=>$this->firm));
+    $this->render('closingjournalentry', array('position'=>$position, 'model'=>$this->firm));
     
   }
 
-  public function actionProfitlosspost($slug)
+  public function actionProfitlossjournalentry($slug)
   {
     $this->firm=$this->loadModelBySlug($slug);
-    $this->postdescription=Yii::t('delt', 'Profit/Loss');
+    $this->journalentrydescription=Yii::t('delt', 'Profit/Loss');
     $this->accounts = $this->firm->getAccountBalances('e');
     
     if(sizeof($this->accounts))
     {
-      return $this->actionNewpost($slug);
+      return $this->actionNewjournalentry($slug);
       // we show the standard form
     }
     
-    $this->render('closingpost', array('position'=>'e', 'model'=>$this->firm));
+    $this->render('closingjournalentry', array('position'=>'e', 'model'=>$this->firm));
   }
   
-  public function actionPrepareentry($slug, $op)
+  public function actionPrepareentry($slug, $op='snapshot')
   {
     $this->firm=$this->loadModelBySlug($slug);
-    $this->postdescription=Yii::t('delt', 'Journal entry from balances');
-    $this->postdescription .= ' (' . Yii::t('delt', $op) . ')';
+    $this->journalentrydescription=Yii::t('delt', 'Journal entry from balances');
+    $this->journalentrydescription .= ' (' . Yii::t('delt', $op) . ')';
     
     $this->accounts = $this->firm->getAccountBalances('', $_POST['id'], $op!='snapshot');
 
     if(sizeof($this->accounts))
     {
-      $this->form_action_required = $this->createUrl('bookkeeping/newpost', array('slug'=>$this->firm->slug));
-      return $this->actionNewpost($this->firm->slug);
+      $this->form_action_required = $this->createUrl('bookkeeping/newjournalentry', array('slug'=>$this->firm->slug));
+      return $this->actionNewjournalentry($this->firm->slug);
       // we show the standard form
     }
-    $this->render('closingpost', array('position'=>'', 'model'=>$this->firm));
+    $this->render('closingjournalentry', array('position'=>'', 'model'=>$this->firm));
   }
 
-	public function actionUpdatepost($id)
+	public function actionUpdatejournalentry($id)
 	{
-    $this->post = $this->loadPost($id);
-    $this->firm=$this->post->firm;
+    $this->journalentry = $this->loadJournalentry($id);
+    $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
     
-    $postform = new PostForm();
-    $postform->firm_id = $this->firm->id;
-    $postform->firm = $this->firm;
-    $postform->currency = $this->firm->currency;
-    if($this->post->is_adjustment)
+    $journalentryform = new JournalentryForm();
+    $journalentryform->firm_id = $this->firm->id;
+    $journalentryform->firm = $this->firm;
+    $journalentryform->currency = $this->firm->currency;
+    if($this->journalentry->is_adjustment)
     {
-      $postform->adjustment_checkbox_needed = true; 
+      $journalentryform->adjustment_checkbox_needed = true; 
     }
     
-    $postform->loadFromPost($this->post);
+    $journalentryform->loadFromJournalentry($this->journalentry);
         
-		if(isset($_POST['PostForm']))
+		if(isset($_POST['JournalentryForm']))
 		{
-			$postform->attributes=$_POST['PostForm'];
-      $postform->acquireItems($_POST['PostingForm']);
+			$journalentryform->attributes=$_POST['JournalentryForm'];
+      $journalentryform->acquireItems($_POST['PostingForm']);
       if(isset($_POST['addline']))
       {
-        $postform->postings[] = new PostingForm();
+        $journalentryform->postings[] = new PostingForm();
         $postform->show_analysis = false;
       }
       elseif(!$postform->raw_input)
@@ -355,7 +355,7 @@ class BookkeepingController extends Controller
         {
           if($postform->save())
           {
-            Yii::app()->getUser()->setState('lastpostdate', $postform->date);
+            Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
@@ -365,25 +365,25 @@ class BookkeepingController extends Controller
       }
 		}
     
-    $postform->raw_input='';
-		$this->render('updatepost', array(
+    $journalentryform->raw_input='';
+		$this->render('updatejournalentry', array(
       'model'=>$this->firm,
-      'postform'=>$postform,
-      'items'=>$postform->postings,
+      'journalentryform'=>$journalentryform,
+      'items'=>$journalentryform->postings,
     ));
 
 	}
 
 
-	public function actionDeletepost($id)
+	public function actionDeletejournalentry($id)
 	{
-    $this->post = $this->loadPost($id);
-    $this->firm=$this->post->firm;
+    $this->journalentry = $this->loadJournalentry($id);
+    $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
     
 		if(Yii::app()->getRequest()->isPostRequest)
 		{
-      if($this->post->safeDelete())
+      if($this->journalentry->safeDelete())
       {
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal entry has been successfully deleted.'));
       }
@@ -431,7 +431,7 @@ class BookkeepingController extends Controller
       if($op=='include' or $op=='exclude')
       {
         $affected_rows = Yii::app()->db->createCommand()
-        ->update('{{post}}', array('is_included'=>$op=='include'?1:0),
+        ->update('{{journalentry}}', array('is_included'=>$op=='include'?1:0),
           array('and',
             array('firm_id=:firm_id' , array(':firm_id'=>$this->firm->id)),
             array('in', 'id', $_POST['id'])
@@ -456,7 +456,7 @@ class BookkeepingController extends Controller
        
       if($op=='delete')
       {
-        $affected_rows = $this->firm->deleteSelectedPosts($_POST['id']);
+        $affected_rows = $this->firm->deleteSelectedJournalentries($_POST['id']);
         if($affected_rows==0)
         {
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been deleted.'));
@@ -476,7 +476,7 @@ class BookkeepingController extends Controller
 
 
 
-  public function actionPostfromtemplate($id)
+  public function actionJournalentryfromtemplate($id)
   {
     $template=$this->loadTemplate($id);
     $this->firm=$template->firm;
@@ -486,8 +486,8 @@ class BookkeepingController extends Controller
     
     if(sizeof($this->accounts))
     {
-      $this->postdescription=$template->description;
-      return $this->actionNewpost($this->firm->slug);
+      $this->journalentrydescription=$template->description;
+      return $this->actionNewjournalentry($this->firm->slug);
       // we show the standard form
     }
     
@@ -497,8 +497,8 @@ class BookkeepingController extends Controller
 
   public function actionCreatetemplate($id)
   {
-    $this->post = $this->loadPost($id);
-    $this->firm=$this->post->firm;
+    $this->journalentry = $this->loadJournalentry($id);
+    $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
     
     $template=new Template;
@@ -509,7 +509,7 @@ class BookkeepingController extends Controller
         if($template->validate())
         {
           $template->firm_id = $this->firm->id;
-          $template->post_id = $this->post->id;
+          $template->journalentry_id = $this->journalentry->id;
           if($template->save())
           {
             Yii::app()->user->setFlash('delt_success','The template has been correctly saved.'); 
@@ -523,7 +523,7 @@ class BookkeepingController extends Controller
     }
     if(!$template->description)
     {
-      $template->description = $this->post->description;
+      $template->description = $this->journalentry->description;
     }
 
     $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
@@ -542,12 +542,12 @@ class BookkeepingController extends Controller
   }
 
 
-	public function actionLedger($id /* account_id */, $post=null)
+	public function actionLedger($id /* account_id */, $journalentry=null)
 	{
     $account=$this->loadAccount($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     
-    $this->post_id = $post;
+    $this->journalentry_id = $journalentry;
 		$this->render('ledger', array(
       'model'=>$this->firm,
       'account'=>$account,
@@ -607,7 +607,7 @@ class BookkeepingController extends Controller
 
   public function renderDebit(Posting $posting, $row)
   {
-    $this->last_post_id = $posting->post_id;
+    $this->last_journalentry_id = $posting->journalentry_id;
     return $this->renderPartial('_debit',array('posting'=>$posting),true);
   }
   
@@ -648,7 +648,7 @@ class BookkeepingController extends Controller
 
   public function renderDate(Posting $posting, $row)
   {
-    if($posting->post_id != $this->last_post_id)
+    if($posting->journalentry_id != $this->last_journalentry_id)
     {
       return $this->renderPartial('_date',array('posting'=>$posting),true);
     }
@@ -657,7 +657,7 @@ class BookkeepingController extends Controller
   
   public function renderDescription(Posting $posting, $row)
   {
-    if($posting->post_id != $this->last_post_id)
+    if($posting->journalentry_id != $this->last_journalentry_id)
     {
       $this->line_shown = true;
       return $this->renderPartial('_description', array('posting'=>$posting), true);
@@ -675,7 +675,7 @@ class BookkeepingController extends Controller
   
   public function renderAccount(Posting $posting, $row)
   {
-    return $this->renderPartial('_account',array('account'=>$posting->account, 'post'=>$posting->post, 'amount'=>$posting->amount),true);
+    return $this->renderPartial('_account',array('account'=>$posting->account, 'journalentry'=>$posting->journalentry, 'amount'=>$posting->amount),true);
   }
   
   public function renderSingleAccount(Account $account, $row)

@@ -50,13 +50,13 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
 CREATE TABLE IF NOT EXISTS `tbl_posting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_id` int(11) NOT NULL,
-  `post_id` int(11) NOT NULL,
+  `journalentry_id` int(11) NOT NULL,
   `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `postrank` (`post_id`,`rank`),
+  UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
   KEY `account_id` (`account_id`),
-  KEY `post_id` (`post_id`)
+  KEY `journalentry_id` (`journalentry_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4532 ;
 
 -- --------------------------------------------------------
@@ -143,10 +143,10 @@ CREATE TABLE IF NOT EXISTS `tbl_migration` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_post`
+-- Table structure for table `tbl_journalentry`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_post` (
+CREATE TABLE IF NOT EXISTS `tbl_journalentry` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `firm_id` int(11) NOT NULL,
   `date` date NOT NULL,
@@ -266,7 +266,7 @@ ALTER TABLE `tbl_account_name`
 --
 ALTER TABLE `tbl_posting`
   ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`post_id`) REFERENCES `tbl_post` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_firm_user`
@@ -276,10 +276,10 @@ ALTER TABLE `tbl_firm_user`
   ADD CONSTRAINT `tbl_firm_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `tbl_post`
+-- Constraints for table `tbl_journalentry`
 --
-ALTER TABLE `tbl_post`
-  ADD CONSTRAINT `tbl_post_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
+ALTER TABLE `tbl_journalentry`
+  ADD CONSTRAINT `tbl_journalentry_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_profiles`

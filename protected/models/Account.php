@@ -78,16 +78,16 @@ class Account extends CActiveRecord
 		return array(
 			'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
 			'postings' => array(self::HAS_MANY, 'Posting', 'account_id'),
-      'posts' => array(self::MANY_MANY, 'Post', '{{posting}}(account_id, post_id)'),
+      'journalentries' => array(self::MANY_MANY, 'Journalentry', '{{posting}}(account_id, journalentry_id)'),
       'debitgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
-        'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
-        'condition'=>'{{post}}.is_included = 1 and amount > 0',
+        'join'=> 'INNER JOIN {{journalentry}} ON t.journalentry_id = {{journalentry}}.id',
+        'condition'=>'{{journalentry}}.is_included = 1 and amount > 0',
         ),
       'creditgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
-        'join'=> 'INNER JOIN {{post}} ON t.post_id = {{post}}.id',
-        'condition'=>'{{post}}.is_included = 1 and amount < 0',
+        'join'=> 'INNER JOIN {{journalentry}} ON t.journalentry_id = {{journalentry}}.id',
+        'condition'=>'{{journalentry}}.is_included = 1 and amount < 0',
         ),
 		);
 	}
@@ -348,7 +348,7 @@ class Account extends CActiveRecord
 			throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
 	}
   */
-  public function getNumberOfPosts()
+  public function getNumberOfJournalentries()
   {
     return Posting::model()->countByAttributes(array('account_id'=>$this->id));
   }
@@ -359,7 +359,7 @@ class Account extends CActiveRecord
 	 */
 	protected function beforeDelete()
 	{
-		if($this->getNumberOfPosts() > 0)
+		if($this->getNumberOfJournalentries() > 0)
 		{
       return false;
 		}
@@ -553,7 +553,7 @@ class Account extends CActiveRecord
         'position'=>'position',
     );    
   */  
-    return new CActiveDataProvider(Posting::model()->with('post')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->belongingTo($this->id), array(
       'pagination'=>array(
           'pageSize'=>30,
           ),
@@ -625,7 +625,7 @@ class Account extends CActiveRecord
       ->select('SUM(amount) as total')
       ->from('{{posting}} dc')
       ->leftJoin('{{account}} a', 'dc.account_id = a.id')
-      ->leftJoin('{{post}} p', 'dc.post_id = p.id')
+      ->leftJoin('{{journalentry}} p', 'dc.journalentry_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')
       ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
       ->andWhere($without_closing ? 'p.is_closing = 0': 'true')

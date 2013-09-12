@@ -16,7 +16,7 @@ $this->menu=array(
 
 <p><?php echo Yii::t('delt', 'You are going to create a new template with the following accounts:') ?></p>
 <ul>
-<?php foreach($this->post->postings as $posting): $type=DELT::amount2type($posting->amount) ?>
+<?php foreach($this->journalentry->postings as $posting): $type=DELT::amount2type($posting->amount) ?>
   <li>
   <?php echo $posting->account ?> (<?php echo Yii::t('delt', $type) ?>)
   </li>

@@ -26,18 +26,18 @@ $this->breadcrumbs=array(
     <th><?php echo Yii::t('delt', 'Debit') ?></th>
     <th><?php echo Yii::t('delt', 'Credit') ?></th>
   </tr>
-<?php $n=0; $postid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->post->is_included ?>
-  <?php if($postid!=$posting->post_id): $postid=$posting->post_id ?>
+<?php $n=0; $journalentryid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->journalentry->is_included ?>
+  <?php if($journalentryid!=$posting->journalentry_id): $journalentryid=$posting->journalentry_id ?>
   <tr <?php if($excluded) echo 'class="excluded"' ?>>
-    <td class="firstpostrow"><?php echo ++$n ?></td>
-    <td class="firstpostrow">
-      <?php echo Yii::app()->dateFormatter->formatDateTime($posting->post->date, 'short', null) ?>
+    <td class="firstjournalentryrow"><?php echo ++$n ?></td>
+    <td class="firstjournalentryrow">
+      <?php echo Yii::app()->dateFormatter->formatDateTime($posting->journalentry->date, 'short', null) ?>
     </td>
-    <td class="journaldescription firstpostrow">
-      <?php echo $posting->post->description ?>
+    <td class="journaldescription firstjournalentryrow">
+      <?php echo $posting->journalentry->description ?>
     </td>
-    <td class="firstpostrow"></td>
-    <td class="firstpostrow"></td>
+    <td class="firstjournalentryrow"></td>
+    <td class="firstjournalentryrow"></td>
   </tr>
   <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   <?php else: ?>
@@ -45,12 +45,12 @@ $this->breadcrumbs=array(
   <?php endif ?>
 <?php endforeach ?>
   <tr>
-    <td class="firstpostrow" colspan="2"></td>
-    <td class="firstpostrow">
+    <td class="firstjournalentryrow" colspan="2"></td>
+    <td class="firstjournalentryrow">
       <?php echo Yii::t('delt', 'Total:') ?>
     </td>
-    <td class="firstpostrow currency lastpostrow"><?php echo DELT::currency_value($td, $this->firm->currency) ?></td>
-    <td class="firstpostrow currency lastpostrow"><?php echo DELT::currency_value($tc, $this->firm->currency) ?></td>
+    <td class="firstjournalentryrow currency lastjournalentryrow"><?php echo DELT::currency_value($td, $this->firm->currency) ?></td>
+    <td class="firstjournalentryrow currency lastjournalentryrow"><?php echo DELT::currency_value($tc, $this->firm->currency) ?></td>
   </tr>
 </table>
 </section>

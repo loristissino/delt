@@ -8,11 +8,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newpost', 'slug'=>$model->slug)),
-	array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingpost', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
+	array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug)),
   );
 
-if(sizeof($model->posts))
+if(sizeof($model->journalentries))
 {
   $this->menu[] = array('label'=>Yii::t('delt', 'Clear'), 'url'=>$url=$this->createUrl('bookkeeping/clearjournal', array('slug'=>$model->slug)),  'linkOptions'=>array(   
       'submit' => $url,
@@ -22,7 +22,7 @@ if(sizeof($model->posts))
     );  
 }
 
-$dp = $this->firm->getPostsAsDataProvider();
+$dp = $this->firm->getJournalentriesAsDataProvider();
 
 ?>
 <h1><?php echo Yii::t('delt', 'Journal') ?></h1>
@@ -33,25 +33,25 @@ $dp = $this->firm->getPostsAsDataProvider();
 echo CHtml::beginForm('','post',array('id'=>'journal-form'));
 $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'firm-grid',
-	'dataProvider'=>$this->firm->getPostsAsDataProvider(),
+	'dataProvider'=>$this->firm->getJournalentriesAsDataProvider(),
   'selectableRows'=>2, // multiple rows can be selected
-  'rowCssClassExpression'=>'($row%2 ? "even" : "odd") . ($data->post->is_included==0 ? " excluded" : "")',
+  'rowCssClassExpression'=>'($row%2 ? "even" : "odd") . ($data->journalentry->is_included==0 ? " excluded" : "")',
 	'columns'=>array(
     array(
       'class'=>'CDataColumn',
-      'name'=>'post.date',
+      'name'=>'journalentry.date',
       'value'=>array($this, 'RenderDate'),
       'type'=>'raw',
       'header'=>Yii::t('delt', 'Date'),
       ),
     array(
-      'name'=>'post.description',
+      'name'=>'journalentry.description',
       'header'=>Yii::t('delt', 'Description'),
       'value'=>array($this, 'RenderDescription'),
-      'cssClassExpression'=>'$data->post->is_closing && $data->rank==1? \'closing\' : \'\'',
+      'cssClassExpression'=>'$data->journalentry->is_closing && $data->rank==1? \'closing\' : \'\'',
       ),
     array(
-      'name'=>'post.account',
+      'name'=>'journalentry.account',
       'header'=>Yii::t('delt', 'Account'),
       'sortable'=>false,
       'type'=>'raw',
@@ -77,7 +77,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
 			'class'=>'CButtonColumn',
       'template'=>'{update}',
-      'updateButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/updatepost",array("id"=>$data->post_id))',
+      'updateButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/updatejournalentry",array("id"=>$data->journalentry_id))',
       'headerHtmlOptions'=>array('style'=>'width: 20px;', 'class'=>'buttons'),
       'htmlOptions'=>array('style'=>'text-align: right', 'class'=>'buttons'),
       'buttons'=>array(
@@ -91,7 +91,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     array(
       'class'=>'ECCheckBoxColumn',
       'id'=>'id',
-      'value'=>'$data->post->id',
+      'value'=>'$data->journalentry->id',
       'controller'=>$this,
       ),
 
@@ -132,6 +132,6 @@ echo CHtml::endForm(); ?>
 <?php else: ?>
 <p>
 <?php echo Yii::t('delt', 'This firm does not have any journal entry yet.') ?> 
-<?php echo CHtml::link(Yii::t('delt', 'Create a new one now.'), array('bookkeeping/newpost', 'slug'=>$model->slug)) ?>
+<?php echo CHtml::link(Yii::t('delt', 'Create a new one now.'), array('bookkeeping/newjournalentry', 'slug'=>$model->slug)) ?>
 </p>
 <?php endif ?>
