@@ -23,9 +23,9 @@ class Controller extends CController
   public $firm=null;
 
   /**
-   * @var Post The current selected post, identified by Pk.
+   * @var Journalentry The current selected journalentry, identified by Pk.
    */
-  public $post=null;
+  public $journalentry=null;
   
   /**
    * @var array general firm menu items. This property will be assigned to {@link CMenu::items}.
