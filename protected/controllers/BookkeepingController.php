@@ -347,13 +347,13 @@ class BookkeepingController extends Controller
       if(isset($_POST['addline']))
       {
         $journalentryform->postings[] = new PostingForm();
-        $postform->show_analysis = false;
+        $journalentryform->show_analysis = false;
       }
-      elseif(!$postform->raw_input)
+      elseif(!$journalentryform->raw_input)
       {
-        if($postform->validate())
+        if($journalentryform->validate())
         {
-          if($postform->save())
+          if($journalentryform->save())
           {
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
             if(isset($_POST['done']))
