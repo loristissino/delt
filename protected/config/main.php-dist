@@ -20,6 +20,8 @@ return array(
     'application.modules.user.components.*',
     ),
 
+  'catchAllRequest'=>(file_exists(dirname(__FILE__).'/.maintenance') && !(isset($_COOKIE['secret']) && $_COOKIE['secret']=='password') ? array('maintenance/index') : null),
+
   'modules'=>array(
     // uncomment the following to enable the Gii tool
     

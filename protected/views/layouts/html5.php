@@ -177,7 +177,7 @@ tr.excluded
 
   <footer>
     <hr />
-    <p>This is an experimental HTML5 web page for one of the public firms created at <?php echo CHtml::link(Yii::app()->name, $this->createUrl('/site')) ?>.</p>
+    <p>This page belongs to the website <?php echo CHtml::link(Yii::app()->name, $this->createUrl('/site')) ?>.</p>
   </footer>
 
   <?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
