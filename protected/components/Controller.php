@@ -123,15 +123,15 @@ class Controller extends CController
   }
   
   /**
-   * Returns the post model based on the primary key.
+   * Returns the journalentry model based on the primary key.
    * If the data model is not found, an HTTP exception will be raised.
    * @param integer $id the ID of the model to be loaded
-   * @return Post the loaded model
+   * @return Journalentry the loaded model
    * @throws CHttpException
    */
-  public function loadPost($id)
+  public function loadJournalentry($id)
   {
-    $model=Post::model()->findByPk($id);
+    $model=Journalentry::model()->findByPk($id);
     if($model===null)
       throw new CHttpException(404,'The requested page does not exist.');
     return $model;
