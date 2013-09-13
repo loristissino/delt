@@ -418,6 +418,7 @@ $cs->registerScriptFile(
         'htmlOptions'=>array(
            'size'=>'50',
            'class'=>$item->name_errors ? 'error': 'valid',
+           'placeholder'=>Yii::t('delt', 'Start typing (code or name) or double-click...'),
            ),
         ))
       ?></td>

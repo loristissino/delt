@@ -193,6 +193,7 @@ return array(
   'the amount of the debit has been computed as a balance for the account;' => 'l\'ammontare dell\'addebito è stato calcolato a saldo del conto;',
   'the amount of the credit has been computed as a balance for the account;' => 'l\'ammontare dell\'accredito è stato calcolato a saldo del conto;',
   'it must be checked.' => 'va controllato.',
+  'Start typing (code or name) or double-click...'=>'Digita codice o nome, oppure fa\' un doppio clic',
   
   'Row' => 'Riga',
   'The code cannot end with a dot.' => 'Il codice non può finire con un punto.',
