@@ -94,6 +94,10 @@ class JournalentryForm extends CFormModel
     {
       $this->postings[$posting->id] = new PostingForm();
       $this->postings[$posting->id]->name = $posting->account->__toString();
+      if($posting->comment)
+      {
+        $this->postings[$posting->id]->name .= ' # ' . $posting->comment;
+      }
       $this->postings[$posting->id]->debit = $posting->amount > 0 ? DELT::currency_value($posting->amount, $this->currency) : '';
       $this->postings[$posting->id]->credit = $posting->amount < 0 ? DELT::currency_value(-$posting->amount, $this->currency) : '';
       $this->postings[$posting->id]->analysis = $posting->account->getAnalysis($posting->amount, $this->firm->currency);
@@ -134,7 +138,7 @@ class JournalentryForm extends CFormModel
       {
         if($postingform->account_id)
         {
-          $Posting = new Posting();
+          $posting = new Posting();
           
           
           if(substr($postingform->account_id, 0, 1)=='!')
@@ -144,12 +148,13 @@ class JournalentryForm extends CFormModel
             $postingform->account_id = $postingform->account->id;
           }
           
-          $Posting->journalentry_id = $this->journalentry->id;
-          $Posting->account_id = $postingform->account_id;
-          $Posting->amount = $postingform->debit - $postingform->credit;
-          $Posting->rank = $rank++;
+          $posting->journalentry_id = $this->journalentry->id;
+          $posting->account_id = $postingform->account_id;
+          $posting->amount = $postingform->debit - $postingform->credit;
+          $posting->comment = $postingform->comment;
+          $posting->rank = $rank++;
           
-          $Posting->save(true);
+          $posting->save(true);
         }
       }
       
@@ -216,6 +221,14 @@ class JournalentryForm extends CFormModel
           $this->postings[$row]->account_id = $account->id;
           $this->postings[$row]->account = $account;
           $used_accounts[] = $account->id;
+          
+          if(($pos=mb_strpos($posting['name'], '#'))!=false)
+          {
+            $this->postings[$row]->comment = trim(mb_substr($posting['name'], $pos+1));
+          }
+
+          
+          
         /*
          * }
         else

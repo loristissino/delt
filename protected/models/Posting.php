@@ -9,6 +9,7 @@
  * @property integer $journalentry_id
  * @property string $amount
  * @property integer $rank
+ * @property string $comment
  *
  * The followings are the available model relations:
  * @property Account $account
@@ -45,9 +46,10 @@ class Posting extends CActiveRecord
       array('account_id, journalentry_id, amount', 'required'),
       array('account_id, journalentry_id, rank', 'numerical', 'integerOnly'=>true),
       array('amount', 'length', 'max'=>10),
+      array('comment', 'length', 'max'=>100),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
-      array('id, account_id, journalentry_id, amount, rank', 'safe', 'on'=>'search'),
+      array('id, account_id, journalentry_id, amount, rank, comment', 'safe', 'on'=>'search'),
     );
   }
 
@@ -77,6 +79,7 @@ class Posting extends CActiveRecord
       'rank' => 'Rank',
       'debit' => Yii::t('delt', 'Debit'),
       'credit' => Yii::t('delt', 'Credit'),
+      'comment' => Yii::t('delt', 'Comment'),
     );
   }
 
@@ -96,6 +99,7 @@ class Posting extends CActiveRecord
     $criteria->compare('journalentry_id',$this->journalentry_id);
     $criteria->compare('amount',$this->amount,true);
     $criteria->compare('rank',$this->rank);
+    $criteria->compare('comment',$this->comment);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,

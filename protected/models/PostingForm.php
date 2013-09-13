@@ -12,7 +12,8 @@ class PostingForm extends CFormModel
   public $account_id;
   public $account;
   public $guessed=false;
-  public $analysis = "none";
+  public $analysis = 'none';
+  public $comment = '';
   
   public function rules()
   {

@@ -803,7 +803,7 @@ class Firm extends CActiveRecord
           {
             $newposting = new Posting;
             $newposting->journalentry_id = $newjournalentry->id;
-            foreach(array('amount', 'rank') as $property)
+            foreach(array('amount', 'rank', 'comment') as $property)
             {
               $newposting->$property = $posting->$property;
             }
@@ -970,7 +970,7 @@ class Firm extends CActiveRecord
         foreach($journalentry->postings as $posting)
         {
           $info = array();
-          DELT::object2array($posting, $info, array('amount', 'rank'));
+          DELT::object2array($posting, $info, array('amount', 'rank', 'comment'));
           $info['account_code'] = $references[$posting->account_id];
           $values['postings'][]=$info;
         }
@@ -1092,7 +1092,7 @@ class Firm extends CActiveRecord
         {
           $newposting = new Posting;
           $newposting->journalentry_id = $newjournalentry->id;
-          DELT::array2object($posting, $newposting, array('amount', 'rank'));
+          DELT::array2object($posting, $newposting, array('amount', 'rank', 'comment'));
           $newposting->account_id = $references[$posting['account_code']];
           $newposting->save(false);
         }
