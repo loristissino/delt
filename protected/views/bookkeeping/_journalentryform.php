@@ -18,6 +18,8 @@ $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slu
 
 $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
 
+$placeholder_string = Yii::t('delt', 'Start typing (code or name) or double-click...');
+
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
   'swap-rows-handler',
@@ -243,6 +245,7 @@ $cs->registerScript(
 
   function addEventManagers()
   {
+    var done=false;
     for(i=1; i<= n; i++)
     {
       $("#name" +i).dblclick((function(index)
@@ -254,6 +257,11 @@ $cs->registerScript(
             return false;
           }
         })(i));
+      if(!$("#name" +i).val() && !done)
+      {
+        $("#name" +i).attr("placeholder", "'. $placeholder_string . '");
+        done=true;
+      }
         
       $("#debit" +i).blur(updatetotals);
       $("#credit" +i).blur(updatetotals);
@@ -418,7 +426,6 @@ $cs->registerScriptFile(
         'htmlOptions'=>array(
            'size'=>'50',
            'class'=>$item->name_errors ? 'error': 'valid',
-           'placeholder'=>Yii::t('delt', 'Start typing (code or name) or double-click...'),
            ),
         ))
       ?></td>
