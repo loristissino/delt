@@ -7,3 +7,6 @@
 <?php else: ?>
   <?php echo $posting->journalentry->description ?>
 <?php endif ?>
+<?php if($posting->comment): ?>
+  <em>(<?php echo $posting->comment ?>)</em>
+<?php endif ?>
