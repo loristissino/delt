@@ -26,6 +26,18 @@ $this->menu=array(
 
 <p><?php echo $model->description ?></p>
 
+
+<p>
+<?php echo CHtml::link($this->createIcon('icons/coa', 'chart of accounts', array('width'=>120, 'height'=>120)), array('/bookkeeping/coa', 'slug'=>$model->slug), array('title'=>Yii::t('delt', 'View and edit the Chart of Accounts'))) ?>
+<?php echo CHtml::link($this->createIcon('icons/journal', 'journal', array('width'=>120, 'height'=>120)), array('/bookkeeping/journal', 'slug'=>$model->slug), array('title'=>Yii::t('delt', 'View and edit the Journal Entries'))) ?>
+<?php echo CHtml::link($this->createIcon('icons/balance', 'balance', array('width'=>120, 'height'=>120)), array('/bookkeeping/balance', 'slug'=>$model->slug), array('title'=>Yii::t('delt', 'View the Trial Balance and the Ledger'))) ?>
+<?php echo CHtml::link($this->createIcon('icons/statements', 'statements', array('width'=>120, 'height'=>120)), array('/bookkeeping/statements', 'slug'=>$model->slug), array('title'=>Yii::t('delt', 'View the Statements'))) ?>
+<?php echo CHtml::link($this->createIcon('icons/settings', 'settings', array('width'=>120, 'height'=>120)), array('/firm/update', 'id'=>$model->id), array('title'=>Yii::t('delt', 'Edit firm\'s settings'))) ?>
+</p>
+
+
+
+
 <div>
 <?php echo $model->getLicenseCode($this) ?>
 </div>

@@ -134,7 +134,8 @@ class FirmController extends Controller
           }
           else
           {
-            die('something wrong');
+            Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'Sorry, something wrong happened and the creation of the firm failed.'));
+            $this->redirect(array('/bookkeeping/index'));
           }
         }
         else
@@ -202,7 +203,7 @@ class FirmController extends Controller
             $newfirm->forkFrom($firm, $this->DEUser, $form->type);
             $newfirm->fixAccounts();
             $newfirm->fixAccountNames();
-            $this->redirect(array('firm/update','id'=>$newfirm->id));
+            $this->redirect(array('bookkeeping/manage','slug'=>$newfirm->slug));
           }
           catch(Exception $e)
           {
