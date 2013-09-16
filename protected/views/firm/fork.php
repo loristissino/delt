@@ -16,10 +16,10 @@ $available_firms = $this->DEUser->profile->allowed_firms - sizeof($this->DEUser-
 <?php if($available_firms <= 0): ?>
   <?php echo $this->renderPartial('/firm/_available') ?>
 <?php else: ?>
-  <?php echo $this->renderPartial('_firms', array('title'=>'Public firms', 'firms'=>$publicfirms)) ?>
+  <?php echo $this->renderPartial('_firms', array('title'=>'Public firms', 'firms'=>$publicfirms, 'action'=>'firm/fork', 'message'=>'Fork the firm «{firm}»')) ?>
 
   <?php if(sizeof($ownfirms)): ?>
-    <?php echo $this->renderPartial('_firms', array('title'=>'Your firms', 'firms'=>$ownfirms)) ?>
+    <?php echo $this->renderPartial('_firms', array('title'=>'Your firms', 'firms'=>$ownfirms, 'action'=>'firm/fork', 'message'=>'Fork the firm «{firm}»')) ?>
   <?php endif ?>
   
   <h2><?php echo Yii::t('delt', 'A firm you know the slug of') ?></h2>

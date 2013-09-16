@@ -23,11 +23,18 @@ class BookkeepingController extends Controller
   
   public $form_action_required = null;  // used in actionPrepareentry
   
-  public function actionIndex()
+  public function actionIndex($list='off')
   {
     if($this->DEUser)
     {
-      $this->render('index', array('firms'=>$this->DEUser->firms, 'wfirms'=>$this->DEUser->wfirms));
+      if($list=='on' and sizeof($firms=$this->DEUser->firms)>0)
+      {
+        $this->render('index_detailed', array('firms'=>$firms, 'wfirms'=>$this->DEUser->wfirms));
+      }
+      else
+      {
+        $this->render('index', array('firms'=>$this->DEUser->firms, 'wfirms'=>$this->DEUser->wfirms));
+      }
     }
     else
     {

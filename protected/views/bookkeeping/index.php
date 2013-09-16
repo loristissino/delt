@@ -18,6 +18,16 @@ if($available_firms > 0)
 ?>
 <h1><?php echo Yii::t('delt', 'Bookkeeping and Accounting') ?></h1>
 
+<p>
+<?php if(sizeof($firms)): ?>
+  <?php echo CHtml::link($this->createIcon('icons/manage', 'manage', array('width'=>120, 'height'=>120)), array('/bookkeeping/index', 'list'=>'on'), array('title'=>Yii::t('delt', 'Manage one of your firms'))) ?>
+<?php endif ?>
+<?php if($available_firms > 0): ?>
+  <?php echo CHtml::link($this->createIcon('icons/create', 'create', array('width'=>120, 'height'=>120)), array('/firm/create'), array('title'=>Yii::t('delt', 'Create a new, empty firm'))) ?>
+  <?php echo CHtml::link($this->createIcon('icons/fork', 'fork', array('width'=>120, 'height'=>120)), array('/firm/fork'), array('title'=>Yii::t('delt', 'Fork (duplicate) an existing firm'))) ?>
+<?php endif ?>
+</p>
+
 <?php if(sizeof($firms)): ?>
   <p><?php echo Yii::t('delt', 'You can gain experience in bookkeping and accounting with the Double Entry method with your firms, listed on the right side.') ?></p>
 <?php else: ?>
