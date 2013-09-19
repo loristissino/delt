@@ -5,7 +5,7 @@ teach students the basic principles of bookkeeping.
 
 ## Aims
 
-A student who wishes to practisice with double entry accounting systems
+A student who wishes to practice with double entry accounting systems
 will be able to do that using this application, where they can:
 
 - manage an existing *firm* (if shared), or create a new one
@@ -30,3 +30,7 @@ The application is developed in PHP, using the Yii framework.
 
 DELT is released under the terms of GNU Affero General Public License
 http://www.gnu.org/licenses/agpl-3.0.html.
+
+## Online version
+
+DELT is currently used online at http://learndoubleentry.org
