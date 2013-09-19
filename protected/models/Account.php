@@ -1,11 +1,18 @@
 <?php
-
+/**
+ * Account class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
 /**
  * This is the model class for table "{{account}}".
  *
  * The followings are the available columns in table '{{account}}':
  * @property integer $id
- * @property integer $account_parent_id
+ * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id
  * @property integer $level
  * @property string $code
@@ -23,9 +30,18 @@
  * @property Firm $firm
  * @property Language[] $tblLanguages
  * @property Posting[] $postings
+ * 
+ * 
+ * @package application.models
+ * 
  */
+
+  
 class Account extends CActiveRecord
 {
+
+
+
   /**
    * Returns the static model of the specified AR class.
    * @param string $className active record class name.

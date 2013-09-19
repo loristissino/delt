@@ -1,9 +1,19 @@
 <?php
 
 /**
- * LoginForm class.
+ * LoginForm class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/** LoginForm class.
  * LoginForm is the data structure for keeping
  * user login form data. It is used by the 'login' action of 'SiteController'.
+ * 
+ * @package application.forms
+ * 
  */
 class LoginForm extends CFormModel
 {

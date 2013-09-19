@@ -1,11 +1,22 @@
 <?php
 
 /**
+ * FirmLanguage class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/**
  * This is the model class for table "{{firm_language}}".
  *
  * The followings are the available columns in table '{{firm_language}}':
  * @property integer $firm_id
  * @property integer $language_id
+ * 
+ * @package application.models
+ * 
  */
 class FirmLanguage extends CActiveRecord
 {

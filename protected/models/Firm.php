@@ -1,5 +1,12 @@
 <?php
-
+/**
+ * Firm class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
 /**
  * This is the model class for table "{{firm}}".
  *
@@ -22,7 +29,10 @@
  * @property Journalentry[] $journalentries
  * @property Template[] $templates
  * @property Language[] $languages
- *
+ * 
+ * 
+ * @package application.models
+ * 
  */
 
 class Firm extends CActiveRecord

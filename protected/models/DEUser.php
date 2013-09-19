@@ -1,7 +1,13 @@
 <?php
-
 /**
- * This is the model class for table "{{users}}".
+ * DEUser class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/** This is the model class for table "{{users}}".
  *
  * The followings are the available columns in table '{{users}}':
  * @property integer $id
@@ -18,6 +24,8 @@
  * @property Firm[] $tblFirms
  * @property Profiles $profiles
  * @property Profiles $id0
+ * 
+ * @package application.models
  */
 class DEUser extends CActiveRecord
 {

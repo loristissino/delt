@@ -1,7 +1,18 @@
 <?php
 /**
- * Controller is the customized base controller class.
+ * Controller class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/**
+ * Controller is a customized base controller class.
  * All controller classes for this application should extend from this base class.
+ *
+ * @package application.components
+ * 
  */
 class Controller extends CController
 {

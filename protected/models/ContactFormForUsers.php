@@ -1,7 +1,17 @@
 <?php
 
 /**
- * ContactFormForUsers class.
+ * ContactFormForUsers class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/** ContactFormForUsers class.
+ * 
+ * @package application.forms
+ * 
  */
 class ContactFormForUsers extends ContactForm
 {

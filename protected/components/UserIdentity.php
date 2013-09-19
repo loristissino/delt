@@ -1,18 +1,24 @@
 <?php
-
+/**
+ * UserIdentity class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
 /**
  * UserIdentity represents the data needed to identity a user.
  * It contains the authentication method that checks if the provided
  * data can identity the user.
+ *
+ * @package application.components
+ * 
  */
 class UserIdentity extends CUserIdentity
 {
   /**
    * Authenticates a user.
-   * The example implementation makes sure if the username and password
-   * are both 'demo'.
-   * In practical applications, this should be changed to authenticate
-   * against some persistent user identity storage (e.g. database).
    * @return boolean whether authentication succeeds.
    */
   public function authenticate()

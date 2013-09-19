@@ -1,9 +1,19 @@
 <?php
 
 /**
- * ContactForm class.
+ * ContactForm class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/** ContactForm class.
  * ContactForm is the data structure for keeping
  * contact form data. It is used by the 'contact' action of 'SiteController'.
+ * 
+ * @package application.forms
+ * 
  */
 class ContactForm extends CFormModel
 {

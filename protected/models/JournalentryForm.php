@@ -1,5 +1,20 @@
 <?php
 
+/**
+ * JournalentryForm class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/** JournalentryForm class.
+ * JournalentryForm is the data structure for keeping
+ * journal entry form data.
+ * 
+ * @package application.forms
+ * 
+ */
 class JournalentryForm extends CFormModel
 {
 

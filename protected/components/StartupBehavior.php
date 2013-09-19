@@ -1,4 +1,19 @@
 <?php
+/**
+ * StartupBehavior class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.0
+ */
+/**
+ * StartupBehavior is a customized behavior class.
+ *
+ * @package application.behaviors
+ * 
+ */
+
 class StartupBehavior extends CBehavior
 {
   
