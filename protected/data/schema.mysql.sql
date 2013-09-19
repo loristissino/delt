@@ -255,13 +255,6 @@ ALTER TABLE `tbl_account`
   ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
--- Constraints for table `tbl_account_name`
---
-ALTER TABLE `tbl_account_name`
-  ADD CONSTRAINT `tbl_account_name_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_account_name_ibfk_2` FOREIGN KEY (`language_id`) REFERENCES `tbl_language` (`id`) ON UPDATE CASCADE;
-
---
 -- Constraints for table `tbl_posting`
 --
 ALTER TABLE `tbl_posting`

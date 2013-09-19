@@ -185,47 +185,12 @@ class Account extends CActiveRecord
   public function getName()
   {
     return $this->currentname;
-    
-    //DELTOD
-    /*
-    //Yii::trace('getName() called, account ' . $this->id, 'delt.debug');
-    if($record = AccountName::model()->findByAttributes(array('account_id'=>$this->id, 'language_id'=>$this->firm->language_id)))
-    {
-      return $record->name;
-    }
-    else
-    {
-      $records = AccountName::model()->findAllByAttributes(array('account_id'=>$this->id));
-      if(sizeof($records))
-      {
-        return $records[0]->name;
-      }
-      else
-      {
-        return '[unnamed]';
-      }
-    }
-    */
   }
   
   public function getParent()
   {
     return Account::model()->findByPk($this->account_parent_id);
   }
-  /*
-  public function scopes()
-  {
-    return array(
-      'published'=>array(
-          'condition'=>'status=1',
-      ),
-      'recently'=>array(
-          'order'=>'create_time DESC',
-          'limit'=>5,
-      ),
-    );
-  }
-  */
   
   public function __toString()
   {
@@ -295,59 +260,6 @@ class Account extends CActiveRecord
     return $this;
   }
 
-  
-  
-  //DELTOD
-  /*
-  public function getL10n_names()
-  {
-    $text='';
-    $account_names=AccountName::model()->with('language')->findAllByAttributes(array('account_id'=>$this->id));
-    foreach($account_names as $account_name)
-    {
-      $text .= $account_name->language->locale . ': ' . $account_name->name . "\n";
-    }
-    return $text;
-  }
-  */
-  
-  /**
-   * Deletes the row corresponding to this active record.
-   * @return boolean whether the deletion is successful.
-   * @throws CException if the record is new
-   * @override parent::delete()
-   */
-  /* DELTOD
-  public function delete()
-  {
-    if(!$this->getIsNewRecord())
-    {
-      Yii::trace(get_class($this).'.delete()','system.db.ar.CActiveRecord');
-      if($this->beforeDelete())
-      {
-        $transaction = $this->getDbConnection()->beginTransaction();
-        try
-        {
-          $deleted=AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
-          $result=$this->deleteByPk($this->getPrimaryKey())>0;
-          $transaction->commit();
-        }
-        catch(Exception $e)
-        {
-          $transaction->rollback();
-        }
-        
-        $this->afterDelete();
-        return true;
-
-      }
-      else
-        return false;
-    }
-    else
-      throw new CDbException(Yii::t('yii','The active record cannot be deleted because it is new.'));
-  }
-  */
   public function getNumberOfJournalentries()
   {
     return Posting::model()->countByAttributes(array('account_id'=>$this->id));
@@ -451,21 +363,7 @@ class Account extends CActiveRecord
     }
     return preg_match('/^[a-zA-Z0-9\.]*$/', $this->code);
   }
-  
-  /**
-   * This method is invoked after a model instance is created by new operator.
-   * The default implementation raises the {@link onAfterConstruct} event.
-   * It is here overridden to do postprocessing after model creation.
-   * We call the parent implementation so that the event is raised properly.
-   */  
-  /*
-  protected function afterConstruct()
-  {
-    parent::afterConstruct();
-    $this->setDefaultForNames($this->firm);
-  }
-  */
-  
+    
   public function setDefaultForNames(Firm $firm=null, $name='')
   {
     $languages = $this->firm->languages;
@@ -503,9 +401,6 @@ class Account extends CActiveRecord
     }
     $this->textnames = substr($this->textnames, 0, strlen($this->textnames)-1);
   }
-  
-  
-  
   
   public function getNumberOfChildren()
   {
@@ -545,19 +440,10 @@ class Account extends CActiveRecord
 
   public function getPostingsAsDataProvider()
   {
-/*    $sort = new CSort;
-    $sort->defaultOrder = 'code ASC';
-    $sort->attributes = array(
-        'code'=>'code',
-        'name'=>'currentname.name',
-        'position'=>'position',
-    );    
-  */  
     return new CActiveDataProvider(Posting::model()->with('journalentry')->belongingTo($this->id), array(
       'pagination'=>array(
           'pageSize'=>30,
           ),
-    //  'sort'=>$sort,
       )
     );
   }
@@ -635,33 +521,6 @@ class Account extends CActiveRecord
     return $amount;
   }
 
-//DELTOD
-/*  
-  public function safeDelete()
-  {
-    $transaction=$this->getDbConnection()->beginTransaction();
-    
-    try
-    {
-      $this->deleteNames();
-      $this->delete();
-      $transaction->commit();
-      return true;
-    }
-    catch(Exception $e)
-    {
-      Yii::trace('could not delete account ' . $this->id . ' reason: ' . $e->getMessage(), 'delt.debug');
-      $transaction->rollback();
-      return false;
-    }
-  }
-  
-  public function deleteNames()
-  {
-    AccountName::model()->deleteAllByAttributes(array('account_id'=>$this->id));
-    Yii::trace('names deleted for account ' . $this->id, 'delt.debug');
-  }
-*/
   public function getNamesAsArray($languages=array())
   {
     $result=array();
@@ -728,7 +587,6 @@ class Account extends CActiveRecord
     unset($this->id);
     $this->currentname = trim(str_replace('!', '', $this->currentname));
     $this->setDefaultForNames($firm, $this->currentname);
-//    $this->code = '!' . ($firm->countBangAccounts()+1);
   }
   
   
