@@ -10,7 +10,7 @@
 /**
  * This is the class for a customized array validator.
  *
- * @package application.validators
+ * @package application.components
  * 
  */
 class ArrayValidator extends CValidator

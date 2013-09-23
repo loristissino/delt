@@ -10,7 +10,7 @@
 /**
  * StartupBehavior is a customized behavior class.
  *
- * @package application.behaviors
+ * @package application.components
  * 
  */
 
