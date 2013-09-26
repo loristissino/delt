@@ -686,13 +686,16 @@ class BookkeepingController extends Controller
     $this->line_shown = false;
     return '';
   }
+
+  public function renderDescriptionForLedger(Posting $posting, $row)
+  {
+    return $this->renderPartial('_descriptionforledger', array('posting'=>$posting), true);
+  }
   
   public function isLineShown()
   {
     return $this->line_shown;
-    //return $this->hide_date_and_description;
   }
-
   
   public function renderAccount(Posting $posting, $row)
   {

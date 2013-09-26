@@ -72,7 +72,7 @@ if($deletable)
     array(
       'name'=>'journalentry.description',
       'header'=>Yii::t('delt', 'Description'),
-      'value'=>array($this, 'RenderDescription'),
+      'value'=>array($this, 'RenderDescriptionForLedger'),
       'cssClassExpression'=>'$data->journalentry->is_closing? \'closing\' : \'\'',
       'type'=>'raw',
       ),
