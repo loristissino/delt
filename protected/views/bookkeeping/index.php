@@ -26,6 +26,7 @@ if($available_firms > 0)
   <?php echo CHtml::link($this->createIcon('icons/create', 'create', array('width'=>120, 'height'=>120)), array('/firm/create'), array('title'=>Yii::t('delt', 'Create a new, empty firm'))) ?>
   <?php echo CHtml::link($this->createIcon('icons/fork', 'fork', array('width'=>120, 'height'=>120)), array('/firm/fork'), array('title'=>Yii::t('delt', 'Fork (duplicate) an existing firm'))) ?>
 <?php endif ?>
+  <?php echo CHtml::link($this->createIcon('icons/profile', 'profile', array('width'=>120, 'height'=>120)), array('/user/profile/edit'), array('title'=>Yii::t('delt', 'Edit your profile\'s settings'))) ?>
 </p>
 
 <?php if(sizeof($firms)): ?>

@@ -344,5 +344,17 @@ return array(
   'or' => 'oppure',
   'Click here if you want to regenerate the slug from the name of the firm' => 'Fai clic qui se vuoi rigenerare lo slug a partire dal nome dell\'azienda',
   'Click here if you want to create a random slug, which helps in keeping it somehow a bit more private' => 'Fai clic qui se vuoi far generare uno slug casuale, in modo da rendere l\'azienda un po\' più privata',
+  
+  'Manage one of your firms'=>'Gestisci una delle tue aziende',
+  'Create a new, empty firm'=>'Crea un\'azienda nuova (vuota)',
+  'Fork (duplicate) an existing firm'=>'Duplica un\'azienda esistente',
+  'Edit your profile\'s settings'=>'Modifica il tuo profilo utente',
+  
+  'View and edit the Chart of Accounts'=>'Visualizza e modifica il Piano dei conti',
+  'View and edit the Journal Entries'=>'Visualizza e modifica il Libro giornale',
+  'View the Trial Balance and the Ledger'=>'Visualizza la Situazione contabile e il Libro Mastro',
+  'View the Statements'=>'Visualizza il bilancio',
+  'Edit firm\'s settings'=>'Modifica le impostazioni dell\'azienda',
+  
 );
 
