@@ -8,7 +8,7 @@
  * @since 1.0
  */
 /**
- * This is the class for a customized array validator.
+ * A customized array validator.
  *
  * @package application.components
  * 

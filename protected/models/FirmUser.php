@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{firm_user}}".
+ * FirmUser represents the m:n relationship between a {@link Firm} and a {@link DEUser}.
  *
- * The followings are the available columns in table '{{firm_user}}':
  * @property integer $firm_id
  * @property integer $user_id
  * @property string $role

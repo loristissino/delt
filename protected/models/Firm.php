@@ -8,9 +8,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{firm}}".
+ * Firm represents a single firm for which users practice accounting (or a single exercise).
  *
- * The followings are the available columns in table '{{firm}}':
  * @property integer $id
  * @property string $name
  * @property string $slug

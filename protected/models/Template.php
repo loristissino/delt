@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{template}}".
+ * Template represents an example of a {@link Journalentry} that can be used for other similar journal entries.
  *
- * The followings are the available columns in table '{{template}}':
  * @property integer $id
  * @property integer $firm_id
  * @property string $description

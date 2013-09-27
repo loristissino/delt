@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{posting}}".
+ * Posting represent a single line (a debit or a credit of an {@link Account}) belonging to a {@link Journalentry}.
  *
- * The followings are the available columns in table '{{posting}}':
  * @property integer $id
  * @property integer $account_id
  * @property integer $journalentry_id

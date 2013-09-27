@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{journalentry}}".
+ * Journalentry represents a single journal entry of a {@link Firm}.
  *
- * The followings are the available columns in table '{{journalentry}}':
  * @property integer $id
  * @property integer $firm_id
  * @property string $date

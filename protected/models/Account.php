@@ -8,9 +8,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{account}}".
+ * Account represents a single account belonging to the chart of accounts of a {@link Firm}.
  *
- * The followings are the available columns in table '{{account}}':
  * @property integer $id
  * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id

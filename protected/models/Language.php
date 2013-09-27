@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{language}}".
+ * Language represents a language (or, better, a "locale"), in which account names can be written.
  *
- * The followings are the available columns in table '{{language}}':
  * @property integer $id
  * @property string $language_code
  * @property string $country_code

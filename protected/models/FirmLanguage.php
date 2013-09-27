@@ -9,9 +9,8 @@
  * @since 1.0
  */
 /**
- * This is the model class for table "{{firm_language}}".
+ * FirmLanguage represents the m:n relationship between a {@link Firm} and a {@link Language}.
  *
- * The followings are the available columns in table '{{firm_language}}':
  * @property integer $firm_id
  * @property integer $language_id
  * 
