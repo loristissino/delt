@@ -43,6 +43,10 @@ class Controller extends CController
    */
   public $firmmenu=array();
 
+  /**
+   * @var string template to use for social timeline.
+   */
+  public $timeline=false;
     
   /**
    * @var array the breadcrumbs of the current page. The value of this property will

@@ -12,9 +12,13 @@ if($this->firm)
 else
 {
   $this->firmmenu=array();
-  foreach($this->DEUser->firms as $firm)
+  
+  if($this->DEUser)
   {
-    $this->firmmenu[]=array('label'=>$firm, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug));
+    foreach($this->DEUser->firms as $firm)
+    {
+      $this->firmmenu[]=array('label'=>$firm, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug));
+    }
   }
 }
 
@@ -69,6 +73,7 @@ else
     ));
     $this->endWidget();
   ?>
+  <?php $this->widget('ext.widgets.delt.TimelinesWidget', array('timeline'=>$this->timeline)); ?>
 
   <?php
   /*
