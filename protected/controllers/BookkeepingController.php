@@ -109,6 +109,7 @@ class BookkeepingController extends Controller
             Yii::app()->getUser()->setState('delimiter', $exportbalanceform->delimiter);
             Yii::app()->getUser()->setState('type', $exportbalanceform->type);
             Yii::app()->getUser()->setState('charset', $exportbalanceform->charset);
+            Yii::app()->getUser()->setState('fruition', $exportbalanceform->fruition);
             $this->redirect(array('bookkeeping/balance','slug'=>$this->firm->slug, 'format'=>'csv'));
           }
         }
@@ -117,6 +118,7 @@ class BookkeepingController extends Controller
         $exportbalanceform->delimiter = Yii::app()->getUser()->getState('delimiter', '');
         $exportbalanceform->type = Yii::app()->getUser()->getState('type', '2');
         $exportbalanceform->charset = Yii::app()->getUser()->getState('charset', 'utf-8');
+        $exportbalanceform->fruition = Yii::app()->getUser()->getState('fruition', 'd');
         
         $this->render('exportbalance', array(
           'model'=>$this->firm,
@@ -131,14 +133,25 @@ class BookkeepingController extends Controller
           'delimiter'=>Yii::app()->getUser()->getState('delimiter', ''),
           'type'=>Yii::app()->getUser()->getState('type', '2'),
           'charset'=>Yii::app()->getUser()->getState('charset', 'utf-8'),
+          ), true);
+        if(Yii::app()->getUser()->getState('fruition')=='d')
+        {
+          $filename = $this->firm->slug . '-' . date('Y-m-d-His') . (Yii::app()->getUser()->getState('separator', ',')=='t' ? '.tsv' : '.csv');
+          $this->sendDispositionHeader($filename);
+          $this->serveContent(Yii::app()->getUser()->getState('separator', ',')=='t' ? 
+              'text/tab-separated-values'
+              :
+              'text/csv', 
+            $content);
+        }
+        else
+        {
+          $this->render('exportbalanceinline', array(
+            'model'=>$this->firm,
+            'content'=>$content,
           ));
-        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . (Yii::app()->getUser()->getState('separator', ',')=='t' ? '.tsv' : '.csv');
-        $this->sendDispositionHeader($filename);
-        $this->serveContent(Yii::app()->getUser()->getState('separator', ',')=='t' ? 
-            'text/tab-separated-values'
-            :
-            'text/csv', 
-          $content);
+          
+        }
         break;
       default:
         $this->render('balance', array(

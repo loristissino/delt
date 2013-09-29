@@ -22,11 +22,13 @@ class ExportbalanceForm extends CFormModel
   public $separator; // tab, comma, colon, semicolon
   public $type;  // signed amount, unsigned amount with extra column, separate columns for debit and credit outstanding balance
   public $charset; 
+  public $fruition;
   
   public $delimiters;
   public $separators;
   public $types;
   public $charsets;
+  public $fruitions;
    
   public function afterConstruct()
   {
@@ -67,6 +69,8 @@ class ExportbalanceForm extends CFormModel
       'windows-874' => 'Thai (Windows 874)',
 
     );
+    
+    $this->fruitions=array('i'=>Yii::t('delt', 'inline'), 'd'=>Yii::t('delt', 'download'));
   }
   
   public function rules()
@@ -76,6 +80,7 @@ class ExportbalanceForm extends CFormModel
       array('separator', 'ArrayValidator', 'values'=>$this->separators, 'message'=>'You must select a valid separator'),
       array('type', 'ArrayValidator', 'values'=>$this->types, 'message'=>'You must select a valid type'),
       array('charset', 'ArrayValidator', 'values'=>$this->charsets, 'message'=>'You must select a valid charset'),
+      array('fruition', 'ArrayValidator', 'values'=>$this->fruitions, 'message'=>'You must select a valid fruition type'),
     );
   }
   
@@ -89,6 +94,7 @@ class ExportbalanceForm extends CFormModel
       'delimiter' => Yii::t('delt', 'Text delimiter'),
       'separator' => Yii::t('delt', 'Field delimiter'),
       'charset' => Yii::t('delt', 'Character set'),
+      'fruition' => Yii::t('delt', 'Fruition type'),
     );
   }
   

@@ -67,6 +67,11 @@ $this->breadcrumbs=array(
     <?php echo $form->error($model, 'separator'); ?>
   </div>
 
+  <div class="row checkbox">
+    <?php echo $form->labelEx($exportbalanceform,'fruition'); ?>
+    <?php echo $form->radioButtonList($exportbalanceform, 'fruition', $exportbalanceform->fruitions, array('template'=>'{input} {label}', 'labelOptions'=>array('style'=>'display: inline; font-weight: normal'), 'separator'=>'&nbsp;&nbsp;&nbsp;', 'container'=>'')) ?>
+  </div>
+
   <div class="row buttons">
     <?php echo CHtml::submitButton(Yii::t('delt', 'Export'), array('name'=>'export')); ?>
   </div>

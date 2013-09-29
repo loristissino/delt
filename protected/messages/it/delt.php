@@ -308,6 +308,7 @@ return array(
   'We will not show it in the website nor give it away without your consent.'=>'Non verrà mostrato nel sito web né ceduto ad altri senza il tuo consenso.',
   
   'Trial Balance Export to CSV file' => 'Esportazione situazione contabile su file CSV',
+  'Trial Balance Export' => 'Esportazione situazione contabile',
   'Export (CSV)' => 'Esporta (CSV)',
   
   'signed amount' => 'importo con segno',
@@ -355,6 +356,9 @@ return array(
   'View the Trial Balance and the Ledger'=>'Visualizza la Situazione contabile e il Libro Mastro',
   'View the Statements'=>'Visualizza il bilancio',
   'Edit firm\'s settings'=>'Modifica le impostazioni dell\'azienda',
+  
+  'You can copy the following lines and paste them to a spreadsheet.'=>'Puoi copiare il contenuto qui sotto e incollarlo in un foglio elettronico.',
+  'Fruition type'=>'Tipo di fruizione',
   
 );
 
