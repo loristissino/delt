@@ -58,6 +58,7 @@ class Firm extends CActiveRecord
   }
 
   /**
+   * Returns the associated database table name. 
    * @return string the associated database table name
    */
   public function tableName()
@@ -66,7 +67,8 @@ class Firm extends CActiveRecord
   }
   
   /**
-   * @return array validation rules for model attributes.
+   * Returns the validation rules for model attributes.
+   * @return array validation rules for model attributes
    */
   public function rules()
   {
@@ -81,7 +83,7 @@ class Firm extends CActiveRecord
       array('description', 'safe'),
       array('slug', 'validateSlug'),
       array('currency', 'validateCurrency'),
-      array('license_confirmation', 'checkLicense'),
+      array('license_confirmation', 'validateLicense'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -89,6 +91,7 @@ class Firm extends CActiveRecord
   }
 
   /**
+   * Returns the relational rules.
    * @return array relational rules.
    */
   public function relations()
@@ -106,6 +109,7 @@ class Firm extends CActiveRecord
   }
 
   /**
+   * Returns the customized attribute labels.
    * @return array customized attribute labels (name=>label)
    */
   public function attributeLabels()
@@ -155,6 +159,7 @@ class Firm extends CActiveRecord
   }
 
   /**
+   * Returns a textual description of the firm.
    * @return string a textual description of the firm
    */
   public function __toString()
@@ -162,6 +167,11 @@ class Firm extends CActiveRecord
     return $this->name;
   }
   
+  /**
+   * Returns the set of owners of the firm, excluding a specified one.
+   * @param integer $user_id the id of the {@link DEUser} that must be ecluded
+   * @return array the owners of the firm (as PDO objects)
+   */
   public function getAllOwnersExcept($user_id)
   {
     // FIXME: merge / integrate with Firm::getOwners()
@@ -181,6 +191,9 @@ class Firm extends CActiveRecord
     return $users;    
   }
   
+  /**
+   * Validates the slug chosen for the firm.
+   */
   public function validateSlug()
   {
     if(strlen($this->slug)>32)
@@ -201,6 +214,9 @@ class Firm extends CActiveRecord
     }
   }
 
+  /**
+   * Validates the currency chosen for the firm.
+   */
   public function validateCurrency()
   {
     if($this->currency=='')
@@ -214,7 +230,10 @@ class Firm extends CActiveRecord
     $this->currency = strtoupper($this->currency);
   }
   
-  public function checkLicense()
+  /**
+   * Validates the input by checking that the license has been accepted.
+   */
+  public function validateLicense()
   {
     if(!$this->id and !$this->license_confirmation)
     {
@@ -222,12 +241,19 @@ class Firm extends CActiveRecord
     }
   }
 
-  
+  /**
+   * Returns the parent firm.
+   * @return Firm the parent firm.
+   */
   public function getParent()
   {
     return Firm::model()->findByPk($this->firm_parent_id);
   }
   
+  /**
+   * Returns the ancestors of the firm.
+   * @return array the ancestors of the firm.
+   */
   public function getAncestors()
   {
     $ancestors = array();
@@ -239,7 +265,12 @@ class Firm extends CActiveRecord
     return $ancestors;
   }
   
-  public function isDescendantOf($firm)
+  /**
+   * Checks if the firm is a descendant of a specified firm.
+   * @param Firm $firm the firm to be checked against
+   * @return boolean whether the firm is a descendant of the specified firm.
+   */
+  public function isDescendantOf(Firm $firm)
   {
     foreach($this->ancestors as $ancestor)
     {
@@ -252,6 +283,11 @@ class Firm extends CActiveRecord
   }
   
   
+  /**
+   * Finds the accounts from the specified firm that differ from the current one.
+   * @param Firm $firm the firm to be checked against
+   * @return array an array of new accounts and of differences.
+   */
   public function findDifferentAccounts(Firm $firm)
   {
     $own     = array();
@@ -276,9 +312,13 @@ class Firm extends CActiveRecord
       }
     }
     return array('new'=>$new, 'changes'=>$changes);
-    
   }
   
+  /**
+   * Synchronizes the accounts of the firm using the data posted by the user.
+   * @param array $postdata the data posted by the end user with the form
+   * @return boolean whether the operation was successful.
+   */
   public function synchronizeAccounts($postdata)
   {
     $transaction = $this->getDbConnection()->beginTransaction();
@@ -319,10 +359,10 @@ class Firm extends CActiveRecord
     }
   }
   
-  
   /**
+   * Checks if the firm is manageable by a specified user.
    * @param DEUser $user the user to check
-   * @return boolean true if the firm is manageable by $user, false otherwise
+   * @return boolean whether the firm is manageable by $user
    */
   public function isManageableBy(DEUser $user=null)
   {
@@ -334,6 +374,11 @@ class Firm extends CActiveRecord
     return sizeof($fu) > 0;
   }
   
+  /**
+   * Returns the owners of the firm.
+   * @param boolean $as_text whether the value must be returned as text
+   * @return mixed the owners
+   */
   public function getOwners($as_text=false)
   {
     // FIXME This should be done with one query, I must study how the model from the plugin works...
@@ -368,7 +413,12 @@ class Firm extends CActiveRecord
     
     return $rows;
   }
-  
+
+  /**
+   * Invites a user to join the management of the firm.
+   * @param string $username the username of the user to be invited
+   * @return boolean whether the operation was successful
+   */
   public function invite($username)
   {
     if(!$user=DEUser::model()->findByAttributes(array('username'=>$username)))
@@ -400,6 +450,11 @@ class Firm extends CActiveRecord
     
   }
 
+  /**
+   * Returns a data provider for the accounts of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the accounts of the firm
+   */
   public function getAccountsAsDataProvider($pagesize=5000)
   {
     $sort = new CSort;
@@ -419,6 +474,11 @@ class Firm extends CActiveRecord
     );
   }
   
+  /**
+   * Returns a data provider for the account balances of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the account balances of the firm
+   */
   public function getAccountBalancesAsDataProvider($pagesize=5000)
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
@@ -472,13 +532,17 @@ class Firm extends CActiveRecord
       ->having('total <> 0')
       ->queryAll();
       //->text;
-    //print_r($accounts);
-    //die();
     return $accounts;
 
   }
   
-  
+  /**
+   * Returns the account balances of the firm.
+   * @param string $position the position of the account
+   * @param array $ids the accounts to look for
+   * @param boolean $reverse whether to return sorted in reverse order
+   * @return array the account balances of the firm
+   */
   public function getAccountBalances($position='', $ids=array(), $reverse=true)
   {
     
@@ -549,16 +613,25 @@ class Firm extends CActiveRecord
     return $result;
   }
   
-  public function getJournalentriesAsDataProvider($size=100)
+  /**
+   * Returns a data provider for the journal entries of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the postings related to the journal entries of the firm
+   */
+  public function getJournalentriesAsDataProvider($pagesize=100)
   {
     return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
-          'pageSize'=>$size,
+          'pageSize'=>$pagesize,
           ),
       )
     );
   }
   
+  /**
+   * Fixes the accounts of the firm.
+   * @return boolean whether the operation was successful
+   */
   public function fixAccounts()
   {
     $maxlevel=0;
@@ -622,17 +695,24 @@ class Firm extends CActiveRecord
     return true;
     
   }
-  
+
+  /**
+   * Fixes the account names.
+   * 
+   * This is useful after firm forking (this way we get the i18n names)
+   */
   public function fixAccountNames()
   {
-    // useful after firm forking (this way we get the i18n names)
     foreach($this->accounts as $account)
     {
       $account->save();
     }
   }
   
-  
+  /**
+   * Compares two accounts by level.
+   * @return integer -1, 0 or 1, according to the result of the comparison.
+   */
   private function _compareAccountsByLevel($a, $b)
   {
     if($a['model']->level == $b['model']->level)
@@ -642,6 +722,11 @@ class Firm extends CActiveRecord
     return $a['model']->level < $b['model']->level ? -1: 1;
   }
   
+  /**
+   * Checks if the firm is manageable by a specified user.
+   * @param integer $user_id the id of the {@link DEUser} to be chechek against
+   * @return boolean whether the firm is manageable by the specified user
+   */
   public function manageableBy($user_id)
   {
     $this->getDbCriteria()->mergeWith(array(
@@ -651,12 +736,16 @@ class Firm extends CActiveRecord
     return $this;
   }
   
+   /**
+   * Retrieves the accounts that match a specified term in the code or in the name.
+   * @param string $term the term to be cheched against
+   * @return array the strings (code + name) of the accounts found
+   */
   public function findAccounts($term)
   {
     $accounts = Yii::app()->db->createCommand()
       ->select('code, outstanding_balance, currentname')
       ->from('{{account}}')
-//DELTOD      ->leftJoin('{{account_name}} n', 'n.account_id = id AND n.language_id=:language_id', array(':language_id'=>$this->language_id))
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('or', 
         array('like', 'code', '%' . $term . '%'),
@@ -674,7 +763,11 @@ class Firm extends CActiveRecord
     return $result;
   }
   
-  
+   /**
+   * Returns the total amounts of postings.
+   * @param string $type 'D' for debit values, 'C' for credit values
+   * @return decimal the total amount
+   */
   public function getTotalAmounts($type='D')
   {
     $amount = Yii::app()->db->createCommand()
@@ -687,9 +780,12 @@ class Firm extends CActiveRecord
       ->queryScalar();
             
     return $type='D' ? $amount : -$amount;
-
   }
 
+  /**
+  * Returns the max level of accounts for the firm.
+  * @return integer the level
+  */
   public function getCOAMaxLevel()
   {
     $level = Yii::app()->db->createCommand()
@@ -699,13 +795,23 @@ class Firm extends CActiveRecord
       ->queryScalar();
     return $level;
   }
-
   
+  /**
+  * Returns the firms that can be forked.
+  * @return array the forkable firms
+  */
   public function findForkableFirms()
   {
     return Firm::model()->findAllByAttributes(array('status'=>1));
   }
   
+  /**
+  * Forks a firm and sets a user as its owner.
+  * @param Firm $source the firm to be forked from
+  * @param DEUser $user the owner
+  * @param integer $type the kind of forking required 
+  * @return boolean whether the operation was successful
+  */
   public function forkFrom(Firm $source, DEUser $user, $type)
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
@@ -837,6 +943,11 @@ class Firm extends CActiveRecord
     
   }
   
+  /**
+  * Checks if the firm is forkable by a specified user.
+  * @param DEUser $user the user
+  * @return boolean whether the firm is forkable
+  */
   public function isForkableBy(DEUser $user)
   {
     if($this->status>0)
@@ -845,6 +956,12 @@ class Firm extends CActiveRecord
     return false;
   }
   
+  
+  /**
+  * Saves the firm and sets its owner.
+  * @param DEUser $user the user
+  * @return boolean whether the operation was successful
+  */
   public function saveWithOwner(DEUser $user)
   {
     $transaction = $this->getDbConnection()->beginTransaction();
@@ -868,10 +985,7 @@ class Firm extends CActiveRecord
       die($e->getMessage());
       return false;
     }
-    
   }
-  
-  
   
   /*
   public function behaviors()
@@ -884,7 +998,12 @@ class Firm extends CActiveRecord
     );
   }
   */
-  
+
+  /**
+  * Returns the HTML code used to inform about the license.
+  * @param Controller $controller the controller
+  * @return string the HTML code
+  */
   public function getLicenseCode(CController $controller)
   {
     $text = Yii::t('delt', '<a rel="license" href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank"><img alt="Creative Commons License" style="border-width:0" src="http://i.creativecommons.org/l/by-sa/3.0/88x31.png" width="88" height="31" /></a><br />
@@ -1003,6 +1122,11 @@ class Firm extends CActiveRecord
     return $data;
   }
   
+  /**
+  * Loads data from an uploaded file, and fills them to the firm.
+  * @param CUploadedFile $file the file to load data from
+  * @return boolean whether the operation was successful
+  */
   public function loadFromFile(CUploadedFile $file)
   {
     try
@@ -1143,6 +1267,9 @@ class Firm extends CActiveRecord
     
   }
   
+  /**
+   * Deletes all journal entries.
+   */
   private function _deleteJournalentries()
   {
     foreach($this->journalentries as $journalentry)
@@ -1151,6 +1278,11 @@ class Firm extends CActiveRecord
     }
   }
   
+  /**
+   * Deletes the specified journal entries.
+   * @param array $ids the ids of the journal entries to delete
+   * @return integer the number of journal entries actually deleted
+   */
   public function deleteSelectedJournalentries($ids=array())
   {
     $journalentries=$this->_findJournalentries($ids);
@@ -1162,6 +1294,11 @@ class Firm extends CActiveRecord
     return $number;
   }
   
+  /**
+   * Returns the specified journal entries.
+   * @param array $ids the ids of the journal entries to find
+   * @return array the journal entries found
+   */
   private function _findJournalentries($ids=array())
   {
     
@@ -1173,44 +1310,64 @@ class Firm extends CActiveRecord
     return Journalentry::model()->findAll($criteria);
   }
   
-  
+  /**
+   * Deletes all the languages associated with the firm.
+   */
   private function _deleteLanguages()
   {
     FirmLanguage::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  /**
+   * Deletes all the templates associated with the firm.
+   */
   private function _deleteTemplates()
   {
     Template::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  /**
+   * Deletes all the users (owners) associated with the firm.
+   */
   private function _deleteUsers()
   {
     FirmUser::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  /**
+   * Deletes all the accounts associated with the firm.
+   */
   private function _deleteAccounts()
   {
-    $account_ids = Yii::app()->db->createCommand()
-      ->select('id')
-      ->from('{{account}}')
-      ->where('firm_id = :id', array(':id'=>$this->id))
-      ->queryColumn();
-    
-    AccountName::model()->deleteAllByAttributes(array('account_id'=>$account_ids));
     Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  /**
+   * Returns the data needed for the Balance Sheet.
+   * @param integer $level the level required
+   * @return array the data
+   */
   public function getBalanceSheet($level=1)
   {
     return $this->_getStatement('P', $level);
   }
   
+  /**
+   * Returns the data needed for the Income Statement.
+   * @param integer $level the level required
+   * @return array the data
+   */
   public function getIncomeStatement($level=1)  // aka Profit and Loss statement
   {
     return $this->_getStatement('E', $level);
   }
   
+  /**
+   * Returns the data needed for a generic statement.
+   * @param string $position the position required
+   * @param integer $level the level required
+   * @return array the data
+   */
   private function _getStatement($position, $level=1)
   {
     $positions=array($position);
@@ -1262,13 +1419,21 @@ class Firm extends CActiveRecord
     return $accounts;
   }
   
+  /**
+   * Deletes the firm, by setting a flag (soft deletion).
+   * @return boolean whether the operation was successful
+   */
   public function softDelete()
   {
     $this->status=self::STATUS_DELETED;
     $this->save();
     return true;
   }
-  
+
+  /**
+   * Deletes the firm, actually cleaning off all the data.
+   * @return boolean whether the operation was successful
+   */
   public function safeDelete()
   {
     $this->_deleteJournalentries();
@@ -1290,13 +1455,22 @@ class Firm extends CActiveRecord
       return false;
     }
   }
-  
+
+  /**
+   * Deletes all journal entries.
+   * @return boolean whether the operation was successful
+   */
   public function clearJournal()
   {
     $this->_deleteJournalentries();
     return true;
   }
   
+  /**
+   * Creates a bang account.
+   * @param string $name the name of the account to be created
+   * @return Account the account created
+   */
   public function createBangAccount($name)
   {
     $account = new Account();
@@ -1309,6 +1483,10 @@ class Firm extends CActiveRecord
     return $account;
   }
   
+  /**
+   * Returns the number of bang accounts created for this firm.
+   * @return integer the number
+   */
   public function countBangAccounts()
   {
     $number = Yii::app()->db->createCommand()
@@ -1320,6 +1498,11 @@ class Firm extends CActiveRecord
     return $number;
   }
 
+  /**
+   * Returns the number of firms with a slug starting with a specified text.
+   * @param string $text the string to check against
+   * @return integer the number
+   */
   public function countFirmsWithSlugStartingWith($text)
   {
     $number = Yii::app()->db->createCommand()
@@ -1330,6 +1513,10 @@ class Firm extends CActiveRecord
     return $number;
   }
 
+  /**
+   * Saves the languages associated with the firm.
+   * @param array $values the ids of the languages to be set
+   */
   public function saveLanguages($values=array())
   {
     if(!in_array($this->language_id, $values))
@@ -1361,7 +1548,13 @@ class Firm extends CActiveRecord
     
   }
   
-  public function getCoatree($controller, $id=null)
+  /**
+   * Returns the data needed to build a tree for the chart of accounts.
+   * @param CController $controller the controller
+   * @param integer $id the id of an account, if known
+   * @return array the data
+   */
+  public function getCoatree(CController $controller, $id=null)
   {
     //FIXME -- we need an instance of controller so that we can use the createIcon function and other stuff -- this violates MVC, and should maybe fixed.
     
@@ -1404,6 +1597,11 @@ class Firm extends CActiveRecord
     return $result;
     
   }
+  /**
+   * Imports accounts from the data posted in a form.
+   * @param IEAccountsForm $form the form where the data are written
+   * @return integer the number of accounts actually imported
+   */
   
   public function importAccountsFrom(IEAccountsForm $form)
   {
