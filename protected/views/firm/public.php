@@ -28,8 +28,8 @@ $this->breadcrumbs=array(
   </tr>
 <?php $n=0; $journalentryid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->journalentry->is_included ?>
   <?php if($journalentryid!=$posting->journalentry_id): $journalentryid=$posting->journalentry_id ?>
-  <tr <?php if($excluded) echo 'class="excluded"' ?>>
-    <td class="firstjournalentryrow"><?php echo ++$n ?></td>
+  <tr id="entry<?php echo ++$n ?>" <?php if($excluded) echo 'class="excluded"' ?>>
+    <td class="firstjournalentryrow"><?php echo CHtml::link($n, '#entry'. $n) ?></td>
     <td class="firstjournalentryrow">
       <?php echo Yii::app()->dateFormatter->formatDateTime($posting->journalentry->date, 'short', null) ?>
     </td>

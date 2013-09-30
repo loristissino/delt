@@ -78,12 +78,15 @@ class FirmController extends Controller
     ));
   }
 
-  public function actionPublic($slug)
+  public function actionPublic($slug, $level=0)
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
     if(sizeof($postings = $this->firm->getJournalentriesAsDataProvider(100000)->data))
     {
-      $level = $this->firm->getCOAMaxLevel();
+      if($level==0)
+      {
+         $level = $this->firm->getCOAMaxLevel();
+      }
       $this->render('public', array(
         'model'=>$this->firm,
         'postings'=>$postings,
