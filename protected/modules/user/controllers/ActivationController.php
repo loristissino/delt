@@ -13,11 +13,11 @@ class ActivationController extends Controller
 		$activkey = $_GET['activkey'];
 		if ($email&&$activkey) {
 			$find = User::model()->notsafe()->findByAttributes(array('email'=>$email));
-			if (isset($find)&&($find->status!=0)) {
+			if (isset($find)&&($find->status==User::STATUS_ACTIVE)) {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is active.")));
-			} elseif(isset($find->activkey) && ($find->activkey==$activkey)) {
+			} elseif(isset($find->activkey) && ($find->activkey==$activkey) && ($find->status!=User::STATUS_BANNED)) {
 				$find->activkey = UserModule::encrypting(microtime());
-				$find->status = 1;
+				$find->status = User::STATUS_ACTIVE;
 				$find->save();
         
         UserModule::sendMail(
