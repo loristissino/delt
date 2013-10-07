@@ -72,9 +72,22 @@ class Controller extends CController
    */
   public function checkManageability(Firm $firm)
   {
+    $this->checkUserStatus();
     if(!$firm->isManageableBy($this->DEUser))
       throw new CHttpException(403, 'You are not allowed to access the requested page.');
   }
+
+  /**
+   * Checks whether the logged-in user is waiting for email validation.
+   * If yes, an HTTP exception will be raised.
+   * @throws CHttpException
+   */
+  public function checkUserStatus()
+  {
+    if($this->DEUser->status==User::STATUS_WAITING)
+      throw new CHttpException(403, 'You must validate your email address before being allowed to manage any firm.');
+  }
+
 
   /**
    * Returns the Firm object based on the id value given.

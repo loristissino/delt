@@ -5,6 +5,7 @@ class User extends CActiveRecord
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
+  const STATUS_WAITING=-2;
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
@@ -23,6 +24,8 @@ class User extends CActiveRecord
      * @var timestamp $create_at
      * @var timestamp $lastvisit_at
 	 */
+
+  public $current_email;  // used to check whether the email has been changed
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -140,6 +143,7 @@ class User extends CActiveRecord
 				self::STATUS_NOACTIVE => UserModule::t('Not active'),
 				self::STATUS_ACTIVE => UserModule::t('Active'),
 				self::STATUS_BANNED => UserModule::t('Banned'),
+        self::STATUS_WAITING => UserModule::t('Waiting for email validation')
 			),
 			'AdminStatus' => array(
 				'0' => UserModule::t('No'),
@@ -174,10 +178,10 @@ class User extends CActiveRecord
         $criteria->compare('status',$this->status);
 
         return new CActiveDataProvider(get_class($this), array(
-            'criteria'=>$criteria,
+          'criteria'=>$criteria,
         	'pagination'=>array(
-				'pageSize'=>Yii::app()->getModule('user')->user_page_size,
-			),
+          'pageSize'=>Yii::app()->getModule('user')->user_page_size,
+			    ),
         ));
     }
 
@@ -196,4 +200,40 @@ class User extends CActiveRecord
     public function setLastvisit($value) {
         $this->lastvisit_at=date('Y-m-d H:i:s',$value);
     }
+
+    public function checkEmailChanges(CController $controller, Profile $profile=null) {
+        if($this->email!=$this->current_email)
+        {
+          $this->activkey=UserModule::encrypting(microtime().$this->password);
+          $this->sendActivationMail($controller, $profile);
+          $this->status = self::STATUS_WAITING;
+          return true;
+        }
+        return false;
+    }
+    
+    public function sendActivationMail(CController $controller, Profile $profile=null)
+    {
+        $activation_url = $controller->createAbsoluteUrl('/user/activation/activation',array("activkey" => $this->activkey, "email" => $this->email));
+        
+        if(!$profile)
+        {
+          $profile = $this->profile;
+        }
+        
+        return UserModule::sendMail(
+          $this->email,
+          Yii::t('delt', Yii::app()->params['mail']['verify']['subject']),
+          Yii::t('delt', Yii::app()->params['mail']['verify']['body'],
+            array(
+              '{activation_url}'=>$activation_url,
+              '{name}'=>$profile->first_name ? $profile->first_name : $this->username
+              )
+            )
+          );
+      
+    }
+    
+
+    
 }

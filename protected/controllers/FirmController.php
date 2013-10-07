@@ -128,6 +128,7 @@ class FirmController extends Controller
    */
   public function actionCreate()
   {
+    $this->checkUserStatus();
     $model=new Firm;
     $model->currency = 'EUR';
 
@@ -177,6 +178,7 @@ class FirmController extends Controller
 
   public function actionPrefork($slug=null)
   {
+    $this->checkUserStatus();
     $firm=Firm::model()->findByAttributes(array('slug'=>$slug));
     if($firm)
     {
@@ -196,6 +198,7 @@ class FirmController extends Controller
    */
   public function actionFork($slug=null)
   {
+    $this->checkUserStatus();
     $firm = null;
     if($slug)
     {

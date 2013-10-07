@@ -164,7 +164,7 @@ class DEUser extends CActiveRecord
   
   public function canCreateFirms()
   {
-    return ($this->profile->allowed_firms - sizeof($this->firms) > 0);
+    return (($this->status > 0) && $this->profile->allowed_firms - sizeof($this->firms) > 0);
   }
 
   

@@ -51,6 +51,8 @@ class RegistrationController extends Controller
 							$profile->save();
               
 							if (Yii::app()->controller->module->sendActivationMail) {
+                $model->sendActivationMail($this, $profile);
+                /*
 								$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
 								UserModule::sendMail(
                   $model->email,
@@ -61,7 +63,7 @@ class RegistrationController extends Controller
                       '{name}'=>$profile->first_name ? $profile->first_name : $model->username
                       )
                     )
-                  );
+                  );*/
 							}
 							
 							if ((Yii::app()->controller->module->loginNotActiv||(Yii::app()->controller->module->activeAfterRegister&&Yii::app()->controller->module->sendActivationMail==false))&&Yii::app()->controller->module->autoLogin) {

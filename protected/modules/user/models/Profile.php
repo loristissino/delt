@@ -99,6 +99,7 @@ class Profile extends UActiveRecord
       array_push($rules,array('language', 'safe'));
       array_push($rules,array('terms', 'checkTerms'));
       array_push($rules,array('allowed_firms', 'safe'));
+      array_push($rules,array('email_notices', 'safe'));
 			$this->_rules = $rules;
 		}
 		return $this->_rules;

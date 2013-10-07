@@ -68,6 +68,7 @@ return array(
         'Not active' => 'Non attivo',
         'Active' => 'Attivo',
         'Banned' => 'Disabilitato',
+        'Waiting for email validation' => 'In attesa di validazione dell\'indirizzo email',
         'Please fill out the following form with your login credentials:' => 'Compila il seguente modulo con le tue credenziali per il login:',
         'Fields with <span class="required">*</span> are required.' => 'I campi indicati con <span class="required"> * </span> sono obbligatori.',
         'List User' => 'Elenco utenti',

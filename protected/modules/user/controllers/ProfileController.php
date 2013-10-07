@@ -40,14 +40,16 @@ class ProfileController extends Controller
 		
 		if(isset($_POST['User']))
 		{
+      $model->current_email = $model->email;
 			$model->attributes=$_POST['User'];
 			$profile->attributes=$_POST['Profile'];
-			
+      
 			if($model->validate()&&$profile->validate()) {
+        $email_changes = $model->checkEmailChanges($this, $profile);
 				$model->save();
 				$profile->save();
-                Yii::app()->user->updateSession();
-				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes have been saved."));
+        Yii::app()->user->updateSession();
+				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes have been saved.") . ($email_changes? (' ' . UserModule::t("An email has been sent to you to verify the new email address.")): ''));
 				$this->redirect(array('/user/profile'));
 			} else $profile->validate();
 		}

@@ -85,11 +85,13 @@ $languages=array_merge(array(
     <?php echo $form->checkBox($profile, 'terms') ?>&nbsp;<?php echo UserModule::t('I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.', array('{tos}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.tos')), '{privacy}'=>$this->createUrl('/site/page', array('view'=>Yii::app()->language . '.privacy')))) ?>
     <?php echo $form->error($profile, 'terms'); ?>
   </div>
-  <?php else: ?>
-  
   <?php endif ?>
 
-
+  <div class="row checkbox">
+    <?php echo $form->checkBox($profile, 'email_notices') ?>&nbsp;<?php echo UserModule::t('I want to receive email notices and news from the website.') ?>
+    <?php echo $form->error($profile, 'email_notices'); ?>
+  </div>
+  
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? UserModule::t('Create') : UserModule::t('Save')); ?>
 	</div>
