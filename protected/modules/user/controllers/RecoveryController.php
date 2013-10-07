@@ -77,7 +77,7 @@ class RecoveryController extends Controller
 			    		if($form->validate()) {
 			    			$user = User::model()->notsafe()->findbyPk($form->user_id);
                 
-                if($user->status!=User::STATUS_NOACTIVE or $user->status!=User::STATUS_WAITING)
+                if($user->status==User::ACTIVE)
                 {
                   Yii::app()->user->setFlash('resendMessage',UserModule::t("Your account is not waiting for activation."));
                   $this->refresh();
