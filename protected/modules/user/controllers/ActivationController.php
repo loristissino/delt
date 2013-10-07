@@ -17,19 +17,24 @@ class ActivationController extends Controller
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is active.")));
 			} elseif(isset($find->activkey) && ($find->activkey==$activkey) && ($find->status!=User::STATUS_BANNED)) {
 				$find->activkey = UserModule::encrypting(microtime());
+        
+        $newuser = $find->status==User::STATUS_NOACTIVE;
 				$find->status = User::STATUS_ACTIVE;
 				$find->save();
         
-        UserModule::sendMail(
-          $find->email,
-          Yii::t('delt', Yii::app()->params['mail']['welcome']['subject']),
-          Yii::t('delt', Yii::app()->params['mail']['welcome']['body'],
-            array(
-              '{name}'=>($find->profile && $find->profile->first_name ? $find->profile->first_name: $find->username),
-              '{username}'=>$find->username,
+        if($newuser)
+        {
+          UserModule::sendMail(
+            $find->email,
+            Yii::t('delt', Yii::app()->params['mail']['welcome']['subject']),
+            Yii::t('delt', Yii::app()->params['mail']['welcome']['body'],
+              array(
+                '{name}'=>($find->profile && $find->profile->first_name ? $find->profile->first_name: $find->username),
+                '{username}'=>$find->username,
+                )
               )
-            )
-          );
+            );
+        }
 
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account has been activated. You can change your preferences editing your profile settings.")));
 			} else {
