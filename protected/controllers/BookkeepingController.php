@@ -127,14 +127,16 @@ class BookkeepingController extends Controller
         
         break;
       case 'csv':
+        $inline=Yii::app()->getUser()->getState('fruition')=='d';
         $content=$this->renderPartial('_balance_csv', array(
           'accounts'=>$this->firm->getAccountBalancesData(''),
           'separator'=>Yii::app()->getUser()->getState('separator', ','),
           'delimiter'=>Yii::app()->getUser()->getState('delimiter', ''),
           'type'=>Yii::app()->getUser()->getState('type', '2'),
           'charset'=>Yii::app()->getUser()->getState('charset', 'utf-8'),
+          'inline'=>$inline,
           ), true);
-        if(Yii::app()->getUser()->getState('fruition')=='d')
+        if($inline)
         {
           $filename = $this->firm->slug . '-' . date('Y-m-d-His') . (Yii::app()->getUser()->getState('separator', ',')=='t' ? '.tsv' : '.csv');
           $this->sendDispositionHeader($filename);

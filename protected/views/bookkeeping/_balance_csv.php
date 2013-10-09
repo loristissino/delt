@@ -10,7 +10,7 @@ if($delimiter=='none')
   $delimiter='';
 }
 
-if($charset=='utf-8')
+if($charset=='utf-8' and !$inline)
 {
   echo pack('CCC', 0xEF, 0xBB, 0xBF);  /* BOM */
 }
