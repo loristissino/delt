@@ -113,4 +113,4 @@ echo CHtml::endForm();
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',
 ));
-?>
+?></p>
