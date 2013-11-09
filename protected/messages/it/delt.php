@@ -360,5 +360,8 @@ return array(
   'You can copy the following lines and paste them to a spreadsheet.'=>'Puoi copiare il contenuto qui sotto e incollarlo in un foglio elettronico.',
   'Fruition type'=>'Tipo di fruizione',
   
+  'Try to set my language for the firm.'=>'Cerca di impostare la mia lingua per l\'azienda.',
+  
+  'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?'=>'Ti interessa sapere <a href="{url}" target="_blank">perché</a> devi accettare una licenza Creative Commons?',
 );
 

@@ -1661,5 +1661,13 @@ class Firm extends CActiveRecord
     return $count;
   }
   
+  public function setDefaultLanguageFromUserProfile(DEUser $user)
+  {
+    if($language=Language::model()->findByAttributes(array('language_code'=>$user->profile->language)))
+    {
+      $this->language_id=$language->id;
+    }
+  }
+  
 
 }

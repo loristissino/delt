@@ -131,6 +131,7 @@ class FirmController extends Controller
     $this->checkUserStatus();
     $model=new Firm;
     $model->currency = 'EUR';
+    $model->setDefaultLanguageFromUserProfile($this->DEUser);
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
@@ -208,6 +209,7 @@ class FirmController extends Controller
     }
     
     $form = new ForkfirmForm;
+    $form->change_language=true;
     
     if(isset($_POST['ForkfirmForm']))
     {
@@ -221,6 +223,11 @@ class FirmController extends Controller
           try
           {
             $newfirm->forkFrom($firm, $this->DEUser, $form->type);
+            if($form->change_language)
+            {
+              $newfirm->setDefaultLanguageFromUserProfile($this->DEUser);
+              $newfirm->save();
+            }
             $newfirm->fixAccounts();
             $newfirm->fixAccountNames();
             $this->redirect(array('bookkeeping/manage','slug'=>$newfirm->slug));

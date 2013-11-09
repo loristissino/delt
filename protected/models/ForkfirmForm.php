@@ -19,6 +19,7 @@
 class ForkfirmForm extends CFormModel
 {
   public $type;
+  public $change_language;
   public $license_confirmation;
   
   public function rules()
@@ -27,6 +28,7 @@ class ForkfirmForm extends CFormModel
       array('type, license_confirmation', 'required'),
       array('type', 'checkType'),
       array('license_confirmation', 'checkLicense'),
+      array('change_language', 'safe'),
     );
   }
   
@@ -38,6 +40,8 @@ class ForkfirmForm extends CFormModel
     return array(
       'type' => Yii::t('delt', 'Data to duplicate:'),
       'license'=>Yii::t('delt', 'License'),
+      'language'=>Yii::t('delt', 'Language'),
+      'change_language'=>Yii::t('delt', 'Change language'),
       'license_confirmation' => Yii::t('delt', 'I understand that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)),
     );
   }

@@ -211,7 +211,7 @@ $languages_available = Language::model()->findAllSorted();
       <?php echo $form->checkBox($model, 'license_confirmation') ?>&nbsp;
       <?php echo Yii::t('delt', 'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
     <br />
-    <span class="hint">(<?php echo Yii::t('delt', 'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Common License?', array('{url}'=>$this->createUrl('site/en/cclicense'))) ?>)</span>
+    <span class="hint">(<?php echo Yii::t('delt', 'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?', array('{url}'=>$this->createUrl('site/en/cclicense'))) ?>)</span>
     </div>
   <?php endif ?>
   
