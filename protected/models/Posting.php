@@ -133,6 +133,15 @@ class Posting extends CActiveRecord
     ));
     return $this;
   }
+
+  public function ofAccount($account_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'account_id = ' . $account_id,
+    ));
+    return $this;
+  }
+
   
   public function getDebit()
   {

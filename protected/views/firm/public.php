@@ -29,7 +29,7 @@ $this->breadcrumbs=array(
 <?php $n=0; $journalentryid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->journalentry->is_included ?>
   <?php if($journalentryid!=$posting->journalentry_id): $journalentryid=$posting->journalentry_id ?>
   <tr id="entry<?php echo ++$n ?>" <?php if($excluded) echo 'class="excluded"' ?>>
-    <td class="firstjournalentryrow"><?php echo CHtml::link($n, '#entry'. $n) ?></td>
+    <td class="firstjournalentryrow"><?php echo CHtml::link($n, '#entry'. $n, array('class'=>'hiddenlink')) ?></td>
     <td class="firstjournalentryrow">
       <?php echo Yii::app()->dateFormatter->formatDateTime($posting->journalentry->date, 'short', null) ?>
     </td>
@@ -39,9 +39,9 @@ $this->breadcrumbs=array(
     <td class="firstjournalentryrow"></td>
     <td class="firstjournalentryrow"></td>
   </tr>
-  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
+  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'firm'=>$model, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   <?php else: ?>
-  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
+  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'firm'=>$model, 'excluded'=>$excluded)); if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   <?php endif ?>
 <?php endforeach ?>
   <tr>

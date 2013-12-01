@@ -625,6 +625,23 @@ class Firm extends CActiveRecord
   }
   
   /**
+   * Returns a data provider for the postings of a specified account of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the postings related to the journal entries of the firm of one specified account
+   */
+  public function getAccountPostingsAsDataProvider($account_id, $pagesize=100)
+  {
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id)->ofAccount($account_id), array(
+      'pagination'=>array(
+          'pageSize'=>$pagesize,
+          ),
+      )
+    );
+  }
+  
+  
+  
+  /**
    * Fixes the accounts of the firm.
    * @return boolean whether the operation was successful
    */

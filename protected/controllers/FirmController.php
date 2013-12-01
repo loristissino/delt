@@ -58,7 +58,7 @@ class FirmController extends Controller
         'users'=>array('admin'),
       ),
       array('allow', // allow authenticated user to perform 'public' actions
-        'actions'=>array('public','coa','index'),
+        'actions'=>array('public','coa','index','ledger'),
         'users'=>array('*'),
         ),
       array('deny',  // deny all users
@@ -101,6 +101,22 @@ class FirmController extends Controller
         'model'=>$this->firm
       ));
     }
+  }
+
+  public function actionLedger($slug, $account)
+  {
+    $this->firm=$this->loadFirmBySlug($slug, false);
+    $account = $this->loadAccount($account);
+
+    if(sizeof($postings = $this->firm->getAccountPostingsAsDataProvider($account->id, 100000)->data))
+    {
+      $this->render('ledger', array(
+        'model'=>$this->firm,
+        'postings'=>$postings,
+        'account'=>$account,
+      ));
+    }
+
   }
 
   public function actionCoa($slug)
