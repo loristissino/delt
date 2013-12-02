@@ -76,6 +76,7 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `language_id` int(11) NOT NULL,
   `firm_parent_id` int(11) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `banner` blob,
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`),
   KEY `language_id` (`language_id`),

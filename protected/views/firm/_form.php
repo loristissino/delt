@@ -219,18 +219,19 @@ $languages_available = Language::model()->findAllSorted();
     </div>
   <?php endif ?>
   
-  <div class="row">
-    <?php echo $form->labelEx($model,'banner'); ?>
-    <?php echo $form->fileField($model,'banner',array('size'=>60)); ?>
-    <?php echo $form->error($model,'banner'); ?>
-    <br />
-    <span class="hint">
-    <?php echo Yii::t('delt', 'The banner file must be an image in PNG format, width 640, height 80.') ?>
-    <?php echo Yii::t('delt', 'It will be displayed on this firm\'s public page.') ?><br />
-    <?php echo $this->renderPartial('_banner', array('firm'=>$model)) ?>
-    </span>
-    
-  </div>
+  <?php if($model->id): ?>
+    <div class="row">
+      <?php echo $form->labelEx($model,'banner'); ?>
+      <?php echo $form->fileField($model,'banner',array('size'=>60)); ?>
+      <?php echo $form->error($model,'banner'); ?>
+      <br />
+      <span class="hint">
+      <?php echo Yii::t('delt', 'The banner file must be an image in PNG format, width 640, height 80.') ?>
+      <?php echo Yii::t('delt', 'It will be displayed on this firm\'s public page.') ?><br />
+      <?php echo $this->renderPartial('_banner', array('firm'=>$model)) ?>
+      </span>
+    </div>
+  <?php endif ?>
   
   <div class="row buttons" id="submitDiv">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
