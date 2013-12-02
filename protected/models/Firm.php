@@ -21,6 +21,7 @@
  * @property Language $language
  * @property integer $firm_parent_id
  * @property string $create_date
+ * @property string $banner
  *
  * The followings are the available model relations:
  * @property Account[] $accounts
@@ -84,6 +85,12 @@ class Firm extends CActiveRecord
       array('slug', 'validateSlug'),
       array('currency', 'validateCurrency'),
       array('license_confirmation', 'validateLicense'),
+      array('banner', 'file', 
+        'types'=>'png',
+        'maxSize'=>131072, // 128 KiB
+        'tooLarge'=>Yii::t('delt', 'The banner file was too large. Please upload a smaller file.'),
+        'allowEmpty'=> true,
+        ),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -1686,5 +1693,12 @@ class Firm extends CActiveRecord
     }
   }
   
+  public function acquireBanner(CUploadedFile $file)
+  {
+    $fp = fopen($file->tempName, 'r');
+    $content = fread($fp, filesize($file->tempName));
+    fclose($fp);
+    $this->banner = $content;
+  }
 
 }

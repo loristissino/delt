@@ -58,7 +58,7 @@ class FirmController extends Controller
         'users'=>array('admin'),
       ),
       array('allow', // allow authenticated user to perform 'public' actions
-        'actions'=>array('public','coa','index','ledger'),
+        'actions'=>array('public','coa','index','ledger','banner'),
         'users'=>array('*'),
         ),
       array('deny',  // deny all users
@@ -101,6 +101,12 @@ class FirmController extends Controller
         'model'=>$this->firm
       ));
     }
+  }
+
+  public function actionBanner($slug)
+  {
+    $this->firm=$this->loadFirmBySlug($slug, false);
+    $this->serveContent('image/png', $this->firm->banner);
   }
 
   public function actionLedger($slug, $account)
@@ -298,6 +304,11 @@ class FirmController extends Controller
       {
         try
         {
+          if(isset($_FILES['Firm']['tmp_name']['banner']))
+          {
+            $model->acquireBanner(CUploadedFile::getInstance($model,'banner'));
+          }
+          
           $model->save(false);
           
           $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();

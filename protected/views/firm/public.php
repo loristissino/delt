@@ -15,6 +15,7 @@ $this->breadcrumbs=array(
 <article>
 <h1><?php echo CHtml::encode($model->name) ?></h1>
 <p><?php echo CHtml::encode($model->description) ?></p>
+<?php echo $this->renderPartial('_banner', array('firm'=>$model)) ?>
 <section>
 <h2><?php echo Yii::t('delt', 'Journal') ?></h2>
 
