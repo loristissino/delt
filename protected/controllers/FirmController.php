@@ -304,7 +304,7 @@ class FirmController extends Controller
       {
         try
         {
-          if(isset($_FILES['Firm']['tmp_name']['banner']))
+          if(!empty($_FILES['Firm']['tmp_name']['banner']))
           {
             $model->acquireBanner(CUploadedFile::getInstance($model,'banner'));
           }

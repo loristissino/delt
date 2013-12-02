@@ -1695,10 +1695,17 @@ class Firm extends CActiveRecord
   
   public function acquireBanner(CUploadedFile $file)
   {
-    $fp = fopen($file->tempName, 'r');
-    $content = fread($fp, filesize($file->tempName));
-    fclose($fp);
-    $this->banner = $content;
+    if ($file->size)
+    {
+      $fp = fopen($file->tempName, 'r');
+      $content = fread($fp, filesize($file->tempName));
+      fclose($fp);
+      $this->banner = $content;
+    }
+    else
+    {
+      $this->banner = null;
+    }
   }
 
 }
