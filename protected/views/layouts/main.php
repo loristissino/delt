@@ -40,7 +40,7 @@ $mainmenu_items=array(
 <div class="container" id="page">
 
   <div id="header">
-    <div id="logo"><?php echo $this->createIcon('LearnDoubleEntryHeading', 'LearnDoubleEntry.org', array('width'=>400, 'height'=>63, 'title'=>'Benvenuto su LearnDoubleEntry.org')) ?></div>
+    <div id="logo"><?php echo $this->createIcon('LearnDoubleEntryHeading', 'LearnDoubleEntry.org', array('width'=>400, 'height'=>63, 'title'=>Yii::t('delt', 'Welcome to «{name}»', array('{name}'=>Yii::app()->name)))) ?></div>
   </div><!-- header -->
 
   <div id="mainmenu">
