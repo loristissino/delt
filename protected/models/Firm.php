@@ -1595,7 +1595,7 @@ class Firm extends CActiveRecord
       
       if($account->number_of_children==0)
       {
-        $text = '<a href="#" onclick="chooseAccount(\'' . $account->__toString() . '\');">'. $account->currentname . '</a>';
+        $text = '<a href="#" onclick="chooseAccount(\'' . str_replace('"', '&quot;', addslashes($account->__toString())) . '\');">'. $account->currentname . '</a>';
       }
       else
       {
