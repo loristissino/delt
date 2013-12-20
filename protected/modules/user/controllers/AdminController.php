@@ -64,9 +64,15 @@ class AdminController extends Controller
 	public function actionView()
 	{
 		$model = $this->loadModel();
+    $deuser = DEUser::model()->findByPk($model->id);
+    $firms = $deuser->firms;
+    
 		$this->render('view',array(
 			'model'=>$model,
+      'firms'=>$firms,
 		));
+    
+    
 	}
 
 	/**

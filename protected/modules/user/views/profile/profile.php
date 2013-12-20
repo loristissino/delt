@@ -62,3 +62,4 @@ $this->menutitle=UserModule::t('Profile');
     	<td><?php echo CHtml::encode(User::itemAlias("UserStatus",$model->status)); ?></td>
 	</tr>
 </table>
+

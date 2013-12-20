@@ -55,6 +55,13 @@ $this->menu=array(
 		'data'=>$model,
 		'attributes'=>$attributes,
 	));
-	
-
 ?>
+
+<?php if(sizeof($firms)): ?>
+  <h2><?php echo Yii::t('delt', 'Firms') ?></h2>
+  <?php foreach($firms as $firm): ?>
+    <?php echo CHtml::link(CHtml::encode($firm->name), array('/firms/'.$firm->slug)) ?><br />
+  <?php endforeach ?>
+  
+<?php endif ?>
+
