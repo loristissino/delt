@@ -75,6 +75,7 @@ class AccountController extends Controller
   public function actionCreate($slug, $id=null)
   {
     $this->firm = $this->loadFirmBySlug($slug);
+    $this->checkFrostiness($this->firm);
     $model=new Account;
     $model->firm_id = $this->firm->id;
     $model->firm = $this->firm;
@@ -119,6 +120,7 @@ class AccountController extends Controller
   {
     $account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
+    $this->checkFrostiness($this->firm);
     if(!$account->textnames) //DELTOD = $account->l10n_names)
     {
       $account->setDefaultForNames();
@@ -158,6 +160,7 @@ class AccountController extends Controller
   {
     $account=$this->loadAccount($id);
     $this->checkManageability($firm=$this->loadFirm($account->firm_id));
+    $this->checkFrostiness($firm);
     
     if(!Yii::app()->getRequest()->isPostRequest)
     {
@@ -186,6 +189,7 @@ class AccountController extends Controller
   public function actionSynchronize($slug, $ancestor='')
   {
     $this->firm = $this->loadFirmBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     if($ancestor and $ancestor=$this->loadFirmBySlug($ancestor, false) and $this->firm->isDescendantOf($ancestor))
     {
@@ -222,6 +226,7 @@ class AccountController extends Controller
   public function actionImport($slug)
   {
     $this->firm = $this->loadFirmBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     $accounts_form = new IEAccountsForm;
     

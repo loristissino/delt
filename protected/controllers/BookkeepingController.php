@@ -200,6 +200,7 @@ class BookkeepingController extends Controller
   public function actionImport($slug)
   {
     $this->firm=$this->loadModelBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     if(isset($_POST['Firm']))
     {
@@ -228,6 +229,7 @@ class BookkeepingController extends Controller
   public function actionNewjournalentry($slug)
   {
     $this->firm=$this->loadModelBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     $journalentryform = new JournalentryForm();
     $journalentryform->firm_id = $this->firm->id;
@@ -312,6 +314,7 @@ class BookkeepingController extends Controller
         $this->journalentrydescription=Yii::t('delt', 'Closing journal entry');
     }
     $this->firm=$this->loadModelBySlug($slug);
+    $this->checkFrostiness($this->firm);
     if($position)
     {
       $this->accounts = $this->firm->getAccountBalances($position);
@@ -330,6 +333,7 @@ class BookkeepingController extends Controller
   public function actionProfitlossjournalentry($slug)
   {
     $this->firm=$this->loadModelBySlug($slug);
+    $this->checkFrostiness($this->firm);
     $this->journalentrydescription=Yii::t('delt', 'Profit/Loss');
     $this->accounts = $this->firm->getAccountBalances('e');
     
@@ -345,6 +349,7 @@ class BookkeepingController extends Controller
   public function actionPrepareentry($slug, $op='snapshot')
   {
     $this->firm=$this->loadModelBySlug($slug);
+    $this->checkFrostiness($this->firm);
     $this->journalentrydescription=Yii::t('delt', 'Journal entry from balances');
     $this->journalentrydescription .= ' (' . Yii::t('delt', $op) . ')';
     
@@ -364,6 +369,7 @@ class BookkeepingController extends Controller
     $this->journalentry = $this->loadJournalentry($id);
     $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
     
     $journalentryform = new JournalentryForm();
     $journalentryform->firm_id = $this->firm->id;
@@ -416,6 +422,7 @@ class BookkeepingController extends Controller
     $this->journalentry = $this->loadJournalentry($id);
     $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
     
     if(Yii::app()->getRequest()->isPostRequest)
     {
@@ -438,6 +445,7 @@ class BookkeepingController extends Controller
   public function actionClearjournal($slug)
   {
     $this->firm=$this->loadFirmBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     if(Yii::app()->getRequest()->isPostRequest)
     {
@@ -461,6 +469,7 @@ class BookkeepingController extends Controller
   public function actionUpdatejournal($slug, $op)
   {
     $this->firm=$this->loadFirmBySlug($slug);
+    $this->checkFrostiness($this->firm);
     
     if(Yii::app()->getRequest()->isPostRequest)
     {
@@ -517,6 +526,7 @@ class BookkeepingController extends Controller
     $template=$this->loadTemplate($id);
     $this->firm=$template->firm;
     $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
     
     $this->accounts = $template->getAccountsInvolved($this->firm->currency);
     
@@ -536,6 +546,7 @@ class BookkeepingController extends Controller
     $this->journalentry = $this->loadJournalentry($id);
     $this->firm=$this->journalentry->firm;
     $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
     
     $template=new Template;
 
@@ -574,6 +585,7 @@ class BookkeepingController extends Controller
   public function actionSuggestaccount($term='', $slug='')
   {
     $firm=$this->loadFirmBySlug($_GET['slug']);
+    $this->checkFrostiness($firm);
     $this->serveJson($firm->findAccounts($term));
   }
 
@@ -593,7 +605,8 @@ class BookkeepingController extends Controller
   public function actionFixAccountsChart($slug)
   {
     $firm=$this->loadModelBySlug($slug);
-    
+    $this->checkFrostiness($firm);
+
     if(Yii::app()->getRequest()->isPostRequest)
     {
       set_time_limit(0);

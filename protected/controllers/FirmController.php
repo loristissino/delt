@@ -50,7 +50,7 @@ class FirmController extends Controller
       */
 
       array('allow', // allow authenticated user to perform the following actions
-        'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation','disown'),
+        'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation','disown','freeze','unfreeze'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -291,6 +291,7 @@ class FirmController extends Controller
   public function actionUpdate($id=null)
   {
     $model=$this->loadFirm($id);
+    $this->checkFrostiness($model);
     
     // Uncomment the following line if AJAX validation is needed
      $this->performAjaxValidation($model);
@@ -341,6 +342,7 @@ class FirmController extends Controller
   public function actionShare($slug)
   {
     $model=$this->loadFirmBySlug($slug);
+    $this->checkFrostiness($model);
     
     if(isset($_POST['username']) && $username = $_POST['username'])
     {
@@ -363,6 +365,7 @@ class FirmController extends Controller
   public function actionInvitation($slug)
   {
     $model=$this->loadFirmBySlug($slug, false);
+    $this->checkFrostiness($model);
     
     if(isset($_GET['action']) && $_GET['action']=='accept')
     {
@@ -408,6 +411,7 @@ class FirmController extends Controller
   public function actionDisown($slug)
   {
     $model=$this->loadFirmBySlug($slug, false);
+    $this->checkFrostiness($model);
     
     if(isset($_POST['disown']))
     {
@@ -437,8 +441,52 @@ class FirmController extends Controller
     
   }
 
+  private function _frostiness($slug)
+  {
+    $model=$this->loadFirmBySlug($slug);
+    
+    if(isset($_POST['freeze']))
+    {
+      if($model->freeze($this->DEUser->id))
+      {
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully freezed the firm «{firm}».', array('{firm}'=>$model->name)));
+        $this->redirect(array('bookkeeping/manage', 'slug'=>$model->slug));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the freezing of the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+    }
 
+    if(isset($_POST['unfreeze']))
+    {
+      if($model->unfreeze($this->DEUser->id))
+      {
+        Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully unfreezed the firm «{firm}».', array('{firm}'=>$model->name)));
+        $this->redirect(array('bookkeeping/manage', 'slug'=>$model->slug));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the unfreezing of the firm «{firm}».', array('{firm}'=>$model->name))); 
+      }
+    }
+    
+    $this->render('frostiness',array(
+      'model'=>$model
+    ));
 
+  }
+
+  public function actionFreeze($slug)
+  {
+    return $this->_frostiness($slug);
+  }
+
+  public function actionUnfreeze($slug)
+  {
+    return $this->_frostiness($slug);
+  }
+  
 
   /**
    * Deletes a particular model.
@@ -448,6 +496,7 @@ class FirmController extends Controller
   public function actionDelete($id)
   {
     $firm=$this->loadFirm($id);
+    $this->checkFrostiness($firm);
     if($firm->softDelete())
     {
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been correctly deleted.'));

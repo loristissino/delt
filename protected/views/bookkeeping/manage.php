@@ -8,18 +8,37 @@ $this->breadcrumbs=array(
 );
 
 $this->menutitle=Yii::t('delt', 'Firm');
-$this->menu=array(
-  array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('/firm/update', 'id'=>$model->id)),
-  array('label'=>Yii::t('delt', 'Delete'), 'url'=>$url=$this->createUrl('/firm/delete', array('id'=>$model->id)), 'linkOptions'=>array(
+
+$this->menu=array();
+
+if(!$model->frozen_at)
+{
+  $this->menu[] = array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('/firm/update', 'id'=>$model->id));
+  $this->menu[] =   array('label'=>Yii::t('delt', 'Delete'), 'url'=>$url=$this->createUrl('/firm/delete', array('id'=>$model->id)), 'linkOptions'=>array(
     'submit'=>$url,
     'title'=>Yii::t('delt', 'Delete this firm'),
     'confirm'=>Yii::t('delt', 'Are you sure you want to delete this firm?'),
-    )),
-  array('label'=>Yii::t('delt', 'Export'), 'url'=>array('/bookkeeping/export', 'slug'=>$model->slug)),
-  array('label'=>Yii::t('delt', 'Import'), 'url'=>array('/bookkeeping/import', 'slug'=>$model->slug)),
-  array('label'=>Yii::t('delt', 'Show'), 'url'=>array('/firms/'.$model->slug)),
-  array('label'=>Yii::t('delt', 'Share'), 'url'=>array('/firm/share', 'slug'=>$model->slug)),
-);
+    ));
+}
+
+$this->menu[] = array('label'=>Yii::t('delt', 'Export'), 'url'=>array('/bookkeeping/export', 'slug'=>$model->slug));
+
+if(!$model->frozen_at)
+{
+  $this->menu[] = array('label'=>Yii::t('delt', 'Import'), 'url'=>array('/bookkeeping/import', 'slug'=>$model->slug));
+}
+
+$this->menu[] = array('label'=>Yii::t('delt', 'Show'), 'url'=>array('/firms/'.$model->slug));
+
+if(!$model->frozen_at)
+{
+  $this->menu[] = array('label'=>Yii::t('delt', 'Share'), 'url'=>array('/firm/share', 'slug'=>$model->slug));
+}
+
+
+$this->menu[] = array('label'=>Yii::t('delt', 
+    $model->frozen_at ? 'Unfreeze' : 'Freeze'
+    ), 'url'=>array('/firm/' . ($model->frozen_at ? 'unfreeze' : 'freeze'), 'slug'=>$model->slug));
 
 ?>
 <h1><?php echo $model->name ?></h1>
@@ -35,8 +54,9 @@ $this->menu=array(
 <?php echo CHtml::link($this->createIcon('icons/settings', 'settings', array('width'=>120, 'height'=>120)), array('/firm/update', 'id'=>$model->id), array('title'=>Yii::t('delt', 'Edit firm\'s settings'))) ?>
 </p>
 
-
-
+<?php if($model->frozen_at): ?>
+  <?php echo $this->renderPartial('/firm/_frostiness', array('model'=>$model)) ?>
+<?php endif ?>
 
 <div>
 <?php echo $model->getLicenseCode($this) ?>

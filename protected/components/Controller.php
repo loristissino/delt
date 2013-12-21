@@ -134,6 +134,13 @@ class Controller extends CController
     return $firm;
   }
   
+  public function checkFrostiness($firm)
+  {
+    if($firm->frozen_at)
+    {
+      $this->redirect(array('/firm/unfreeze', 'slug'=>$firm->slug));
+    }
+  }
   
   /**
    * Returns the account model based on the primary key.

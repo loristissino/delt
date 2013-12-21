@@ -1707,5 +1707,24 @@ class Firm extends CActiveRecord
       $this->banner = null;
     }
   }
+  
+  public function freeze($DE_user_id)
+  {
+    $this->frozen_at = new CDbExpression('NOW()');
+    return $this->save();
+  }
+
+  public function unfreeze($DE_user_id)
+  {
+    $this->frozen_at=null;
+    return $this->save();
+  }
+  
+  public function getFrozenAtTimestamp()
+  {
+    $datetime = new DateTime($this->frozen_at);
+    return $datetime->getTimeStamp();
+  }
+
 
 }

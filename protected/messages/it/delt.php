@@ -363,6 +363,18 @@ return array(
   
   'Try to set my language for the firm.'=>'Cerca di impostare la mia lingua per l\'azienda.',
   
+  'The firm «%firm%» has been frozen on <a href="%url%" target="_blank" title="%title%">%date%</a>.'=>'L\'azienda «%firm%» è stata congelata  <a href="%url%" target="_blank" title="%title%">%date%</a>.',
+  'The firm «%firm%» is not currently frozen.' => 'L\'azienda «%firm%» al momento non è congelata.',
+  'See this timestamp in a different timezone' => 'Vedi questa marca temporale in un fuso orario diverso',
+  'Freeze'=>'Congela',
+  'Unfreeze'=>'Scongela',
+  'You can unfreeze it, if you want.'=>'Puoi scongelarla, se lo desideri.',
+  'You can freeze it, if you want. You will not be able to work on it until it gets unfrozen.' => 'Puoi congelarla, se lo desideri. Non potrai apportare modifiche fino a che non verrà scongelata.',
+  
+  'You successfully freezed the firm «{firm}».' => 'L\'azienda «{firm}» è stata congelata.',
+  'You successfully unfreezed the firm «{firm}».' => 'L\'azienda «{firm}» è stata scongelata.',
+  'Frozen firm' => 'Azienda congelata',
+  
   'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?'=>'Ti interessa sapere <a href="{url}" target="_blank">perché</a> devi accettare una licenza Creative Commons?',
 );
 

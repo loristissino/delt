@@ -84,6 +84,8 @@ $this->breadcrumbs=array(
   
 <hr />
 
+<?php echo $this->renderPartial('_frostiness', array('model'=>$model)) ?>
+
 <?php echo $model->getLicenseCode($this) ?>
 
 </article>
