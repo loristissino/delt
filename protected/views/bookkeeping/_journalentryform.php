@@ -7,6 +7,7 @@ $n = sizeof($items);
 
 $up_icon=addslashes($this->createIcon('arrow_up', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
 $down_icon=addslashes($this->createIcon('arrow_down', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
+$choose_icon=addslashes($this->createIcon('choose', Yii::t('delt', 'Choose'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Choose'))));
 
 $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
@@ -207,6 +208,7 @@ $cs->registerScript(
     {
       var down = "<span id=\'down" + i +"\'>' . $down_icon . '</span>";
       var up   = "<span id=\'up" + i +"\'>' . $up_icon . '</span>";
+      var choose = "<span id=\'choose" + i +"\'>' . $choose_icon . '</span>";
       var text = "";
       if(i>1)
       {
@@ -216,6 +218,7 @@ $cs->registerScript(
       {
         text += down.replace("%pl%", (i==1 ? "10": "0"));
       }
+      text += choose;
       $("#swap" +  i).html(text);
     }
     for(i=1; i<n; i++)
@@ -257,6 +260,16 @@ $cs->registerScript(
             return false;
           }
         })(i));
+      $("#choose" +i).click((function(index)
+        {
+          return function()
+          {
+            row_number = index;
+            $("#chooseaccountdialog").dialog("open");
+            return false;
+          }
+        })(i));
+        
       if(!$("#name" +i).val() && !done)
       {
         $("#name" +i).attr("placeholder", "'. $placeholder_string . '");
@@ -411,7 +424,7 @@ $cs->registerScriptFile(
       <?php $row=0; foreach($items as $i=>$item): ?>
       <tr id="row<?php echo ++$row ?>">
       <td class="number" style="width: 200px;">
-      <?php echo $this->createIcon('tp', '', array('height'=>1, 'width'=>40)) ?><br />
+      <?php echo $this->createIcon('tp', '', array('height'=>1, 'width'=>44)) ?><br />
       <?php echo $row ?><span id="swap<?php echo $row ?>"></span>
       </td>
       <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
