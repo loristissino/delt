@@ -37,6 +37,13 @@ class BookkeepingController extends Controller
   
   public $form_action_required = null;  // used in actionPrepareentry
   
+  public function filters()
+  {
+    return array(
+      'postOnly + deleteTemplate', // we only allow deletion via POST request
+    );
+  }
+  
   public function actionIndex($list='off')
   {
     if($this->DEUser)
@@ -226,7 +233,7 @@ class BookkeepingController extends Controller
     ));
   }
 
-  public function actionNewjournalentry($slug)
+  public function actionNewjournalentry($slug, $template=null)
   {
     $this->firm=$this->loadModelBySlug($slug);
     $this->checkFrostiness($this->firm);
@@ -293,6 +300,7 @@ class BookkeepingController extends Controller
       'model'=>$this->loadModelBySlug($slug),
       'journalentryform'=>$journalentryform,
       'items'=>$journalentryform->postings,
+      'template'=>$template,
     ));
   }
   
@@ -533,7 +541,7 @@ class BookkeepingController extends Controller
     if(sizeof($this->accounts))
     {
       $this->journalentrydescription=$template->description;
-      return $this->actionNewjournalentry($this->firm->slug);
+      return $this->actionNewjournalentry($this->firm->slug, $template);
       // we show the standard form
     }
     
@@ -574,6 +582,24 @@ class BookkeepingController extends Controller
     }
 
     $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
+  }
+
+  public function actionDeletetemplate($id)
+  {
+    $template=$this->loadTemplate($id);
+    $this->firm=$template->firm;
+    $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
+    
+    if($template->delete())
+    {
+      Yii::app()->user->setFlash('delt_success','The template has been correctly deleted.'); 
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure','The template could not be deleted.'); 
+    }
+    $this->redirect(array('bookkeeping/newjournalentry', 'slug'=>$this->firm->slug));
   }
 
   /**

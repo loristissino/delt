@@ -375,6 +375,13 @@ return array(
   'You successfully unfreezed the firm «{firm}».' => 'L\'azienda «{firm}» è stata scongelata.',
   'Frozen firm' => 'Azienda congelata',
   
+  'Template «%description%»' => 'Causale «%description%»',
+  'Delete this template' => 'Elimina questa causale',
+  'Are you sure you want to delete this template?' => 'Sei sicuro di voler eliminare questa causale?',
+  
+  'The template has been correctly deleted.'=>'La causale è stata correttamente eliminata.',
+  'The template could not be deleted.'=>'Non è stato possibile eliminare la causale.', 
+  
   'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?'=>'Ti interessa sapere <a href="{url}" target="_blank">perché</a> devi accettare una licenza Creative Commons?',
 );
 
