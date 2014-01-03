@@ -2,6 +2,7 @@
 /* @var $this FirmController */
 
 $this->layout='//layouts/html5';
+$this->pageTitle=Yii::app()->name . ' - ' . $model->name;
 /*
 $this->breadcrumbs=array(
   'Firms'=>array('/firm/index'),
