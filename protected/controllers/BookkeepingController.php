@@ -97,7 +97,7 @@ class BookkeepingController extends Controller
   {
     if (!Yii::app()->request->isAjaxRequest)
     {
-      //throw new CHttpException(404,'The requested page does not exist.');
+      throw new CHttpException(404,'The requested page does not exist.');
     }
         
     $this->firm=$this->loadModelBySlug($slug);
@@ -684,7 +684,7 @@ class BookkeepingController extends Controller
     return $this->renderPartial('../account/_name',array('account'=>$account, 'link'=>false),true);
   }
 
-  public function renderposition(Account $account, $row)
+  public function renderPosition(Account $account, $row)
   {
     return $this->renderPartial('../account/_position',array('account'=>$account),true);
   }

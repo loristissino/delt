@@ -48,6 +48,8 @@ class Firm extends CActiveRecord
   
   public $license_confirmation;
   
+  public $positions = null; 
+  
   /**
    * Returns the static model of the specified AR class.
    * @param string $className active record class name.
@@ -681,7 +683,7 @@ class Firm extends CActiveRecord
     foreach($a as $id=>$info)
     {
       $info['model']->is_selectable = sizeof($info['children'])==0;
-      // an account is selectable when it has no children
+      // an account is selectable when it has no children and it is not hidden
       $info['model']->number_of_children = sizeof($info['children']);
     }
     
@@ -689,10 +691,19 @@ class Firm extends CActiveRecord
     {
       foreach($info['children'] as $child_id)
       {
+        /*
         if($a[$child_id]['model']->position!='r')
         {
           $a[$child_id]['model']->position = $info['model']->position;
         }
+        */
+        
+        if($a[$child_id]['model']->position!=strtolower($info['model']->position))
+        {
+          $a[$child_id]['model']->position = $info['model']->position;
+        }
+        
+        
         $a[$child_id]['model']->setParentCode($info['model']->code);
       }
       
@@ -772,6 +783,7 @@ class Firm extends CActiveRecord
         array('like', 'currentname', '%' . $term . '%')
         ))
       ->andWhere('is_selectable = 1')
+      ->andWhere('is_hidden = 0')
       ->order('code')
       ->queryAll();
     
@@ -1582,11 +1594,11 @@ class Firm extends CActiveRecord
     
     if($id)
     {
-      $accounts=Account::model()->belongingTo($this->id)->childrenOf($id)->findAll();
+      $accounts=Account::model()->belongingTo($this->id)->hidden(0)->childrenOf($id)->findAll();
     }
     else
     {
-      $accounts=Account::model()->belongingTo($this->id)->ofLevel(1)->findAll();
+      $accounts=Account::model()->belongingTo($this->id)->hidden(0)->ofLevel(1)->findAll();
     }
     
     foreach($accounts as $account)
@@ -1724,6 +1736,60 @@ class Firm extends CActiveRecord
   {
     $datetime = new DateTime($this->frozen_at);
     return $datetime->getTimeStamp();
+  }
+  
+  public function getValidPositions()
+  {
+    if($this->positions)
+    {
+      return $this->positions;
+    }
+    
+    $items = Yii::app()->db->createCommand()
+      ->select('id, account_parent_id, position, currentname as name')
+      ->from('{{account}}')
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('level <= 2')
+      ->andWhere('is_hidden = 1')
+      ->order('code')
+      ->queryAll();
+    
+    $values=array();
+    foreach($items as $item)
+    {
+      if(!$item['account_parent_id'])
+      {
+        $values[$item['position']]=array('name'=>$item['name'], 'subitems'=>array(), 'matched'=>true);
+        $values[strtolower($item['position'])]=array('name'=>$item['name'], 'subitems'=>array(), 'matched'=>false);
+      }
+      else
+      {
+        if($item['position']==strtolower($item['position']))
+        {
+          $values[$item['position']]['subitems'][]=$item['name'];
+          $values[$item['position']]['matched']=true;
+        }
+        else
+        {
+          $values[$item['position']]['subitems'][]=$item['name'];
+        }
+      }
+    }
+    
+    $this->positions=array();
+    foreach($values as $key=>$value)
+    {
+      if($value['matched'])
+      {
+        $this->positions[$key]=$value['name'];
+        if(sizeof($value['subitems']))
+        {
+          $this->positions[$key] .= ' (' . implode(', ', $value['subitems']) . ')';
+        }
+      }
+    }
+    return $this->positions;
+    
   }
 
 

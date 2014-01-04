@@ -73,7 +73,7 @@ class Account extends CActiveRecord
       array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
       array('code', 'checkCode'),
-      array('position', 'checkposition'),
+      array('position', 'checkPosition'),
       array('comment', 'checkComment'),
       array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
@@ -135,6 +135,7 @@ class Account extends CActiveRecord
    */
   public function validpositions($withUnpositioned=true)
   {
+    /*
     $positions = array(
       'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
       'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
@@ -143,6 +144,8 @@ class Account extends CActiveRecord
       'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
       'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
       ); 
+    */
+    $positions=$this->firm->getValidPositions();
     if($withUnpositioned)
     {
       $positions['?'] = Yii::t('delt', 'Unknown');
@@ -150,15 +153,18 @@ class Account extends CActiveRecord
     return $positions;
   }
   
+  /*
   public function getPositionLabel()
   {
     switch($this->position)
     {
+      
       case 'P': return 'BS';
       case 'E': return 'IS';
       default: return $this->position;
     }
   }
+  */
 
   /**
    * @return array valid account positions
@@ -306,10 +312,15 @@ class Account extends CActiveRecord
       return parent::beforeDelete();
   }
   
+
+  protected function _computeLevel()
+  {
+    $this->level = sizeof(explode('.', $this->code));
+  }
   
   protected function beforeSave()
   {
-    $this->level = sizeof(explode('.', $this->code));
+    $this->_computeLevel();
     
     if($this->level > 1)
     {
@@ -495,16 +506,32 @@ class Account extends CActiveRecord
   }
 
   
-  public function checkposition()
+  public function checkPosition()
   {
-     if(!in_array($this->position, array_keys($this->validpositions())))
-     {
-       $this->addError('position', Yii::t('delt', 'Not a valid position.'));
-     } 
      if($this->position=='?' && substr($this->code, 0, 1)!='!')
      {
        $this->addError('position', Yii::t('delt', 'This position is allowed only for bang accounts.'));
      }
+     if(!$this->is_hidden)
+     {
+       if(!$this->hasValidPosition())
+       {
+         $this->addError('position', Yii::t('delt', 'Not a valid position.'));
+       }
+     }
+     else
+     {
+       $this->_computeLevel();
+       if($this->level==1 and $this->position!=strtoupper($this->position))
+       {
+         $this->addError('position', Yii::t('delt', 'The position code must be uppercase.'));
+       }
+     }
+  }
+  
+  public function hasValidPosition()
+  {
+    return in_array(strtolower($this->position), array_map('strtolower', array_keys($this->firm->getValidPositions())));
   }
 
   public function checkComment()
