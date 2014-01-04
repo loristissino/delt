@@ -3,17 +3,18 @@
 /* @var $model Firm */
 
 $this->breadcrumbs=array(
-  'Firms'=>array('index'),
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name=>array('bookkeeping/manage','slug'=>$model->slug),
   'Update',
 );
 
+$this->menu[]=array('label'=>Yii::t('delt', 'Configuration'), 'url'=>array('bookkeeping/configure', 'slug'=>$model->slug));
+
 if(sizeof($model->getOwners()) > 1)
 {
-  $this->menu=array(
-    array('label'=>Yii::t('delt', 'Disown firm'), 'url'=>array('firm/disown', 'slug'=>$model->slug)),
-    );
+  $this->menu[]=array('label'=>Yii::t('delt', 'Disown firm'), 'url'=>array('firm/disown', 'slug'=>$model->slug));
 }
+
 
 $ajax_loader_icon=addslashes($this->createIcon('ajax-loader', Yii::t('delt', 'Please wait...'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Please wait')), '.gif'));
 $please_wait_text = addslashes(Yii::t('delt', 'The information about the firm is being saved.') . ' ' . Yii::t('delt', 'Please wait a few seconds...'));

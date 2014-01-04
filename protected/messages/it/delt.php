@@ -382,6 +382,14 @@ return array(
   'The template has been correctly deleted.'=>'La causale è stata correttamente eliminata.',
   'The template could not be deleted.'=>'Non è stato possibile eliminare la causale.', 
   
+  'Disown' => 'Disconosci',
+  'Disown firm' => 'Disconosci azienda',
+  'Disown the firm «{name}»' => 'Disconosci l\'azienda «{name}»',
+  'You can disown this firm, if you want. It will be left to the other owners.' => 'Puoi disconoscere quest\'azienda, se lo desideri. Verrà lasciata agli altri gestori.', 
+  'Configuration' => 'Configurazione',
+  'Statements configuration' => 'Configurazione bilancio', 
+  'Create new item' => 'Crea nuova voce', 
+  
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
   'Content' => 'Contenuto',

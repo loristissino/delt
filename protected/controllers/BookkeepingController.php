@@ -83,6 +83,15 @@ class BookkeepingController extends Controller
       'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
     ));
   }
+
+  public function actionConfigure($slug, $template='configure')
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->render($template, array(
+      'model'=>$this->firm,
+      'dataProvider'=>$this->firm->getAccountsAsDataProvider(1),
+    ));
+  }
   
   public function actionCoatree($slug, $root='source')
   {
@@ -667,7 +676,12 @@ class BookkeepingController extends Controller
   
   public function renderName(Account $account, $row)
   {
-    return $this->renderPartial('../account/_name',array('account'=>$account),true);
+    return $this->renderPartial('../account/_name',array('account'=>$account, 'link'=>true),true);
+  }
+
+  public function renderNameWithoutLink(Account $account, $row)
+  {
+    return $this->renderPartial('../account/_name',array('account'=>$account, 'link'=>false),true);
   }
 
   public function renderposition(Account $account, $row)

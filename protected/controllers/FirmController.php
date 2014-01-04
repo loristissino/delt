@@ -290,37 +290,37 @@ class FirmController extends Controller
    */
   public function actionUpdate($id=null)
   {
-    $model=$this->loadFirm($id);
-    $this->checkFrostiness($model);
+    $this->firm=$this->loadFirm($id);
+    $this->checkFrostiness($this->firm);
     
     // Uncomment the following line if AJAX validation is needed
-     $this->performAjaxValidation($model);
+     $this->performAjaxValidation($this->firm);
      
-     $old_language_id = $model->language_id;
+     $old_language_id = $this->firm->language_id;
 
     if(isset($_POST['Firm']))
     {
-      $model->attributes=$_POST['Firm'];
-      if($model->validate())
+      $this->firm->attributes=$_POST['Firm'];
+      if($this->firm->validate())
       {
         try
         {
           if(!empty($_FILES['Firm']['tmp_name']['banner']))
           {
-            $model->acquireBanner(CUploadedFile::getInstance($model,'banner'));
+            $this->firm->acquireBanner(CUploadedFile::getInstance($this->firm,'banner'));
           }
           
-          $model->save(false);
+          $this->firm->save(false);
           
           $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
-          $model->saveLanguages($languages);
+          $this->firm->saveLanguages($languages);
 
-          if($model->language_id != $old_language_id)
+          if($this->firm->language_id != $old_language_id)
           {
-            $model->fixAccountNames();
+            $this->firm->fixAccountNames();
           }
           Yii::app()->user->setFlash('delt_success','The information about the firm has been correctly saved.'); 
-          $this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
+          $this->redirect(array('bookkeeping/manage','slug'=>$this->firm->slug));
         }
         catch(Exception $e)
         {
@@ -330,7 +330,7 @@ class FirmController extends Controller
     }
 
     $this->render('update',array(
-      'model'=>$model
+      'model'=>$this->firm
     ));
   }
 
@@ -410,7 +410,7 @@ class FirmController extends Controller
 
   public function actionDisown($slug)
   {
-    $model=$this->loadFirmBySlug($slug, false);
+    $this->firm=$model=$this->loadFirmBySlug($slug, false);
     $this->checkFrostiness($model);
     
     if(isset($_POST['disown']))

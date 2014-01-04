@@ -72,11 +72,12 @@ class AccountController extends Controller
    * Creates a new model.
    * If creation is successful, the browser will be redirected to the 'view' page.
    */
-  public function actionCreate($slug, $id=null)
+  public function actionCreate($slug, $id=null, $config=false)
   {
     $this->firm = $this->loadFirmBySlug($slug);
     $this->checkFrostiness($this->firm);
     $model=new Account;
+    $model->is_hidden = $config;
     $model->firm_id = $this->firm->id;
     $model->firm = $this->firm;
     $model->setDefaultForNames();
@@ -87,6 +88,7 @@ class AccountController extends Controller
       $model->code = $parent->code . '.';
       $model->position = $parent->position;
       $model->outstanding_balance = $parent->outstanding_balance;
+      $model->is_hidden = $parent->is_hidden;
     }
 
     // Uncomment the following line if AJAX validation is needed
@@ -140,7 +142,7 @@ class AccountController extends Controller
         if($account->save())
         {
           $this->firm->fixAccounts();
-          $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
+          $this->redirect(array($account->is_hidden? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
     }

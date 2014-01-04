@@ -462,7 +462,7 @@ class Firm extends CActiveRecord
    * @param integer $pagesize the pagesize desired
    * @return CActiveDataProvider the accounts of the firm
    */
-  public function getAccountsAsDataProvider($pagesize=5000)
+  public function getAccountsAsDataProvider($hidden=0, $pagesize=5000)
   {
     $sort = new CSort;
     $sort->defaultOrder = 'code ASC';
@@ -472,7 +472,7 @@ class Firm extends CActiveRecord
         'position'=>'position',
     );    
     
-    return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id)->hidden($hidden), array(
       'pagination'=>array(
           'pageSize'=>$pagesize,
           ),

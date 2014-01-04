@@ -13,6 +13,7 @@
  * @property integer $id
  * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id
+ * @property integer $is_hidden hidden accounts are used for configuration purposes
  * @property integer $level
  * @property string $code
  * @property string $rcode
@@ -77,6 +78,7 @@ class Account extends CActiveRecord
       array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
       array('currentname', 'safe'),
+      array('is_hidden', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
@@ -119,6 +121,7 @@ class Account extends CActiveRecord
       'level' => 'Level',
       'code' => Yii::t('delt', 'Code'),
       'is_selectable' => 'Is Selectable',
+      'is_hidden' => 'Is Hidden',
       'position' => Yii::t('delt', 'position'),
       'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
@@ -185,6 +188,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
+    $criteria->compare('is_hidden',$this->is_hidden);
     $criteria->compare('position',$this->position);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
@@ -255,6 +259,14 @@ class Account extends CActiveRecord
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'t.firm_id = ' . $firm_id,
         'order'=>'code ASC',
+    ));
+    return $this;
+  }
+  
+  public function hidden($hidden)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'is_hidden = ' . $hidden,
     ));
     return $this;
   }

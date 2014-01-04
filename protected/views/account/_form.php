@@ -34,14 +34,21 @@
   </div>
 
   <div class="row">
-    <?php echo $form->labelEx($model,'position') ?>
-     <?php echo $form->dropDownList(
-        $model, 
-        'position',
-        $model->validpositions(false)
-         )
-      ?>
-    <?php echo $form->error($model,'position'); ?>
+    <?php if($model->is_hidden): ?>
+      <?php echo $form->labelEx($model,'position'); ?>
+      <?php echo $form->textField($model,'position',array('size'=>1,'maxlength'=>1)); ?>
+      <?php echo $form->error($model,'position'); ?>
+    <?php else: ?>
+      <?php echo $form->labelEx($model,'position') ?>
+       <?php echo $form->dropDownList(
+          $model, 
+          'position',
+          $model->validpositions(false)
+           )
+        ?>
+      <?php echo $form->error($model,'position'); ?>
+    <?php endif ?>
+  
   </div>
   
   <div class="row">
