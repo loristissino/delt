@@ -53,6 +53,17 @@ else
 </div>
 <div class="span-5 last">
   <div id="sidebar">
+  <?php if($this->firm): ?>
+
+  <div class="portlet" id="yw3">
+<div class="portlet-decoration firm">
+<div class="portlet-title firm"><?php echo $this->firm->name ?></div>
+</div>
+</div>
+
+
+
+  <?php endif ?>
   <?php
     $this->beginWidget('zii.widgets.CPortlet', array(
       'title'=>Yii::t('delt', 'Bookkeeping/Accounting'),

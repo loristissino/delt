@@ -389,6 +389,7 @@ return array(
   'Configuration' => 'Configurazione',
   'Statements configuration' => 'Configurazione bilancio', 
   'Create new item' => 'Crea nuova voce', 
+  'Edit item «{name}»' => 'Modifica voce «{name}»',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',

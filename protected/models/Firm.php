@@ -1814,7 +1814,7 @@ class Firm extends CActiveRecord
             ),
           $params
           );
-          DELT::logdebug(serialize($params));
+          //DELT::logdebug(serialize($params));
       }
     }
 
