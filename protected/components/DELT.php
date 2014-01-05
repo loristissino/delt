@@ -305,4 +305,18 @@ class DELT
     }
   }
   
+  public static function islowercase($v)
+  {
+    return $v==strtolower($v);
+  }
+
+  public static function isuppercase($v)
+  {
+    return $v==strtoupper($v);
+  }
+  
+  public static function logdebug($message)
+  {
+    Yii::trace($message, 'debug.log');
+  }
 }

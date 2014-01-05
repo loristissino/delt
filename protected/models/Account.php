@@ -422,6 +422,11 @@ class Account extends CActiveRecord
   
   public function fixDefaultForNames()
   {
+    if(!$this->textnames)
+    {
+      return $this->setDefaultForNames();
+    }
+    
     $languages = $this->firm->languages;
     
     $names = $this->getNamesAsArray($languages);

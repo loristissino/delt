@@ -682,27 +682,23 @@ class Firm extends CActiveRecord
     
     foreach($a as $id=>$info)
     {
-      $info['model']->is_selectable = sizeof($info['children'])==0;
-      // an account is selectable when it has no children and it is not hidden
       $info['model']->number_of_children = sizeof($info['children']);
+      $info['model']->is_selectable = $info['model']->number_of_children==0;
+      // an account is selectable when it has no children
     }
     
     foreach($a as $id=>$info)
     {
       foreach($info['children'] as $child_id)
       {
-        /*
-        if($a[$child_id]['model']->position!='r')
+        if($a[$child_id]['model']->number_of_children>0)
         {
-          $a[$child_id]['model']->position = $info['model']->position;
+          $a[$child_id]['model']->position=$info['model']->position;
         }
-        */
-        
-        if($a[$child_id]['model']->position!=strtolower($info['model']->position))
+        elseif(strtoupper($a[$child_id]['model']->position)!=$info['model']->position)
         {
-          $a[$child_id]['model']->position = $info['model']->position;
+          $a[$child_id]['model']->position = DELT::islowercase($a[$child_id]['model']->position) ? strtolower($info['model']->position): $info['model']->position;
         }
-        
         
         $a[$child_id]['model']->setParentCode($info['model']->code);
       }
@@ -1772,6 +1768,7 @@ class Firm extends CActiveRecord
         else
         {
           $values[$item['position']]['subitems'][]=$item['name'];
+          $values[$item['position']]['matched']=true;
         }
       }
     }
@@ -1781,7 +1778,7 @@ class Firm extends CActiveRecord
     {
       if($value['matched'])
       {
-        $this->positions[$key]=$value['name'];
+        $this->positions[$key]=isset($value['name'])?$value['name']:'';
         if(sizeof($value['subitems']))
         {
           $this->positions[$key] .= ' (' . implode(', ', $value['subitems']) . ')';
@@ -1790,6 +1787,37 @@ class Firm extends CActiveRecord
     }
     return $this->positions;
     
+  }
+  
+  public function updateAccountsPositions($oldPosition, $newPosition)
+  {
+    if($oldPosition!=$newPosition)
+    {
+      $changes=array(
+        strtoupper($oldPosition)=>strtoupper($newPosition),
+        strtolower($oldPosition)=>strtolower($newPosition),
+        );
+      foreach($changes as $old=>$new)
+      {
+        $params=array(
+           ':firm_id'=>$this->id,
+           ':old_position'=>$old,
+          );
+        Yii::app()->db->createCommand()->update(
+          '{{account}}',
+          array('position'=>$new),
+          
+          array('and',
+            'firm_id=:firm_id',
+            'position=:old_position',
+            'is_hidden=0',
+            ),
+          $params
+          );
+          DELT::logdebug(serialize($params));
+      }
+    }
+
   }
 
 

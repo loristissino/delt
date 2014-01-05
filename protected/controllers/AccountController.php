@@ -123,17 +123,9 @@ class AccountController extends Controller
     $account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     $this->checkFrostiness($this->firm);
-    if(!$account->textnames) //DELTOD = $account->l10n_names)
-    {
-      $account->setDefaultForNames();
-    }
-    else
-    {
-      $account->fixDefaultForNames();
-    }
-    // Uncomment the following line if AJAX validation is needed
-    // $this->performAjaxValidation($account);
-
+    $account->fixDefaultForNames();
+    $oldPosition = $account->position;
+    
     if(isset($_POST['Account']))
     {
       $account->attributes=$_POST['Account'];
@@ -141,6 +133,10 @@ class AccountController extends Controller
       {
         if($account->save())
         {
+          if($account->is_hidden)
+          {
+            $this->firm->updateAccountsPositions($oldPosition, $account->position);
+          }
           $this->firm->fixAccounts();
           $this->redirect(array($account->is_hidden? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
         }
