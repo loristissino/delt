@@ -285,6 +285,15 @@ class Account extends CActiveRecord
     return $this;
   }
 
+  public function withPosition($position)
+  {
+    $p = new CdbCriteria();
+    $p->addCondition("t.position = '$position'");
+    
+    $this->getDbCriteria()->mergeWith($p);
+    return $this;
+  }
+
   public function childrenOf($id)
   {
     $this->getDbCriteria()->mergeWith(array(

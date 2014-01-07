@@ -516,12 +516,7 @@ class Firm extends CActiveRecord
   
   public function getAccountBalancesData($position='', $ids=array())
   {
-    // FIXME -- we should have an array parameter instead of this...
-    $positions=array($position);
-    if($position=='P')
-    {
-      $positions[]='r';
-    }
+    $positions=array($position, strtolower($position));
     
     $accounts = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total, a.code as code, a.currentname as name')
@@ -550,7 +545,6 @@ class Firm extends CActiveRecord
    */
   public function getAccountBalances($position='', $ids=array(), $reverse=true)
   {
-    
     $result=array();
     $accounts = $this->getAccountBalancesData($position, $ids);
     
@@ -581,42 +575,47 @@ class Firm extends CActiveRecord
       }
       $result[]=$row;
     }
-    if($position=='e')
+    
+    if($grandtotal!=0)
     {
       $ob=$grandtotal>0 ? 'D': 'C';
       
-      $resultAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>'r', 'outstanding_balance'=>$ob));
-      if(sizeof($resultAccounts)==1)
+      
+      // first, we look for a specific one
+      $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>$ob, 'is_hidden'=>0));
+      if(sizeof($closingAccounts)==1)
       {
-        $account=$resultAccounts[0];
+        $account=$closingAccounts[0];
         $name=$account['code'] . ' - ' . $account['name'];
       }
       else
       {
-        $name = Yii::t('delt', $grandtotal<0 ? 'Select account of profit destination': 'Select account of loss destination');
+        // we relax, and look for a generic one that could fit
+        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'is_hidden'=>0));
+        //die(sizeof($closingAccounts));
+        if(sizeof($closingAccounts)==1)
+        {
+          $account=$closingAccounts[0];
+          $name=$account['code'] . ' - ' . $account['name'];
+        }
+        else
+        {
+          // we haven't found anything specific
+          $name = Yii::t('delt', 'Select closing account');
+        }
       }
-      
+        
       $result[]=array(
         'name'=>$name,
         'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
         'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
         );
     }
-    elseif($grandtotal!=0)
-    {
-      $closingaccounts=Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'is_selectable'=>true));
-      if(sizeof($closingaccounts)==1)
-      { 
-        $result[]=array(
-          'name'=>$closingaccounts[0]->__toString(),
-          'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
-          'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
-          );
-      }
-    }
     
     return $result;
   }
+  
+  
   
   /**
    * Returns a data provider for the journal entries of the firm.
@@ -1787,6 +1786,16 @@ class Firm extends CActiveRecord
     }
     return $this->positions;
     
+  }
+  
+  public function getMainPositions()
+  {
+    return Account::model()->belongingTo($this->id)->hidden(1)->ofLevel(1)->findAll();
+  }
+  
+  public function getMainPosition($position)
+  {
+    return Account::model()->belongingTo($this->id)->hidden(1)->ofLevel(1)->withPosition($position)->find();
   }
   
   public function updateAccountsPositions($oldPosition, $newPosition)

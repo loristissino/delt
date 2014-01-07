@@ -315,34 +315,21 @@ class BookkeepingController extends Controller
   
   public function actionClosingjournalentry($slug, $position='')
   {
-    switch($position)
-    {
-      case 'P':
-        $this->journalentrydescription=Yii::t('delt', 'Assets and Claims closing entry');
-        break;
-      case 'E':
-        $this->journalentrydescription=Yii::t('delt', 'Income Summary closing entry');
-        break;
-      case 'M':
-        $this->journalentrydescription=Yii::t('delt', 'Memo closing entry');
-        break;
-      default:
-        $position='';
-        $this->journalentrydescription=Yii::t('delt', 'Closing journal entry');
-    }
     $this->firm=$this->loadModelBySlug($slug);
     $this->checkFrostiness($this->firm);
-    if($position)
+    
+    if($p=$this->firm->getMainPosition($position))
     {
       $this->accounts = $this->firm->getAccountBalances($position);
       $this->is_closing = true;
+      $this->journalentrydescription=Yii::t('delt', 'Closing entry for «{item}»', array('{item}'=>$p->currentname));
+      
       if(sizeof($this->accounts))
       {
         return $this->actionNewjournalentry($slug);
         // we show the standard form
       }
     }
-    
     $this->render('closingjournalentry', array('position'=>$position, 'model'=>$this->firm));
     
   }
