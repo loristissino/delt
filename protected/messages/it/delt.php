@@ -391,7 +391,9 @@ return array(
   'Create new item' => 'Crea nuova voce', 
   'Edit item «{name}»' => 'Modifica voce «{name}»',
   
-  'Closing entry for «{item}»' => 'Chiusura di «{item}»',
+  'Closing entry for accounts afferent to «{item}»' => 'Chiusura conti afferenti a «{item}»',
+  
+  'Choose an account' => 'Scegli un conto',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',

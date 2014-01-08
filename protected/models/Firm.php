@@ -1400,7 +1400,7 @@ class Firm extends CActiveRecord
     $positions=array($position);
     if($position=='P')
     {
-      $positions[]='r';
+      $positions[]='p';
     }
 
     $accounts = Yii::app()->db->createCommand()
@@ -1790,7 +1790,7 @@ class Firm extends CActiveRecord
   
   public function getMainPositions()
   {
-    return Account::model()->belongingTo($this->id)->hidden(1)->ofLevel(1)->findAll();
+    return Account::model()->belongingTo($this->id, 'code DESC')->hidden(1)->ofLevel(1)->findAll();
   }
   
   public function getMainPosition($position)

@@ -260,11 +260,11 @@ class Account extends CActiveRecord
     
   }
     
-  public function belongingTo($firm_id)
+  public function belongingTo($firm_id, $order='code ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'t.firm_id = ' . $firm_id,
-        'order'=>'code ASC',
+        'order'=>$order,
     ));
     return $this;
   }
@@ -288,7 +288,8 @@ class Account extends CActiveRecord
   public function withPosition($position)
   {
     $p = new CdbCriteria();
-    $p->addCondition("t.position = '$position'");
+    $p->addCondition('t.position = :position');
+    $p->params = array(':position' => $position);
     
     $this->getDbCriteria()->mergeWith($p);
     return $this;
@@ -301,7 +302,7 @@ class Account extends CActiveRecord
     ));
     return $this;
   }
-
+  
   public function getNumberOfJournalentries()
   {
     return Posting::model()->countByAttributes(array('account_id'=>$this->id));

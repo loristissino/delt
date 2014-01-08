@@ -485,7 +485,7 @@ $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
     'id'=>'chooseaccountdialog',
     // additional javascript options for the dialog plugin
     'options'=>array(
-        'title'=>'Choose an account',
+        'title'=>Yii::t('delt', 'Choose an account'),
         'autoOpen'=>false,
     ),
 ));
