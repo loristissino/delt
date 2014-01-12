@@ -19,23 +19,13 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
 ?>
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 
-<?php echo $this->renderPartial('_statement', array(
-  'title'=>'Balance Sheet',
-  'data'=>$bs,
-  'model'=>$model,
-  'level'=>$level,
-  'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
-  'with_subtitles'=>true,
-  'hlevel'=>2,
-  'links'=>true,
-  )) ?>
-<?php echo $this->renderPartial('_statement', array(
-  'title'=>'Income Statement',
-  'data'=>$is,
-  'model'=>$model,
-  'level'=>$level,
-  'order'=>array('+'=>'Value Added Income Statement'),
-  'with_subtitles'=>false,
-  'hlevel'=>2,
-  'links'=>true,
-  )) ?>
+<?php foreach($model->getMainPositions() as $statement): ?>
+  <?php echo $this->renderPartial('_statement', array(
+    'statement'=>$statement,
+    'data'=>$model->getStatement($statement, $level),
+    'model'=>$model,
+    'level'=>$level,
+    'hlevel'=>2,
+    'links'=>true,
+    )) ?>
+<?php endforeach ?>

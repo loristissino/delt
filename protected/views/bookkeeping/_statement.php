@@ -1,8 +1,27 @@
 <?php
   $tag0 = 'h' . $hlevel;
   $tag1 = 'h' . ($hlevel+1);
+  
+  $order=array();
+  if($statement->type==2)
+  {
+    foreach($statement->getChildren() as $child)
+    {
+      $key=$child->outstanding_balance=='D' ? '+':'-';
+      $order[$key]=$child->currentname;
+    }
+    $with_subtitles=true;
+    $grandtotal_line = 'Grandtotal';
+  }
+  else
+  {
+    $order['+']=$statement->currentname;
+    $with_subtitles=false;
+    $grandtotal_line = 'Net result';
+  }
+  
 ?>
-<<?php echo $tag0 ?>><?php echo Yii::t('delt', $title) ?></<?php echo $tag0 ?>>
+<<?php echo $tag0 ?>><?php echo Yii::t('delt', $statement->currentname) ?></<?php echo $tag0 ?>>
 
 <?php $ggt = 0 ?>
 <?php foreach($order as $key=>$value): ?>
@@ -48,22 +67,23 @@
   <?php if($account['type']==$key && $account['level']==1) $gt+=$amount ?>
 <?php endforeach ?>
 </tbody>
-<tfoot>
-<tr>
-  <th><?php echo Yii::t('delt', 'Grandtotal') ?></th>
-  <?php for($i=1; $i< $level; $i++): ?>
-    <th>&nbsp;</th>
-  <?php endfor ?>
-  <td class="currency"><?php echo DELT::currency_value($gt, $model->currency) ?></td>
-</tr>
-</tfoot>
+<?php if($gt): ?>
+  <tfoot>
+  <tr>
+    <th><?php echo Yii::t('delt', $grandtotal_line) ?></th>
+    <?php for($i=1; $i< $level; $i++): ?>
+      <th>&nbsp;</th>
+    <?php endfor ?>
+    <td class="currency"><?php echo DELT::currency_value($gt, $model->currency) ?></td>
+  </tr>
+  </tfoot>
+<?php endif ?>
 </table>
 </div>
 <?php if($key=='+') $ggt += $gt; else $ggt -= $gt; ?>
 <?php endforeach ?>
 
 <?php if($with_subtitles and $ggt): ?>
-
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">

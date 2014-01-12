@@ -34,7 +34,7 @@
   </div>
 
   <div class="row">
-    <?php if($model->is_hidden): ?>
+    <?php if($model->isHidden()): ?>
       <?php echo $form->labelEx($model,'position'); ?>
       <?php echo $form->textField($model,'position',array('size'=>1,'maxlength'=>1)); ?>
       <?php echo $form->error($model,'position'); ?>
@@ -71,5 +71,7 @@
   </div>
 
 <?php $this->endWidget(); ?>
+
+<p>Type: <?php echo $model->type ?></p>
 
 </div><!-- form -->

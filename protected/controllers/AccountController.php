@@ -77,7 +77,7 @@ class AccountController extends Controller
     $this->firm = $this->loadFirmBySlug($slug);
     $this->checkFrostiness($this->firm);
     $model=new Account;
-    $model->is_hidden = $config;
+    $model->type = $config;
     $model->firm_id = $this->firm->id;
     $model->firm = $this->firm;
     $model->setDefaultForNames();
@@ -88,7 +88,7 @@ class AccountController extends Controller
       $model->code = $parent->code . '.';
       $model->position = $parent->position;
       $model->outstanding_balance = $parent->outstanding_balance;
-      $model->is_hidden = $parent->is_hidden;
+      $model->type = $parent->type;
     }
 
     // Uncomment the following line if AJAX validation is needed
@@ -102,7 +102,7 @@ class AccountController extends Controller
         if($model->save())
         {
           $this->firm->fixAccounts();
-          $this->redirect(array('bookkeeping/coa','slug'=>$this->firm->slug));
+          $this->redirect(array($model->isHidden()? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
     }
@@ -133,12 +133,12 @@ class AccountController extends Controller
       {
         if($account->save())
         {
-          if($account->is_hidden)
+          if($account->isHidden())
           {
             $this->firm->updateAccountsPositions($oldPosition, $account->position);
           }
           $this->firm->fixAccounts();
-          $this->redirect(array($account->is_hidden? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
+          $this->redirect(array($account->isHidden()? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }
     }
@@ -177,7 +177,7 @@ class AccountController extends Controller
 
     // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
     if(!isset($_GET['ajax']))
-      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('bookkeeping/coa', 'slug'=>$firm->slug));
+      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array($account->isHidden()? 'bookkeeping/configure':'bookkeeping/coa', 'slug'=>$firm->slug));
     
   }
 

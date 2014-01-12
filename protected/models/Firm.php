@@ -582,7 +582,7 @@ class Firm extends CActiveRecord
       
       
       // first, we look for a specific one
-      $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>$ob, 'is_hidden'=>0));
+      $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>$ob, 'type'=>0));
       if(sizeof($closingAccounts)==1)
       {
         $account=$closingAccounts[0];
@@ -591,7 +591,7 @@ class Firm extends CActiveRecord
       else
       {
         // we relax, and look for a generic one that could fit
-        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'is_hidden'=>0));
+        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'type'=>0));
         //die(sizeof($closingAccounts));
         if(sizeof($closingAccounts)==1)
         {
@@ -778,7 +778,7 @@ class Firm extends CActiveRecord
         array('like', 'currentname', '%' . $term . '%')
         ))
       ->andWhere('is_selectable = 1')
-      ->andWhere('is_hidden = 0')
+      ->andWhere('type = 0')
       ->order('code')
       ->queryAll();
     
@@ -1374,6 +1374,7 @@ class Firm extends CActiveRecord
    * @param integer $level the level required
    * @return array the data
    */
+  /*
   public function getBalanceSheet($level=1)
   {
     return $this->_getStatement('P', $level);
@@ -1384,6 +1385,7 @@ class Firm extends CActiveRecord
    * @param integer $level the level required
    * @return array the data
    */
+  /*
   public function getIncomeStatement($level=1)  // aka Profit and Loss statement
   {
     return $this->_getStatement('E', $level);
@@ -1395,12 +1397,16 @@ class Firm extends CActiveRecord
    * @param integer $level the level required
    * @return array the data
    */
-  private function _getStatement($position, $level=1)
+  public function getStatement(Account $statement, $level=1)
   {
-    $positions=array($position);
-    if($position=='P')
+    $position=$statement->position;
+    if($statement->type==2)
     {
-      $positions[]='p';
+      $positions=array(strtoupper($position), strtolower($position)); 
+    }
+    else
+    {
+      $positions=array(strtoupper($position)); 
     }
 
     $accounts = Yii::app()->db->createCommand()
@@ -1429,13 +1435,12 @@ class Firm extends CActiveRecord
         unset($accounts[$key]);  // we remove items that yeld a zero value...
       }
       
-      if($position=='P')
+      if($statement->type==2)
       {
         $ob = ($ancestor=$account->firstAncestor) ? $ancestor->outstanding_balance : $account->outstanding_balance;
         $item['type']= $ob=='D' ? '+': '-';
       }
-      
-      if($position=='E')
+      else
       {
         $item['type'] = '+';
         $item['amount'] = -$item['amount'];
@@ -1745,7 +1750,7 @@ class Firm extends CActiveRecord
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere('level <= 2')
-      ->andWhere('is_hidden = 1')
+      ->andWhere('type <> 0')
       ->order('code')
       ->queryAll();
     
@@ -1788,9 +1793,9 @@ class Firm extends CActiveRecord
     
   }
   
-  public function getMainPositions()
+  public function getMainPositions($reversed=false)
   {
-    return Account::model()->belongingTo($this->id, 'code DESC')->hidden(1)->ofLevel(1)->findAll();
+    return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->hidden(1)->ofLevel(1)->findAll();
   }
   
   public function getMainPosition($position)
@@ -1819,7 +1824,7 @@ class Firm extends CActiveRecord
           array('and',
             'firm_id=:firm_id',
             'position=:old_position',
-            'is_hidden=0',
+            'type=0',
             ),
           $params
           );

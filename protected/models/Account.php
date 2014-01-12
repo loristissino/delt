@@ -13,7 +13,7 @@
  * @property integer $id
  * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id
- * @property integer $is_hidden hidden accounts are used for configuration purposes
+ * @property integer $type 0=normal account, 1=main position (one column), 2=main position (two separate columns), 
  * @property integer $level
  * @property string $code
  * @property string $rcode
@@ -78,7 +78,7 @@ class Account extends CActiveRecord
       array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
       array('currentname', 'safe'),
-      array('is_hidden', 'safe'),
+      array('type', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
@@ -121,7 +121,7 @@ class Account extends CActiveRecord
       'level' => 'Level',
       'code' => Yii::t('delt', 'Code'),
       'is_selectable' => 'Is Selectable',
-      'is_hidden' => 'Is Hidden',
+      'type' => 'Type',
       'position' => Yii::t('delt', 'position'),
       'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
       'textnames' => Yii::t('delt', 'Localized names'),
@@ -194,7 +194,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
-    $criteria->compare('is_hidden',$this->is_hidden);
+    $criteria->compare('type',$this->type);
     $criteria->compare('position',$this->position);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
 
@@ -272,7 +272,7 @@ class Account extends CActiveRecord
   public function hidden($hidden)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'is_hidden = ' . $hidden,
+        'condition'=>($hidden?'type <> 0':'type = 0'),
     ));
     return $this;
   }
@@ -462,7 +462,7 @@ class Account extends CActiveRecord
   
   public function getChildren()
   {
-    return Account::model()->findAllByAttributes(array('account_parent_id'=>$this->id));
+    return Account::model()->childrenOf($this->id)->findAll();
   }
   
   public function getParentAccount()
@@ -520,6 +520,10 @@ class Account extends CActiveRecord
     }
   }
 
+  public function isHidden()
+  {
+    return $this->type != 0;
+  }
   
   public function checkPosition()
   {
@@ -527,7 +531,7 @@ class Account extends CActiveRecord
      {
        $this->addError('position', Yii::t('delt', 'This position is allowed only for bang accounts.'));
      }
-     if(!$this->is_hidden)
+     if(!$this->isHidden())
      {
        if(!$this->hasValidPosition())
        {

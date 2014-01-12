@@ -361,7 +361,7 @@ return array(
   'You can copy the following lines and paste them to a spreadsheet.'=>'Puoi copiare il contenuto qui sotto e incollarlo in un foglio elettronico.',
   'Fruition type'=>'Tipo di fruizione',
   
-  'Try to set my language for the firm.'=>'Cerca di impostare la mia lingua per l\'azienda.',
+  'Try to set my language for the firm.'=>'Imposta la mia lingua per l\'azienda, se disponibile.',
   
   'The firm «%firm%» has been frozen on <a href="%url%" target="_blank" title="%title%">%date%</a>.'=>'L\'azienda «%firm%» è stata congelata  <a href="%url%" target="_blank" title="%title%">%date%</a>.',
   'The firm «%firm%» is not currently frozen.' => 'L\'azienda «%firm%» al momento non è congelata.',

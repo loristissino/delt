@@ -187,8 +187,6 @@ class BookkeepingController extends Controller
       throw new CHttpException(404,'The requested page does not exist.');
     $this->render('statements', array(
       'model'=>$this->firm,
-      'bs'=>$this->firm->getBalanceSheet($level),
-      'is'=>$this->firm->getIncomeStatement($level),
       'level'=>$level,
     ));
   }
