@@ -873,6 +873,9 @@ class Firm extends CActiveRecord
     try
     {
       $this->save(false);
+      
+      $this->slug=substr($this->slug, 0, 32);
+      //when data is truncated during saving, the field retains the complete string, so we truncate it here
             
       $fu = new FirmUser();
       $fu->firm_id=$this->id;
@@ -903,6 +906,8 @@ class Firm extends CActiveRecord
           $newaccount->$property = $account->$property ? $account->$property : '1';
         }
         $newaccount->comment = $account->comment;
+        $newaccount->type = $account->type;
+        
         $newaccount->basicSave(false);
         
         $references[$account->id]=$newaccount->id;
@@ -1626,6 +1631,20 @@ class Firm extends CActiveRecord
         'hasChildren'=>$account->number_of_children>0
         );
     }
+    
+    if(sizeof($result)==0)
+    {
+      $result[]=array(
+        'text'=>
+          Yii::t('delt', 'The Chart of Accounts is empty.') . ' ' .
+          Yii::t('delt', 'You probably created a new one from scratch instead of forking an existing one.')
+        , 
+        'expanded'=>false,
+        'id'=>1,
+        'hasChildren'=>false,
+        );
+    }
+    
     return $result;
     
   }

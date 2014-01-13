@@ -2,6 +2,33 @@
 /* @var $this AccountController */
 /* @var $model Account */
 /* @var $form CActiveForm */
+
+$disabled = $model->level==1 ? 'false':'true'; //initial status
+
+$cs = Yii::app()->getClientScript();  
+$cs->registerScript(
+  'hidden-accounts-handler',
+  '
+  
+  var fixtypefield = function(is_disabled)
+  {
+    $("#typefield").prop("disabled", is_disabled);
+  }
+  
+  $("#Account_code").blur(function()
+    {
+        fixtypefield($("#Account_code").val().indexOf(".")>=0);
+    }
+  );
+  
+  fixtypefield(' . $disabled . ');
+  
+  '
+  ,
+  CClientScript::POS_READY
+);
+
+
 ?>
 
 <div class="form">
@@ -66,12 +93,28 @@
     <?php echo $form->error($model,'outstanding_balance'); ?>
   </div>
 
+  <?php if($model->isHidden()): ?>
+    <div class="row" id="typerow">
+      <?php echo $form->labelEx($model,'type'); ?>
+       <?php echo $form->dropDownList(
+          $model, 
+          'type',
+          array(
+            '1'=>Yii::t('delt', 'Statement in pancake format'),
+            '2'=>Yii::t('delt', 'Statement in two separate sections'),
+            ),
+          array(
+            'id'=>'typefield')
+           )
+        ?>
+      <?php echo $form->error($model,'outstanding_balance'); ?>
+    </div>
+  <?php endif ?>
+
   <div class="row buttons">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save')); ?>
   </div>
 
 <?php $this->endWidget(); ?>
-
-<p>Type: <?php echo $model->type ?></p>
 
 </div><!-- form -->

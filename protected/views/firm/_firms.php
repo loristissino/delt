@@ -1,7 +1,7 @@
 <h2><?php echo Yii::t('delt', $title) ?></h2>
 
 <?php foreach($firms as $firm): ?>
-  <p class="firm">
+  <p class="firm_info">
     <span class="name"><?php echo CHtml::link($firm, $this->createUrl($action, array('slug'=>$firm->slug)), array('title'=>Yii::t('delt', $message, array('{firm}'=>$firm->name)))) ?></span><br />
     <?php if($firm->description): ?>
       <span class="description"><?php echo CHtml::encode($firm->description) ?></span>

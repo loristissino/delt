@@ -18,8 +18,6 @@ return array(
   'Ledger' => 'Libro mastro',
   'Ledger for account «{name}»' => 'Libro mastro per il conto «{name}»',
   'Statements' => 'Bilancio',
-  'Balance Sheet' => 'Situazione patrimoniale',
-  'Income Statement' => 'Conto economico',
   'Account' => 'Conto',
   'Parent account' => 'Conto di livello superiore',
   'The parent account does not exist.' => 'Il conto di livello superiore non esiste.',
@@ -35,24 +33,7 @@ return array(
   'Description / Explanation' => 'Descrizione / Spiegazione',
 
   'Position' => 'Collocazione',
-  'BS<!-- position -->' => 'SP',  // conti patrimoniali (stato patrimoniale)
-  'IS<!-- position -->' => 'CE',  // conti economici (reddito di esercizio)
-  'M<!-- position -->' => 'O',  // conti d'ordine
-  'p<!-- position -->' => 'p',  // transitorio patrimoniale
-  'e<!-- position -->' => 'e',  // transitorio economica
-  'r<!-- position -->' => 'r',  // risultato di esercizio
-  'u<!-- position -->' => '?',  // non assegnata / sconosciuta
 
-  'Balance Sheet (Asset / Liability / Equity)' => 'Stato patrimoniale (Attività / Passività / Capitale proprio)',
-  'Income Statement (Revenues / Expenses)' => 'Conto economico (Ricavi / Costi)',
-  'Memorandum Accounts Table' => 'Tavola dei Conti d\'ordine', 
-  'Transitory Balance Sheet Accounts' => 'Conti transitori per la situazione patrimoniale',
-  'Transitory Income Statement Accounts' => 'Conti transitori per la situazione economica',
-  'Result Accounts (Net profit / Total loss)' => 'Risultato di esercizio',  
-  'Assets'=>'Attività',
-  'Liabilities and Equity' => 'Passività e patrimonio',
-  'Revenues' => 'Ricavi',  
-  'Expenses' => 'Costi',  
   'Unknown' => 'Sconosciuta',
   'This account has not been correctly positioned.'=>'Questo conto non risulta correttamente collocato.',
 
@@ -124,13 +105,6 @@ return array(
   
   'Closing entry' => 'Registrazione di chiusura',
   'Closing journal entry' => 'Registrazione di chiusura contabile',
-  'Assets and Claims closing entry' => 'Registrazione di chiusura patrimoniale',
-  'Income Summary closing entry' => 'Registrazione di chiusura conto economico',
-  'Memo closing entry' => 'Registrazione di chiusura conti d\'ordine',
-
-  'Assets and Claims<!-- closing entry -->' => 'Chiusura patrimoniale',
-  'Income Summary' => 'Chiusura economica',
-  'Memos<!-- closing entry -->' => 'Chiusura conti d\'ordine',
 
   'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
   'Please fix the following errors:' => 'Devi correggere i seguenti errori:',
@@ -248,7 +222,6 @@ return array(
   'You reached the number of firms maneageble with your account ({number}).' => 'Hai raggiunto il numero massimo di aziende gestibili con il tuo account ({number}).',
   'If you want to create a new one, please delete some of the existing.' => 'Se vuoi crearne una nuova, prima elimina una delle esistenti.',
   'Sorry, you are not allowed to create firms at this time.' => 'Purtroppo, al momento non sei autorizzato a creare aziende.',
-  
   
   'The journal entry has been successfully deleted.' => 'La registrazione è stata correttamente eliminata.',
   'you cannot do a debit to this kind of account' => 'non è possibile addebitare questo tipo di conto',
@@ -394,6 +367,13 @@ return array(
   'Closing entry for accounts afferent to «{item}»' => 'Chiusura conti afferenti a «{item}»',
   
   'Choose an account' => 'Scegli un conto',
+  
+  'The Chart of Accounts is empty.' => 'Il piano dei conti è vuoto.',
+  'You probably created a new one from scratch instead of forking an existing one.' => 'Probabilmente hai creato un\'azienda nuova anziché duplicarne una esistente.',
+  
+  'Format'=>'Formato',
+  'Statement in pancake format'=>'Prospetto in formato a valori progressivi',
+  'Statement in two separate sections'=>'Prospetto in due sezioni separate',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
