@@ -78,8 +78,9 @@ return array(
       'urlFormat'=>'path',
       'rules'=>array(
         '/user/<controller:\w+>/<action:\w+>'=>'/user/<controller>/<action>',
-        '/firm/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
+        '/firms/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
         '/firms/<slug:[a-z0-9\-]*>/coa'=>'/firm/coa/slug/<slug>',
+        '/organizations/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
         '<controller:\w+>/<id:\d+>'=>'<controller>/view',
         '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
         '<controller:\w+>/<slug:[a-zA-Z0-9\-]*>/<action:\w+>/position/<position:\w>'=>'<controller>/<action>',
@@ -131,5 +132,19 @@ return array(
     // this is used in contact page
     'adminEmail'=>'webmaster@example.com',
     'tagLine'=>'<p>A wonderful application</p>',
+    
+    'fixedtimeUrl'=>'http://www.timeanddate.com/worldclock/fixedtime.html?iso=%iso%',
+    'fixedtimeOffset'=>3600, // in seconds: CET is 3600
+    
+    'blog'=>'http://blog.learndoubleentry.org',
+    'banner_key'=>'somethingwrittenhere',  // this is used to keep somehow secret banner files
+    
+    'list_token' => 'asecretcodetoaccessdata',
+
+    'publicpages'=>array(
+      1=>'/firms/',
+      2=>'/organizations/',
+    ),
+
   ),
 );

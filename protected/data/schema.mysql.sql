@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jun 16, 2013 at 10:50 AM
+-- Generation Time: Jan 13, 2014 at 07:14 PM
 -- Server version: 5.1.41
--- PHP Version: 5.3.2-1ubuntu4.14
+-- PHP Version: 5.3.2-1ubuntu4.21
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT=0;
@@ -25,6 +25,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `account_parent_id` int(11) DEFAULT NULL,
   `firm_id` int(11) NOT NULL,
+  `type` tinyint(1) NOT NULL DEFAULT '0',
   `level` int(11) NOT NULL DEFAULT '1',
   `code` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'the code to be used in searching and sorting',
   `rcode` varchar(16) CHARACTER SET utf8 NOT NULL,
@@ -39,25 +40,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   UNIQUE KEY `firm_code` (`firm_id`,`code`),
   KEY `account_parent_id` (`account_parent_id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=25449 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_posting`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_posting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `account_id` int(11) NOT NULL,
-  `journalentry_id` int(11) NOT NULL,
-  `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
-  `rank` int(11) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
-  KEY `account_id` (`account_id`),
-  KEY `journalentry_id` (`journalentry_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4532 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=63983 ;
 
 -- --------------------------------------------------------
 
@@ -69,6 +52,7 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(128) CHARACTER SET utf8 NOT NULL,
   `slug` varchar(32) CHARACTER SET utf8 NOT NULL,
+  `firmtype` int(1) NOT NULL DEFAULT '1',
   `description` text COLLATE utf8_bin,
   `status` smallint(1) NOT NULL DEFAULT '0',
   `currency` varchar(5) CHARACTER SET utf8 NOT NULL,
@@ -77,11 +61,12 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `firm_parent_id` int(11) NOT NULL,
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `banner` blob,
+  `frozen_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`),
   KEY `language_id` (`language_id`),
   KEY `parent_firm_id` (`firm_parent_id`,`create_date`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=212 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=571 ;
 
 -- --------------------------------------------------------
 
@@ -115,6 +100,32 @@ CREATE TABLE IF NOT EXISTS `tbl_firm_user` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_journalentry`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_journalentry` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firm_id` int(11) NOT NULL,
+  `date` date NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
+  `is_confirmed` tinyint(1) NOT NULL DEFAULT '0',
+  `is_closing` tinyint(1) NOT NULL DEFAULT '0',
+  `is_adjustment` tinyint(1) NOT NULL DEFAULT '0',
+  `is_included` tinyint(1) NOT NULL DEFAULT '1',
+  `rank` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `firm_rank` (`firm_id`,`rank`),
+  KEY `firm_id` (`firm_id`),
+  KEY `is_confirmed` (`is_confirmed`),
+  KEY `is_closing` (`is_closing`),
+  KEY `firm_is_confirmed` (`firm_id`,`is_confirmed`),
+  KEY `firm_is_closing` (`firm_id`,`is_closing`),
+  KEY `is_included` (`is_included`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2164 ;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_language`
 --
 
@@ -127,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `tbl_language` (
   `is_default` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`),
   KEY `is_default` (`is_default`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -144,26 +155,21 @@ CREATE TABLE IF NOT EXISTS `tbl_migration` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_journalentry`
+-- Table structure for table `tbl_posting`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_journalentry` (
+CREATE TABLE IF NOT EXISTS `tbl_posting` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firm_id` int(11) NOT NULL,
-  `date` date NOT NULL,
-  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `is_confirmed` tinyint(1) NOT NULL DEFAULT '0',
-  `is_closing` tinyint(1) NOT NULL DEFAULT '0',
-  `is_adjustment` tinyint(1) NOT NULL DEFAULT '0',
+  `account_id` int(11) NOT NULL,
+  `journalentry_id` int(11) NOT NULL,
+  `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
+  `comment` varchar(100) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `firm_rank` (`firm_id`,`rank`),
-  KEY `firm_id` (`firm_id`),
-  KEY `is_confirmed` (`is_confirmed`),
-  KEY `is_closing` (`is_closing`),
-  KEY `firm_is_confirmed` (`firm_id`,`is_confirmed`),
-  KEY `firm_is_closing` (`firm_id`,`is_closing`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=846 ;
+  UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
+  KEY `account_id` (`account_id`),
+  KEY `journalentry_id` (`journalentry_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=18797 ;
 
 -- --------------------------------------------------------
 
@@ -180,8 +186,10 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles` (
   `usercode` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   `language` varchar(7) COLLATE utf8_bin NOT NULL DEFAULT '',
   `allowed_firms` int(11) NOT NULL DEFAULT '10',
-  PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=91 ;
+  `email_notices` tinyint(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`user_id`),
+  KEY `email_notices` (`email_notices`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=202 ;
 
 -- --------------------------------------------------------
 
@@ -207,7 +215,7 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
   `position` int(3) NOT NULL DEFAULT '0',
   `visible` int(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -218,11 +226,11 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
 CREATE TABLE IF NOT EXISTS `tbl_template` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `firm_id` int(11) NOT NULL,
-  `description` varchar(255) CHARACTER SET utf8 NOT NULL,
-  `info` text CHARACTER SET utf8 NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `info` text NOT NULL,
   PRIMARY KEY (`id`),
   KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=24 ;
 
 -- --------------------------------------------------------
 
@@ -243,7 +251,7 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_username` (`username`),
   UNIQUE KEY `user_email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=91 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=202 ;
 
 --
 -- Constraints for dumped tables
@@ -254,13 +262,6 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
 --
 ALTER TABLE `tbl_account`
   ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_posting`
---
-ALTER TABLE `tbl_posting`
-  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_firm_user`
@@ -276,10 +277,19 @@ ALTER TABLE `tbl_journalentry`
   ADD CONSTRAINT `tbl_journalentry_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
+-- Constraints for table `tbl_posting`
+--
+ALTER TABLE `tbl_posting`
+  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
+
+--
 -- Constraints for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
   ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
   
 --
 -- Dumping data for table `tbl_language`
