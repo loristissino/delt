@@ -1,4 +1,6 @@
+<?php if(sizeof($data)): ?>
 <?php
+
   $tag0 = 'h' . $hlevel;
   $tag1 = 'h' . ($hlevel+1);
   
@@ -7,8 +9,11 @@
   {
     foreach($statement->getChildren() as $child)
     {
-      $key=$child->outstanding_balance=='D' ? '+':'-';
-      $order[$key]=$child->currentname;
+      if (DELT::isuppercase($child->position))
+      {
+        $key=$child->outstanding_balance=='D' ? '+':'-';
+        $order[$key]=$child->currentname;
+      }
     }
     $with_subtitles=true;
     $grandtotal_line = 'Grandtotal';
@@ -93,4 +98,5 @@
 </table>
 </div>
 
-<?php endif ?>
+<?php endif //$with_subtitles and $ggt?>
+<?php endif //sizeof($data)>0 ?>

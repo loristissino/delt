@@ -13,6 +13,7 @@
  * @property integer $id
  * @property string $name
  * @property string $slug
+ * @property integer $firmtype
  * @property string $description
  * @property integer $status
  * @property string $currency
@@ -45,6 +46,10 @@ class Firm extends CActiveRecord
   // positive values for firms that we do want to show
   const STATUS_SYSTEM = 1;
   const STATUS_PRIVATE = 2;
+  
+  // types of "firms"
+  const FIRMTYPE_BUSINESS = 1;
+  const FIRMTYPE_NPO = 2;
   
   public $license_confirmation;
   
@@ -85,6 +90,7 @@ class Firm extends CActiveRecord
       array('csymbol', 'length', 'max'=>1),
       array('description', 'safe'),
       array('slug', 'validateSlug'),
+      array('firmtype', 'validateFirmtype'),
       array('currency', 'validateCurrency'),
       array('license_confirmation', 'validateLicense'),
       array('banner', 'file', 
@@ -95,7 +101,7 @@ class Firm extends CActiveRecord
         ),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
-      array('id, name, slug, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
+      array('id, name, slug, firmtype, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
     );
   }
 
@@ -127,6 +133,7 @@ class Firm extends CActiveRecord
       'id' => Yii::t('delt', 'ID'),
       'name' => Yii::t('delt', 'Name'),
       'slug' => Yii::t('delt', 'Slug'),
+      'firmtype' => Yii::t('delt', 'Type'),
       'description' => Yii::t('delt', 'Description'),
       'status' => Yii::t('delt', 'Status'),
       'currency' => Yii::t('delt', 'Currency'),
@@ -153,6 +160,7 @@ class Firm extends CActiveRecord
     $criteria->compare('id',$this->id);
     $criteria->compare('name',$this->name,true);
     $criteria->compare('slug',$this->slug,true);
+    $criteria->compare('firmtype',$this->firmtype,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('status',$this->status);
     $criteria->compare('currency',$this->currency,true);
@@ -220,6 +228,17 @@ class Firm extends CActiveRecord
     if($f and $f->id != $this->id)
     {
       $this->addError('slug', Yii::t('delt', 'This slug is already in use.'));
+    }
+  }
+
+  /**
+   * Validates the slug chosen for the firm.
+   */
+  public function validateFirmtype()
+  {
+    if(!array_key_exists($this->firmtype, $this->getValidFirmTypes()))
+    {
+      $this->addError('firmtype', Yii::t('delt', 'Not a valid type.'));
     }
   }
 
@@ -843,10 +862,8 @@ class Firm extends CActiveRecord
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
     
-    foreach(array('language_id','currency','csymbol','description') as $property)
-    {
-      $this->$property = $source->$property;
-    }
+    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype'));
+    
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
 
@@ -1852,6 +1869,13 @@ class Firm extends CActiveRecord
     }
 
   }
-
-
+  
+  public function getValidFirmTypes()
+  {
+    return array(
+      self::FIRMTYPE_BUSINESS => Yii::t('delt', 'Business'),
+      self::FIRMTYPE_NPO => Yii::t('delt', 'Not-for-profit Organization'),
+    );
+  }
+  
 }

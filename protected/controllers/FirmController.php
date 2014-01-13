@@ -90,8 +90,6 @@ class FirmController extends Controller
       $this->render('public', array(
         'model'=>$this->firm,
         'postings'=>$postings,
-        'bs'=>$this->firm->getBalanceSheet($level),
-        'is'=>$this->firm->getIncomeStatement($level),
         'level'=>$level,
       ));
     }

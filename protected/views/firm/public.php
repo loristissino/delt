@@ -60,27 +60,16 @@ $this->breadcrumbs=array(
 
 <section>
 <h2><?php echo Yii::t('delt', 'Statements') ?></h2>
-
-<?php echo $this->renderPartial('/bookkeeping/_statement', array(
-  'title'=>'Balance Sheet',
-  'data'=>$bs,
-  'model'=>$model,
-  'level'=>$level,
-  'order'=>array('+'=>'Assets', '-'=>'Liabilities and Equity'),
-  'with_subtitles'=>true,
-  'hlevel'=>3,
-  'links'=>false,
-  )) ?>
-<?php echo $this->renderPartial('/bookkeeping/_statement', array(
-  'title'=>'Income Statement',
-  'data'=>$is,
-  'model'=>$model,
-  'level'=>$level,
-  'order'=>array('+'=>'Value Added Income Statement'),
-  'with_subtitles'=>false,
-  'hlevel'=>3,
-  'links'=>false,
-  )) ?>
+<?php foreach($model->getMainPositions() as $statement): ?>
+  <?php echo $this->renderPartial('/bookkeeping/_statement', array(
+    'statement'=>$statement,
+    'data'=>$model->getStatement($statement, $level),
+    'model'=>$model,
+    'level'=>$level,
+    'hlevel'=>3,
+    'links'=>true,
+    )) ?>
+<?php endforeach ?>
 </section>  
   
 <hr />

@@ -183,6 +183,12 @@ $languages_available = Language::model()->findAllSorted();
   </div>
 
   <div class="row">
+    <?php echo $form->labelEx($model,'firmtype'); ?>
+     <?php echo $form->dropDownList($model,'firmtype', $model->getValidFirmTypes()); ?>
+    <br />
+  </div>
+
+  <div class="row">
     <?php echo $form->labelEx($model,'currency'); ?>
     <?php echo $form->textField($model,'currency',array('size'=>5,'maxlength'=>5)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP')?>)</span>
     <?php echo $form->error($model,'currency'); ?>

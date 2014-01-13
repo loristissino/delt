@@ -374,6 +374,7 @@ return array(
   'Format'=>'Formato',
   'Statement in pancake format'=>'Prospetto in formato a valori progressivi',
   'Statement in two separate sections'=>'Prospetto in due sezioni separate',
+  'Net result' => 'Risultato netto',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
