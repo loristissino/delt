@@ -13,7 +13,7 @@
  * @property integer $id
  * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id
- * @property integer $type 0=normal account, 1=main position (one column), 2=main position (two separate columns), 
+ * @property integer $type 0=normal account, 1=main position (pancake format), 2=main position (two separate columns), 
  * @property integer $level
  * @property string $code
  * @property string $rcode
@@ -225,39 +225,51 @@ class Account extends CActiveRecord
   public function getAnalysis($amount, $currency='EUR')
   {
     $parent = $this->getParent();
+    $balance = $amount>0?'D':'C';
     
-    $code =
-      $this->position .
-      ($parent ? $parent->outstanding_balance : '-') . 
-      ($this->outstanding_balance ? $this->outstanding_balance : '/') .
-      ($amount>0?'D':'C')
-    ;
+    $lookup=$parent? $parent: $this;  // if we have a parent we look for information there, otherwise here
     
+    // first, we try to find a description considering the outstanding balance
+    $mpa = Account::model()->belongingTo($this->firm_id)->ofLevel(2, '>=')->hidden(1)->withPosition($this->position)->withOutstandingBalance($lookup->outstanding_balance)->find();
+    
+    if(!$mpa)
+    {
+      // if we don't find it, we look for something without
+      $mpa = Account::model()->belongingTo($this->firm_id)->ofLevel(2, '>=')->hidden(1)->withPosition($this->position)->withOutstandingBalance(null)->find();
+    }
+    
+    $m = $mpa? $mpa->currentname : 'unexplained entry';
+
     $explanations = array(
-      'PDDD' => 'Increase in Asset',
-      'PDDC' => 'Decrease in Asset',
-      'PD/C' => 'Decrease in Asset',
-      'PDCD' => 'Decrease in Asset Contra Account',
-      'PDCC' => 'Increase in Asset Contra Account',
-      'PCDD' => 'Increase in a Liability / Equity Contra Account',
-      'PCDC' => 'Decrease in a Liability / Equity Contra Account',
-      'PCCD' => 'Decrease in Liability / Equity',
-      'PCCC' => 'Increase in Liability / Equity',
-      'EDDD' => 'Increase in Cost / Expense / Loss',
-      'EDDC' => 'Decrease in Cost / Expense / Loss',
-      'EDCC' => 'Increase in Cost / Expense / Loss Contra Account',
-      'ECDD' => 'Increase in Revenue / Income / Gain Contra Account',
-      'ECCD' => 'Decrease in Revenue / Income / Gain',
-      'ECCC' => 'Increase in Revenue / Income / Gain',
-      'rDDD' => 'Net Loss recorded',
-      'rDCC' => 'Net Profit recorded',
-      'rCDD' => 'Net Loss recorded',
-      'rCCC' => 'Net Profit recorded',
+      'IN' => 'Increase in <em>{category}</em> Account',
+      'DN' => 'Decrease in <em>{category}</em> Account',
+      'IC' => 'Increase in <em>{category}</em> Contra Account',
+      'DC' => 'Decrease in <em>{category}</em> Contra Account',
     );
 
-    $explanation = array_key_exists($code, $explanations) ? Yii::t('delt', $explanations[$code]) : Yii::t('delt', 'unexplained entry');
-    return sprintf('<strong>%s</strong> - %s for %s.', $this->currentname, $explanation, DELT::currency_value(abs($amount), $currency));
+    $code =
+      ($balance == $this->outstanding_balance ? 'I': 'D') .   // increase or decrease?
+      ($this->outstanding_balance == $lookup->outstanding_balance ? 'N': 'C')  // normal or contra?
+      ;
+      
+    if($mpa && array_key_exists($code, $explanations))
+    {
+      if(array_key_exists($code, $explanations))
+      {
+        $explanation = Yii::t('delt', $explanations[$code], array('{category}'=>$mpa->currentname));
+      }
+      else
+      {
+        $explanation = Yii::t('delt', 'unexplained entry');
+      }
+    }
     
+    return Yii::t('delt', '<strong>{account}</strong> - {explanation} for {amount}.', array(
+      '{account}'=>$this->currentname, 
+      '{explanation}'=>$explanation, 
+      '{amount}' => DELT::currency_value(abs($amount), $currency))
+      );
+        
   }
     
   public function belongingTo($firm_id, $order='code ASC')
@@ -277,10 +289,10 @@ class Account extends CActiveRecord
     return $this;
   }
   
-  public function ofLevel($level)
+  public function ofLevel($level, $comparison='=')
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.level = ' . $level,
+        'condition'=>'t.level '. $comparison . $level,
     ));
     return $this;
   }
@@ -292,6 +304,24 @@ class Account extends CActiveRecord
     $p->params = array(':position' => $position);
     
     $this->getDbCriteria()->mergeWith($p);
+    return $this;
+  }
+  
+  public function withOutstandingBalance($balance=null)
+  {
+    if($balance)
+    {
+      $this->getDbCriteria()->mergeWith(array(
+          'condition'=>'t.outstanding_balance = "' . $balance .'"',
+      ));
+    }
+    else
+    {
+      $this->getDbCriteria()->mergeWith(array(
+          'condition'=>'t.outstanding_balance is null',
+      ));
+    }
+    
     return $this;
   }
 

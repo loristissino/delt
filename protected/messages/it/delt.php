@@ -51,6 +51,8 @@ return array(
   'Total Debit' => 'Totale Dare',
   'Total Credit' => 'Totale Avere',
   
+  'Sum'=>'Totale',
+  
   'Localized names' => 'Nomi localizzati',
   
   'Operations' => 'Operazioni',
@@ -273,7 +275,7 @@ return array(
   
   'The firm is being forked.' =>'Duplicazione dell\'azienda in corso.',
   'The data are being imported.' =>'Importazione dei dati in corso.',
-  'Please wait a few seconds...' => 'Aspetta qualche secondo...',
+  'Please wait a few seconds...' => 'Attendi qualche secondo...',
   'Copy of "{name}"' => 'Copia di "{name}"',
   'copy-of-{slug}' => 'copia-di-{slug}',  
   
@@ -364,7 +366,7 @@ return array(
   'Create new item' => 'Crea nuova voce', 
   'Edit item «{name}»' => 'Modifica voce «{name}»',
   
-  'Closing entry for accounts afferent to «{item}»' => 'Chiusura conti afferenti a «{item}»',
+  'Summary for «{item}»' => 'Chiusura per «{item}»',
   
   'Choose an account' => 'Scegli un conto',
   
@@ -375,6 +377,18 @@ return array(
   'Statement in pancake format'=>'Prospetto in formato a valori progressivi',
   'Statement in two separate sections'=>'Prospetto in due sezioni separate',
   'Net result' => 'Risultato netto',
+  
+  'Analyze the transaction' => 'Analizza la scrittura contabile',
+  'Transaction analysis' => 'Analisi della scrittura contabile',
+  'Transaction analysis is currently disabled. Please save the journal entry first.'=>'L\'analisi della scrittura contabile può essere effettuata solo dopo che essa è stata salvata.',
+  'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.' => 'L\'analisi della scrittura contabile è sperimentale e dipende dalla correttezza dell\'impostazione del piano dei conti.',
+  '<strong>{account}</strong> - {explanation} for {amount}.'=>'<strong>{account}</strong> - {explanation} per {amount}.',
+  'unexplained entry'=>'scrittura non spiegabile',
+  'Increase in <em>{category}</em> Account'=>'Incremento di <em>{category}</em>',
+  'Decrease in <em>{category}</em> Account'=>'Decremento di <em>{category}</em>',
+  'Increase in <em>{category}</em> Contra Account'=>'Rettifica di <em>{category}</em>',
+  'Decrease in <em>{category}</em> Contra Account'=>'Decremento della rettifica di <em>{category}</em>',
+  'Transaction analysis is meaningless for closing entries.' => 'L\'analisi non ha significato per le scritture di chiusura.',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',

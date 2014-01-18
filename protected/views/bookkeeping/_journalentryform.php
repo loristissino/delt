@@ -498,19 +498,22 @@ $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
 <div id="analysis" style="display: none">
 <h2><?php echo Yii::t('delt', 'Transaction analysis') ?></h2>
 
-<?php if($journalentryform->show_analysis): ?>
-  <p>
-  <?php foreach($items as $item): ?>
-    <?php if($item->analysis != 'none'): ?>
-      <?php echo $item->analysis ?><br />
+<?php if($journalentryform->is_closing): ?>
+  <p><?php echo Yii::t('delt', 'Transaction analysis is meaningless for closing entries.') ?></p>
+  <?php else: ?>
+  <?php if($journalentryform->show_analysis): ?>
+    <p>
+    <?php foreach($items as $item): ?>
+      <?php if($item->analysis != 'none'): ?>
+        <?php echo $item->analysis ?><br />
+      <?php endif ?>
+    <?php endforeach ?>
+    </p>
+
+    <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.') ?></p>
+    <?php else: ?>
+      <p><?php echo Yii::t('delt', 'Transaction analysis is currently disabled. Please save the journal entry first.') ?></p>
+
     <?php endif ?>
-  <?php endforeach ?>
-  </p>
-
-  <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the transaction analysis is experimental and is based on a correct chart of accounts.') ?></p>
-<?php else: ?>
-  <p><?php echo Yii::t('delt', 'Transaction analysis is currently disabled. Please save the journal entry first.') ?></p>
-
-<?php endif ?>
-
+  <?php endif ?>
 </div>

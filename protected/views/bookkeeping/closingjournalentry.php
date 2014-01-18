@@ -12,7 +12,7 @@ $this->menu=array();
 
 foreach($model->getMainPositions(true) as $mp)
 {
-  $this->menu[]=array('label'=>Yii::t('delt', 'Closing entry for accounts afferent to «{item}»', array('{item}'=>$mp->currentname)), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>$mp->position));
+  $this->menu[]=array('label'=>Yii::t('delt', 'Summary for «{item}»', array('{item}'=>$mp->currentname)), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>$mp->position));
 }
 
 ?>

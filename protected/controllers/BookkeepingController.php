@@ -320,7 +320,7 @@ class BookkeepingController extends Controller
     {
       $this->accounts = $this->firm->getAccountBalances($position);
       $this->is_closing = true;
-      $this->journalentrydescription=Yii::t('delt', 'Closing entry for accounts afferent to «{item}»', array('{item}'=>$p->currentname));
+      $this->journalentrydescription=Yii::t('delt', 'Summary for «{item}»', array('{item}'=>$p->currentname));
       
       if(sizeof($this->accounts))
       {
