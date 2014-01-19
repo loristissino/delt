@@ -502,13 +502,31 @@ $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
   <p><?php echo Yii::t('delt', 'Transaction analysis is meaningless for closing entries.') ?></p>
   <?php else: ?>
   <?php if($journalentryform->show_analysis): ?>
-    <p>
-    <?php foreach($items as $item): ?>
-      <?php if($item->analysis != 'none'): ?>
-        <?php echo $item->analysis ?><br />
-      <?php endif ?>
+    <table style="width: 600px;">
+    <tr>
+      <th><?php echo Yii::t('delt', 'Account') ?></th>
+      <th><?php echo Yii::t('delt', 'Classification') ?></th>
+      <th  style="width: 120px;"><?php echo Yii::t('delt', 'Change') ?></th>
+      <th  style="width: 80px;"><?php echo Yii::t('delt', 'Value') ?></th>
+    </tr>
+    <?php foreach($items as $item): $analysis=$item->analysis ?>
+      <tr>
+        <td>
+          <?php echo $analysis['account']?>
+        </td>
+        <td>
+          <?php echo $analysis['classification'] ?>
+          <?php if($analysis['type']=='C'): ?>
+            (<?php echo Yii::t('delt', 'Contra Account') ?>)
+          <?php endif ?>
+        </td>
+        <td  style="width: 120px;">
+          <?php echo $this->renderPartial('_change', array('change'=>$analysis['change'], 'type'=>$analysis['type'])) ?>
+        </td>
+        <td class="currency"  style="width: 80px;"><?php echo $analysis['value'] ?></td>
+      </tr>
     <?php endforeach ?>
-    </p>
+    </table>
 
     <p><?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.') ?></p>
     <?php else: ?>

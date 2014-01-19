@@ -240,6 +240,19 @@ class Account extends CActiveRecord
     
     $m = $mpa? $mpa->currentname : 'unexplained entry';
 
+    $result=array();
+    
+    $result['account']=$this->currentname;
+    $result['classification']=$mpa? $mpa->currentname : 'unknown';
+    $result['type']= $this->hasOutstandingBalance() ? ($this->outstanding_balance == $lookup->outstanding_balance ? 'N': 'C') : 'n'; // normal vs contra account
+    $result['change']= $this->hasOutstandingBalance() ? ($balance == $this->outstanding_balance ? 'I': 'D') :'n';  // increase vs decrease
+    $result['value']=DELT::currency_value(abs($amount), $currency);
+    //$result['ob']=$this->outstanding_balance;
+    
+    return $result;
+    
+    /*
+
     $explanations = array(
       'IN' => 'Increase in <em>{category}</em> Account',
       'DN' => 'Decrease in <em>{category}</em> Account',
@@ -269,7 +282,12 @@ class Account extends CActiveRecord
       '{explanation}'=>$explanation, 
       '{amount}' => DELT::currency_value(abs($amount), $currency))
       );
-        
+      */  
+  }
+  
+  public function hasOutstandingBalance()
+  {
+    return in_array($this->outstanding_balance, array('D', 'C'));
   }
     
   public function belongingTo($firm_id, $order='code ASC')

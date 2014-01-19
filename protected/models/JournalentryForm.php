@@ -349,7 +349,7 @@ class JournalentryForm extends CFormModel
         {
           $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a credit to this kind of account') . ' ' .
-            Yii::t('delt', '(unless the journalentry is marked as adjustment)') . '.'
+            Yii::t('delt', '(unless the journal entry is marked as adjustment)') . '.'
             );
           $this->postings[$row]->credit_errors=true;
           $errors=true;
@@ -359,7 +359,7 @@ class JournalentryForm extends CFormModel
         {
           $this->addError('postings', $row_message . 
             Yii::t('delt', 'you cannot do a debit to this kind of account') . ' ' .
-            Yii::t('delt', '(unless the journalentry is marked as adjustment)') . '.'
+            Yii::t('delt', '(unless the journal entry is marked as adjustment)') . '.'
             );
           $this->postings[$row]->debit_errors=true;
           $errors=true;
