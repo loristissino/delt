@@ -1,6 +1,6 @@
 <?php
 /**
- * RunchecksCommand class file.
+ * FirmsCommand class file.
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
@@ -13,32 +13,71 @@
 
 /*
  *  run this command with something like:
- *  ./yiic runchecks
+ *  ./yiic firms
  * 
  * see http://www.yiiframework.com/doc/guide/1.1/en/topics.console
 */
 
-class RunchecksCommand extends CConsoleCommand
+class FirmsCommand extends CConsoleCommand
 {
   
-  public function actionIndex($id)
+  public function actionIndex()
   {
-    if($firm = Firm::model()->findByPk($id))
+    $firms=Firm::model()->findAll();
+    foreach($firms as $firm)
     {
-      echo "Firm: " . $firm->id . "\n";
-      $accounts = Account::model()->findAllByAttributes(array('firm_id'=>$id, 'currentname'=>''));
-      foreach($accounts as $account)
-      {
-        echo "account: ". $account->id . ": ";
-        $account->setName();
-        echo $account->currentname . "\n";
-        $account->save(false);
-      }
-    }
-    else
-    {
-      echo "Firm not found: " . $id . "\n";
+      echo implode("\t", array($firm->id, $firm->status, $firm->language->language_code, $firm->slug, $firm->name)) . "\n";
     }
   }
+
+  public function actionInfo($id)
+  {
+    if(!$firm = Firm::model()->findByPk($id))
+    {
+      echo "Firm not found: " . $id . "\n";
+      return;
+    }
+    
+    echo "id: " . $firm->id . "\n";
+    echo "slug: " . $firm->slug . "\n";
+    echo "name: " . $firm->name . "\n";
+    echo "status: " . $firm->status . "\n";
+    echo "accounts: " . sizeof($firm->accounts) . "\n";
+    echo "journalentries: " . sizeof($firm->journalentries) . "\n";
+    echo "owners: " . sizeof($firm->owners) . "\n";
+    echo "languages: " . sizeof($firm->languages) . "\n";
+    echo "----------------------\n";
+    
+  }
+
+  public function actionEntries($id)
+  {
+    if(!$firm = Firm::model()->findByPk($id))
+    {
+      echo "Firm not found: " . $id . "\n";
+      return;
+    }
+
+    foreach($firm->journalentries as $journalentry)
+    {
+      echo $journalentry->date . ' -- ' . $journalentry->description . "\n";
+      foreach($journalentry->postings as $posting)
+      {
+        echo "   " . $posting->account . " -- " . $posting->amount . "\n";
+      }
+    }
+    
+  }
   
+  public function actionClearDeleted()
+  {
+    $firms = Firm::model()->findAllByAttributes(array('status'=>Firm::STATUS_DELETED));
+    foreach($firms as $firm)
+    {
+      echo $firm->id . " ";
+      echo $firm->safeDelete() ? 'deleted': 'NOT deleted';
+      echo "\n";
+    }
+  }
+
 }

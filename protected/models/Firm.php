@@ -183,6 +183,7 @@ class Firm extends CActiveRecord
   {
     return $this->name;
   }
+
   
   /**
    * Returns the set of owners of the firm, excluding a specified one.
@@ -1494,6 +1495,7 @@ class Firm extends CActiveRecord
     $this->_deleteTemplates();
     $this->_deleteAccounts();
     $this->_deleteUsers();
+    $this->_deleteLanguages();
 
     $transaction = $this->getDbConnection()->beginTransaction();
     try
