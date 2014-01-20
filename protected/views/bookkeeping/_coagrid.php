@@ -57,7 +57,7 @@
       'updateButtonUrl'=>'Yii::app()->controller->createUrl("account/update",array("id"=>$data->primaryKey))',
       'deleteButtonUrl'=>'Yii::app()->controller->createUrl("account/delete",array("id"=>$data->primaryKey))',
       'headerHtmlOptions'=>array('class'=>'buttons'),
-      'htmlOptions'=>array('style'=>'text-align: right', 'class'=>'buttons'),
+      'htmlOptions'=>array('style'=>'text-align: right; width: 60px', 'class'=>'buttons'),
       'buttons'=>array(
         'new'=>array(
           'label'=>'New',

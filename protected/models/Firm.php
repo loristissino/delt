@@ -1099,7 +1099,7 @@ class Firm extends CActiveRecord
     
     $data=array();
     
-    DELT::object2array($this, $data['base'], array('name', 'description', 'currency'));
+    DELT::object2array($this, $data['base'], array('name', 'description', 'firmtype', 'currency'));
 
     $data['base']['language'] = $this->language->locale;
     
@@ -1112,7 +1112,7 @@ class Firm extends CActiveRecord
     foreach($this->accounts as $account)
     {
       $values=array();
-      DELT::object2array($account, $values, array('code', 'textnames', 'position', 'outstanding_balance', 'comment'));
+      DELT::object2array($account, $values, array('code', 'textnames', 'type', 'position', 'outstanding_balance', 'comment'));
       $data['accounts'][]=$values;
       $references[$account->id]=$account->code;
     }
@@ -1205,7 +1205,7 @@ class Firm extends CActiveRecord
     try
     {
 
-      DELT::array2object($data['base'], $this, array('name', 'description', 'currency', 'language', 'languages'));
+      DELT::array2object($data['base'], $this, array('name', 'description', 'firmtype', 'currency', 'language', 'languages'));
 
       $languages = array();
       $language=Language::model()->findByLocale($data['base']['language']);
@@ -1240,7 +1240,7 @@ class Firm extends CActiveRecord
       {
         $newaccount = new Account;
         $newaccount->firm_id = $this->id;
-        DELT::array2object($values, $newaccount, array('code', 'textnames', 'position', 'outstanding_balance', 'comment'));
+        DELT::array2object($values, $newaccount, array('code', 'textnames', 'position', 'type', 'outstanding_balance', 'comment'));
         $newaccount->basicSave(false);
         $references[$values['code']]=$newaccount->id;
       }
