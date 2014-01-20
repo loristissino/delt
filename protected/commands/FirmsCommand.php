@@ -79,5 +79,20 @@ class FirmsCommand extends CConsoleCommand
       echo "\n";
     }
   }
+  
+  public function actionFixAccounts($id)
+  {
+    if(!$firm = Firm::model()->findByPk($id))
+    {
+      echo "Firm not found: " . $id . "\n";
+      return;
+    }
+    
+    echo $id .' ';
+    $firm->fixAccounts();
+    $firm->fixAccountNames();
+    echo "fixed!\n";
+    
+  }
 
 }
