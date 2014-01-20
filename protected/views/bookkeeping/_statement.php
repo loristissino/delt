@@ -99,4 +99,5 @@
 </div>
 
 <?php endif //$with_subtitles and $ggt?>
+<hr />
 <?php endif //sizeof($data)>0 ?>

@@ -1393,28 +1393,6 @@ class Firm extends CActiveRecord
   }
 
   /**
-   * Returns the data needed for the Balance Sheet.
-   * @param integer $level the level required
-   * @return array the data
-   */
-  /*
-  public function getBalanceSheet($level=1)
-  {
-    return $this->_getStatement('P', $level);
-  }
-  
-  /**
-   * Returns the data needed for the Income Statement.
-   * @param integer $level the level required
-   * @return array the data
-   */
-  /*
-  public function getIncomeStatement($level=1)  // aka Profit and Loss statement
-  {
-    return $this->_getStatement('E', $level);
-  }
-  
-  /**
    * Returns the data needed for a generic statement.
    * @param string $position the position required
    * @param integer $level the level required
