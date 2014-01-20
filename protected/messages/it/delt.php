@@ -392,6 +392,10 @@ return array(
   'Increase' => 'Incremento',
   'Decrease' => 'Decremento',
   
+  'Please note that when you create a firm from scratch, it will have an empty chart of accounts, and no configuration at all.'=>'Nota che quando crei una nuova azienda da zero, essa non avrà alcuna configurazione né alcun conto nel piano dei conti.',
+  'You might prefer to start by {forking} an existing firm (have a look at the standard ones provided).'=>'Potresti preferire iniziare con la  {forking} di un\'azienda esistente (prova a dare un\'occhiata a quelle fornite).',
+  'forking (duplicating)'=>'duplicazione (forking)',
+  
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
   'Content' => 'Contenuto',
