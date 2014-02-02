@@ -104,7 +104,7 @@ echo CHtml::endForm(); ?>
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
 //    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
-    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
+    'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
 //    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
     'items'=>array(
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
@@ -118,10 +118,10 @@ echo CHtml::endForm(); ?>
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
 //    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
-    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
-    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
+    'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
+    'confirm'=>addslashes(Yii::t('delt','Are you sure to perform this action on checked items?')),
     'items'=>array(
-        array('label'=>Yii::t('delt','delete'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'delete'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+        array('label'=>Yii::t('delt','delete'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'delete'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Delete permanently the selected journal entries'))),
     ),
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',
