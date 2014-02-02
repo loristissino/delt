@@ -36,7 +36,7 @@ $this->breadcrumbs=array(
 	
 	<div class="row">
 		<p class="hint">
-		<?php echo CHtml::link(UserModule::t("Sign up"),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t("Lost Password?"),Yii::app()->getModule('user')->recoveryUrl); ?> | <?php echo CHtml::link(UserModule::t("Didn't receive the activation link?"),Yii::app()->getModule('user')->resendactivationUrl); ?>
+		<?php echo CHtml::link(UserModule::t('Sign up'),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t('Lost Password?'),Yii::app()->getModule('user')->recoveryUrl); ?> | <?php echo CHtml::link(UserModule::t('Didn\'t receive the activation link?'),Yii::app()->getModule('user')->resendactivationUrl); ?>
 		</p>
 	</div>
 	
@@ -44,6 +44,8 @@ $this->breadcrumbs=array(
 		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
 		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
 	</div>
+
+	<p class="note"><?php echo UserModule::t('We use cookies to store the information concerning your activities on our website.'); ?> <?php echo UserModule::t('See our <a href="{privacy_url}">privacy policy</a> to find out more.', array('{privacy_url}'=>Yii::app()->params['privacy_url'])); ?></p>
 
 	<div class="row submit">
 		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>

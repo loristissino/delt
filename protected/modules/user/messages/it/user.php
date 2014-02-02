@@ -6,7 +6,7 @@ return array(
         'Login' => 'Entra',
         'Logout' => 'Esci',
         'username' => 'Username',
-        'username or email' => 'nome utente o email',
+        'Username or Email' => 'Nome utente o Email',
         'password' => 'Password',
         'Remember me next time' => 'Ricordami',
         'Username is incorrect.' => 'Nome utente non corretto.',
@@ -131,10 +131,14 @@ return array(
         'School'=> 'Scuola',
         'Language'=> 'Lingua',
         'unselected (use browser\'s preferences)' => 'non selezionata (usa preferenze del browser)',
+        'Didn\'t receive the activation link?' => 'Non hai ricevuto l\'email con il link di attivazione?',
+        'Resend activation link' => 'Rispedisci il link di attivazione',
         
         'I agree with the <a href="{tos}">Terms of Service</a> and the <a href="{privacy}">Privacy Policy</a>.' => 
             'Dichiaro di accettare <a href="{tos}">i termini e le condizioni</a> e di aver preso visione dell\'<a href="{privacy}">informativa sul trattamento dei dati personali</a>.',
     
-        'You must agree with the Terms of Service and the Privacy Policy.' => 'Devi accettare Termini e condizioni e dichiarare di aver preso visione dell\'Informativa sul trattamento dei dati personali.'
+        'You must agree with the Terms of Service and the Privacy Policy.' => 'Devi accettare Termini e condizioni e dichiarare di aver preso visione dell\'Informativa sul trattamento dei dati personali.',
+        'We use cookies to store the information concerning your activities on our website.' => 'Usiamo i cookie per memorizzare le informazioni riguardanti le tue attività nel nostro sito.',
+        'See our <a href="{privacy_url}">privacy policy</a> to find out more.' => 'Accedi all\'<a href="{privacy_url}">informativa sul trattamento dei dati personali</a> per saperne di più.',
 
 );
