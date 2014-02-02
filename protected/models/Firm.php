@@ -1765,7 +1765,7 @@ class Firm extends CActiveRecord
       ->select('id, account_parent_id, position, currentname as name')
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
-      ->andWhere('level <= 2')
+      ->andWhere('level <= 3')
       ->andWhere('type <> 0')
       ->order('code')
       ->queryAll();
