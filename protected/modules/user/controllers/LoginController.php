@@ -4,6 +4,23 @@ class LoginController extends Controller
 {
 	public $defaultAction = 'login';
 
+
+// see https://github.com/SleepWalker/hoauth/wiki/%5Binstall%5D-hoauth-and-yii-user-extension
+
+  public function actions()
+  {
+    return array(
+      'oauth' => array(
+        'class'=>'ext.hoauth.HOAuthAction',
+      ),
+      /*
+      'oauthadmin' => array(
+        'class'=>'ext.hoauth.HOAuthAdminAction',
+      ),
+      */
+    );
+  }
+
 	/**
 	 * Displays the login page
 	 */

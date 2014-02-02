@@ -54,6 +54,9 @@ $this->breadcrumbs=array(
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
 
+<p>----- <?php echo Yii::t('delt', 'or') ?> -----</p> 
+
+<?php $this->widget('ext.hoauth.widgets.HOAuth'); ?>
 
 <?php
 $form = new CForm(array(
