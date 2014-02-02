@@ -54,6 +54,7 @@ $this->breadcrumbs=array(
 <?php echo CHtml::endForm(); ?>
 </div><!-- form -->
 
+<?php if($oauth): ?>
 <p>----- <?php echo Yii::t('delt', 'or') ?> -----</p>
 
 <p>(<?php echo Yii::t('delt', 'this is experimental') ?>)</p>
@@ -84,3 +85,4 @@ $form = new CForm(array(
     ),
 ), $model);
 ?>
+<?php endif ?>
