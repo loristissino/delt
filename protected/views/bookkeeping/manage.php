@@ -14,10 +14,8 @@ $this->menu=array();
 if(!$model->frozen_at)
 {
   $this->menu[] = array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('/firm/update', 'id'=>$model->id));
-  $this->menu[] =   array('label'=>Yii::t('delt', 'Delete'), 'url'=>$url=$this->createUrl('/firm/delete', array('id'=>$model->id)), 'linkOptions'=>array(
-    'submit'=>$url,
+  $this->menu[] = array('label'=>Yii::t('delt', 'Delete'), 'url'=>array('/firm/delete', 'slug'=>$model->slug), 'linkOptions'=>array(
     'title'=>Yii::t('delt', 'Delete this firm'),
-    'confirm'=>Yii::t('delt', 'Are you sure you want to delete this firm?'),
     ));
 }
 

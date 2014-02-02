@@ -21,6 +21,11 @@ $available_firms = $this->DEUser->profile->allowed_firms - sizeof($this->DEUser-
 
   <p class="note"><?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/exclamation.png') ?> <?php echo Yii::t('delt', 'Please note that when you create a firm from scratch, it will have an empty chart of accounts, and no configuration at all.') ?> <?php echo Yii::t('delt', 'You might prefer to start by {forking} an existing firm (have a look at the standard ones provided).', array('{forking}'=>CHtml::link(Yii::t('delt', 'forking (duplicating)'), array('/firm/fork')))) ?></p>
 
-  <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+  <?php if($step==2): ?>
+    <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
+  <?php else: ?>
+    <?php echo CHtml::link(Yii::t('delt', 'I understand and I know what I am doing.'), array('firm/create', 'step'=>2)) ?>
+  <?php endif ?>
+
 <?php endif ?>
 

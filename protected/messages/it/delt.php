@@ -410,6 +410,9 @@ return array(
   'No journal entry has been deleted.' => 'Nessuna registrazione contabile è stata eliminata.',
   'One journal entry has been deleted. | {n} journal entries have been deleted.' => 'Una registrazione contabile è stata eliminata. | {n} registrazioni contabili sono state eliminate.',
   
+  'I understand and I know what I am doing.' => 'Capisco, e sono consapevole di quello che faccio.',
+  'The action cannot be undone.' => 'L\'operazione è irreversibile.',
+  
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
   'Content' => 'Contenuto',
