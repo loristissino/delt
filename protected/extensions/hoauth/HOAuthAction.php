@@ -56,8 +56,12 @@ class HOAuthAction extends CAction
 	 *
 	 * @see HOAuthAction::$avaibleAtts
 	 */
-	public $attributes;
-
+	public $attributes = array(
+    'byAdminMode'=>true,
+    'allowed_firms'=>10,
+    'email_notices' => 1,
+    );
+  
 	/**
 	 * @var string $scenario scenario name for the $model (optional)
 	 */
@@ -83,7 +87,7 @@ class HOAuthAction extends CAction
 	 *      when when social network returned email of existing local account. If set to
 	 *      `false` user will be automatically logged in without confirming account with password
 	 */
-	public $alwaysCheckPass = true;
+	public $alwaysCheckPass = false;
 
 	/**
 	 * @var string $userIdentityClass UserIdentity class that will be used to log user in.
@@ -143,6 +147,7 @@ class HOAuthAction extends CAction
 					'username' => 'displayName',
 					'status' => User::STATUS_ACTIVE,
 					));
+        
 
 				$this->usernameAttribute = 'username';
 				$this->_emailAttribute = 'email';
