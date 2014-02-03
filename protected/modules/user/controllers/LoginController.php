@@ -24,17 +24,18 @@ class LoginController extends Controller
   public function hoauthCheckAccess($user)
   {
     // here we can decide whether to set status to active
-    if($user->status==User::STATUS_NOACTIVE)
+    if($user->status == User::STATUS_NOACTIVE)
     {
       $user->status = User::STATUS_ACTIVE;
       $user->save();
-      return 1;
     }
-    else
-    {
-      return 0;
-    }
-    
+    return $user->status == User::STATUS_ACTIVE ? 1 : 0;
+  }
+
+  public function hoauthAfterLogin($user, $newUser)
+  {
+    Yii::app()->user->returnUrl = $this->createUrl('/bookkeeping/index');
+    //Yii::app()->end();
   }
 
 	/**

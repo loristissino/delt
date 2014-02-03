@@ -105,7 +105,7 @@ class HOAuthAction extends CAction
 	/**
 	 * @var string|array $oauthReturnUrl specific for oauth return url
 	 */
-	public $oauthReturnUrl = false;
+	public $oauthReturnUrl = array('bookkeeping/index');
 
 	/**
 	 * @var string $returnUrlStateId the id that should be used to store state for hoauth return url
