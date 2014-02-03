@@ -70,7 +70,7 @@ class HUserInfoForm extends CFormModel {
 		if(empty($nameAtt))
 			$scenario = 'email';
 		else
-			$this->username = $model->$nameAtt;
+			$this->username = $this->_fixUsername($model->$nameAtt);
 
 		// correcting scenarios, if some of fields is not empty
 		if ($this->scenario == 'both')
@@ -359,4 +359,10 @@ class HUserInfoForm extends CFormModel {
 
 		return "<p class=\"hFormHeader\">$header</p>";
 	}
+  
+  protected function _fixUsername($v)
+  {
+    return preg_replace("/[A-Za-z0-9_]/", '', $v);
+  }
+  
 }

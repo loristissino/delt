@@ -20,6 +20,22 @@ class LoginController extends Controller
       */
     );
   }
+  
+  public function hoauthCheckAccess($user)
+  {
+    // here we can decide whether to set status to active
+    if($user->status==User::STATUS_NOACTIVE)
+    {
+      $user->status = User::STATUS_ACTIVE;
+      $user->save();
+      return 1;
+    }
+    else
+    {
+      return 0;
+    }
+    
+  }
 
 	/**
 	 * Displays the login page

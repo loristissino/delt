@@ -56,7 +56,9 @@ class HOAuthAction extends CAction
 	 *
 	 * @see HOAuthAction::$avaibleAtts
 	 */
-	public $attributes = false;
+	public $attributes = array(
+    'status'=>User::STATUS_ACTIVE,
+    );
   
 	/**
 	 * @var string $scenario scenario name for the $model (optional)
@@ -356,14 +358,16 @@ class HOAuthAction extends CAction
 		}
 
 		if($user->isNewRecord)
+    {
 			$this->populateModel($user, $userProfile);
+    }
 
 		// trying to fill email and username fields
 		// NOTE: we display `username` field in our form only if it is required by the model
 		if($this->usernameAttribute && !$user->isAttributeRequired($this->usernameAttribute))
 			$this->usernameAttribute = false;
 
-		$form = new HUserInfoForm($user, $this->_emailAttribute, $this->usernameAttribute);
+		$form = new HUserInfoForm($user, $this->_emailAttribute, $this->usernameAttribute, 'username');
 
 		if(!$form->validateUser())
 		{
