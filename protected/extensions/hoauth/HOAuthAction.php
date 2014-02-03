@@ -56,11 +56,7 @@ class HOAuthAction extends CAction
 	 *
 	 * @see HOAuthAction::$avaibleAtts
 	 */
-	public $attributes = array(
-    'byAdminMode'=>true,
-    'allowed_firms'=>10,
-    'email_notices' => 1,
-    );
+	public $attributes;
   
 	/**
 	 * @var string $scenario scenario name for the $model (optional)
@@ -352,6 +348,12 @@ class HOAuthAction extends CAction
 			$prop = new ReflectionProperty('Profile', 'regMode');
 			if($prop->isStatic())
 				Profile::$regMode = true;
+      
+      $profile->byAdminMode = true;
+      $profile->allowed_firms => 10;
+      $profile->email_notices => 1;
+    );
+      
 		}
 
 		if($user->isNewRecord)
