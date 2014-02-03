@@ -362,7 +362,7 @@ class HUserInfoForm extends CFormModel {
   
   protected function _fixUsername($v)
   {
-    return preg_replace("/[A-Za-z0-9_]/", '', $v);
+    return preg_replace("/[^A-Za-z0-9_]/", '', $v);
   }
   
 }
