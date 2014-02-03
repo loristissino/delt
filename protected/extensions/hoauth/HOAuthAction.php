@@ -56,7 +56,7 @@ class HOAuthAction extends CAction
 	 *
 	 * @see HOAuthAction::$avaibleAtts
 	 */
-	public $attributes;
+	public $attributes = false;
   
 	/**
 	 * @var string $scenario scenario name for the $model (optional)
