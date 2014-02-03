@@ -352,7 +352,6 @@ class HOAuthAction extends CAction
       $profile->byAdminMode = true;
       $profile->allowed_firms = 10;
       $profile->email_notices = 1;
-    );
       
 		}
 
