@@ -367,7 +367,8 @@ class HOAuthAction extends CAction
 		if($this->usernameAttribute && !$user->isAttributeRequired($this->usernameAttribute))
 			$this->usernameAttribute = false;
 
-		$form = new HUserInfoForm($user, $this->_emailAttribute, $this->usernameAttribute, 'username');
+		$form = new HUserInfoForm($user, $this->_emailAttribute, $this->usernameAttribute, $user->email ? 'username' : 'both');
+    // we ask for the email only if the provider didn't give it to us (like twitter)
 
 		if(!$form->validateUser())
 		{
@@ -387,7 +388,10 @@ class HOAuthAction extends CAction
 				throw new Exception("Error, while saving {$this->model} model:\n\n" . var_export($user->errors, true));
 
 			// trying to send activation email
-			$this->sendActivationEmail($user);
+      // $this->sendActivationEmail($user);
+      // we won't send an activation email for users using hoauth login
+      
+			$this->sendWelcomeEmail($user);
 
 			if($this->useYiiUser)
 			{
@@ -438,6 +442,28 @@ class HOAuthAction extends CAction
 			elseif(method_exists($user, 'sendActivationMail')) // TODO: delete in future
 				$user->sendActivationMail();
 		}
+	}
+
+	/**
+	 * Sends welcome, when it is needed	
+	 * 
+	 * @param CActiveRecord $user current user model
+	 * @access protected
+	 * @return void
+	 */
+	protected function sendWelcomeEmail($user)
+	{
+    // fixme -- this should go in a general function to call from DEUser class
+    UserModule::sendMail(
+      $user->email,
+      Yii::t('delt', Yii::app()->params['mail']['welcome']['subject']),
+      Yii::t('delt', Yii::app()->params['mail']['welcome']['body'],
+        array(
+          '{name}'=>($user->profile && $user->profile->first_name ? $user->profile->first_name: $user->username),
+          '{username}'=>$user->username,
+          )
+        )
+      );
 	}
 
 	/**

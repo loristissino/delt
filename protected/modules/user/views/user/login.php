@@ -15,74 +15,24 @@ $this->breadcrumbs=array(
 
 <?php endif; ?>
 
-<p><?php echo UserModule::t("Please fill out the following form with your login credentials:"); ?></p>
-
-<div class="form">
-<?php echo CHtml::beginForm(); ?>
-
-	<p class="note"><?php echo UserModule::t('Fields with <span class="required">*</span> are required.'); ?></p>
-	
-	<?php echo CHtml::errorSummary($model); ?>
-	
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'username'); ?>
-		<?php echo CHtml::activeTextField($model,'username') ?>
-	</div>
-	
-	<div class="row">
-		<?php echo CHtml::activeLabelEx($model,'password'); ?>
-		<?php echo CHtml::activePasswordField($model,'password') ?>
-	</div>
-	
-	<div class="row">
-		<p class="hint">
-		<?php echo CHtml::link(UserModule::t('Sign up'),Yii::app()->getModule('user')->registrationUrl); ?> | <?php echo CHtml::link(UserModule::t('Lost Password?'),Yii::app()->getModule('user')->recoveryUrl); ?> | <?php echo CHtml::link(UserModule::t('Didn\'t receive the activation link?'),Yii::app()->getModule('user')->resendactivationUrl); ?>
-		</p>
-	</div>
-	
-	<div class="row rememberMe">
-		<?php echo CHtml::activeCheckBox($model,'rememberMe'); ?>
-		<?php echo CHtml::activeLabelEx($model,'rememberMe'); ?>
-	</div>
-
-	<p class="note"><?php echo UserModule::t('We use cookies to store the information concerning your activities on our website.'); ?> <?php echo UserModule::t('See our <a href="{privacy_url}">privacy policy</a> to find out more.', array('{privacy_url}'=>Yii::app()->params['privacy_url'])); ?></p>
-
-	<div class="row submit">
-		<?php echo CHtml::submitButton(UserModule::t("Login")); ?>
-	</div>
-	
-<?php echo CHtml::endForm(); ?>
-</div><!-- form -->
-
 <?php if($oauth): ?>
-<p>----- <?php echo Yii::t('delt', 'or') ?> -----</p>
 
-<p>(<?php echo Yii::t('delt', 'this is experimental') ?>)</p>
+  <?php ob_start(); $this->widget('ext.hoauth.widgets.HOAuth'); $hoauth_widget=ob_get_contents(); ob_end_clean(); ?>
 
-<?php $this->widget('ext.hoauth.widgets.HOAuth'); ?>
-
-<?php
-$form = new CForm(array(
-    'elements'=>array(
-        'username'=>array(
-            'type'=>'text',
-            'maxlength'=>32,
-        ),
-        'password'=>array(
-            'type'=>'password',
-            'maxlength'=>32,
-        ),
-        'rememberMe'=>array(
-            'type'=>'checkbox',
-        )
-    ),
-
-    'buttons'=>array(
-        'login'=>array(
-            'type'=>'submit',
-            'label'=>'Login',
-        ),
-    ),
-), $model);
-?>
+  <?php $this->widget('zii.widgets.jui.CJuiTabs', array(
+      'tabs'=>array(
+          Yii::t('delt', 'Login with username / email')=>$this->renderPartial('/user/_login_email', array('model'=>$model), true),
+          Yii::t('delt', 'Login with AOL / Google / Twitter / LinkedIn')=>$hoauth_widget,
+      ),
+      'options'=>array(
+          'collapsible'=>true,
+          'selected'=>0,
+      ),
+      'htmlOptions'=>array(
+          'style'=>'width:700px;'
+      ),
+  ));
+  ?>
+<?php else: ?>
+  <?php echo $this->renderPartial('/user/_login_email', array('model'=>$model), true) ?>
 <?php endif ?>

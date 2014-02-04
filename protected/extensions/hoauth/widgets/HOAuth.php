@@ -69,8 +69,8 @@ class HOAuth extends CWidget
     $cs = Yii::app()->getClientScript();
 		$cs->registerCoreScript('jquery'); 
     $cs->registerCssFile($assetsUrl.'/css/zocial.css');
-    ob_start();
-		?>
+    
+    $script = <<<EOT
 		$(function() {
 			$('.hoauthWidget a').click(function() {
 				var signinWin;
@@ -78,8 +78,8 @@ class HOAuth extends CWidget
 					screenY     = window.screenY !== undefined ? window.screenY : window.screenTop,
 					outerWidth  = window.outerWidth !== undefined ? window.outerWidth : document.body.clientWidth,
 					outerHeight = window.outerHeight !== undefined ? window.outerHeight : (document.body.clientHeight - 22),
-					width       = <?=$this->popupWidth?>,
-					height      = <?=$this->popupHeight?>,
+					width       = {$this->popupWidth},
+					height      = {$this->popupHeight},
 					left        = parseInt(screenX + ((outerWidth - width) / 2), 10),
 					top         = parseInt(screenY + ((outerHeight - height) / 2.5), 10),
 					options    = (
@@ -88,7 +88,6 @@ class HOAuth extends CWidget
 					',left=' + left +
 					',top=' + top
 					);
-		 
 				signinWin=window.open(this.href,'Login',options);
 
 				if (window.focus) {signinWin.focus()}
@@ -96,7 +95,7 @@ class HOAuth extends CWidget
 				return false;
 			});
 		});
-<?php
-    $cs->registerScript(__CLASS__, ob_get_clean());
+EOT;
+    $cs->registerScript(__CLASS__, $script);
 	}
 }
