@@ -3,7 +3,7 @@
 $logoutLabel = Yii::app()->getModule('user')->t("Logout");
 if($this->DEUser)
 {
-  $logoutLabel += ' ('. $this->DEUser->username. ')';
+  $logoutLabel .= ' ('. $this->DEUser->username. ')';
 }
 
 $mainmenu_items=array(

@@ -22,7 +22,7 @@ $this->breadcrumbs=array(
   <?php $this->widget('zii.widgets.jui.CJuiTabs', array(
       'tabs'=>array(
           Yii::t('delt', 'Login with username / email')=>$this->renderPartial('/user/_login_email', array('model'=>$model), true),
-          Yii::t('delt', 'Login with AOL / Google / Twitter / LinkedIn')=>$hoauth_widget,
+          Yii::t('delt', 'Login with social network account')=>$hoauth_widget,
       ),
       'options'=>array(
           'collapsible'=>true,
