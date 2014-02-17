@@ -8,6 +8,7 @@
  * @version 1.2.4
  * @copyright Copyright &copy; 2013 Sviatoslav Danylenko
  * @author Sviatoslav Danylenko <dev@udf.su> 
+ * @author Loris Tissino <loris.tissino@gmail.com> (little changes)
  * @license MIT ({@link http://opensource.org/licenses/MIT})
  * @link https://github.com/SleepWalker/hoauth
  */
@@ -362,7 +363,13 @@ class HUserInfoForm extends CFormModel {
   
   protected function _fixUsername($v)
   {
-    return preg_replace("/[^A-Za-z0-9_]/", '', $v);
+    $u = preg_replace("/[^A-Za-z0-9_]/", '', $v);
+    if(User::model()->findByAttributes(array('username'=>$u)))
+    {
+       $u = substr('DEuser_' . md5(time()), 0, 20);
+    }
+    return $u;
+    
   }
   
 }
