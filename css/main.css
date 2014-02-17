@@ -590,3 +590,8 @@ tr.excluded a
 	color: white;
 	background: #6faccf; 
 }
+
+.hoauthWidget
+{
+text-align: center;
+}

@@ -1,5 +1,11 @@
 <?php /* @var $this Controller */ 
 
+$logoutLabel = Yii::app()->getModule('user')->t("Logout");
+if($this->DEUser)
+{
+  $logoutLabel += ' ('. $this->DEUser->username. ')';
+}
+
 $mainmenu_items=array(
         array('label'=>Yii::t('delt', 'Home'), 'url'=>array('/site/'. Yii::app()->language . '/index')),
         array('label'=>Yii::t('delt','About'), 'url'=>array('/site/'. Yii::app()->language . '/about')),
@@ -9,7 +15,7 @@ $mainmenu_items=array(
         array('url'=>Yii::app()->getModule('user')->loginUrl, 'label'=>Yii::app()->getModule('user')->t("Login"), 'visible'=>Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->registrationUrl, 'label'=>Yii::app()->getModule('user')->t("Sign up"), 'visible'=>Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->profileUrl, 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),
-        array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>Yii::app()->getModule('user')->t("Logout").' ('.Yii::app()->user->name.')', 'visible'=>!Yii::app()->user->isGuest),
+        array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>$logoutLabel, 'visible'=>!Yii::app()->user->isGuest),
       );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
