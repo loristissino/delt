@@ -270,6 +270,9 @@ return array(
   'We will use your address only to answer your question.'=>'Useremo il tuo indirizzo di posta elettronica solo per rispondere alla domanda.',
   'Get a new code.'=>'Procurati un nuovo codice',
   
+  'Login with username / email' => 'Entra con nome utente / email',
+  'Login with social network account' => 'Entra con account di social network',
+  
   'Options' => 'Opzioni',
   'License' => 'Licenza',
   
