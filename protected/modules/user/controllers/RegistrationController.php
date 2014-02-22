@@ -50,6 +50,18 @@ class RegistrationController extends Controller
 							$profile->user_id=$model->id;
 							$profile->save();
               
+              Event::model()->log(DEUser::model()->getBy('username', $model->username), null, Event::USER_SIGNED_UP, array(
+                'user'=>array_diff_key(
+                  $model->attributes,
+                  array('id'=>true, 'create_at'=>true, 'lastvisit_at'=>true, 'password'=>true, 'activkey'=>true)
+                  ), 
+                'profile'=>array_diff_key(
+                  $profile->attributes,
+                  array('terms'=>true, 'remote_addr'=>true, 'usercode'=>true)
+                  ),
+              ));
+
+              
 							if (Yii::app()->controller->module->sendActivationMail) {
                 $model->sendActivationMail($this, $profile);
                 /*

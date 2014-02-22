@@ -151,8 +151,10 @@ class DEUser extends CActiveRecord
     );
   }
   
-  
-  
+  public function getBy($key, $value)
+  {
+    return $this->findByAttributes(array($key=>$value));
+  }
   
   public function getProfile()
   {

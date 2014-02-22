@@ -22,6 +22,8 @@ class ActivationController extends Controller
 				$find->status = User::STATUS_ACTIVE;
 				$find->save();
         
+        Event::model()->log(DEUser::model()->getBy('email', $email), null, Event::USER_ACTIVATED_ACCOUNT);
+        
         if($newuser)
         {
           UserModule::sendMail(

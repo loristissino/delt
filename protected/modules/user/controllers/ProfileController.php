@@ -48,6 +48,17 @@ class ProfileController extends Controller
         $email_changes = $model->checkEmailChanges($this, $profile);
 				$model->save();
 				$profile->save();
+        
+        Event::model()->log($this->DEUser, null, Event::USER_EDITED_ACCOUNT, array(
+          'user'=>array_diff_key(
+            $model->attributes,
+            array('id'=>true, 'create_at'=>true, 'lastvisit_at'=>true, 'password'=>true, 'activkey'=>true)
+            ), 
+          'profile'=>array_diff_key(
+            $profile->attributes,
+            array('terms'=>true, 'remote_addr'=>true, 'usercode'=>true)
+            ),
+        ));
         Yii::app()->user->updateSession();
 				Yii::app()->user->setFlash('profileMessage',UserModule::t("Changes have been saved.") . ($email_changes? (' ' . UserModule::t("An email has been sent to you to verify the new email address.")): ''));
 				$this->redirect(array('/user/profile'));
@@ -81,6 +92,7 @@ class ProfileController extends Controller
 						$new_password->password = UserModule::encrypting($model->password);
 						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
 						$new_password->save();
+            Event::model()->log($this->DEUser, null, Event::USER_CHANGED_PASSWORD, null);
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
 						$this->redirect(array("profile"));
 					}

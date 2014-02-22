@@ -87,6 +87,7 @@ class FirmController extends Controller
       {
          $level = $this->firm->getCOAMaxLevel();
       }
+      Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_SEEN);
       $this->render('public', array(
         'model'=>$this->firm,
         'postings'=>$postings,
@@ -166,10 +167,17 @@ class FirmController extends Controller
         {
           if($model->saveWithOwner($this->DEUser))
           {
+            
             $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
             $model->saveLanguages($languages);
             
             Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been successfully created.'));
+            Event::model()->log($this->DEUser, $model->id, Event::FIRM_CREATED, array_diff_key(
+                $model->attributes,
+                array('id'=>true, 'create_date'=>true, 'frozen_at'=>true)
+                )
+            );
+
             $this->redirect(array('/bookkeeping/manage','slug'=>$model->slug));
           }
           else
@@ -252,6 +260,7 @@ class FirmController extends Controller
             }
             $newfirm->fixAccounts();
             $newfirm->fixAccountNames();
+            Event::model()->log($this->DEUser, $newfirm->id, Event::FIRM_FORKED, array('parent_firm_id'=>$firm->id, 'type'=>$form->type));
             $this->redirect(array('bookkeeping/manage','slug'=>$newfirm->slug));
           }
           catch(Exception $e)
@@ -312,6 +321,12 @@ class FirmController extends Controller
           
           $this->firm->save(false);
           
+          Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_EDITED, array_diff_key(
+              $this->firm->attributes,
+              array('id'=>true, 'create_date'=>true, 'frozen_at'=>true)
+              )
+          );
+          
           $languages = isset($_POST['Firm']['languages']) ? $_POST['Firm']['languages'] : array();
           $this->firm->saveLanguages($languages);
 
@@ -348,6 +363,7 @@ class FirmController extends Controller
     {
       if($model->invite($username))
       {
+          Event::model()->log($this->DEUser, $model->id, Event::FIRM_SHARED, array('username'=>$username));
           Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.', array('{username}'=>$username))); 
           $this->redirect(array('bookkeeping/manage','slug'=>$model->slug));
       }
@@ -375,6 +391,7 @@ class FirmController extends Controller
         {
           $fu->role='O';
           $fu->save();
+          Event::model()->log($this->DEUser, $model->id, Event::FIRM_JOINED);
           Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You are now allowed to manage the firm «{firm}».', array('{firm}'=>$model->name))); 
         }
         else
@@ -395,6 +412,7 @@ class FirmController extends Controller
       if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'I')))
       {
         $fu->delete();
+        Event::model()->log($this->DEUser, $model->id, Event::FIRM_DECLINED);
         Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully declined the invitation to manage the firm «{firm}».', array('{firm}'=>$model->name)));
       }
       else
@@ -420,6 +438,8 @@ class FirmController extends Controller
         if($fu = FirmUser::model()->findByAttributes(array('firm_id'=>$model->id, 'user_id'=>$this->DEUser->id, 'role'=>'O')))
         {
           $fu->delete();
+          Event::model()->log($this->DEUser, $model->id, Event::FIRM_DISOWNED);
+          
           Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully disowned the firm «{firm}».', array('{firm}'=>$model->name)));
         }
         else
@@ -449,6 +469,7 @@ class FirmController extends Controller
     {
       if($model->freeze($this->DEUser->id))
       {
+        Event::model()->log($this->DEUser, $model->id, Event::FIRM_FROZEN);
         Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully freezed the firm «{firm}».', array('{firm}'=>$model->name)));
         $this->redirect(array('bookkeeping/manage', 'slug'=>$model->slug));
       }
@@ -462,6 +483,7 @@ class FirmController extends Controller
     {
       if($model->unfreeze($this->DEUser->id))
       {
+        Event::model()->log($this->DEUser, $model->id, Event::FIRM_UNFROZEN);
         Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'You successfully unfreezed the firm «{firm}».', array('{firm}'=>$model->name)));
         $this->redirect(array('bookkeeping/manage', 'slug'=>$model->slug));
       }
@@ -502,6 +524,7 @@ class FirmController extends Controller
     {
       if($this->firm->softDelete())
       {
+        Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_DELETED);
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The firm has been correctly deleted.'));
         $this->redirect(array('/bookkeeping/index'));
       }
