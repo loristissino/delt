@@ -105,7 +105,7 @@ echo CHtml::endForm();
     'formId'=>'balance-form',
     'checkBoxId'=>'id',
 //    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
-    'emptyText'=>Yii::t('delt','Please select the entries you would like to perform this action on!'),
+    'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
     'items'=>array(
         array('label'=>Yii::t('delt','prepare closing entry'),'url'=>array('bookkeeping/prepareentry', 'slug'=>$model->slug, 'op'=>'closing'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Prepare a journal entry that will close the selected accounts'))),
         array('label'=>Yii::t('delt','prepare snapshot entry'),'url'=>array('bookkeeping/prepareentry', 'slug'=>$model->slug, 'op'=>'snapshot'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Prepare a journal entry that will open the selected accounts with the current outstanding balance'))),

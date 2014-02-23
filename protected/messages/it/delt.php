@@ -311,6 +311,7 @@ return array(
   'Accept the invitation to share the management of this firm'=>'Accetta l\'invito a condividere la gestione di questa azienda',
   'Decline the invitation to share the management of this firm'=>'Declina l\'invito a condividere la gestione di questa azienda',
   'Are you sure you want to decline the invitation to share the management of this firm?'=>'Sei sicuro di voler declinare l\'invito a condividere la gestione di questa azienda?',
+  "By accepting the invitation, you agree on the following terms:\n\na) the contents of the firm are available under the Creative Commons Attribution-ShareAlike 3.0 Unported License;\n\nb) your name will be listed as an author.\n\nDo you want to accept the invitation to share the management of this firm?" => "Accettando l'invito, ti dichiari d'accordo sulle seguenti condizioni:\n\na) i contenuti dell'azienda sono pubblicati sotto Creative Commons Attribution-ShareAlike 3.0 Unported License;\n\nb) il tuo nome verrà elencato come autore.\n\nVuoi accettare l'invito a condividere la gestione dell'azienda?",
   
   'There must be at least one name for the account.' => 'Ci deve essere almeno un nome per il conto.',
   'You cannot remove the locale (language code). It was put back.' => 'Non puoi rimuovere il locale (codice della lingua). È stato ripristinato.',
@@ -412,6 +413,19 @@ return array(
   'One journal entry has been excluded. | {n} journal entries have been excluded.' => 'Una registrazione contabile è stata esclusa. | {n} registrazioni contabili sono state escluse.',
   'No journal entry has been deleted.' => 'Nessuna registrazione contabile è stata eliminata.',
   'One journal entry has been deleted. | {n} journal entries have been deleted.' => 'Una registrazione contabile è stata eliminata. | {n} registrazioni contabili sono state eliminate.',
+  
+  'With the selected accounts:' => 'Con i conti selezionati:',
+  'prepare closing entry' => 'prepara una registrazione di chiusura',
+  'prepare snapshot entry' => 'prepara una registrazione di fotografia dell\'esistente',
+  'Prepare a journal entry that will close the selected accounts' => 'Prepara una registrazione contabile per la chiusura dei conti selezionati',
+  'Prepare a journal entry that will open the selected accounts with the current outstanding balance' => 'Prepara una registrazione contabile per l\'apertura dei conti selezionati con l\'eccedenza attuale',
+  'Notes' => 'Note',
+  'Balance (Dr.)' => 'Eccedenza (D)',
+  'Balance (Cr.)' => 'Eccedenza (A)',
+  'Journal entry from balances' => 'Registrazione dalle eccedenze',
+  'snapshot' => 'fotografia',
+  'closing' => 'chiusura',
+  'Choose' => 'Scegli',
   
   'I understand and I know what I am doing.' => 'Capisco, e sono consapevole di quello che faccio.',
   'The action cannot be undone.' => 'L\'operazione è irreversibile.',

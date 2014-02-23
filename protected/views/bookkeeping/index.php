@@ -50,7 +50,7 @@ if($available_firms > 0)
         $url = $this->createUrl('firm/invitation', array('slug'=>$firm->slug, 'action'=>'accept')), array(
           'submit'=>$url,
           'title'=>Yii::t('delt', 'Accept the invitation to share the management of this firm'),
-          'confirm'=>Yii::t('delt', 'By accepting the invitation, you agree on the facts that: a) the contents of the firm are available under the Creative Commons Attribution-ShareAlike 3.0 Unported License, and b) your name will be listed as an author. Do you want to accept the invitation to share the management of this firm?'),
+          'confirm'=>Yii::t('delt', "By accepting the invitation, you agree on the following terms:\n\na) the contents of the firm are available under the Creative Commons Attribution-ShareAlike 3.0 Unported License;\n\nb) your name will be listed as an author.\n\nDo you want to accept the invitation to share the management of this firm?"),
           ))
        ?> - <?php echo CHtml::link(Yii::t('delt', 'decline'), 
         $url = $this->createUrl('firm/invitation', array('slug'=>$firm->slug, 'action'=>'decline')), array(
