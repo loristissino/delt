@@ -42,7 +42,7 @@ class LoginController extends Controller
 	/**
 	 * Displays the login page
 	 */
-	public function actionLogin($oauth=false)
+	public function actionLogin($oauth=true)
 	{
 		if (Yii::app()->user->isGuest) {
 			$model=new UserLogin;
