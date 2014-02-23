@@ -411,9 +411,9 @@ class HOAuthAction extends CAction
 				if(!$profile->save())
 					throw new Exception("Error, while saving " . get_class($profile) . "	model:\n\n" . var_export($profile->errors, true));
         
-        Event::model()->log(DEUser::model()->getBy('username', $model->username), null, Event::USER_SIGNED_UP_SOCIAL, array(
+        Event::model()->log(DEUser::model()->getBy('username', $user->username), null, Event::USER_SIGNED_UP_SOCIAL, array(
           'social'=>array_diff_key(
-            $model->attributes,
+            (array) $userProfile,
             array()
             ), 
           'profile'=>array_diff_key(
