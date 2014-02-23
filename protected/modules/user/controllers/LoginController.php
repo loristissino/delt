@@ -34,6 +34,7 @@ class LoginController extends Controller
 
   public function hoauthAfterLogin($user, $newUser)
   {
+    Event::model()->log(DEUser::model()->getBy('username', $user->username), null, Event::USER_LOGGED_IN_SOCIAL);
     Yii::app()->user->returnUrl = $this->createUrl('/bookkeeping/index');
     //Yii::app()->end();
   }

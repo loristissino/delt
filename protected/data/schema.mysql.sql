@@ -45,6 +45,27 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `tbl_event`
+--
+
+CREATE TABLE IF NOT EXISTS `tbl_event` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) DEFAULT NULL,
+  `firm_id` int(11) DEFAULT NULL,
+  `action` int(11) NOT NULL,
+  `happened_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `content` text,
+  `referer` varchar(255) DEFAULT NULL,
+  `address` varchar(15) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `firm_id` (`firm_id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `tbl_firm`
 --
 
@@ -262,6 +283,13 @@ CREATE TABLE IF NOT EXISTS `tbl_users` (
 --
 ALTER TABLE `tbl_account`
   ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_event`
+--
+ALTER TABLE `tbl_event`
+  ADD CONSTRAINT `tbl_event_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_event_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_firm_user`
