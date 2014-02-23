@@ -19,7 +19,9 @@ $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slu
 
 $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
 
-$placeholder_string = Yii::t('delt', 'Start typing (code or name) or double-click...');
+$placeholder_string = addslashes(Yii::t('delt', 'Start typing (code or name) or double-click...'));
+
+$unload_alert_string = addslashes(Yii::t('delt', 'Warning'));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -42,6 +44,8 @@ $cs->registerScript(
   var sort_icon = "' . $sort_icon . '";
   var explain_icon = "' . $explain_icon . '";
   
+  var dirty = false;
+  
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
     "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
@@ -62,6 +66,7 @@ $cs->registerScript(
   
   $("#load_accounts").click(function()
     {
+      dirty = true;
       var jsonUrl = "' . $json_url . '";
       $.getJSON(
         jsonUrl,
@@ -101,6 +106,7 @@ $cs->registerScript(
 
   $("#sort_accounts").click(function()
     {
+      dirty = true;
       var arr = [];
       for (i=1; i<=n; i++)
       {
@@ -127,6 +133,7 @@ $cs->registerScript(
   
   function toTextArea()
   {
+    dirty = true;
     var text="";
     for(i=1; i<=n; i++)
     {
@@ -154,6 +161,7 @@ $cs->registerScript(
   
   function fromTextArea()
   {
+    dirty = true;
     $("#load_accounts").hide();
     $("#sort_accounts").show();
     $("#explain").show();
@@ -257,6 +265,7 @@ $cs->registerScript(
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
+            dirty = true;
             return false;
           }
         })(i));
@@ -266,6 +275,7 @@ $cs->registerScript(
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
+            dirty = true;
             return false;
           }
         })(i));
@@ -275,9 +285,10 @@ $cs->registerScript(
         $("#name" +i).attr("placeholder", "'. $placeholder_string . '");
         done=true;
       }
-        
-      $("#debit" +i).blur(updatetotals);
-      $("#credit" +i).blur(updatetotals);
+
+      $("#name" +i).blur(function() {dirty = true;});
+      $("#debit" +i).blur(function() {dirty = true; updatetotals(); });
+      $("#credit" +i).blur(function() {dirty = true; updatetotals(); });
         
     }
   }
@@ -326,6 +337,19 @@ $cs->registerScript(
     
   }
   
+  $(window).bind("beforeunload", function(e) {
+    if(dirty)
+    {
+      return "' . $unload_alert_string . '";
+    }
+  });
+  
+  $("#save_button").click(function(e) {dirty=false; })
+  $("#addline_button").click(function(e) {dirty=false; })
+  $("#done_button").click(function(e) {dirty=false; })
+  
+  $("#JournalentryForm_date").blur(function() { dirty=true; });
+  $("#JournalentryForm_description").blur(function() { dirty=true; });
   
   '
 /*
@@ -458,9 +482,9 @@ $cs->registerScriptFile(
     </div>
     <?php endif ?>
     <div class="row buttons">
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save')); ?>
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Add a line'), array('name'=>'addline')); ?>
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Done'), array('name'=>'done')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save', 'id'=>'save_button')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Add a line'), array('name'=>'addline', 'id'=>'addline_button')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Done'), array('name'=>'done', 'id'=>'done_button')); ?>
     </div>
   </div><!-- rows_as_textfields -->
   <div id="rows_as_textarea" style="display: none">

@@ -29,6 +29,7 @@ return array(
   'Description' => 'Descrizione',
   'Comment' => 'Commento',
   'Done' => 'Fatto',
+  'Warning' => 'Attenzione',
   
   'Description / Explanation' => 'Descrizione / Spiegazione',
 
@@ -401,7 +402,7 @@ return array(
   'forking (duplicating)'=>'duplicazione (forking)',
   
   'Apply to the selected journal entries:' => 'Applica alle registrazioni contabili selezionate:',
-  'Please select the entries you would like to perform this action on!' => 'Seleziona le registrazioni contabili su cui vuoi effettuare l\'azione!',
+  'Please select the entries you would like to perform this action on!' => 'Seleziona le registrazioni contabili su cui vuoi effettuare l\'operazione!',
   'include' => 'includi',
   'exclude' => 'escludi',
   'delete' => 'elimina',
@@ -416,16 +417,18 @@ return array(
   
   'With the selected accounts:' => 'Con i conti selezionati:',
   'prepare closing entry' => 'prepara una registrazione di chiusura',
-  'prepare snapshot entry' => 'prepara una registrazione di fotografia dell\'esistente',
+  'prepare snapshot entry' => 'prepara una registrazione con la situazione corrente',
   'Prepare a journal entry that will close the selected accounts' => 'Prepara una registrazione contabile per la chiusura dei conti selezionati',
   'Prepare a journal entry that will open the selected accounts with the current outstanding balance' => 'Prepara una registrazione contabile per l\'apertura dei conti selezionati con l\'eccedenza attuale',
   'Notes' => 'Note',
   'Balance (Dr.)' => 'Eccedenza (D)',
   'Balance (Cr.)' => 'Eccedenza (A)',
   'Journal entry from balances' => 'Registrazione dalle eccedenze',
-  'snapshot' => 'fotografia',
+  'snapshot' => 'situazione corrente',
   'closing' => 'chiusura',
   'Choose' => 'Scegli',
+  
+  'No journal entry has been modified.' => 'Nessuna registrazione contabile è stata modificata.',
   
   'I understand and I know what I am doing.' => 'Capisco, e sono consapevole di quello che faccio.',
   'The action cannot be undone.' => 'L\'operazione è irreversibile.',
