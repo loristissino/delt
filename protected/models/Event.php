@@ -20,6 +20,9 @@
 class Event extends CActiveRecord
 {
   
+  const SITE_PAGE_SEEN          =    1;
+  const SITE_CONTACT_FORM       =    2;
+  const SITE_CONTACT_SENT       =    3;
   const USER_SIGNED_UP          = 1001;
   const USER_ACTIVATED_ACCOUNT  = 1002;
   const USER_SIGNED_UP_SOCIAL   = 1003;

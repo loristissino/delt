@@ -30,6 +30,7 @@ class CI18nViewAction extends CViewAction
     // consistent in page naming...
     list($lang, $rest)=explode('.', $viewPath);
     Yii::app()->language=$lang;
+    Event::log(Yii::app()->controller->DEUser, null, Event::SITE_PAGE_SEEN, array('viewPath'=>$viewPath));
   }
 
 

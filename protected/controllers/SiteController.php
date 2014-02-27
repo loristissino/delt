@@ -87,6 +87,7 @@ class SiteController extends Controller
           "Content-type: text/plain; charset=UTF-8";
 
         mail(Yii::app()->params['adminEmail'],$subject,$model->body,$headers);
+        Event::log($this->DEUser, null, Event::SITE_CONTACT_SENT, array('subject'=>$subject, 'body'=>$model->body, 'headers'=>$headers));
         Yii::app()->user->setFlash('contact', Yii::t('delt', 'Thank you for contacting us. We will respond to you as soon as possible.'));
         $this->refresh();
       }
@@ -95,6 +96,7 @@ class SiteController extends Controller
     {
       $model->email = Yii::app()->user->email;
     }
+    Event::log($this->DEUser, null, Event::SITE_CONTACT_FORM);
     $this->render('contact',array('model'=>$model));
   }
 
