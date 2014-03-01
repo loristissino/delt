@@ -171,5 +171,11 @@ class Event extends CActiveRecord
     return array_flip($reflect->getConstants());
   }
   
+  public function getExternalReferer()
+  {
+    $excluded = Yii::app()->params['referer_excluded'];
+    return substr($this->referer, 0, strlen($excluded))!=$excluded ? $this->referer : false;
+  }
+  
   
 }
