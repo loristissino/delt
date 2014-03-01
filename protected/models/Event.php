@@ -95,7 +95,7 @@ class Event extends CActiveRecord
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
-      'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+      'user' => array(self::BELONGS_TO, 'DEUser', 'user_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
     );
   }
@@ -136,8 +136,13 @@ class Event extends CActiveRecord
     $criteria->compare('content',$this->content,true);
     $criteria->compare('referer',$this->referer,true);
 
-    return new CActiveDataProvider($this, array(
+    $sort = new CSort;
+    $sort->defaultOrder = 'happened_at DESC';
+
+    return new CActiveDataProvider($this->with('firm')->with('user'), array(
       'criteria'=>$criteria,
+      'pagination'=>array('pageSize'=>100),
+      'sort'=> $sort,
     ));
   }
   
@@ -152,6 +157,18 @@ class Event extends CActiveRecord
     $event->referer = Yii::app()->request->getUrlReferrer();
     $event->address = Yii::app()->request->getUserHostAddress();
     $event->save();
+  }
+  
+  public function getActionDescription()
+  {
+    $constants = $this->getClassConstants();
+    return isset($constants[$this->action]) ? $constants[$this->action] : '';
+  }
+  
+  public function getClassConstants()
+  {
+    $reflect = new ReflectionClass(get_class($this));
+    return array_flip($reflect->getConstants());
   }
   
   

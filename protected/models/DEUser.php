@@ -168,6 +168,11 @@ class DEUser extends CActiveRecord
   {
     return (($this->status > 0) && $this->profile->allowed_firms - sizeof($this->firms) > 0);
   }
+  
+  public function __toString()
+  {
+    return $this->username;
+  }
 
   
 }
