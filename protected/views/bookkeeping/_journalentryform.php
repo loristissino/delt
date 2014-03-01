@@ -21,7 +21,7 @@ $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this
 
 $placeholder_string = addslashes(Yii::t('delt', 'Start typing (code or name) or double-click...'));
 
-$unload_alert_string = addslashes(Yii::t('delt', 'Warning'));
+$unload_alert_string = addslashes(Yii::t('delt', 'There might be some unsaved changes in the form.'));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -67,6 +67,7 @@ $cs->registerScript(
   $("#load_accounts").click(function()
     {
       dirty = true;
+
       var jsonUrl = "' . $json_url . '";
       $.getJSON(
         jsonUrl,
@@ -107,6 +108,7 @@ $cs->registerScript(
   $("#sort_accounts").click(function()
     {
       dirty = true;
+
       var arr = [];
       for (i=1; i<=n; i++)
       {
@@ -134,6 +136,7 @@ $cs->registerScript(
   function toTextArea()
   {
     dirty = true;
+
     var text="";
     for(i=1; i<=n; i++)
     {
@@ -162,6 +165,7 @@ $cs->registerScript(
   function fromTextArea()
   {
     dirty = true;
+
     $("#load_accounts").hide();
     $("#sort_accounts").show();
     $("#explain").show();
@@ -286,7 +290,7 @@ $cs->registerScript(
         done=true;
       }
 
-      $("#name" +i).blur(function() {dirty = true;});
+      $("#name" +i).blur(function() {dirty = true; });
       $("#debit" +i).blur(function() {dirty = true; updatetotals(); });
       $("#credit" +i).blur(function() {dirty = true; updatetotals(); });
         
@@ -347,9 +351,10 @@ $cs->registerScript(
   $("#save_button").click(function(e) {dirty=false; })
   $("#addline_button").click(function(e) {dirty=false; })
   $("#done_button").click(function(e) {dirty=false; })
+  $("#new_button").click(function(e) {dirty=false; })
   
   $("#JournalentryForm_date").blur(function() { dirty=true; });
-  $("#JournalentryForm_description").blur(function() { dirty=true; });
+  $("#JournalentryForm_description").blur(function() { if($("#JournalentryForm_description").val()) dirty=true; });
   
   '
 /*
@@ -387,7 +392,7 @@ $cs->registerScriptFile(
 
 ?>
 
-<div class="form">
+<div class="form" style="width: 630px">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
   'id'=>'journalentryform',
@@ -482,9 +487,10 @@ $cs->registerScriptFile(
     </div>
     <?php endif ?>
     <div class="row buttons">
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save', 'id'=>'save_button')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Add a line'), array('name'=>'addline', 'id'=>'addline_button')); ?>
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Done'), array('name'=>'done', 'id'=>'done_button')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save', 'id'=>'save_button')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save & Close'), array('name'=>'done', 'id'=>'done_button')); ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Save & New'), array('name'=>'new', 'id'=>'new_button')); ?>
     </div>
   </div><!-- rows_as_textfields -->
   <div id="rows_as_textarea" style="display: none">

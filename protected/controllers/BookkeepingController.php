@@ -292,6 +292,11 @@ class BookkeepingController extends Controller
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
             }
+            elseif(isset($_POST['new']))
+            {
+              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «%description%» has been correctly saved.', array('%description%'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
+              $this->redirect(array('bookkeeping/newjournalentry','slug'=>$this->firm->slug));
+            }
             else
             {
               $this->redirect(array('bookkeeping/updatejournalentry','slug'=>$this->firm->slug, 'id'=>$journalentryform->journalentry->id));
@@ -403,6 +408,11 @@ class BookkeepingController extends Controller
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
+            }
+            elseif(isset($_POST['new']))
+            {
+              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «%description%» has been correctly saved.', array('%description%'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
+              $this->redirect(array('bookkeeping/newjournalentry','slug'=>$this->firm->slug));
             }
           }
         }

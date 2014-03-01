@@ -28,8 +28,9 @@ return array(
   'Date' => 'Data',
   'Description' => 'Descrizione',
   'Comment' => 'Commento',
-  'Done' => 'Fatto',
-  'Warning' => 'Attenzione',
+  'Save & Close' => 'Salva & Chiudi',
+  'Save & New' => 'Salva & Nuova',
+  'There might be some unsaved changes in the form.' => 'Ci potrebbero essere dati non salvati nel modulo.',
   
   'Description / Explanation' => 'Descrizione / Spiegazione',
 
@@ -54,7 +55,10 @@ return array(
   
   'Sum'=>'Totale',
   
+  'The journal entry «%description%» has been correctly saved.' => 'La registrazione «%description%» è stata salvata.',
+  'You can now prepare a new one.' => 'Puoi prepararne una nuova.',
   'Localized names' => 'Nomi localizzati',
+  
   
   'Operations' => 'Operazioni',
   'Create new account' => 'Crea nuovo conto',
