@@ -138,6 +138,7 @@ class AccountController extends Controller
             $this->firm->updateAccountsPositions($oldPosition, $account->position);
           }
           $this->firm->fixAccounts();
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_COA_UPDATED);
           $this->redirect(array($account->isHidden()? 'bookkeeping/configure':'bookkeeping/coa','slug'=>$this->firm->slug));
         }
       }

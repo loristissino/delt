@@ -20,28 +20,37 @@
 class Event extends CActiveRecord
 {
   
-  const SITE_PAGE_SEEN          =    1;
-  const SITE_CONTACT_FORM       =    2;
-  const SITE_CONTACT_SENT       =    3;
-  const USER_SIGNED_UP          = 1001;
-  const USER_ACTIVATED_ACCOUNT  = 1002;
-  const USER_SIGNED_UP_SOCIAL   = 1003;
-  const USER_LOGGED_IN          = 1010;
-  const USER_LOGGED_IN_SOCIAL   = 1011;
-  const USER_LOGGED_OUT         = 1012;
-  const USER_EDITED_ACCOUNT     = 1021;
-  const USER_CHANGED_PASSWORD   = 1022;
-  const FIRM_CREATED            = 2001;
-  const FIRM_DELETED            = 2002;
-  const FIRM_FORKED             = 2003;
-  const FIRM_SHARED             = 2011;
-  const FIRM_JOINED             = 2012;
-  const FIRM_DECLINED           = 2013;
-  const FIRM_DISOWNED           = 2014;
-  const FIRM_FROZEN             = 2021;
-  const FIRM_UNFROZEN           = 2022;
-  const FIRM_EDITED             = 2031;
-  const FIRM_SEEN               = 2051;
+  const SITE_PAGE_SEEN              =    1;
+  const SITE_CONTACT_FORM           =    2;
+  const SITE_CONTACT_SENT           =    3;
+  const USER_SIGNED_UP              = 1001;
+  const USER_ACTIVATED_ACCOUNT      = 1002;
+  const USER_SIGNED_UP_SOCIAL       = 1003;
+  const USER_LOGGED_IN              = 1010;
+  const USER_LOGGED_IN_SOCIAL       = 1011;
+  const USER_LOGGED_OUT             = 1012;
+  const USER_EDITED_ACCOUNT         = 1021;
+  const USER_CHANGED_PASSWORD       = 1022;
+  const FIRM_CREATED                = 2001;
+  const FIRM_DELETED                = 2002;
+  const FIRM_FORKED                 = 2003;
+  const FIRM_SHARED                 = 2011;
+  const FIRM_JOINED                 = 2012;
+  const FIRM_DECLINED               = 2013;
+  const FIRM_DISOWNED               = 2014;
+  const FIRM_FROZEN                 = 2021;
+  const FIRM_UNFROZEN               = 2022;
+  const FIRM_EDITED                 = 2031;
+  const FIRM_EXPORTED               = 2041;
+  const FIRM_IMPORTED               = 2042;
+  const FIRM_SEEN                   = 2051;
+  const FIRM_JOURNALENTRY_CREATED   = 2061;
+  const FIRM_JOURNALENTRY_UPDATED   = 2062;
+  const FIRM_JOURNALENTRY_DELETED   = 2062;
+  const FIRM_JOURNALENTRIES_DELETED = 2062;
+  const FIRM_JOURNAL_CLEARED        = 2064;
+  const FIRM_COA_UPDATED            = 2071;
+  
   
   /**
    * Returns the static model of the specified AR class.

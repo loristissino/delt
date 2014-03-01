@@ -207,6 +207,7 @@ class BookkeepingController extends Controller
     $data=$this->firm->getExportData('111');
     
     $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.delt';
+    Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED);
     $this->sendDispositionHeader($filename);
     $this->serveJson($data);
   }
@@ -218,12 +219,12 @@ class BookkeepingController extends Controller
     
     if(isset($_POST['Firm']))
     {
-      //throw new CHttpException(501, 'Not yet implemented.');
       $file=CUploadedFile::getInstance($this->firm, 'file');
       if (is_object($file) && get_class($file)==='CUploadedFile')
       {
         if($this->firm->loadFromFile($file))
         {
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_IMPORTED);
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Data correctly imported.'));
           $this->redirect(array('bookkeeping/manage','slug'=>$this->firm->slug));
         }
@@ -287,6 +288,7 @@ class BookkeepingController extends Controller
         {
           if($journalentryform->save())
           {
+            Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_CREATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
             if(isset($_POST['done']))
             {
@@ -404,6 +406,7 @@ class BookkeepingController extends Controller
         {
           if($journalentryform->save())
           {
+            Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_UPDATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
             if(isset($_POST['done']))
             {
@@ -440,6 +443,7 @@ class BookkeepingController extends Controller
     {
       if($this->journalentry->safeDelete())
       {
+        Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_DELETED, array('id'=>$id));
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal entry has been successfully deleted.'));
       }
       else
@@ -463,6 +467,7 @@ class BookkeepingController extends Controller
     {
       if($this->firm->clearJournal())
       {
+        Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNAL_CLEARED);
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal has been successfully cleared.'));
       }
       else
@@ -520,6 +525,7 @@ class BookkeepingController extends Controller
         }
         else
         {
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$_POST['id']));
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been deleted. | {n} journal entries have been deleted.', $affected_rows));
         }
       }  
