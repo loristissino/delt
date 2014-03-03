@@ -8,6 +8,7 @@ $this->menu=array(
 		:array()),
     array('label'=>UserModule::t('Edit'), 'url'=>array('edit')),
     array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
+    array('label'=>UserModule::t('Change email'), 'url'=>array('changeemail')),
     array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
 );
 

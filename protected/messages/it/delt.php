@@ -437,6 +437,9 @@ return array(
   'I understand and I know what I am doing.' => 'Capisco, e sono consapevole di quello che faccio.',
   'The action cannot be undone.' => 'L\'operazione è irreversibile.',
   
+  'Sorry, this action has not been implemented yet.' => 'Purtroppo, questa azione non è ancora stata implementata.',
+  'Please use the contact form if you want to change your email address.' => 'Contattaci direttamente (tramite il modulo) per cambiare il tuo indirizzo email.',
+  
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',
   'Content' => 'Contenuto',

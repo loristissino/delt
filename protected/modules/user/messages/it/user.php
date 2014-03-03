@@ -49,6 +49,7 @@ return array(
         'Cancel'=> 'Annulla',
         'New password is saved.' => 'Nuova password registrata.',
         'Change password' => 'Cambia password',
+        'Change email' => 'Cambia email',
         'Your profile' => 'Il tuo profilo',
         'Thank you for your registration. Please check your email or login.' => 'Grazie per la registrazione. Controlla la posta o effettua il login.',
         'Thank you for your registration. Please check your email and follow the instructions there (be sure to check also your spam folder, because sometimes the message is put there).' => 'Grazie per la registrazione. Controlla la posta per attivare l\'account (guarda anche nella cartella spam, perché a volte succede che il messaggio finisca lì).',

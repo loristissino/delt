@@ -9,6 +9,7 @@ $this->menu=array(
 		:array()),
     array('label'=>UserModule::t('Profile'), 'url'=>array('/user/profile')),
     array('label'=>UserModule::t('Change password'), 'url'=>array('changepassword')),
+    array('label'=>UserModule::t('Change email'), 'url'=>array('changeemail')),
     array('label'=>UserModule::t('Logout'), 'url'=>array('/user/logout')),
 );
 
@@ -42,12 +43,6 @@ $languages=array_merge(array(
 		<?php echo $form->labelEx($model,'username'); ?>
 		<?php echo $form->textField($model,'username',array('size'=>20,'maxlength'=>20)); ?>
 		<?php echo $form->error($model,'username'); ?>
-	</div>
-
-	<div class="row">
-		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email',array('size'=>60,'maxlength'=>128)); ?>
-		<?php echo $form->error($model,'email'); ?>
 	</div>
 
 <?php 
