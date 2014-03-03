@@ -39,7 +39,7 @@ class UserChangePassword extends CFormModel {
 	 */
 	 public function verifyOldPassword($attribute, $params)
 	 {
-		 if (User::model()->notsafe()->findByPk(Yii::app()->user->id)->password != Yii::app()->getModule('user')->encrypting($this->$attribute))
+     if(Yii::app()->getModule('user')->validatePassword($this->$attribute, User::model()->notsafe()->findByPk(Yii::app()->user->id)->password)==false)
 			 $this->addError($attribute, UserModule::t("Old Password is incorrect."));
 	 }
 }

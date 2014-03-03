@@ -27,6 +27,12 @@ class UserModule extends CWebModule
 	 * @desc hash method (md5,sha1 or algo hash function http://www.php.net/manual/en/function.hash.php)
 	 */
 	public $hash='md5';
+  
+	/**
+	 * @var string
+	 * @desc cost parameter for BlowFish encrypter
+	 */
+  public $cost='04';
 	
 	/**
 	 * @var boolean
@@ -161,6 +167,7 @@ class UserModule extends CWebModule
 	/**
 	 * @return hash string.
 	 */
+  /*
 	public static function encrypting($string="") {
 		$hash = Yii::app()->getModule('user')->hash;
 		if ($hash=="md5")
@@ -170,6 +177,44 @@ class UserModule extends CWebModule
 		else
 			return hash($hash,$string);
 	}
+  */
+
+	/**
+	 * @return boolean true if the password is valid
+	 */
+	public static function validatePassword($password_given, $password_stored) 
+  {
+    if(strlen($password_stored)==32)
+    { 
+      // for old passwords, stored as md5 hashes
+      return md5($password_given)==$password_stored;
+    }
+    else
+    {
+      return crypt($password_given, $password_stored)==$password_stored;
+    }
+	}
+
+	/**
+	 * @return string a BlowFish password string with random salt, to be stored in the db
+	 */
+	public static function createPassword($password_given) 
+  {
+    
+    $cost = Yii::app()->getModule('user')->cost;    
+    
+    $salt = '$2a$' . $cost . '$';
+    
+    $r = openssl_random_pseudo_bytes(22);
+    
+    for($i=0; $i<22; $i++)
+    {
+      $salt.=substr('./0123456789ABCDEFGHIJKLMNOPQRSTUWWXYZabcdefghijklmnopqrstuvwxyz', floor(hexdec(bin2hex($r[$i]))/4), 1);
+    }
+    
+    return crypt($password_given, $salt);
+	}
+
 	
 	/**
 	 * @param $place

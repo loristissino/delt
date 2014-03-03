@@ -76,6 +76,7 @@ class ProfileController extends Controller
 	 */
 	public function actionChangepassword() {
 		$model = new UserChangePassword;
+
 		if (Yii::app()->user->id) {
 			
 			// ajax validator
@@ -86,12 +87,14 @@ class ProfileController extends Controller
 			}
 			
 			if(isset($_POST['UserChangePassword'])) {
+
 					$model->attributes=$_POST['UserChangePassword'];
+
 					if($model->validate()) {
-						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-						$new_password->password = UserModule::encrypting($model->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
-						$new_password->save();
+						//$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
+						$this->DEUser->password = UserModule::createPassword($model->password);
+						$this->DEUser->activkey=md5((microtime().$model->password));
+						$this->DEUser->save();
             Event::model()->log($this->DEUser, null, Event::USER_CHANGED_PASSWORD, null);
 						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
 						$this->redirect(array("profile"));
