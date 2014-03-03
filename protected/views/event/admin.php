@@ -3,7 +3,7 @@
 /* @var $model Event */
 
 $this->breadcrumbs=array(
-	'Events'=>array('index'),
+	'Events'=>array('admin'),
 	'Manage',
 );
 
@@ -67,6 +67,7 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
       'type'=>'raw',
       ),
 		'happened_at',
+    'address',
 		array(
 			'class'=>'CButtonColumn',
 		),

@@ -3,7 +3,7 @@
 /* @var $model Event */
 
 $this->breadcrumbs=array(
-	'Events'=>array('index'),
+	'Events'=>array('admin'),
 	$model->id=>array('view','id'=>$model->id),
 	'Update',
 );
