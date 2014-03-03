@@ -142,6 +142,11 @@ class EventController extends Controller
   {
     return $this->renderPartial('_action', array('event'=>$event), true);
   }  
+
+  public function renderAddress(Event $event, $row)
+  {
+    return $this->renderPartial('_address', array('event'=>$event), true);
+  }  
   
   
 }
