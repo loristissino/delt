@@ -141,6 +141,8 @@ return array(
     
     'blog'=>'http://blog.learndoubleentry.org',
     'referer_excluded'=>'http://127.0.0.1/yii/delt',
+    'iplocator'=>'http://geolocationservice.example.com/?ip=%ip%',
+
     'banner_key'=>'somethingwrittenhere',  // this is used to keep somehow secret banner files
     
     'list_token' => 'asecretcodetoaccessdata',
