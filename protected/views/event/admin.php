@@ -54,9 +54,9 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
       ),
     array(
       'name'=>'firm',
-      'header'=>Yii::t('delt', 'Firm'),
+      'header'=>Yii::t('delt', 'Firm/Page'),
       'sortable'=>false,
-      'value'=>array($this, 'RenderFirm'),
+      'value'=>array($this, 'RenderFirmPage'),
       'type'=>'raw',
       ),
     array(

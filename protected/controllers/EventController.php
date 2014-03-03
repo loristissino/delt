@@ -30,7 +30,9 @@ class EventController extends Controller
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
 				'actions'=>array('admin','delete','index','view'),
-				'users'=>array('admin'),
+//				'users'=>array('admin'),
+        'expression'=>'DEUser::model()->findByPK($user->id)->superuser==1',
+        // we should use RBAC here... see http://www.yiiframework.com/doc/guide/1.1/en/topics.auth
 			),
 			array('deny',  // deny all users
 				'users'=>array('*'),
@@ -131,9 +133,9 @@ class EventController extends Controller
     return $this->renderPartial('_user', array('event'=>$event), true);
   }  
   
-  public function renderFirm(Event $event, $row)
+  public function renderFirmPage(Event $event, $row)
   {
-    return $this->renderPartial('_firm', array('event'=>$event), true);
+    return $this->renderPartial('_firmpage', array('event'=>$event), true);
   }  
   
   public function renderAction(Event $event, $row)
