@@ -35,6 +35,9 @@ return array(
         # encrypting method (php hash function)
         'hash' => 'md5',
 
+        # BlowFish cost (computational time)
+        'cost' => '04',
+
         # send activation email
         'sendActivationMail' => true,
 
@@ -137,6 +140,7 @@ return array(
     'fixedtimeOffset'=>3600, // in seconds: CET is 3600
     
     'blog'=>'http://blog.learndoubleentry.org',
+    'referer_excluded'=>'http://127.0.0.1/yii/delt',
     'banner_key'=>'somethingwrittenhere',  // this is used to keep somehow secret banner files
     
     'list_token' => 'asecretcodetoaccessdata',
