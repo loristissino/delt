@@ -1485,7 +1485,14 @@ class Firm extends CActiveRecord
     catch (Exception $e)
     {
       $transaction->rollback();
-      Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
+      if(Yii::app()->getUser())
+      {
+        Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
+      }
+      else // it is run on the command line
+      {
+        echo $e->getMessage() . "\n";
+      }
       return false;
     }
   }
