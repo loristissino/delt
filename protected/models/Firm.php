@@ -42,6 +42,7 @@ class Firm extends CActiveRecord
   // negative values for firms that we do not want to show
   const STATUS_DELETED = -3; 
   const STATUS_SUSPENDED = -4;
+  const STATUS_CLEARED = -5;
   
   // positive values for firms that we do want to show
   const STATUS_SYSTEM = 1;
@@ -1478,14 +1479,24 @@ class Firm extends CActiveRecord
     $transaction = $this->getDbConnection()->beginTransaction();
     try
     {
-      $this->delete();
+      if(sizeof(Event::model()->findByAttributes(array('firm_id'=>$this->id))))
+      {
+        $this->slug = '~' . md5($this->id);
+        $this->status = self::STATUS_CLEARED;
+        $this->save(false);
+      }
+      else
+      {
+        $this->delete();
+      }
+      
       $transaction->commit();
       return true;
     }
     catch (Exception $e)
     {
       $transaction->rollback();
-      if(Yii::app()->getUser())
+      if(method_exists(Yii::app(), 'getUser') and Yii::app()->getUser())
       {
         Yii::app()->getUser()->setFlash('delt_failure', $e->getMessage());
       }

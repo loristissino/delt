@@ -34,6 +34,7 @@ class Event extends CActiveRecord
   const FIRM_CREATED                = 2001;
   const FIRM_DELETED                = 2002;
   const FIRM_FORKED                 = 2003;
+  const FIRM_CLEARED                = 2005;
   const FIRM_SHARED                 = 2011;
   const FIRM_JOINED                 = 2012;
   const FIRM_DECLINED               = 2013;
@@ -146,7 +147,7 @@ class Event extends CActiveRecord
     ));
   }
   
-  public function log(DEUser $user=null, $firm_id, $action, $content='')
+  public function log(DEUser $user=null, $firm_id=null, $action=null, $content='')
   {
     $event = new Event();
     $event->user_id = $user ? $user->id : null;
