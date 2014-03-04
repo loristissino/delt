@@ -1482,16 +1482,17 @@ class Firm extends CActiveRecord
       if(sizeof(Event::model()->findByAttributes(array('firm_id'=>$this->id))))
       {
         $this->slug = '~' . md5($this->id);
-        $this->status = self::STATUS_CLEARED;
+        $exit = $this->status = self::STATUS_CLEARED;
         $this->save(false);
       }
       else
       {
+        $exit = self::STATUS_DELETED;
         $this->delete();
       }
       
       $transaction->commit();
-      return true;
+      return $exit;
     }
     catch (Exception $e)
     {

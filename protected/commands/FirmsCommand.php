@@ -75,14 +75,18 @@ class FirmsCommand extends CConsoleCommand
     foreach($firms as $firm)
     {
       echo $firm->id . " ";
-      if ($firm->safeDelete())
+      switch($firm->safeDelete())
       {
-        echo 'deleted';
-        Event::model()->log(null, $firm->id, Event::FIRM_CLEARED);
-      }
-      else
-      {
-        echo 'NOT deleted';
+        case Firm::STATUS_CLEARED:
+          echo 'cleared';
+          Event::model()->log(null, $firm->id, Event::FIRM_CLEARED);
+          break;
+        case Firm::STATUS_DELETED:
+          echo 'deleted';  // old firms with no events
+          break;
+        case false:
+          echo 'NOT deleted';
+          break;
       }
       
       echo "\n";
