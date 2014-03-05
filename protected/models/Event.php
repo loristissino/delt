@@ -31,6 +31,9 @@ class Event extends CActiveRecord
   const USER_LOGGED_OUT             = 1012;
   const USER_EDITED_ACCOUNT         = 1021;
   const USER_CHANGED_PASSWORD       = 1022;
+  const USER_SENT_RECOVERYLINK      = 1031;
+  const USER_PASSWORD_RECOVERED     = 1032;
+  const USER_RESENT_ACTIVATIONLINK  = 1033;
   const FIRM_CREATED                = 2001;
   const FIRM_DELETED                = 2002;
   const FIRM_FORKED                 = 2003;

@@ -21,12 +21,13 @@ class RecoveryController extends Controller
 			    		if(isset($_POST['UserChangePassword'])) {
 							$form2->attributes=$_POST['UserChangePassword'];
 							if($form2->validate()) {
-								$find->password = Yii::app()->controller->module->encrypting($form2->password);
-								$find->activkey=Yii::app()->controller->module->encrypting(microtime().$form2->password);
+								$find->password = Yii::app()->controller->module->createPassword($form2->password);
+								$find->activkey=Yii::app()->controller->module->createActiveKey($form2->password);
 								if ($find->status==0) {
 									$find->status = 1;
 								}
 								$find->save();
+                Event::model()->log(DEUser::model()->getBy('id', $find->id), null, Event::USER_PASSWORD_RECOVERED);
 								Yii::app()->user->setFlash('recoveryMessage',UserModule::t("New password is saved."));
 								$this->redirect(Yii::app()->controller->module->recoveryUrl);
 							}
@@ -54,6 +55,7 @@ class RecoveryController extends Controller
 			    					));
 							
 			    			UserModule::sendMail($user->email,$subject,$message);
+                Event::model()->log(DEUser::model()->getBy('email', $user->email), null, Event::USER_SENT_RECOVERYLINK);
 			    			
 							Yii::app()->user->setFlash('recoveryMessage',UserModule::t("Please check your email. Instructions have been sent to your email address."));
 			    			$this->refresh();
@@ -85,7 +87,7 @@ class RecoveryController extends Controller
                 
                 else
                 {
-                  $user->activkey=UserModule::encrypting(microtime().$user->password);
+                  $user->activkey=UserModule::createActiveKey(microtime().$user->password);
                   $user->save();
                   
                   $activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $user->activkey, "email" => $user->email));
@@ -99,6 +101,9 @@ class RecoveryController extends Controller
                         )
                       )
                     );
+                  
+                  Event::model()->log(DEUser::model()->getBy('id', $user->id), null, Event::USER_RESENT_ACTIVATIONLINK);
+                  
                   Yii::app()->user->setFlash('resendMessage',UserModule::t("Please check your email. We resent the activation link to the address you specified."));
                   $this->refresh();
                   
