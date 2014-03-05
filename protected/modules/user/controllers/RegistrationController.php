@@ -40,7 +40,7 @@ class RegistrationController extends Controller
 					if($model->validate()&&$profile->validate())
 					{
 						$sourcePassword = $model->password;
-						$model->activkey=md5(rand(0,100000).microtime().$model->password);
+						$model->activkey=UserModule::createActiveKey($model->password);
 						$model->password=UserModule::createPassword($model->password);
 						$model->verifyPassword=$model->password;
 						$model->superuser=0;

@@ -215,6 +215,14 @@ class UserModule extends CWebModule
     return crypt($password_given, $salt);
 	}
 
+	/**
+	 * @return string a string to be used as validation key for email validation
+	 */
+	public static function createActiveKey($string) 
+  {
+    return md5(rand(0,100000).microtime().$string;
+	}
+
 	
 	/**
 	 * @param $place
