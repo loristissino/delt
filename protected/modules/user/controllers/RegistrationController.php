@@ -40,9 +40,9 @@ class RegistrationController extends Controller
 					if($model->validate()&&$profile->validate())
 					{
 						$sourcePassword = $model->password;
-						$model->activkey=UserModule::encrypting(microtime().$model->password);
-						$model->password=UserModule::encrypting($model->password);
-						$model->verifyPassword=UserModule::encrypting($model->verifyPassword);
+						$model->activkey=md5(rand(0,100000).microtime().$model->password);
+						$model->password=UserModule::createPassword($model->password);
+						$model->verifyPassword=$model->password;
 						$model->superuser=0;
 						$model->status=((Yii::app()->controller->module->activeAfterRegister)?User::STATUS_ACTIVE:User::STATUS_NOACTIVE);
 						
