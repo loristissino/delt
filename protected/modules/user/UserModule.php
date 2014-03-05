@@ -220,7 +220,7 @@ class UserModule extends CWebModule
 	 */
 	public static function createActiveKey($string) 
   {
-    return md5(rand(0,100000).microtime().$string;
+    return md5(rand(0,100000).microtime().$string);
 	}
 
 	
