@@ -12,6 +12,7 @@
  * The BookkeepingController class.
  * 
  * @package application.controllers
+ * @author Loris Tissino <loris.tissino@gmail.com>
  * 
  */
 class BookkeepingController extends Controller

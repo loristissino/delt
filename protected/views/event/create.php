@@ -3,13 +3,13 @@
 /* @var $model Event */
 
 $this->breadcrumbs=array(
-	'Events'=>array('admin'),
-	'Create',
+  'Events'=>array('admin'),
+  'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Event', 'url'=>array('index')),
-	array('label'=>'Manage Event', 'url'=>array('admin')),
+  array('label'=>'List Event', 'url'=>array('index')),
+  array('label'=>'Manage Event', 'url'=>array('admin')),
 );
 ?>
 

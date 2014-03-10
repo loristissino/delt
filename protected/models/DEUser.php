@@ -7,9 +7,8 @@
  * @copyright Copyright &copy; 2013 Loris Tissino
  * @since 1.0
  */
-/** This is the model class for table "{{users}}".
+/** DEUser represents a single user of DELT.
  *
- * The followings are the available columns in table '{{users}}':
  * @property integer $id
  * @property string $username
  * @property string $password

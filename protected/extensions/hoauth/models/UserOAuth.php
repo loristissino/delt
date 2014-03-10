@@ -14,7 +14,7 @@
  * @version 1.2.4
  * @copyright Copyright &copy; 2013 Sviatoslav Danylenko
  * @author Sviatoslav Danylenko <dev@udf.su> 
- * @author Loris Tissino <loris.tissino@gmail.com> (little changes)
+ * @author Loris Tissino <loris.tissino@gmail.com> (adaptation to DELT)
  * @license MIT ({@link http://opensource.org/licenses/MIT})
  * @link https://github.com/SleepWalker/hoauth
  */

@@ -1,11 +1,21 @@
 <?php
 /**
+ * UserModule class file.
+ *
+ * @author Mikhail Mangushev <mishamx@gmail.com> 
+ * @link http://yii-user.2mx.org/
+ * @license http://www.opensource.org/licenses/bsd-license.php
+ */
+
+/**
  * Yii-User module
  * 
  * @author Mikhail Mangushev <mishamx@gmail.com> 
  * @link http://yii-user.2mx.org/
  * @license http://www.opensource.org/licenses/bsd-license.php
- * @version $Id: UserModule.php 132 2011-10-30 10:45:01Z mishamx $
+ * @author Loris Tissino <loris.tissino@gmail.com> (adaptation to DELT)
+ * @package application.modules.user
+ * 
  */
 
 class UserModule extends CWebModule

@@ -8,6 +8,7 @@
  * @author Sviatoslav Danylenko <dev@udf.su> 
  * @license MIT ({@link http://opensource.org/licenses/MIT})
  * @link https://github.com/SleepWalker/hoauth
+ * @author Loris Tissino <loris.tissino@gmail.com> (adaptation to DELT)
  */
 
 /**

@@ -1,9 +1,17 @@
 <?php
+/**
+ * Event class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.2.7
+ */
+
 
 /**
- * This is the model class for table "{{event}}".
+ * Event represents a single event happened at logged.
  *
- * The followings are the available columns in table '{{event}}':
  * @property integer $id
  * @property integer $user_id
  * @property integer $firm_id
@@ -16,6 +24,9 @@
  * The followings are the available model relations:
  * @property Users $user
  * @property Firm $firm
+ * 
+ * @package application.models
+ * 
  */
 class Event extends CActiveRecord
 {
