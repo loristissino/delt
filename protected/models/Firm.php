@@ -946,7 +946,10 @@ class Firm extends CActiveRecord
           $info=array();
           foreach(unserialize($template->info) as $id=>$value)
           {
-            $info[$references[$id]]=$value;
+            if(isset($references[$id]))
+            {
+              $info[$references[$id]]=$value;
+            }
           }
           $newtemplate->info=serialize($info);
           $newtemplate->save(false);
@@ -1707,6 +1710,10 @@ class Firm extends CActiveRecord
           if(isset($items[3]))  // outstanding balance
           {
             $account->outstanding_balance = $items[3];
+          }
+          if(isset($items[4]))  // type
+          {
+            $account->type = $items[4];
           }
         }
         

@@ -20,7 +20,7 @@ $this->breadcrumbs=array(
 )); ?>
 
   <p class="note"><?php echo Yii::t('delt', 'You can copy the contents of the following area into a spreadsheet.') ?><br />
-  <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance.') ?>
+  <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance{tab}type.') ?>
   </p>
 
   <div class="row">

@@ -21,7 +21,7 @@ $this->breadcrumbs=array(
 )); ?>
 
   <p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
-  <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance.') ?></p>
+  <?php echo Yii::t('delt', 'The format for each line is: name{tab}code{tab}position{tab}balance{tab}type.') ?></p>
 
   <?php echo $form->errorSummary($model, Yii::t('delt', 'Please fix the following errors:')); ?>
   
