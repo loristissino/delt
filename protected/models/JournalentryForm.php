@@ -343,7 +343,7 @@ class JournalentryForm extends CFormModel
         }
       }
       
-      if(!$this->is_closing && !$this->is_adjustment && $this->postings[$row]->account && $this->postings[$row]->account->position=='E')
+      if(!$this->is_closing && !$this->is_adjustment && $this->postings[$row]->account && strpos($this->firm->checked_positions, $this->postings[$row]->account->position)!==false)
       {
         if($this->postings[$row]->account->outstanding_balance == 'D' && $credit>0)
         {

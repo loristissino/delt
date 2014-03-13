@@ -23,6 +23,7 @@
  * @property integer $firm_parent_id
  * @property string $create_date
  * @property string $banner
+ * @property string $checked_positions
  *
  * The followings are the available model relations:
  * @property Account[] $accounts
@@ -100,6 +101,7 @@ class Firm extends CActiveRecord
         'tooLarge'=>Yii::t('delt', 'The banner file was too large. Please upload a smaller file.'),
         'allowEmpty'=> true,
         ),
+      array('checked_positions', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, name, slug, firmtype, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -144,6 +146,7 @@ class Firm extends CActiveRecord
       'firm_parent_id' => Yii::t('delt', 'Parent firm'),
       'create_date' => Yii::t('delt', 'Create Date'),
       'license'=>Yii::t('delt', 'License'),
+      'checked_positions'=>Yii::t('delt', 'Checked Positions'),
     );
   }
 
@@ -865,7 +868,7 @@ class Firm extends CActiveRecord
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
     
-    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype'));
+    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions'));
     
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;

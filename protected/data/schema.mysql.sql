@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `banner` blob,
   `frozen_at` timestamp NULL DEFAULT NULL,
+  `checked_positions` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT 'T',
   PRIMARY KEY (`id`),
   UNIQUE KEY `slug` (`slug`),
   KEY `language_id` (`language_id`),

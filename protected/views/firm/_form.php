@@ -238,6 +238,14 @@ $languages_available = Language::model()->findAllSorted();
       </span>
     </div>
   <?php endif ?>
+
+  <div class="row">
+    <?php echo $form->labelEx($model,'checked_positions'); ?>
+    <?php echo $form->textField($model,'checked_positions',array('size'=>4,'maxlength'=>10)); ?>
+    <?php echo $form->error($model,'checked_positions'); ?>
+    <br />
+    <span class="hint"><?php echo Yii::t('delt', 'These are the positions of accounts that are checked when a journal entry is prepared, to avoid wrong outstanding balances') ?></span>
+  </div>
   
   <div class="row buttons" id="submitDiv">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
