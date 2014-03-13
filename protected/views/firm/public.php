@@ -66,6 +66,7 @@ $this->breadcrumbs=array(
     'data'=>$model->getStatement($statement, $level),
     'model'=>$model,
     'level'=>$level,
+    'maxlevel'=>$maxlevel,
     'hlevel'=>3,
     'links'=>true,
     )) ?>

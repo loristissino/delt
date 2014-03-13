@@ -83,15 +83,17 @@ class FirmController extends Controller
     $this->firm=$this->loadFirmBySlug($slug, false);
     if(sizeof($postings = $this->firm->getJournalentriesAsDataProvider(100000)->data))
     {
+      $maxlevel = $this->firm->getCOAMaxLevel();
       if($level==0)
       {
-         $level = $this->firm->getCOAMaxLevel();
+         $level = $maxlevel;
       }
       Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_SEEN);
       $this->render('public', array(
         'model'=>$this->firm,
         'postings'=>$postings,
         'level'=>$level,
+        'maxlevel'=>$maxlevel,
       ));
     }
     else
