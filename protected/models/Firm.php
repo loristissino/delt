@@ -840,6 +840,7 @@ class Firm extends CActiveRecord
       ->select('MAX(level) as level')
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere('type=0')
       ->queryScalar();
     return $level;
   }
