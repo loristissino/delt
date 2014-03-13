@@ -25,6 +25,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
     'data'=>$model->getStatement($statement, $level),
     'model'=>$model,
     'level'=>$level,
+    'maxlevel'=>$maxlevel,
     'hlevel'=>2,
     'links'=>true,
     )) ?>

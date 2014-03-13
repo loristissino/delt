@@ -3,7 +3,9 @@
 
   $tag0 = 'h' . $hlevel;
   $tag1 = 'h' . ($hlevel+1);
-  
+
+  $add_to_level = max($maxlevel, 4) - $level; // we add this to every level to avoid blacks when not needed
+    
   $order=array();
   if($statement->type==2)
   {
@@ -16,13 +18,13 @@
       }
     }
     $with_subtitles=true;
-    $grandtotal_line = 'Grandtotal';
+    $grandtotal_line = ''; // 'Grandtotal';
   }
   else
   {
     $order['+']=$statement->currentname;
     $with_subtitles=false;
-    $grandtotal_line = 'Net result';
+    $grandtotal_line = ''; // 'Net result';
   }
   
 ?>
@@ -38,7 +40,7 @@
 <tbody>
 <?php $gt=0; $lastlevel = 0; foreach($data as $account): ?>
   <?php if($account['type']==$key): ?>
-    <tr class="statementrow level<?php echo $account['level'] ?>">
+    <tr class="statementrow level<?php echo ($account['level'] +  $add_to_level) ?>">
       <td style="width: 300px;">
         <?php if(!$account['is_selectable']): ?>
           <?php echo Yii::t('delt', 'Total:') ?>
@@ -92,7 +94,7 @@
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">
-    <td style="width: 500px;"><?php echo Yii::t('delt', 'Aggregate Grandtotal') ?></td>
+    <td style="width: 500px;"><?php // echo Yii::t('delt', 'Aggregate Grandtotal') ?></td>
     <td class="currency" style="width: 100px;"><?php echo DELT::currency_value($ggt, $model->currency) ?></td>
   </tr>
 </table>

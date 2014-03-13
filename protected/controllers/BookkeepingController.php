@@ -184,11 +184,13 @@ class BookkeepingController extends Controller
   public function actionStatements($slug, $level=1)
   {
     $this->firm=$this->loadModelBySlug($slug);
-    if($level>$this->firm->getCOAMaxLevel())
+    $maxlevel = $this->firm->getCOAMaxLevel();
+    if($level > $maxlevel)
       throw new CHttpException(404,'The requested page does not exist.');
     $this->render('statements', array(
       'model'=>$this->firm,
       'level'=>$level,
+      'maxlevel'=>$maxlevel,
     ));
   }
 
