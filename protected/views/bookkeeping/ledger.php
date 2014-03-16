@@ -58,45 +58,15 @@ if($deletable)
 <?php endif ?>
 
 <?php if($account->number_of_children==0): ?>
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-  'id'=>'firm-grid',
-  'dataProvider'=>$account->getPostingsAsDataProvider(),
-  'columns'=>array(
-    array(
-      'class'=>'CDataColumn',
-      'name'=>'date',
-      'value'=>array($this, 'RenderDate'),
-      'type'=>'raw',
-      'header'=>Yii::t('delt', 'Date'),
-      ),
-    array(
-      'name'=>'journalentry.description',
-      'header'=>Yii::t('delt', 'Description'),
-      'value'=>array($this, 'RenderDescriptionForLedger'),
-      'footer'=>Yii::t('delt', 'Sum') . '<br />' . Yii::t('delt', 'Outstanding balance'),
-      'cssClassExpression'=>'$data->journalentry->is_closing? \'closing\' : \'\'',
-      'type'=>'raw',
-      ),
-    array(
-      'class'=>'CDataColumn',
-      'name'=>'debit',
-      'value'=>array($this, 'RenderDebit'),
-      'type'=>'raw',
-      'htmlOptions'=>array('class'=>'currency'),
-      'footer'=>DELT::currency_value($debitgrandtotal, $this->firm->currency) . '<br/>' . ($grandtotal>0 ? '<span class="outstanding_balance">' . DELT::currency_value($grandtotal, $this->firm->currency) . '</span>' : '&nbsp;'),
-      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
-      ),
-    array(
-      'class'=>'CDataColumn',
-      'name'=>'credit',
-      'value'=>array($this, 'RenderCredit'),
-      'type'=>'raw',
-      'htmlOptions'=>array('class'=>'currency'),
-      'footer'=>DELT::currency_value(-$creditgrandtotal, $this->firm->currency) . '<br/>' . ($grandtotal<0 ? '<span class="outstanding_balance">' . DELT::currency_value(-$grandtotal, $this->firm->currency) . '</span>' : '&nbsp;'),
-      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
-      ),
-  ),
-)); ?>
+
+  <?php echo $this->renderPartial('_ledger', array(
+    'id'=>'ledger-grid',
+    'dataProvider'=>$account->getPostingsAsDataProvider(),
+    'debitgrandtotal'=>$debitgrandtotal,
+    'creditgrandtotal'=>$creditgrandtotal,
+    'grandtotal'=>$grandtotal,
+    ), true) ?>
+    
 <?php else: ?>
 <p><?php echo Yii::t('delt', 'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:') ?></p>
 <ul>

@@ -1,0 +1,40 @@
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+  'id'=>$id,
+  'dataProvider'=>$dataProvider,
+  'summaryText'=>'',
+  'columns'=>array(
+    array(
+      'class'=>'CDataColumn',
+      'name'=>'date',
+      'value'=>array($this, 'RenderDate'),
+      'type'=>'raw',
+      'header'=>Yii::t('delt', 'Date'),
+      ),
+    array(
+      'name'=>'journalentry.description',
+      'header'=>Yii::t('delt', 'Description'),
+      'value'=>array($this, 'RenderDescriptionForLedger'),
+      'footer'=>Yii::t('delt', 'Sum') . '<br />' . Yii::t('delt', 'Outstanding balance'),
+      'cssClassExpression'=>'$data->journalentry->is_closing? \'closing\' : \'\'',
+      'type'=>'raw',
+      ),
+    array(
+      'class'=>'CDataColumn',
+      'name'=>'debit',
+      'value'=>array($this, 'RenderDebit'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'currency'),
+      'footer'=>DELT::currency_value($debitgrandtotal, $this->firm->currency) . '<br/>' . ($grandtotal>0 ? '<span class="outstanding_balance">' . DELT::currency_value($grandtotal, $this->firm->currency) . '</span>' : '&nbsp;'),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
+      ),
+    array(
+      'class'=>'CDataColumn',
+      'name'=>'credit',
+      'value'=>array($this, 'RenderCredit'),
+      'type'=>'raw',
+      'htmlOptions'=>array('class'=>'currency'),
+      'footer'=>DELT::currency_value(-$creditgrandtotal, $this->firm->currency) . '<br/>' . ($grandtotal<0 ? '<span class="outstanding_balance">' . DELT::currency_value(-$grandtotal, $this->firm->currency) . '</span>' : '&nbsp;'),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
+      ),
+  ),
+)); ?>
