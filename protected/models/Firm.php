@@ -57,6 +57,8 @@ class Firm extends CActiveRecord
   
   public $positions = null; 
   
+  private $_cache = array();
+  
   /**
    * Returns the static model of the specified AR class.
    * @param string $className active record class name.
@@ -666,7 +668,7 @@ class Firm extends CActiveRecord
    * @param integer $pagesize the pagesize desired
    * @return CActiveDataProvider the postings related to the journal entries of the firm
    */
-  public function getJournalentriesAsDataProvider($pagesize=100)
+  public function getJournalentriesAsDataProvider($pagesize=1000)
   {
     return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id), array(
       'pagination'=>array(
@@ -676,6 +678,51 @@ class Firm extends CActiveRecord
     );
   }
   
+  /**
+   * Returns a data provider for the journal entries of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the postings related to the journal entries of the firm
+   */
+  public function cacheGeneralLedgerData()
+  {
+    $postings = Posting::model()->with('journalentry')->with('account')->ofFirm($this->id, 'account.code ASC, journalentry.date ASC, journalentry.rank ASC')->findAll();
+    
+    $code = '';
+    foreach($postings as $posting)
+    {
+      $this->_cache[$posting->account->code]['currentname']=$posting->account->currentname;
+      $this->_cache[$posting->account->code]['entries'][]=$posting;
+      if(!isset($this->_cache[$posting->account->code]['totaldebit'])) $this->_cache[$posting->account->code]['totaldebit']=0;
+      if(!isset($this->_cache[$posting->account->code]['totalcredit'])) $this->_cache[$posting->account->code]['totalcredit']=0;
+      if($posting->amount>0) $this->_cache[$posting->account->code]['totaldebit']+=$posting->amount;
+      if($posting->amount<0) $this->_cache[$posting->account->code]['totalcredit']+=-$posting->amount;
+    }
+  }
+  
+  public function getLedgerDataCache()
+  {
+    return $this->_cache;
+  }
+  
+  public function getLedgerDataAsDataProvider($code)
+  {
+    $dataProvider=new CArrayDataProvider($this->_cache[$code]['entries'], array('id'=>'ledger', 'pagination'=>array(
+        'pageSize'=>1000,
+    )));
+    return $dataProvider;
+  }
+  
+  public function getLedgerDataTotalDebit($code)
+  {
+    return $this->_cache[$code]['totaldebit'];
+  }
+
+  public function getLedgerDataTotalCredit($code)
+  {
+    return $this->_cache[$code]['totalcredit'];
+  }
+
+
   /**
    * Returns a data provider for the postings of a specified account of the firm.
    * @param integer $pagesize the pagesize desired

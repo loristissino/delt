@@ -180,6 +180,15 @@ class BookkeepingController extends Controller
     }
     
   }
+  
+  public function actionGeneralledger($slug)
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->firm->cacheGeneralLedgerData();
+    $this->render('generalledger', array(
+      'model'=>$this->firm,
+    ));
+  }
 
   public function actionStatements($slug, $level=1)
   {
@@ -763,6 +772,7 @@ class BookkeepingController extends Controller
   {
     return $this->renderPartial('_descriptionforledger', array('posting'=>$posting), true);
   }
+
   
   public function isLineShown()
   {

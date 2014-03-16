@@ -125,11 +125,11 @@ class Posting extends CActiveRecord
     return $this;
   }
   
-  public function ofFirm($firm_id)
+  public function ofFirm($firm_id, $order='journalentry.date ASC, journalentry.rank ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'journalentry.firm_id = ' . $firm_id,
-        'order'=>'journalentry.date ASC, journalentry.rank ASC',
+        'order'=>$order,
     ));
     return $this;
   }
