@@ -322,6 +322,16 @@ span.highlighted
    background-color: #FDFFBF;
 }
 
+span.outstanding_balance
+{
+   color: #0066CC;
+   border-top-style: solid;
+   border-top-width: 1px;
+   border-bottom-style: double;
+   border-bottom-width: 3px;
+   border-color:#0066CC;
+}
+
 span.ordinary
 {
 }

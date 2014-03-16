@@ -7,7 +7,7 @@
   $add_to_level = max($maxlevel, 4) - $level; // we add this to every level to avoid blacks when not needed
     
   $order=array();
-  if($statement->type==2)
+  if($statement->type==2) // separate sections
   {
     foreach($statement->getChildren() as $child)
     {
@@ -20,11 +20,11 @@
     $with_subtitles=true;
     $grandtotal_line = ''; // 'Grandtotal';
   }
-  else
+  else  // pancake format
   {
     $order['+']=$statement->currentname;
     $with_subtitles=false;
-    $grandtotal_line = ''; // 'Net result';
+    $grandtotal_line = 'Net result';
   }
   
 ?>
@@ -77,7 +77,7 @@
 <?php if($gt): ?>
   <tfoot>
   <tr>
-    <th><?php echo Yii::t('delt', $grandtotal_line) ?></th>
+    <th><?php if($statement->type==1) echo $statement->name . ' - ' . Yii::t('delt', 'Net result') ?></th>
     <?php for($i=1; $i< $level; $i++): ?>
       <th>&nbsp;</th>
     <?php endfor ?>
@@ -94,7 +94,7 @@
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">
-    <td style="width: 500px;"><?php // echo Yii::t('delt', 'Aggregate Grandtotal') ?></td>
+    <td style="width: 500px;"><?php echo $model->findClosingAccountName($statement->position, ($gt>0 ? 'C':'D'), false, Yii::t('delt', 'Aggregate Grandtotal')) ?></td>
     <td class="currency" style="width: 100px;"><?php echo DELT::currency_value($ggt, $model->currency) ?></td>
   </tr>
 </table>

@@ -604,30 +604,7 @@ class Firm extends CActiveRecord
     {
       $ob=$grandtotal>0 ? 'D': 'C';
       
-      
-      // first, we look for a specific one
-      $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>$ob, 'type'=>0));
-      if(sizeof($closingAccounts)==1)
-      {
-        $account=$closingAccounts[0];
-        $name=$account['code'] . ' - ' . $account['name'];
-      }
-      else
-      {
-        // we relax, and look for a generic one that could fit
-        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'type'=>0));
-        //die(sizeof($closingAccounts));
-        if(sizeof($closingAccounts)==1)
-        {
-          $account=$closingAccounts[0];
-          $name=$account['code'] . ' - ' . $account['name'];
-        }
-        else
-        {
-          // we haven't found anything specific
-          $name = Yii::t('delt', 'Select closing account');
-        }
-      }
+      $name = $this->findClosingAccountName($position, $ob, true, Yii::t('delt', 'Select closing account'));
         
       $result[]=array(
         'name'=>$name,
@@ -639,7 +616,50 @@ class Firm extends CActiveRecord
     return $result;
   }
   
-  
+
+  public function findClosingAccount($position, $outstanding_balance)
+  {      
+      // first, we look for a specific one
+      $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>$outstanding_balance, 'type'=>0));
+      if(sizeof($closingAccounts)==1)
+      {
+        return $closingAccounts[0];
+      }
+      else
+      {
+        // we relax, and look for a generic one that could fit
+        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'type'=>0));
+        if(sizeof($closingAccounts)==1)
+        {
+          return $closingAccounts[0];
+        }
+        else
+        {
+          // we haven't found anything specific
+          return false;
+        }
+      }
+  }
+
+  public function findClosingAccountName($position, $outstanding_balance, $with_code=true, $default='')
+  {
+    if($account=$this->findClosingAccount($position, $outstanding_balance))
+    {
+      if($with_code)
+      {
+        return $account['code'] . ' - ' . $account['name'];
+      }
+      else
+      {
+        return $account['name'];
+      }
+    }
+    else
+    {
+      return $default;
+    }
+  }
+
   
   /**
    * Returns a data provider for the journal entries of the firm.
