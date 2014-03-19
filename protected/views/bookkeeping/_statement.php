@@ -77,7 +77,7 @@
 <?php if($gt): ?>
   <tfoot>
   <tr>
-    <th><?php if($statement->type==1) echo $statement->name . ' - ' . Yii::t('delt', 'Net result') ?></th>
+    <th><?php //if($statement->type==1) echo $statement->name . ' - ' . Yii::t('delt', 'Net result') ?></th>
     <?php for($i=1; $i< $level; $i++): ?>
       <th>&nbsp;</th>
     <?php endfor ?>

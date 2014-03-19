@@ -13,6 +13,7 @@ return array(
   'Bookkeeping and Accounting' => 'Gestione contabile',
   'Journal' => 'Libro giornale',
   'Chart of accounts' => 'Piano dei conti',
+  'General Ledger' => 'Libro mastro',
   'Trial Balance' => 'Situazione contabile',
   'Firm'=>'Azienda',
   'Ledger' => 'Libro mastro',
@@ -41,6 +42,7 @@ return array(
 
   'Ordinary outstanding balance' => 'Eccedenza tipica',
   'Outstanding balance' => 'Eccedenza',
+  'Ending balance / Balance brought down' => 'Eccedenza finale',
   'Dr.<!-- outstanding balance -->' => 'D',  // "dare"
   'Cr.<!-- outstanding balance -->' => 'A',  // "avere"
   // see http://blog.accountingcoach.com/debit-credit/

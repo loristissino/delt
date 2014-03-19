@@ -14,12 +14,12 @@ $this->show_link_on_description = true;
 
 <?php foreach($model->getLedgerDataCache() as $code=>$value): 
   $debitgrandototal = $model->getLedgerDataTotalDebit($code);
-  $creditgrandtotal = $model->getLedgerDataTotalCredit($code);
+  $creditgrandtotal = -$model->getLedgerDataTotalCredit($code);
   $grandtotal = $debitgrandototal-$creditgrandtotal;
   $this->last_journalentry_id = null;
 ?>
 
-<h2><?php echo $code ?> - <?php echo $value['currentname'] ?></h2>
+<h2><?php echo $code ?> - <?php echo CHtml::link($value['currentname'], array('bookkeeping/ledger', 'id'=>$value['id']), array('class'=>'hiddenlink')) ?></h2>
 
   <?php echo $this->renderPartial('_ledger', array(
     'id'=>'ledger-grid-'.$code,

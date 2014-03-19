@@ -691,6 +691,7 @@ class Firm extends CActiveRecord
     foreach($postings as $posting)
     {
       $this->_cache[$posting->account->code]['currentname']=$posting->account->currentname;
+      $this->_cache[$posting->account->code]['id']=$posting->account_id;
       $this->_cache[$posting->account->code]['entries'][]=$posting;
       if(!isset($this->_cache[$posting->account->code]['totaldebit'])) $this->_cache[$posting->account->code]['totaldebit']=0;
       if(!isset($this->_cache[$posting->account->code]['totalcredit'])) $this->_cache[$posting->account->code]['totalcredit']=0;

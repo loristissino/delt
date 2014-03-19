@@ -253,6 +253,7 @@ td.centered
 .currency
 {
   text-align: right;
+  width: 100px;
 }
 
 .guessed
@@ -296,8 +297,8 @@ a.hiddenlink:hover
 
 .grandtotal
 {
-  color: black;
-  font-weight: bold;
+  color: gray;
+  /*font-weight: bold;*/
 }
 
 div.balance
@@ -335,6 +336,7 @@ span.outstanding_balance
 span.ordinary
 {
 }
+
 
 div.statementtable
 {
