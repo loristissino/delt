@@ -69,6 +69,11 @@ return array(
   'Delete this account' => 'Elimina questo conto',
   'The parent account, with code «%code%», does not exist.' => 'Il conto di livello superiore, con codice «%code%», non esiste.',
   
+  'Amounts from closing entries' => 'Importi derivanti da registrazioni di chiusura',
+  'included' => 'inclusi',
+  'excluded' => 'esclusi',
+  'inline' => 'in linea',
+  'download' => 'file da scaricare',
   
   'Edit'=>'Modifica',
   'Check the debits and the credits.'=>'Controlla gli addebiti e gli accrediti.',

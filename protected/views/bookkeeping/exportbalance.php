@@ -67,9 +67,14 @@ $this->breadcrumbs=array(
     <?php echo $form->error($model, 'separator'); ?>
   </div>
 
-  <div class="row checkbox">
+  <div class="row">
     <?php echo $form->labelEx($exportbalanceform,'fruition'); ?>
     <?php echo $form->radioButtonList($exportbalanceform, 'fruition', $exportbalanceform->fruitions, array('template'=>'{input} {label}', 'labelOptions'=>array('style'=>'display: inline; font-weight: normal'), 'separator'=>'&nbsp;&nbsp;&nbsp;', 'container'=>'')) ?>
+  </div>
+
+  <div class="row">
+    <?php echo $form->labelEx($exportbalanceform,'inclusion'); ?>
+    <?php echo $form->radioButtonList($exportbalanceform, 'inclusion', $exportbalanceform->inclusions, array('template'=>'{input} {label}', 'labelOptions'=>array('style'=>'display: inline; font-weight: normal'), 'separator'=>'&nbsp;&nbsp;&nbsp;', 'container'=>'')) ?>
   </div>
 
   <div class="row buttons">

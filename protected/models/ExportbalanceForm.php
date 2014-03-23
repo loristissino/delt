@@ -23,12 +23,14 @@ class ExportbalanceForm extends CFormModel
   public $type;  // signed amount, unsigned amount with extra column, separate columns for debit and credit outstanding balance
   public $charset; 
   public $fruition;
+  public $inclusion;
   
   public $delimiters;
   public $separators;
   public $types;
   public $charsets;
   public $fruitions;
+  public $inclusions;
    
   public function afterConstruct()
   {
@@ -71,6 +73,7 @@ class ExportbalanceForm extends CFormModel
     );
     
     $this->fruitions=array('i'=>Yii::t('delt', 'inline'), 'd'=>Yii::t('delt', 'download'));
+    $this->inclusions=array('i'=>Yii::t('delt', 'included'), 'e'=>Yii::t('delt', 'excluded'));
   }
   
   public function rules()
@@ -81,6 +84,7 @@ class ExportbalanceForm extends CFormModel
       array('type', 'ArrayValidator', 'values'=>$this->types, 'message'=>'You must select a valid type'),
       array('charset', 'ArrayValidator', 'values'=>$this->charsets, 'message'=>'You must select a valid charset'),
       array('fruition', 'ArrayValidator', 'values'=>$this->fruitions, 'message'=>'You must select a valid fruition type'),
+      array('inclusion', 'ArrayValidator', 'values'=>$this->inclusions, 'message'=>'You must choose whether to include or not the amounts from closing entries'),
     );
   }
   
@@ -95,6 +99,7 @@ class ExportbalanceForm extends CFormModel
       'separator' => Yii::t('delt', 'Field delimiter'),
       'charset' => Yii::t('delt', 'Character set'),
       'fruition' => Yii::t('delt', 'Fruition type'),
+      'inclusion' => Yii::t('delt', 'Amounts from closing entries'),
     );
   }
   

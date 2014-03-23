@@ -127,6 +127,7 @@ class BookkeepingController extends Controller
             Yii::app()->getUser()->setState('type', $exportbalanceform->type);
             Yii::app()->getUser()->setState('charset', $exportbalanceform->charset);
             Yii::app()->getUser()->setState('fruition', $exportbalanceform->fruition);
+            Yii::app()->getUser()->setState('inclusion', $exportbalanceform->inclusion);
             $this->redirect(array('bookkeeping/balance','slug'=>$this->firm->slug, 'format'=>'csv'));
           }
         }
@@ -136,6 +137,7 @@ class BookkeepingController extends Controller
         $exportbalanceform->type = Yii::app()->getUser()->getState('type', '2');
         $exportbalanceform->charset = Yii::app()->getUser()->getState('charset', 'utf-8');
         $exportbalanceform->fruition = Yii::app()->getUser()->getState('fruition', 'd');
+        $exportbalanceform->inclusion = Yii::app()->getUser()->getState('inclusion', 'e');
         
         $this->render('exportbalance', array(
           'model'=>$this->firm,
@@ -146,7 +148,7 @@ class BookkeepingController extends Controller
       case 'csv':
         $inline=Yii::app()->getUser()->getState('fruition')=='d';
         $content=$this->renderPartial('_balance_csv', array(
-          'accounts'=>$this->firm->getAccountBalancesData(''),
+          'accounts'=>$this->firm->getAccountBalancesData('', array(), Yii::app()->getUser()->getState('inclusion')=='i'),
           'separator'=>Yii::app()->getUser()->getState('separator', ','),
           'delimiter'=>Yii::app()->getUser()->getState('delimiter', ''),
           'type'=>Yii::app()->getUser()->getState('type', '2'),

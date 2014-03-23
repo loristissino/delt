@@ -540,7 +540,7 @@ class Firm extends CActiveRecord
     );
   }
   
-  public function getAccountBalancesData($position='', $ids=array())
+  public function getAccountBalancesData($position='', $ids=array(), $closing_entries_included=true)
   {
     $positions=array($position, strtolower($position));
     
@@ -553,6 +553,7 @@ class Firm extends CActiveRecord
       ->andWhere($position==''? true : array('in', 'position', $positions))
       ->andWhere('p.is_included = 1')
       ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
+      ->andWhere($closing_entries_included ? ' TRUE': 'p.is_closing = FALSE')
       ->order('a.code')
       ->group('a.code, a.currentname')
       ->having('total <> 0')
