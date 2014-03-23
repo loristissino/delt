@@ -44,7 +44,9 @@ $cs->registerScript(
   var sort_icon = "' . $sort_icon . '";
   var explain_icon = "' . $explain_icon . '";
   
-  var dirty = false;
+  var identifier = "'. Yii::app()->getUser()->getState('journal_entry_identifier') . '";
+  
+  var check_dirty = true;
   
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
@@ -58,6 +60,8 @@ $cs->registerScript(
   
   updatetotals();
   
+  form2localstorage();
+  
   $("#explain").click(function()
     {
       $("#analysis").toggle(500);
@@ -66,7 +70,6 @@ $cs->registerScript(
   
   $("#load_accounts").click(function()
     {
-      dirty = true;
 
       var jsonUrl = "' . $json_url . '";
       $.getJSON(
@@ -107,7 +110,6 @@ $cs->registerScript(
 
   $("#sort_accounts").click(function()
     {
-      dirty = true;
 
       var arr = [];
       for (i=1; i<=n; i++)
@@ -135,7 +137,6 @@ $cs->registerScript(
   
   function toTextArea()
   {
-    dirty = true;
 
     var text="";
     for(i=1; i<=n; i++)
@@ -164,7 +165,6 @@ $cs->registerScript(
   
   function fromTextArea()
   {
-    dirty = true;
 
     $("#load_accounts").hide();
     $("#sort_accounts").show();
@@ -269,7 +269,6 @@ $cs->registerScript(
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
-            dirty = true;
             return false;
           }
         })(i));
@@ -279,7 +278,6 @@ $cs->registerScript(
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
-            dirty = true;
             return false;
           }
         })(i));
@@ -290,9 +288,8 @@ $cs->registerScript(
         done=true;
       }
 
-      $("#name" +i).blur(function() {dirty = true; });
-      $("#debit" +i).blur(function() {dirty = true; updatetotals(); });
-      $("#credit" +i).blur(function() {dirty = true; updatetotals(); });
+      $("#debit" +i).blur(function() {updatetotals(); });
+      $("#credit" +i).blur(function() {updatetotals(); });
         
     }
   }
@@ -340,22 +337,77 @@ $cs->registerScript(
     $("#total_credit").html(accounting.formatMoney(total_credit, currency, 2, thousand_separator, decimal_separator));
     
   }
+
+  function supports_html5_storage()
+  {
+    try {
+      return "localStorage" in window && window["localStorage"] !== null;
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  function form2localstorage()
+  {
+    if(!supports_html5_storage())
+      return;
+    
+    if(localStorage[identifier])
+      return;
+    
+    var original_form = {
+      date: $("#JournalentryForm_date").val(),
+      description: $("#JournalentryForm_description").val(),
+      postings: []
+      }
+    
+    for(var i=1; i<=n; i++)
+    {
+      original_form.postings.push({
+        account: $("#name"+i).val(),
+        debit: accounting.unformat($("#debit"+i).val(), decimal_separator),
+        credit: accounting.unformat($("#credit"+i).val(), decimal_separator)
+      });
+    }
+    
+    localStorage[identifier] = JSON.stringify(original_form);
+  }
   
   $(window).bind("beforeunload", function(e) {
+    if(!supports_html5_storage()  || !check_dirty)
+      return;
+
+    var original_form = JSON.parse(localStorage[identifier]);
+    
+    var dirty = original_form.date!=$("#JournalentryForm_date").val()
+      || original_form.description!=$("#JournalentryForm_description").val()
+      || original_form.postings.length!=n;
+    
+    for(var i=1; !dirty && i<=n ; i++)
+    {
+      dirty |= original_form.postings[i-1].account!=$("#name"+i).val();
+      dirty |= original_form.postings[i-1].debit!=accounting.unformat($("#debit"+i).val(), decimal_separator);
+      dirty |= original_form.postings[i-1].credit!=accounting.unformat($("#credit"+i).val(), decimal_separator);
+    }
+    
     if(dirty)
     {
       return "' . $unload_alert_string . '";
     }
   });
   
-  $("#save_button").click(function(e) {dirty=false; })
-  $("#addline_button").click(function(e) {dirty=false; })
-  $("#done_button").click(function(e) {dirty=false; })
-  $("#new_button").click(function(e) {dirty=false; })
+  function prepareExit()
+  {
+    localStorage.removeItem(identifier);
+  }
   
-  $("#JournalentryForm_date").blur(function() { dirty=true; });
-  $("#JournalentryForm_description").blur(function() { if($("#JournalentryForm_description").val()) dirty=true; });
+  $(window).bind("unload", prepareExit);
   
+  $("#save_button").click(function(e) {check_dirty=false;})
+  $("#addline_button").click(function(e) {check_dirty=false;})
+  $("#done_button").click(function(e) {check_dirty=false;})
+  $("#new_button").click(function(e) {check_dirty=false;})
+    
   '
 /*
     $(".form").bind("keyup", "ctrl-u", function()

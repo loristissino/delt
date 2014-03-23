@@ -266,6 +266,12 @@ class BookkeepingController extends Controller
     $journalentryform->currency = $this->firm->currency;
     $journalentryform->show_analysis = false;
     
+    if(!Yii::app()->getUser()->getState('journal_entry_identifier'))
+    {
+      // possible problems for multiple pages / tabs
+      Yii::app()->getUser()->setState('journal_entry_identifier', 'delt_entry_' . md5(rand(0,10000000).microtime()));
+    }
+    
     if(!$journalentryform->date)
     {
       $journalentryform->date = Yii::app()->getUser()->getState('lastjournalentrydate', DELT::getDateForFormWidget(date('Y-m-d')));
@@ -304,6 +310,7 @@ class BookkeepingController extends Controller
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_CREATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
+            Yii::app()->getUser()->setState('journal_entry_identifier', null);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
@@ -402,6 +409,12 @@ class BookkeepingController extends Controller
     {
       $journalentryform->adjustment_checkbox_needed = true; 
     }
+
+    if(!Yii::app()->getUser()->getState('journal_entry_identifier'))
+    {
+      // possible problems for multiple pages / tabs
+      Yii::app()->getUser()->setState('journal_entry_identifier', 'delt_entry_' . md5(rand(0,10000000).microtime()));
+    }
     
     $journalentryform->loadFromJournalentry($this->journalentry);
         
@@ -422,6 +435,7 @@ class BookkeepingController extends Controller
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_UPDATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
+            Yii::app()->getUser()->setState('journal_entry_identifier', null);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
