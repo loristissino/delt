@@ -44,9 +44,10 @@ $cs->registerScript(
   var sort_icon = "' . $sort_icon . '";
   var explain_icon = "' . $explain_icon . '";
   
-  var identifier = "'. Yii::app()->getUser()->getState('journal_entry_identifier') . '";
+  var identifier = "'. $journalentryform->identifier . '";
   
   var check_dirty = true;
+  var clear_local_storage_on_exit = true;
   
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
@@ -398,15 +399,16 @@ $cs->registerScript(
   
   function prepareExit()
   {
-    localStorage.removeItem(identifier);
+    if(clear_local_storage_on_exit)
+      localStorage.removeItem(identifier);
   }
   
   $(window).bind("unload", prepareExit);
   
-  $("#save_button").click(function(e) {check_dirty=false;})
-  $("#addline_button").click(function(e) {check_dirty=false;})
-  $("#done_button").click(function(e) {check_dirty=false;})
-  $("#new_button").click(function(e) {check_dirty=false;})
+  $("#save_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
+  $("#addline_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = false; })
+  $("#done_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
+  $("#new_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
     
   '
 /*

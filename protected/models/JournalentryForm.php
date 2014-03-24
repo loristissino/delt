@@ -34,8 +34,11 @@ class JournalentryForm extends CFormModel
   public $total_credit = 0;
   
   public $journalentry = null; // the original Journalentry instance
+  public $identifier = null;  // used by client-side software
+  public $identifier_code = null;  // used to store a cookie
   
   private $is_new = true;
+  
   
   public function rules()
   {
@@ -174,6 +177,8 @@ class JournalentryForm extends CFormModel
       }
       
       $transaction->commit();
+      
+      Yii::app()->getUser()->setState($this->identifier_code, null);
 
       return true;
       
@@ -417,6 +422,16 @@ class JournalentryForm extends CFormModel
       {
         $this->postings[$row][$type]=$posting[$type] ? DELT::currency_value($posting[$type], $this->currency) : '';
       }
+    }
+  }
+  
+  public function setIdentifier()
+  {
+    $this->identifier_code = 'jei_'.md5($this->firm_id.'_'.($this->journalentry? $this->journalentry->id: 'new'));
+    if(!Yii::app()->getUser()->getState($this->identifier_code))
+    {
+      $this->identifier = 'dei_' . md5(rand(0,10000000).microtime());
+      Yii::app()->getUser()->setState($this->identifier_code, $this->identifier);
     }
   }
 
