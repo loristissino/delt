@@ -15,7 +15,7 @@ $this->show_link_on_description = true;
 <?php foreach($model->getLedgerDataCache() as $code=>$value): 
   $debitgrandototal = $model->getLedgerDataTotalDebit($code);
   $creditgrandtotal = -$model->getLedgerDataTotalCredit($code);
-  $grandtotal = $debitgrandototal-$creditgrandtotal;
+  $grandtotal = $debitgrandototal+$creditgrandtotal;
   $this->last_journalentry_id = null;
 ?>
 
