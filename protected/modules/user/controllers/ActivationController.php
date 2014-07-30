@@ -16,7 +16,7 @@ class ActivationController extends Controller
 			if (isset($find)&&($find->status==User::STATUS_ACTIVE)) {
 			    $this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Your account is active.")));
 			} elseif(isset($find->activkey) && ($find->activkey==$activkey) && ($find->status!=User::STATUS_BANNED)) {
-				$find->activkey = $model->activkey=UserModule::createActiveKey($find->email); // we change the active key to a different value
+				$find->activkey = UserModule::createActiveKey($find->email); // we change the active key to a different value
         
         $newuser = $find->status==User::STATUS_NOACTIVE;
 				$find->status = User::STATUS_ACTIVE;
