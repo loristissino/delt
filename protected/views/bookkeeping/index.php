@@ -66,3 +66,7 @@ if($available_firms > 0)
 <?php if($available_firms <= 0): ?>
   <?php echo $this->renderPartial('/firm/_available') ?>
 <?php endif ?>
+
+<p><?php echo CHtml::link($this->createIcon('icons/confused', 'confused', array('width'=>120, 'height'=>120)), array('/site/'. Yii::app()->language . '/confused'), array('title'=>Yii::t('delt', 'Confused? Perplexed?'))) ?></p>
+<p><?php echo Yii::t('delt', 'Confused? Perplexed?')?> <?php echo Yii::t('delt', 'Looking for something different?') ?> <?php echo CHtml::link(Yii::t('delt', 'Read more'), $this->createUrl('/site/'. Yii::app()->language . '/confused')) ?>.</p>
+

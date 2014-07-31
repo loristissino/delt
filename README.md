@@ -31,6 +31,9 @@ The application is developed in PHP, using the Yii framework.
 DELT is released under the terms of GNU Affero General Public License
 http://www.gnu.org/licenses/agpl-3.0.html.
 
+DELT uses pieces of software that may be subject to different licenses.
+Please read the source code to find out.
+
 ## Online version
 
 DELT is currently used online at http://learndoubleentry.org

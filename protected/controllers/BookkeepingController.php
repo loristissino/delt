@@ -679,7 +679,7 @@ class BookkeepingController extends Controller
       'model'=>$this->loadModelBySlug($slug)
     ));
   }
-  
+    
   public function loadModelBySlug($slug)
   {
     return $this->loadFirmBySlug($slug);
