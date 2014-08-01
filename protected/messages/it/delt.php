@@ -453,5 +453,12 @@ return array(
   'You can copy the contents of the following area into a spreadsheet.'=>'Puoi copiare il contenuto della seguente area di testo in un foglio elettronico.',
   'The format for each line is: name{tab}code{tab}position{tab}balance.'=>'Il formato di ogni riga è: nome{tab}codice{tab}collocazione{tab}eccedenza.',
   'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?'=>'Ti interessa sapere <a href="{url}" target="_blank">perché</a> devi accettare una licenza Creative Commons?',
+  
+  'Confused? Perplexed?'=>'Dubbi? Perplessità?',
+  'Looking for something different?'=>'Ti aspettavi qualcosa di diverso?',
+  'Read more' => 'Approfondisci',
+  
+  
+  
 );
 
