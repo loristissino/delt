@@ -214,16 +214,34 @@ class BookkeepingController extends Controller
     ));
   }
   
-  public function actionExport($slug)
+  public function actionExport($slug, $format="")
   {
     $this->firm=$this->loadModelBySlug($slug);
-
-    $data=$this->firm->getExportData('111');
     
-    $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.delt';
-    Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED);
-    $this->sendDispositionHeader($filename);
-    $this->serveJson($data);
+    switch($format)
+    {
+      case 'delt':
+        $data=$this->firm->getExportData('111');
+        
+        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.delt';
+        Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED);
+        $this->sendDispositionHeader($filename);
+        $this->serveJson($data);
+        break;
+        
+      case 'ledger':
+        $data=$this->firm->getLedgerFormatJournal();
+        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.ledger';
+        Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED_LEDGER);
+        $this->sendDispositionHeader($filename);
+        $this->servePlainText($data);
+        break;
+        
+      default:
+        $this->render('export', array(
+          'model'=>$this->firm,
+        ));
+    }
   }
 
   public function actionImport($slug)

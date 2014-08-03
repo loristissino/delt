@@ -1250,6 +1250,58 @@ class Firm extends CActiveRecord
   }
   
   /**
+   * Returns a multiline string with the journal's transaction in a 
+   * format compatible with ledger-cli program.
+   * @return array the journal in ledger-cli's format
+   */  
+  public function getLedgerFormatJournal()
+  {
+    $data=array();
+    
+    foreach($this->journalentries as $journalentry)
+    {
+      $line = $journalentry->date . ' ';
+      if($journalentry->is_closing)
+      {
+        $line .= '! ';
+      }
+      elseif($journalentry->is_included)
+      {
+        $line .= '* ';
+      }
+      $line .= '; ' . $journalentry->description;
+
+      $data[] = $line;
+      
+      $references = array(); // used to cache accounts' data
+      
+      foreach($journalentry->postings as $posting)
+      {
+        if (!array_key_exists($posting->account_id, $references))
+        {
+          $references[$posting->account_id]=Account::model()->getPath($posting->account_id);
+        }
+        
+        $line = '  ' . $references[$posting->account_id] . '  ' . $this->csymbol . $posting->amount;
+        
+        if($posting->comment)
+        {
+          $line .= '; ' . $posting->comment;
+        }
+        
+        $data[] = $line;
+        
+      }
+      $data[] = '';
+
+    }
+
+    return implode("\n", $data);
+  }
+  
+  
+  
+  /**
   * Loads data from an uploaded file, and fills them to the firm.
   * @param CUploadedFile $file the file to load data from
   * @return boolean whether the operation was successful

@@ -187,8 +187,18 @@ class Controller extends CController
    */  
   public function serveJson($object)
   {
-    $this->serveContent('application/json', CJSON::encode($object), false);
+    $this->serveContent('application/json', CJSON::encode($object));
   }
+
+  /**
+   * Serves a multiline string as text content via HTTP.
+   * @param string $text the string to send
+   */  
+  public function servePlainText($text)
+  {
+    $this->serveContent('text/plain; charset=utf-8', $text);
+  }
+
 
   /**
    * Serves a content via HTTP.

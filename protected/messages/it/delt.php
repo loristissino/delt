@@ -458,7 +458,9 @@ return array(
   'Looking for something different?'=>'Ti aspettavi qualcosa di diverso?',
   'Read more' => 'Approfondisci',
   
-  
+  'You can export the data of this firm in the following formats:' => 'Puoi esportare i dati di quest\'azienda nei seguenti formati:',
+  'standard JSON-based format used by DELT' => 'formato standard di DELT, basato su JSON',
+  'text-based ledger-cli\'s format for transactions' => 'formato di rappresentazione del libro giornale usato da ledger-cli',
   
 );
 

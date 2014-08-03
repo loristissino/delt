@@ -709,6 +709,20 @@ class Account extends CActiveRecord
     $this->currentname = trim(str_replace('!', '', $this->currentname));
     $this->setDefaultForNames($firm, $this->currentname);
   }
-  
-  
+
+  /**
+   * Returns the path of an account, in terms of concatenated string of names
+   * @param integer $id the account id to look for
+   * @return string the path of the account
+   */   
+  public function getPath($id, $separator=':')
+  {
+    $items = array();
+    while ($account = Account::model()->findByPk($id))
+    {
+      $items[] = $account->name;
+      $id = $account->account_parent_id;
+    }
+    return implode($separator, array_reverse($items));
+  }  
 }

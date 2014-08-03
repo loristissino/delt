@@ -195,6 +195,13 @@ $languages_available = Language::model()->findAllSorted();
   </div>
 
   <div class="row">
+    <?php echo $form->labelEx($model,'csymbol'); ?>
+    <?php echo $form->textField($model,'csymbol',array('size'=>1,'maxlength'=>1)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'An optional symbol for the currency, that could be used instead of the one provided')?>)</span>
+    <?php echo $form->error($model,'csymbol'); ?>
+  </div>
+
+
+  <div class="row">
     <?php echo $form->labelEx($model,'language_id'); ?>
      <?php echo $form->dropDownList($model,'language_id', CHtml::listData(Language::model()->findAllSorted(),
         'id', //this is the attribute name for list option values 
