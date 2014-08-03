@@ -1388,7 +1388,8 @@ class Firm extends CActiveRecord
     
     $key = isset($export_info['key']) ? $export_info['key'] : '';
 
-    $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['templates'] . $data['journalentries'] . $data['meta'] . $key));
+//  $md5 = md5(CJSON::encode($data['base'] . $data['accounts'] . $data['templates'] . $data['journalentries'] . $data['meta'] . $key));
+    $md5 = md5(CJSON::encode(serialize($data['base']) . serialize($data['accounts']) . serialize($data['templates']) . serialize($data['journalentries']) . serialize($data['meta']) . $key));
     
     return $check ? $md5 == $data['md5sum'] : $md5;
     
