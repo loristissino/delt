@@ -78,30 +78,43 @@ class FirmController extends Controller
     ));
   }
 
-  public function actionPublic($slug, $level=0)
+  public function actionPublic($slug, $level=0, $format='')
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
-    if(sizeof($postings = $this->firm->getJournalentriesAsDataProvider(100000)->data))
+    
+    switch($format)
     {
-      $maxlevel = $this->firm->getCOAMaxLevel();
-      if($level==0)
-      {
-         $level = $maxlevel;
-      }
-      Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_SEEN);
-      $this->render('public', array(
-        'model'=>$this->firm,
-        'postings'=>$postings,
-        'level'=>$level,
-        'maxlevel'=>$maxlevel,
-      ));
+      case 'ledger-cli':
+        $this->render('ledger-cli', array(
+            'model'=>$this->firm,
+            'data'=>$this->firm->getLedgerFormatJournal(),
+          ));
+        break;
+      
+      default:
+        if(sizeof($postings = $this->firm->getJournalentriesAsDataProvider(100000)->data))
+        {
+          $maxlevel = $this->firm->getCOAMaxLevel();
+          if($level==0)
+          {
+             $level = $maxlevel;
+          }
+          Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_SEEN);
+          $this->render('public', array(
+            'model'=>$this->firm,
+            'postings'=>$postings,
+            'level'=>$level,
+            'maxlevel'=>$maxlevel,
+          ));
+        }
+        else
+        {
+          $this->render('empty', array(
+            'model'=>$this->firm
+          ));
+        }
     }
-    else
-    {
-      $this->render('empty', array(
-        'model'=>$this->firm
-      ));
-    }
+
   }
 
   public function actionBanner($slug)

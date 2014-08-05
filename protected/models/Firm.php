@@ -1258,19 +1258,20 @@ class Firm extends CActiveRecord
   {
     $data=array();
     
+    $count = 0;
+    
     foreach($this->journalentries as $journalentry)
     {
-      $line = $journalentry->date . ' ';
-      if($journalentry->is_closing)
+      $beginwith = $journalentry->is_included ? '' : '; ';
+      $data[] .= $beginwith . '; ' . $journalentry->description;
+      $line = $beginwith . $journalentry->date . ' ';
+      if(!$journalentry->is_closing)
       {
-        $line .= '! ';
+        $line .= '*';
       }
-      elseif($journalentry->is_included)
-      {
-        $line .= '* ';
-      }
-      $line .= '; ' . $journalentry->description;
-
+      
+      $line .= ' ; Entry: ' . ++$count; 
+      
       $data[] = $line;
       
       $references = array(); // used to cache accounts' data
@@ -1282,7 +1283,7 @@ class Firm extends CActiveRecord
           $references[$posting->account_id]=Account::model()->getPath($posting->account_id);
         }
         
-        $line = '  ' . $references[$posting->account_id] . '  ' . $this->csymbol . $posting->amount;
+        $line = $beginwith . '  ' . $references[$posting->account_id] . '  ' . $this->csymbol . $posting->amount;
         
         if($posting->comment)
         {
