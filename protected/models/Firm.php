@@ -1256,7 +1256,11 @@ class Firm extends CActiveRecord
    */  
   public function getLedgerFormatJournal()
   {
-    $data=array();
+    $data=array(
+      '; This is the format of journal entries used by ledger-cli program.',
+      '; You can read more about ledger-cli at http://www.ledger-cli.org/.',
+      '',
+    );
     
     $count = 0;
     
@@ -1283,7 +1287,7 @@ class Firm extends CActiveRecord
           $references[$posting->account_id]=Account::model()->getPath($posting->account_id);
         }
         
-        $line = $beginwith . '  ' . $references[$posting->account_id] . '  ' . $this->csymbol . $posting->amount;
+        $line = $beginwith . '  ' . $references[$posting->account_id] . '  ' . $this->csymbol . ' ' . number_format($posting->amount, 2);
         
         if($posting->comment)
         {
