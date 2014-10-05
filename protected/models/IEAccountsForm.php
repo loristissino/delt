@@ -58,6 +58,7 @@ class IEAccountsForm extends CFormModel
         $account->position,
         $account->outstanding_balance,
         $account->type,
+        $account->number_of_children,
         )) . "\n";
     }
   }
