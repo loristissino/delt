@@ -453,6 +453,10 @@ class BookkeepingController extends Controller
               Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «%description%» has been correctly saved.', array('%description%'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
               $this->redirect(array('bookkeeping/newjournalentry','slug'=>$this->firm->slug));
             }
+            elseif(isset($_POST['save']))
+            {
+              $this->redirect(array('bookkeeping/updatejournalentry','id'=>$id));
+            }
           }
         }
       }
