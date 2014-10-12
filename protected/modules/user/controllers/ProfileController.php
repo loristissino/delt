@@ -42,10 +42,11 @@ class ProfileController extends Controller
 		{
       $model->current_email = $model->email;
 			$model->attributes=$_POST['User'];
+      $model->email = $_POST['User']['email'];  // this is not set as safe, so it wouldn't be assigned
 			$profile->attributes=$_POST['Profile'];
       
 			if($model->validate()&&$profile->validate()) {
-        $email_changes = $model->checkEmailChanges($this, $profile);
+        $email_changes = $model->checkEmailChanges($profile);
 				$model->save();
 				$profile->save();
         
@@ -103,42 +104,6 @@ class ProfileController extends Controller
 			$this->render('changepassword',array('model'=>$model));
 	    }
 	}
-
-	/**
-	 * Change email
-	 */
-	public function actionChangeemail() {
-		$this->render('changeemail');
-
-    /*
-		$model = new UserChangeEmail;
-		if (Yii::app()->user->id) {
-			
-			// ajax validator
-			if(isset($_POST['ajax']) && $_POST['ajax']==='changepassword-form')
-			{
-				echo UActiveForm::validate($model);
-				Yii::app()->end();
-			}
-			
-			if(isset($_POST['UserChangePassword'])) {
-					$model->attributes=$_POST['UserChangePassword'];
-					if($model->validate()) {
-						$new_password = User::model()->notsafe()->findbyPk(Yii::app()->user->id);
-						$new_password->password = UserModule::encrypting($model->password);
-						$new_password->activkey=UserModule::encrypting(microtime().$model->password);
-						$new_password->save();
-            Event::model()->log($this->DEUser, null, Event::USER_CHANGED_PASSWORD, null);
-						Yii::app()->user->setFlash('profileMessage',UserModule::t("New password is saved."));
-						$this->redirect(array("profile"));
-					}
-			}
-			$this->render('changepassword',array('model'=>$model));
-	    }
-      */
-	}
-
-
 
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.

@@ -333,4 +333,18 @@ class UserModule extends CWebModule
 	public function users() {
 		return User;
 	}
+  
+  public static function encrypt($string)
+  {
+    $key = Yii::app()->params['key'];
+    return str_replace(array('+', '/', '='), array('.', '_', '-'), base64_encode(mcrypt_encrypt(MCRYPT_RIJNDAEL_256, md5($key), $string, MCRYPT_MODE_CBC, md5(sha1($key)))));
+  }
+
+  public static function decrypt($string)
+  {
+    $key = Yii::app()->params['key'];
+    return rtrim(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, md5($key), 
+    base64_decode(str_replace(array('.', '_', '-'), array('+', '/', '='), $string)), MCRYPT_MODE_CBC, md5(sha1($key))), "\0");
+  }
+  
 }

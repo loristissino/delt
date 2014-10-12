@@ -63,7 +63,7 @@ class RegistrationController extends Controller
 
               
 							if (Yii::app()->controller->module->sendActivationMail) {
-                $model->sendActivationMail($this, $profile);
+                $model->sendActivationMail($profile);
                 /*
 								$activation_url = $this->createAbsoluteUrl('/user/activation/activation',array("activkey" => $model->activkey, "email" => $model->email));
 								UserModule::sendMail(

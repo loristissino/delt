@@ -8,6 +8,41 @@ class ActivationController extends Controller
 	/**
 	 * Activation user account
 	 */
+	public function actionChangeaddress () {
+		$change = $_GET['change'];
+    
+    $info = UserModule::decrypt($change);
+    $info = json_decode($info);
+    if(is_object($info))
+    {
+      if($info->expiration > time())
+      {
+        if($user = User::model()->findByPK($info->user_id))
+        {
+          if($user->status == User::STATUS_ACTIVE  || $user->status == User::STATUS_WAITING)
+          {
+            $user->email = $info->email;
+            $user->save();
+            Event::model()->log(DEUser::model()->getBy('email', $user->email), null, Event::USER_CHANGED_EMAIL);
+            $this->render('/user/message',array('title'=>UserModule::t("User email change"),'content'=>UserModule::t("Your new email address has been recorded.")));
+          }
+          else
+          {
+            $this->render('/user/message',array('title'=>UserModule::t("User email change"),'content'=>UserModule::t("Your user account is not active.")));
+          }
+        }
+      }
+      else
+      {
+			    $this->render('/user/message',array('title'=>UserModule::t("User email change"),'content'=>UserModule::t("Sorry, this link has expired.")));
+      }
+    }
+    else
+    {
+			$this->render('/user/message',array('title'=>UserModule::t("User email change"),'content'=>UserModule::t("Incorrect URL.")));
+    }
+	}
+
 	public function actionActivation () {
 		$email = $_GET['email'];
 		$activkey = $_GET['activkey'];
@@ -46,5 +81,6 @@ class ActivationController extends Controller
 			$this->render('/user/message',array('title'=>UserModule::t("User activation"),'content'=>UserModule::t("Incorrect activation URL.")));
 		}
 	}
+
 
 }

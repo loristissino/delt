@@ -199,20 +199,21 @@ class User extends CActiveRecord
         $this->lastvisit_at=date('Y-m-d H:i:s',$value);
     }
 
-    public function checkEmailChanges(CController $controller, Profile $profile=null) {
+    public function checkEmailChanges(Profile $profile=null) {
+      
         if($this->email!=$this->current_email)
         {
-          $this->activkey=UserModule::encrypting(microtime().$this->password);
-          $this->sendActivationMail($controller, $profile);
+          $this->sendChangeAddressMail($profile);
           $this->status = self::STATUS_WAITING;
+          $this->email = $this->current_email;  // we restore the old one because we'll wait for the validation of the new one
           return true;
         }
         return false;
     }
     
-    public function sendActivationMail(CController $controller, Profile $profile=null)
+    public function sendActivationMail(Profile $profile=null)
     {
-        $activation_url = $controller->createAbsoluteUrl('/user/activation/activation',array("activkey" => $this->activkey, "email" => $this->email));
+        $activation_url = Yii::app()->getController()->createAbsoluteUrl('/user/activation/activation',array("activkey" => $this->activkey, "email" => $this->email));
         
         if(!$profile)
         {
@@ -231,7 +232,33 @@ class User extends CActiveRecord
           );
       
     }
-    
 
+    public function sendChangeAddressMail(Profile $profile=null)
+    {
+        $info = UserModule::encrypt(json_encode(array(
+          'user_id'=>$this->id,
+          'email'=>$this->email,
+          'expiration'=>time()+7*24*60*60, // one week from now
+        )));
+      
+        $url = Yii::app()->getController()->createAbsoluteUrl('/user/activation/changeaddress',array("email" => $this->email, "change" => $info));
+        
+        if(!$profile)
+        {
+          $profile = $this->profile;
+        }
+        
+        return UserModule::sendMail(
+          $this->email,
+          Yii::t('delt', Yii::app()->params['mail']['changeaddress']['subject']),
+          Yii::t('delt', Yii::app()->params['mail']['changeaddress']['body'],
+            array(
+              '{url}'=>$url,
+              '{name}'=>$profile->first_name ? $profile->first_name : $this->username
+              )
+            )
+          );
+      
+    }
     
 }
