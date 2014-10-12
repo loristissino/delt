@@ -204,7 +204,7 @@ class User extends CActiveRecord
         if($this->email!=$this->current_email)
         {
           $this->sendChangeAddressMail($profile);
-          $this->status = self::STATUS_WAITING;
+          // $this->status = self::STATUS_WAITING;
           $this->email = $this->current_email;  // we restore the old one because we'll wait for the validation of the new one
           return true;
         }

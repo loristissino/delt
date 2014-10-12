@@ -22,6 +22,7 @@ class ActivationController extends Controller
           if($user->status == User::STATUS_ACTIVE  || $user->status == User::STATUS_WAITING)
           {
             $user->email = $info->email;
+            $user->status = User::STATUS_ACTIVE;
             $user->save();
             Event::model()->log(DEUser::model()->getBy('email', $user->email), null, Event::USER_CHANGED_EMAIL);
             $this->render('/user/message',array('title'=>UserModule::t("User email change"),'content'=>UserModule::t("Your new email address has been recorded.")));
