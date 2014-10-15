@@ -46,7 +46,7 @@ $languages=array_merge(array(
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'email'); ?>
-		<?php echo $form->textField($model,'email',array('size'=>20,'maxlength'=>20)); ?>
+		<?php echo $form->textField($model,'email',array('size'=>50,'maxlength'=>255)); ?>
 		<?php echo $form->error($model,'email'); ?>
 	</div>
   
