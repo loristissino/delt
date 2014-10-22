@@ -594,21 +594,23 @@ $this->endWidget('zii.widgets.jui.CJuiDialog'); ?>
       <th  style="width: 80px;"><?php echo Yii::t('delt', 'Value') ?></th>
     </tr>
     <?php foreach($items as $item): $analysis=$item->analysis ?>
-      <tr>
-        <td>
-          <?php echo $analysis['account']?>
-        </td>
-        <td>
-          <?php echo $analysis['classification'] ?>
-          <?php if($analysis['type']=='C'): ?>
-            (<?php echo Yii::t('delt', 'Contra Account') ?>)
-          <?php endif ?>
-        </td>
-        <td  style="width: 120px;">
-          <?php echo $this->renderPartial('_change', array('change'=>$analysis['change'], 'type'=>$analysis['type'])) ?>
-        </td>
-        <td class="currency"  style="width: 80px;"><?php echo $analysis['value'] ?></td>
-      </tr>
+      <?php if(isset($analysis['account'])): ?>
+        <tr>
+          <td>
+            <?php echo $analysis['account']?>
+          </td>
+          <td>
+            <?php echo $analysis['classification'] ?>
+            <?php if($analysis['type']=='C'): ?>
+              (<?php echo Yii::t('delt', 'Contra Account') ?>)
+            <?php endif ?>
+          </td>
+          <td  style="width: 120px;">
+            <?php echo $this->renderPartial('_change', array('change'=>$analysis['change'], 'type'=>$analysis['type'])) ?>
+          </td>
+          <td class="currency"  style="width: 80px;"><?php echo $analysis['value'] ?></td>
+        </tr>
+      <?php endif ?>
     <?php endforeach ?>
     </table>
 
