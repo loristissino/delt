@@ -223,6 +223,7 @@ return array(
   'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.' => 'Quando hai finito con il foglio elettronico, incolla qui le tre colonne (nome, addebito, accredito) e passa alla modalità campi testuali.',
   'Sort postings' => 'Ordina i conti',
   'Sort postings, debits first' => 'Ordina i conti, mettendo prima gli addebiti',
+  'Switch debit and credits for the whole journal entry' => 'Scambia gli addebiti con gli accrediti per l\'intera registrazione contabile',
   
   'Image from gravatar.com' => 'Immagine da gravatar.com',
   'This page in other languages:' => 'Questa pagina in altre lingue: ',

@@ -14,6 +14,7 @@ $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt',
 $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
 $sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort postings, debits first'))));
 $explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
+$switch_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 'Switch debits and credits'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch debit and credits for the whole journal entry'))));
 
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
@@ -43,6 +44,7 @@ $cs->registerScript(
   var load_accounts_icon = "' . $load_accounts_icon . '";
   var sort_icon = "' . $sort_icon . '";
   var explain_icon = "' . $explain_icon . '";
+  var switch_debits_credits_icon = "' . $switch_debits_credits_icon . '";
   
   var identifier = "'. $journalentryform->identifier . '";
   
@@ -53,7 +55,9 @@ $cs->registerScript(
     "<span id=\"toggle\">" + raw_input_icon + 
     "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
     "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" +
-    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>"
+    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
+    "</span>&nbsp;<span id=\"switch_debits_credits\">" + switch_debits_credits_icon + "</span>"
+
     );
   $("#load_accounts").hide();
   
@@ -135,6 +139,22 @@ $cs->registerScript(
       )
     }
   );
+
+  $("#switch_debits_credits").click(function()
+    {
+
+      var arr = [];
+      var d;
+      var c;
+      for (i=1; i<=n; i++)
+      {
+        d = $("#debit"+i).val();
+        c = $("#credit"+i).val();
+        $("#debit"+i).val(c);
+        $("#credit"+i).val(d);
+      }
+    }
+  );
   
   function toTextArea()
   {
@@ -162,6 +182,8 @@ $cs->registerScript(
     }
     $("#sort_accounts").hide();
     $("#explain").hide();
+    $("#switch_debits_credits").hide();
+    
   }
   
   function fromTextArea()
@@ -170,6 +192,7 @@ $cs->registerScript(
     $("#load_accounts").hide();
     $("#sort_accounts").show();
     $("#explain").show();
+    $("#switch_debits_credits").show();
     text = $("#raw_input").val();
     $("#toggle").html(raw_input_icon);
     
