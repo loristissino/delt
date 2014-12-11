@@ -69,6 +69,10 @@ return array(
   'Delete this account' => 'Elimina questo conto',
   'The parent account, with code «%code%», does not exist.' => 'Il conto di livello superiore, con codice «%code%», non esiste.',
   
+  'You are creating an account as a child of «%account%».'=>'Stai per creare un conto come figlio di «%account%».',
+  'For your reference, this is the list of its current children:'=>'Per tuo riferimento, questa è l\'elenco dei suoi conti figli:',
+  'It does not have any children at the moment.'=>'Non ha al momento nessun conto figlio.',
+  
   'Amounts from closing entries' => 'Importi derivanti da registrazioni di chiusura',
   'included' => 'inclusi',
   'excluded' => 'esclusi',

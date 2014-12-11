@@ -90,6 +90,10 @@ class AccountController extends Controller
       $model->outstanding_balance = $parent->outstanding_balance;
       $model->type = $parent->type;
     }
+    else
+    {
+      $parent = null;
+    }
 
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
@@ -110,6 +114,7 @@ class AccountController extends Controller
     $this->render('create',array(
       'account'=>$model,
       'firm'=>$this->firm,
+      'parent'=>$parent,
     ));
   }
 
