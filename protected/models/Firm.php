@@ -763,6 +763,7 @@ class Firm extends CActiveRecord
       $a[$account->id]=array(
         'model'=>$account,
         'children'=>array(),
+        'parent_id'=>null,
       );      
     }
     foreach($a as $id=>$info)
@@ -778,13 +779,23 @@ class Firm extends CActiveRecord
     }
     
     uasort($a, array($this, '_compareAccountsByLevel'));
-    
     foreach($a as $id=>$info)
     {
       $info['model']->number_of_children = sizeof($info['children']);
       $info['model']->is_selectable = $info['model']->number_of_children==0;
       // an account is selectable when it has no children
+      
+      if($info['parent_id'] and isset($a[$info['parent_id']]))
+      {
+        $info['model']->setClassesFromComment($a[$info['parent_id']]['model']);
+        
+      }
+      else
+      {
+        $info['model']->setClassesFromComment();
+      }
     }
+
     
     foreach($a as $id=>$info)
     {
@@ -803,7 +814,6 @@ class Firm extends CActiveRecord
       }
       
     }
-    
     $transaction = $this->getDbConnection()->beginTransaction();
     try
     {

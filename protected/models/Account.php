@@ -25,6 +25,7 @@
  * @property string $currentname
  * @property integer $number_of_children
  * @property string $comment
+ * @property string $classes
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -78,6 +79,7 @@ class Account extends CActiveRecord
       array('position,outstanding_balance', 'length', 'max'=>1),
       array('textnames', 'checkNames'),
       array('currentname', 'safe'),
+      array('classes', 'safe'),
       array('type', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
@@ -733,5 +735,56 @@ class Account extends CActiveRecord
       $id = $account->account_parent_id;
     }
     return implode($separator, array_reverse($items));
-  }  
+  }
+  
+  
+  public function getKeywordsAndValuesFromComment()
+  {
+    $result=array(0=>'');
+    $matches = array();
+    foreach(explode("\n", $this->comment) as $line)
+    {
+      if(preg_match('/^@[a-z]*/', $line, $matches))
+      {
+        $keyword=$matches[0];
+        $value = chop(substr($line, strlen($keyword)+1));
+        $result[$keyword]=$value;
+      }
+      else
+      {
+        $result[0] .= $line;
+      }
+    }
+    return $result;
+  }
+  
+  public function getValueFromCommentByKeyword($keyword)
+  {
+    $values=$this->getKeywordsAndValuesFromComment();
+    return isset($values[$keyword]) ? $values[$keyword] : null;
+  }
+  
+  public function setClassesFromComment(Account $parent = null)
+  {
+    //FIXME This should be definitely done in a better way
+    
+    $text = $this->getValueFromCommentByKeyword('@classes');
+    $inherit = (strpos($text, '!')===false); 
+    // if we find an exclamation mark, we don't consider the parent's classes
+    // otherwise, we inherit...
+    
+    $text=str_replace('!', '', $text);
+    
+    $values=array_flip(array_flip(explode(' ', trim(preg_replace('/\s+/', ' ', $text)))));
+    // we remove double spaces and duplicates
+    
+    $newclasses = implode(' ', $values);
+    
+    if($parent && $inherit)
+    {
+      $newclasses = trim(implode(' ', array_merge($values, explode(' ', $parent->classes))));
+    }
+    $this->classes=$newclasses;
+  }
+  
 }

@@ -1,24 +1,16 @@
 <div class="comment">
 <?php
-  //$keywords = array_keys(Yii::app()->params['keywords_for_comments']);
-  $lines = explode("\n", $account->comment);
   $text = '';
-  foreach($lines as $line)
+  foreach($account->getKeywordsAndValuesFromComment() as $keyword=>$value)
   {
-    $matches = array();
-    if(preg_match('/^@[a-z]*/', $line, $matches))
+    if($keyword===0)
     {
-      $first=$matches[0];
-      //if(in_array($first, $keywords))
-      //{
-        $text .= '<span class="keyword">' . $first . '</span> ';
-        $remaining = chop(substr($line, strlen($first)+1));
-        $text .= ($first=='@href' ? '<a href="' . $remaining . '" target="_blank">' . $remaining . '</a>' : $remaining) . "\n";
-      //}
+      $text .= $value;
     }
     else
     {
-      $text .= $line;
+      $text .= '<span class="keyword">' . $keyword . '</span> ';
+      $text .= ($keyword=='@href' ? '<a href="' . $value . '" target="_blank">' . $value . '</a>' : $value) . "\n";
     }
   }
 ?>

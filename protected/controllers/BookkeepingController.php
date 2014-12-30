@@ -76,12 +76,13 @@ class BookkeepingController extends Controller
     ));
   }
 
-  public function actionCoa($slug, $template='coa')
+  public function actionCoa($slug, $template='coa', $showclasses='')
   {
     $this->firm=$this->loadModelBySlug($slug);
     $this->render($template, array(
       'model'=>$this->firm,
       'dataProvider'=>$this->firm->getAccountsAsDataProvider(),
+      'showclasses'=>$showclasses,
     ));
   }
 

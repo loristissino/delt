@@ -24,4 +24,4 @@ $this->menu[]=array('label'=>Yii::t('delt', 'Configuration'), 'url'=>array('book
 ?>
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
 
-<?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderName', 'buttonsTemplate'=>'{view}{update}{new}')) ?>
+<?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'showclasses'=>$showclasses, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderName', 'buttonsTemplate'=>'{view}{update}{new}')) ?>

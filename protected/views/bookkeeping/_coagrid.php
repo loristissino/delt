@@ -1,13 +1,6 @@
-<?php $this->widget('zii.widgets.grid.CGridView', array(
-  'id'=>'account-grid',
-  'dataProvider'=>$dataProvider,
-//  'filter'=>$model,
-  'columns'=>array(
-/*    array(
-      'class'=>'CCheckBoxColumn',
-      'selectableRows'=>2,
-    ),
-*/
+<?php 
+
+$columns = array(
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
@@ -24,13 +17,6 @@
       'type'=>'raw',
       'cssClassExpression'=>'$data->position == \'?\' ? \'unpositioned\' : \'\'',
       ),
-    /* the following works, but we don't really need it
-    array(
-      'name'=>'l10names',
-      'value'=>'$data->l10nnames',
-      ),
-    */
-    //'is_economic',
     array(
       'class'=>'CDataColumn',
       'sortable'=>true,
@@ -49,6 +35,14 @@
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),
+    );
+
+if($showclasses)
+{
+  $columns[]='classes';
+}
+    
+$columns[]=
     array(
       // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
       'class'=>'CButtonColumn',
@@ -72,12 +66,12 @@
           'label'=>'Edit',
           'options'=>array('title'=>Yii::t('delt', 'Edit')),
         )
-        /*
-        'delete'=>array(
-          'visible'=>'$data->is_deletable',
-        ),*/
-      )
-      
-    ),
-  ),
+      ),
+    );
+
+$this->widget('zii.widgets.grid.CGridView', array(
+  'id'=>'account-grid',
+  'dataProvider'=>$dataProvider,
+//  'filter'=>$model,
+  'columns'=> $columns,
 )); ?>
