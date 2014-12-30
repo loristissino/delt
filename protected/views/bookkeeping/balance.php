@@ -11,6 +11,8 @@ $this->menu=array(
   array('label'=>Yii::t('delt', 'Export (CSV)'), 'url'=>array('bookkeeping/balance', 'slug'=>$model->slug, 'format'=>'unknown')),
 );
 
+$this->layout = '//layouts/column1_menu_below';
+
 $totaldebits=$this->firm->getTotalAmounts('D');
 $totalcredits=$this->firm->getTotalAmounts('C');
 
@@ -28,7 +30,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'columns'=>array(
     array(
       'name'=>'position',
-      'header'=>Yii::t('delt', 'Position'),
+      'header'=>Yii::t('delt', 'P'),
+      'headerHtmlOptions'=>array('title'=>Yii::t('delt', 'Position')),
       'sortable'=>false,
       'value'=>array($this, 'RenderPosition'),
       'type'=>'raw',

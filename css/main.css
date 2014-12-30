@@ -228,6 +228,18 @@ div.search-form
 	background: #80CFFF;
 }
 
+.operations.below li
+{
+	display: inline;
+	padding-bottom: 2px;
+}
+
+.operations.below li a
+{
+	display: inline;
+	padding: 4px 40px 4px 4px;
+}
+
 .account_main
 {
   font-weight:bold;
@@ -607,3 +619,7 @@ tr.excluded a
 {
 text-align: center;
 }
+
+
+
+
