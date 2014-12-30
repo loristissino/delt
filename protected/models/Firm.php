@@ -25,6 +25,7 @@
  * @property string $banner
  * @property string $checked_positions
  * @property integer $shortcodes
+ * @property string $css
  *
  * The followings are the available model relations:
  * @property Account[] $accounts
@@ -106,6 +107,8 @@ class Firm extends CActiveRecord
         ),
       array('checked_positions', 'safe'),
       array('shortcodes', 'safe'),
+      array('css', 'safe'),
+
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, name, slug, firmtype, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -152,6 +155,7 @@ class Firm extends CActiveRecord
       'license'=>Yii::t('delt', 'License'),
       'checked_positions'=>Yii::t('delt', 'Checked Positions'),
       'shortcodes'=>Yii::t('delt', 'Short Codes'),
+      'css'=>Yii::t('delt', 'CSS'),
     );
   }
 
@@ -940,7 +944,7 @@ class Firm extends CActiveRecord
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
     
-    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions', 'shortcodes'));
+    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions', 'shortcodes', 'css'));
     
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
@@ -1180,7 +1184,7 @@ class Firm extends CActiveRecord
     
     $data=array();
     
-    DELT::object2array($this, $data['base'], array('name', 'description', 'firmtype', 'currency', 'checked_positions', 'shortcodes'));
+    DELT::object2array($this, $data['base'], array('name', 'description', 'firmtype', 'currency', 'checked_positions', 'shortcodes', 'css'));
 
     $data['base']['language'] = $this->language->locale;
     
@@ -1343,7 +1347,7 @@ class Firm extends CActiveRecord
     try
     {
 
-      DELT::array2object($data['base'], $this, array('name', 'description', 'firmtype', 'currency', 'language', 'languages'));
+      DELT::array2object($data['base'], $this, array('name', 'description', 'firmtype', 'currency', 'language', 'languages', 'shortcodes', 'css'));
 
       $languages = array();
       $language=Language::model()->findByLocale($data['base']['language']);

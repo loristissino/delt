@@ -19,6 +19,9 @@ $mainmenu_items=array(
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/html5.css" >
   <meta charset="utf-8" />
+  <?php if($this->css): ?>
+  <style><?php echo $this->css ?></style>
+  <?php endif ?>
 </head>
 
 <body>

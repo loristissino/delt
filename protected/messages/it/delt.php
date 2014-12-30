@@ -17,6 +17,7 @@ return array(
   'Trial Balance' => 'Situazione contabile',
   'Firm'=>'Azienda',
   'Ledger' => 'Libro mastro',
+  'Public View' => 'Visualizzazione pubblica',
   'Ledger for account «{name}»' => 'Libro mastro per il conto «{name}»',
   'Statements' => 'Bilancio',
   'Account' => 'Conto',

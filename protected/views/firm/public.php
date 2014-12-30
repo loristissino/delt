@@ -10,6 +10,7 @@ $this->breadcrumbs=array(
   'Public',
 );
 */
+$this->css=$model->css;
 
 ?>
 

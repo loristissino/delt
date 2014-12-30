@@ -57,6 +57,8 @@ class Controller extends CController
   
   public $DEUser; //= DEUser::model()->findByPK(Yii::app()->user->id);
   
+  public $css; // custom css
+  
   protected function beforeAction($action)
   {
     $this->DEUser = DEUser::model()->findByPK(Yii::app()->user->id);

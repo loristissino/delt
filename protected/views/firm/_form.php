@@ -261,6 +261,14 @@ $languages_available = Language::model()->findAllSorted();
   <br />
   <span class="hint"><?php echo Yii::t('delt', 'This could be useful when the Chart of Accounts has codes that express enough information in the last part of the code, after the last dot.') ?></span>
   </div>
+  
+  <div class="row">
+    <?php echo $form->labelEx($model,'css'); ?>
+    <?php echo $form->textArea($model,'css',array('cols'=>60, 'rows'=>5)); ?>
+    <?php echo $form->error($model,'css'); ?>
+  <br />
+  <span class="hint"><?php echo Yii::t('delt', 'Custom Cascading Style Sheet code used when the firm is shown.') ?> <?php echo Yii::t('delt', 'It is OK to leave it empty, if you don\'t want any customization.') ?></span>
+  </div>
  
   <div class="row buttons" id="submitDiv">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
