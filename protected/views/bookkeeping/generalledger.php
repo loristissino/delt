@@ -19,7 +19,7 @@ $this->show_link_on_description = true;
   $this->last_journalentry_id = null;
 ?>
 
-<h2><?php echo $code ?> - <?php echo CHtml::link($value['currentname'], array('bookkeeping/ledger', 'id'=>$value['id']), array('class'=>'hiddenlink')) ?></h2>
+<h2><?php echo $model->renderAccountCode($code) ?> - <?php echo CHtml::link($value['currentname'], array('bookkeeping/ledger', 'id'=>$value['id']), array('class'=>'hiddenlink')) ?></h2>
 
   <?php echo $this->renderPartial('_ledger', array(
     'id'=>'ledger-grid-'.$code,

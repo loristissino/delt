@@ -111,7 +111,7 @@ class JournalentryForm extends CFormModel
     foreach($journalentry->postings as $posting)
     {
       $this->postings[$posting->id] = new PostingForm();
-      $this->postings[$posting->id]->name = $posting->account->__toString();
+      $this->postings[$posting->id]->name = $posting->account->getCodeAndName($this->firm);
       if($posting->comment)
       {
         $this->postings[$posting->id]->name .= ' # ' . $posting->comment;
@@ -223,7 +223,7 @@ class JournalentryForm extends CFormModel
       {
         $info = explode(' - ', $posting['name']);
         $code = trim($info[0]);
-        $account = Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id, 'is_selectable'=>true));
+        $account = $this->firm->findAccount($code); //Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm_id, 'is_selectable'=>true));
       }
       
       if(!$account)

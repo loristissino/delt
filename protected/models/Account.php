@@ -222,6 +222,15 @@ class Account extends CActiveRecord
     return sprintf('%s - %s', $this->code, $this->name);
   }
   
+  public function getCodeAndName(Firm $firm=null)
+  {
+    if(!$firm)
+    {
+      $firm = $this->firm;
+    }
+    return sprintf('%s - %s', $firm->renderAccountCode($this->code), $this->name);
+  }
+  
   public function getAnalysis($amount, $currency='EUR')
   {
     $parent = $this->getParent();

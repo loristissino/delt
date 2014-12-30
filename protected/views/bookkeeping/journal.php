@@ -109,6 +109,7 @@ echo CHtml::endForm(); ?>
     'items'=>array(
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
         array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+        array('label'=>Yii::t('delt','toggle in-statement visibility'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'tisv'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Toggle the visibility of the selected journal entries in the preparation of the statements'))),
     ),
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',

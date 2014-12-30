@@ -42,7 +42,7 @@ if($deletable)
 ?>
 <h1><?php echo Yii::t('delt', 'Ledger') ?></h1>
 
-<h2><?php echo $account->code ?> - <?php echo $account->name ?></h2>
+<h2><?php echo $model->renderAccountCode($account->code) ?> - <?php echo $account->name ?></h2>
 
 <?php if($account->comment): ?>
   <?php echo $this->renderPartial('../account/_clevercomment', array('account'=>$account), true) ?>

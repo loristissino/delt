@@ -175,5 +175,11 @@ class Journalentry extends CActiveRecord
     
   }
   
+  public function toggleInStatementVisibility()
+  {
+    $this->is_closing = !$this->is_closing;
+    $this->save(false );
+  }
+  
   
 }

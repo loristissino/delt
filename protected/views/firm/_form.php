@@ -253,7 +253,15 @@ $languages_available = Language::model()->findAllSorted();
     <br />
     <span class="hint"><?php echo Yii::t('delt', 'These are the positions of accounts that are checked when a journal entry is prepared, to avoid wrong outstanding balances') ?></span>
   </div>
-  
+
+  <div class="row checkbox">
+    <?php echo $form->label($model, 'shortcodes') ?>
+    <?php echo $form->checkBox($model, 'shortcodes') ?>&nbsp;
+    <?php echo Yii::t('delt', 'Show only the last part of the code of the accounts.') ?>
+  <br />
+  <span class="hint"><?php echo Yii::t('delt', 'This could be useful when the Chart of Accounts has codes that express enough information in the last part of the code, after the last dot.') ?></span>
+  </div>
+ 
   <div class="row buttons" id="submitDiv">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>
   </div>

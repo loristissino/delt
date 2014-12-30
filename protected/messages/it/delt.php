@@ -36,6 +36,7 @@ return array(
   'Description / Explanation' => 'Descrizione / Spiegazione',
 
   'Position' => 'Collocazione',
+  'P' => 'C',
 
   'Unknown' => 'Sconosciuta',
   'This account has not been correctly positioned.'=>'Questo conto non risulta correttamente collocato.',
@@ -422,14 +423,18 @@ return array(
   'include' => 'includi',
   'exclude' => 'escludi',
   'delete' => 'elimina',
+  'toggle in-statement visibility' => 'commuta visibilità nel bilancio',
   'Include the selected journal entries in computations' => 'Includi le registrazioni selezionate nei calcoli',
   'Exclude the selected journal entries from computations' => 'Escludi le registrazioni selezionate dai calcoli',
   'Delete permanently the selected journal entries' => 'Elimina definitivamente le registrazioni contabili',
+  'Toggle the visibility of the selected journal entries in the preparation of the statements' => 'Rendi visibili gli effetti di questa registrazione nel bilancio se non lo sono, o viceversa', 
+  
   'Are you sure to perform this action on checked items?' => 'Sei sicuro di voler effettuare l\'operazione sugli elementi selezionati?', 
   'One journal entry has been included. | {n} journal entries have been included.' => 'Una registrazione contabile è stata inclusa. | {n} registrazioni contabili sono state incluse.',
   'One journal entry has been excluded. | {n} journal entries have been excluded.' => 'Una registrazione contabile è stata esclusa. | {n} registrazioni contabili sono state escluse.',
   'No journal entry has been deleted.' => 'Nessuna registrazione contabile è stata eliminata.',
   'One journal entry has been deleted. | {n} journal entries have been deleted.' => 'Una registrazione contabile è stata eliminata. | {n} registrazioni contabili sono state eliminate.',
+  'One journal entry has been toggled. | {n} journal entries have been toggled.' => 'Per una registrazione contabile è stata commutata la visibilità. | Per {n} registrazioni contabili è stata commutata la visibilità.',
   
   'With the selected accounts:' => 'Con i conti selezionati:',
   'prepare closing entry' => 'prepara una registrazione di chiusura',

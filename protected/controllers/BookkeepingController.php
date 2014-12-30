@@ -104,7 +104,7 @@ class BookkeepingController extends Controller
     $this->firm=$this->loadModelBySlug($slug);
     
     $id= $root && $root!='source' ? (int) $root : null;
-    $items= $this->firm->getCoaTree($this, $id);
+    $items= $this->firm->getCoaTree($id);
     
     echo CTreeView::saveDataAsJson($items);
   }
@@ -555,7 +555,23 @@ class BookkeepingController extends Controller
           }
         }
        }
-       
+
+      if($op=='tisv')
+      {
+        $affected_rows = $this->firm->toggleStatementVisibilityOfSelectedJournalentries($_POST['id']);
+        // FIXME This could be done in one UPDATE statement (but it's not so easy as it might seem
+        if($affected_rows==0)
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been toggled.'));  // this shouldn't happen
+        }
+        else
+        {
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$_POST['id']));
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been toggled. | {n} journal entries have been toggled.', $affected_rows));
+        }
+      }  
+
+
       if($op=='delete')
       {
         $affected_rows = $this->firm->deleteSelectedJournalentries($_POST['id']);

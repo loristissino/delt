@@ -24,6 +24,7 @@
  * @property string $create_date
  * @property string $banner
  * @property string $checked_positions
+ * @property integer $shortcodes
  *
  * The followings are the available model relations:
  * @property Account[] $accounts
@@ -104,6 +105,7 @@ class Firm extends CActiveRecord
         'allowEmpty'=> true,
         ),
       array('checked_positions', 'safe'),
+      array('shortcodes', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, name, slug, firmtype, description, status, currency, csymbol, language_id, firm_parent_id, create_date', 'safe', 'on'=>'search'),
@@ -149,6 +151,7 @@ class Firm extends CActiveRecord
       'create_date' => Yii::t('delt', 'Create Date'),
       'license'=>Yii::t('delt', 'License'),
       'checked_positions'=>Yii::t('delt', 'Checked Positions'),
+      'shortcodes'=>Yii::t('delt', 'Short Codes'),
     );
   }
 
@@ -878,7 +881,7 @@ class Firm extends CActiveRecord
     $result=array();
     foreach($accounts as $account)
     {
-      $result[]=$account['code']. ' - ' . $account['currentname'];
+      $result[]=$this->renderAccountCode($account['code']). ' - ' . $account['currentname'];
     }
     return $result;
   }
@@ -937,7 +940,7 @@ class Firm extends CActiveRecord
   {
     $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
     
-    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions'));
+    DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions', 'shortcodes'));
     
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
@@ -1177,7 +1180,7 @@ class Firm extends CActiveRecord
     
     $data=array();
     
-    DELT::object2array($this, $data['base'], array('name', 'description', 'firmtype', 'currency'));
+    DELT::object2array($this, $data['base'], array('name', 'description', 'firmtype', 'currency', 'checked_positions', 'shortcodes'));
 
     $data['base']['language'] = $this->language->locale;
     
@@ -1478,6 +1481,24 @@ class Firm extends CActiveRecord
     }
     return $number;
   }
+
+  /**
+   * Toggles the in-statement visibility of specified journal entries.
+   * @param array $ids the ids of the journal entries to toggle visibility for
+   * @return integer the number of journal entries toggled
+   */
+  public function toggleStatementVisibilityOfSelectedJournalentries($ids=array())
+  {
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    foreach($journalentries as $journalentry)
+    {
+      $journalentry->toggleInStatementVisibility();
+    }
+    return $number;
+  }
+
+
   
   /**
    * Returns the specified journal entries.
@@ -1741,9 +1762,9 @@ class Firm extends CActiveRecord
    * @param integer $id the id of an account, if known
    * @return array the data
    */
-  public function getCoatree(CController $controller, $id=null)
+  public function getCoatree($id=null)
   {
-    //FIXME -- we need an instance of controller so that we can use the createIcon function and other stuff -- this violates MVC, and should maybe fixed.
+    $controller = Yii::app()->getController();
     
     $result=array();
     
@@ -1762,7 +1783,7 @@ class Firm extends CActiveRecord
       
       if($account->number_of_children==0)
       {
-        $text = '<a href="#" onclick="chooseAccount(\'' . str_replace('"', '&quot;', addslashes($account->__toString())) . '\');">'. $account->currentname . '</a>';
+        $text = '<a href="#" onclick="chooseAccount(\'' . str_replace('"', '&quot;', addslashes($account->getCodeAndName($this))) . '\');">'. $account->currentname . '</a>';
       }
       else
       {
@@ -2013,6 +2034,47 @@ class Firm extends CActiveRecord
       self::FIRMTYPE_BUSINESS => Yii::t('delt', 'Business'),
       self::FIRMTYPE_NPO => Yii::t('delt', 'Not-for-profit Organization'),
     );
+  }
+  
+  public function renderAccountCode($code)
+  {
+    if ($this->shortcodes)  // firm's setting about abbreviating codes
+    {
+      $pos = strrpos($code, '.');
+      return $pos===false ? $code : substr($code, $pos+1);
+    }
+    else
+    {
+      return $code;
+    }
+  }
+  
+  public function findAccount($code)
+  {
+    if ($this->shortcodes)
+    {
+      $accounts = Yii::app()->db->createCommand()
+      ->select('id, code')
+      ->from('{{account}}')
+      ->where('firm_id=:id', array(':id'=>$this->id))
+      ->andWhere(array('like', 'code', '%' . $code . '%'))
+      ->andWhere('is_selectable = 1')
+      ->andWhere('type = 0')
+      ->queryAll();
+    
+      foreach($accounts as $account)
+      {
+        if($code==$this->renderAccountCode($account['code']))
+        {
+          return Account::model()->findByPK($account['id']);
+        }
+      }
+      return null;
+    }
+    else
+    {
+      return Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->id, 'is_selectable'=>true, 'type'=>0));
+    }
   }
   
 }

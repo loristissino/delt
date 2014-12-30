@@ -281,7 +281,7 @@ class FirmController extends Controller
           catch(Exception $e)
           {
             Yii::app()->user->setFlash('delt_failure','The information about the firm could not be saved.'); 
-            $this->redirect(array('firm/form'));
+            $this->redirect(array('firm/fork'));
           }
         }
       }
