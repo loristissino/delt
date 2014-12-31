@@ -16,6 +16,8 @@ $sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'
 $explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
 $swap_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 'Swap debits and credits'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Swap debit and credits for the whole journal entry'))));
 
+$calculator_icon = addslashes(Yii::app()->request->baseUrl.'/images/calculator.png');
+
 $json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 
 $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
@@ -314,10 +316,31 @@ $cs->registerScript(
 
       $("#debit" +i).blur(function() {updatetotals(); });
       $("#credit" +i).blur(function() {updatetotals(); });
-        
+      $("#debit" +i).calculator({ showOn: "operator", isOperator: checkCharDebit});
+      $("#credit" +i).calculator({ showOn: "operator", isOperator: checkCharCredit});
+
     }
   }
+
+  function checkCharDebit(ch, event, value, base, decimalChar) {
+    return checkCh(ch, event, total_credit > total_debit ? total_credit - total_debit : "");
+  }
+
+  function checkCharCredit(ch, event, value, base, decimalChar) {
+    return checkCh(ch, event, total_debit > total_credit ? total_debit - total_credit : "");
+  }
+
   
+  function checkCh(ch, event, value) {
+    if(ch=="=")
+    {
+      updatetotals();
+      $("#"+event.srcElement.id).val(value);
+      updatetotals();
+      return false;
+    }
+    return "+-*/".indexOf(ch) > -1 && !(ch === "-" && value === ""); 
+  }
   
   function swaprows(a,b)
   {
@@ -464,6 +487,16 @@ $cs->registerScript(
 
 $cs->registerScriptFile(
   Yii::app()->request->baseUrl.'/js/accounting.min.js',
+  CClientScript::POS_HEAD
+);
+
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/jquery.plugin.min.js',
+  CClientScript::POS_HEAD
+);
+
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/calculator/jquery.calculator.min.js',
   CClientScript::POS_HEAD
 );
 
