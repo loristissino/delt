@@ -484,7 +484,7 @@ class BookkeepingController extends Controller
     {
       if($this->journalentry->safeDelete())
       {
-        Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_DELETED, array('id'=>$id));
+        Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRY_DELETED, array('id'=>$id));
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The journal entry has been successfully deleted.'));
       }
       else
