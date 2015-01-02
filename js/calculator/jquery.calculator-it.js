@@ -1,12 +1,14 @@
 /* http://keith-wood.name/calculator.html
    Italian translation for the jQuery calculator extension
-   Written by Eugenio Palumbo (http://www.itasolution.it) March 2009. */
+   Written by Eugenio Palumbo (http://www.itasolution.it) March 2009. 
+   Some translations changed by Loris Tissino (http://loris.tissino.it) for DELT December 2014.
+   */
 (function($) { // hide the namespace
 	$.calculator.regionalOptions['it'] = {
 		decimalChar: ',',
-		buttonText: '...', buttonStatus: 'Aprire la calcolatrice',
-		closeText: 'Chiudi', closeStatus: 'Chiudere la calcolatrice',
-		useText: 'Usa', useStatus: 'Usa il valore attuale',
+		buttonText: '...', buttonStatus: 'Apri la calcolatrice',
+		closeText: 'Chiudi', closeStatus: 'Chiudi la calcolatrice',
+		useText: 'Usa', useStatus: 'Usa il valore corrente',
 		eraseText: 'Cancella', eraseStatus: 'Cancella il valore attuale dal campo',
 		backspaceText: 'BS', backspaceStatus: 'Cancella l\'ultima cifra',
 		clearErrorText: 'CE', clearErrorStatus: 'Cancella l\'ultimo numero',

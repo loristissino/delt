@@ -33,7 +33,7 @@ $mainmenu_items=array(
 
   <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/main.css" />
   <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/form.css" />
-  <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.calculator.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/jquery.calculator.alt.css" />
   
   <link rel="icon" href="<?php echo Yii::app()->request->baseUrl; ?>/images/doubleentry.png" type="image/png" />
   

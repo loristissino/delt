@@ -26,8 +26,6 @@ if(!$model->frozen_at)
   $this->menu[] = array('label'=>Yii::t('delt', 'Import'), 'url'=>array('/bookkeeping/import', 'slug'=>$model->slug));
 }
 
-$this->menu[] = array('label'=>Yii::t('delt', 'Show'), 'url'=>array(Yii::app()->params['publicpages'][$model->firmtype].$model->slug));
-
 if(!$model->frozen_at)
 {
   $this->menu[] = array('label'=>Yii::t('delt', 'Share'), 'url'=>array('/firm/share', 'slug'=>$model->slug));

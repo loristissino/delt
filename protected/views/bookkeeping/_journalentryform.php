@@ -18,7 +18,8 @@ $swap_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 
 
 $calculator_icon = addslashes(Yii::app()->request->baseUrl.'/images/calculator.png');
 
-$json_url = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
+$json_url_sa = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
+$json_url_aca = addslashes($this->createUrl('bookkeeping/accountclosingamount', array('slug'=>$this->firm->slug)));
 
 $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
 
@@ -78,7 +79,7 @@ $cs->registerScript(
   $("#load_accounts").click(function()
     {
 
-      var jsonUrl = "' . $json_url . '";
+      var jsonUrl = "' . $json_url_sa . '";
       $.getJSON(
         jsonUrl,
         {},
@@ -288,7 +289,7 @@ $cs->registerScript(
   {
     var done=false;
     for(i=1; i<= n; i++)
-    {
+    {    
       $("#name" +i).dblclick((function(index)
         {
           return function()
@@ -314,33 +315,81 @@ $cs->registerScript(
         done=true;
       }
 
-      $("#debit" +i).blur(function() {updatetotals(); });
-      $("#credit" +i).blur(function() {updatetotals(); });
-      $("#debit" +i).calculator({ showOn: "operator", isOperator: checkCharDebit});
-      $("#credit" +i).calculator({ showOn: "operator", isOperator: checkCharCredit});
+      $("#debit" +i).blur(function() {updatetotals(true); });
+      $("#debit" +i).focus(function(obj) { cleanValue($(obj.srcElement)); });
+      $("#debit" +i).attr("_row", i);
+      $("#credit" +i).blur(function() {updatetotals(true); });
+      $("#credit" +i).focus(function(obj) { cleanValue($(obj.srcElement)); });
+      $("#credit" +i).attr("_row", i);
+      $("#debit" +i).calculator({ showOn: "operator", isOperator: checkCh});
+      $("#credit" +i).calculator({ showOn: "operator", isOperator: checkCh});
 
     }
   }
-
-  function checkCharDebit(ch, event, value, base, decimalChar) {
-    return checkCh(ch, event, total_credit > total_debit ? total_credit - total_debit : "");
-  }
-
-  function checkCharCredit(ch, event, value, base, decimalChar) {
-    return checkCh(ch, event, total_debit > total_credit ? total_debit - total_credit : "");
-  }
-
-  
-  function checkCh(ch, event, value) {
-    if(ch=="=")
+  function checkCh(ch, event, value, base, decimalChar) {
+    var row = $("#"+event.srcElement.id).attr("_row");
+    var chars = ch + $("#debit" + row).val() + $("#credit" + row).val();
+    console.log(ch);
+    console.log(value);
+    if(chars == "=")
     {
+      // we do this only if the debit field has an equal sign, and the credit field is empty, or viceversa
       updatetotals();
-      $("#"+event.srcElement.id).val(value);
+      var value = total_debit - total_credit;
+      placeValue(row, value);
       updatetotals();
       return false;
     }
+    
+    if(chars == "?")
+    {
+      var name = $("#name"+row).val();
+      var code = name.substring(0, name.indexOf(" "));
+      var jsonUrl = "' . $json_url_aca . '?code=" + code;
+      console.log(jsonUrl);
+      $.getJSON(
+        jsonUrl,
+        {},
+        function (json)
+          {
+            placeValue(row, json.amount);
+          }
+        );
+      return false;
+    }
+        
     return "+-*/".indexOf(ch) > -1 && !(ch === "-" && value === ""); 
   }
+  
+  function placeValue(row, value)
+  {
+    $("#debit" + row).val("");
+    $("#credit" + row).val("");
+
+    var affected;
+
+    if (value > 0)
+    {
+      putFormattedValue($("#credit" + row), value);
+    }
+    else if (value < 0)
+    {
+      putFormattedValue($("#debit" + row), -value);
+    }
+  }
+  
+  function putFormattedValue(element, value)
+  {
+    element.val(accounting.formatMoney(value, currency, 2, thousand_separator, decimal_separator));
+    element.addClass("flashed");
+  }
+  
+  function cleanValue(element)
+  {
+    value = accounting.unformat(element.val(), decimal_separator);
+    element.val(value ? accounting.unformat(element.val(), decimal_separator): "");
+  }
+
   
   function swaprows(a,b)
   {
@@ -358,15 +407,29 @@ $cs->registerScript(
     $(b).val(c);
   }
   
-  function updatetotals()
+  function updatetotals(removeClass)
   {
+    var rc = (typeof removeClass === "undefined") ? false : true;
+  
     total_debit=0;
     total_credit=0;
     
+    var debit;
+    var credit;
+    
     for(i=1; i<=n; i++)
     {
-      total_debit += accounting.unformat($("#debit"+i).val(), decimal_separator);
-      total_credit += accounting.unformat($("#credit"+i).val(), decimal_separator);
+      debit = accounting.unformat($("#debit"+i).val(), decimal_separator);
+      credit = accounting.unformat($("#credit"+i).val(), decimal_separator);
+      total_debit += debit;
+      total_credit += credit;
+      $("#debit"+i).val(debit ? accounting.formatMoney(debit, currency, 2, thousand_separator, decimal_separator) : "");
+      $("#credit"+i).val(credit ? accounting.formatMoney(credit, currency, 2, thousand_separator, decimal_separator) : "");
+      if(rc)
+      {
+        $("#debit"+i).removeClass("flashed");
+        $("#credit"+i).removeClass("flashed");
+      }
     }
     
     if(total_debit == total_credit)
@@ -497,6 +560,11 @@ $cs->registerScriptFile(
 
 $cs->registerScriptFile(
   Yii::app()->request->baseUrl.'/js/calculator/jquery.calculator.min.js',
+  CClientScript::POS_HEAD
+);
+
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/calculator/jquery.calculator-' . Yii::app()->language . '.js',
   CClientScript::POS_HEAD
 );
 

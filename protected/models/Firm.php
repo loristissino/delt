@@ -2091,4 +2091,12 @@ class Firm extends CActiveRecord
     }
   }
   
+  public function getClosingAmount($code)
+  {
+    if($account = $this->findAccount($code))
+    {
+      return $account->consolidatedBalance;
+    }
+  }
+  
 }

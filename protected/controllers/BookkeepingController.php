@@ -682,6 +682,19 @@ class BookkeepingController extends Controller
     $this->serveJson($firm->findAccounts($term));
   }
 
+  /**
+   * Serves the amount needed to close the account $account, in form of
+   * a json-encoded object.
+   * @param string $account the string to match
+   * @param string $slug the slug of the firm
+   */
+  public function actionAccountclosingamount($slug='', $code='')
+  {
+    $firm=$this->loadFirmBySlug($slug);
+    $this->checkFrostiness($firm);
+    $this->serveJson(array('amount'=>$firm->getClosingAmount($code)));
+  }
+
 
   public function actionLedger($id /* account_id */, $journalentry=null)
   {

@@ -283,7 +283,10 @@ td.centered
   background-color: #FFEECF;
 }
 
-
+.flashed
+{
+  background-color: #C3D9FF;
+}
 
 div.success
 {
