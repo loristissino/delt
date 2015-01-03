@@ -3,6 +3,8 @@
 /* @var $model Abcde */
 /* @var $form CActiveForm */
 
+$this->layout = 'column1_menu_below';
+
 $n = sizeof($items);
 
 $up_icon=addslashes($this->createIcon('arrow_up', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
@@ -57,9 +59,9 @@ $cs->registerScript(
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
     "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
+    "</span>&nbsp;<span id=\"swap_debits_credits\">" + swap_debits_credits_icon + "</span>" + 
     "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" +
-    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
-    "</span>&nbsp;<span id=\"swap_debits_credits\">" + swap_debits_credits_icon + "</span>"
+    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>"
 
     );
   $("#load_accounts").hide();
@@ -135,8 +137,8 @@ $cs->registerScript(
       $.each(arr, function()
         {
           $("#name" + i).val(this.name);
-          $("#debit" + i).val(this.debit);
-          $("#credit" + i).val(this.credit);
+          putFormattedValue($("#debit" + i), this.debit, false);
+          putFormattedValue($("#credit" + i), this.credit, false);
           i++;
         }
       )
@@ -373,18 +375,21 @@ $cs->registerScript(
 
     if (value > 0)
     {
-      putFormattedValue($("#credit" + row), value);
+      putFormattedValue($("#credit" + row), value, true);
     }
     else if (value < 0)
     {
-      putFormattedValue($("#debit" + row), -value);
+      putFormattedValue($("#debit" + row), -value, true);
     }
   }
   
-  function putFormattedValue(element, value)
+  function putFormattedValue(element, value, addclass)
   {
-    element.val(accounting.formatMoney(value, currency, 2, thousand_separator, decimal_separator));
-    element.addClass("flashed");
+    element.val(value ? accounting.formatMoney(value, currency, 2, thousand_separator, decimal_separator): "");
+    if(addclass)
+    {
+      element.addClass("flashed");
+    }
   }
   
   function cleanValue(element)
