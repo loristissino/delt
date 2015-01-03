@@ -649,8 +649,8 @@ $cs->registerScriptFile(
            ),
         ))
       ?></td>
-      <td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
-      <td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''))) ?></td>
+      <td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( $this->accounts[$row]['debitfromtemplate'] ? ' fromtemplate': ''))) ?></td>
+      <td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''). ( $this->accounts[$row]['creditfromtemplate'] ? ' fromtemplate': ''))) ?></td>
       </tr>
       <?php endforeach; ?>
       </tbody>

@@ -18,7 +18,7 @@ $this->menu=array(
 <ul>
 <?php foreach($this->journalentry->postings as $posting): $type=DELT::amount2type($posting->amount) ?>
   <li>
-  <?php echo $posting->account ?> (<?php echo Yii::t('delt', $type) ?>)
+  <?php echo $posting->account->getCodeAndName($model) ?> (<?php echo Yii::t('delt', $type) ?>)
   </li>
 <?php endforeach ?>
 </ul>

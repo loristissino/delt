@@ -603,7 +603,7 @@ class BookkeepingController extends Controller
     $this->checkManageability($this->firm);
     $this->checkFrostiness($this->firm);
     
-    $this->accounts = $template->getAccountsInvolved($this->firm->currency);
+    $this->accounts = $template->getAccountsInvolved($this->firm);
     
     if(sizeof($this->accounts))
     {

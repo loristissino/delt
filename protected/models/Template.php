@@ -124,7 +124,7 @@ class Template extends CActiveRecord
     return parent::beforeSave();
   }
   
-  public function getAccountsInvolved($currency)
+  public function getAccountsInvolved($firm)
   {
     $result=array();
     if(!$info=unserialize($this->info))
@@ -137,9 +137,9 @@ class Template extends CActiveRecord
     foreach($accounts as $account)
     {
       $result[$info[$account->id]['rank']]=array(
-        'name'=> $account->code . ' - ' . $account->name,
-        'debit'=>$info[$account->id]['type']=='Dr.' ? DELT::currency_value(0, $currency, false, true): '',
-        'credit'=>$info[$account->id]['type']=='Cr.' ? DELT::currency_value(0, $currency, false, true): '',
+        'name'=> $account->getCodeAndName($firm),
+        'debitfromtemplate'=>$info[$account->id]['type']=='Dr.',
+        'creditfromtemplate'=>$info[$account->id]['type']=='Cr.',
       );
     }
     ksort($result);

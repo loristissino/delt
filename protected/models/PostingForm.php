@@ -20,14 +20,16 @@ class PostingForm extends CFormModel
 {
 
   public $name;
-  public $debit;
-  public $credit;
+  public $debit=0;
+  public $credit=0;
   public $name_errors=false;
   public $debit_errors=false;
   public $credit_errors=false;
   public $account_id;
   public $account;
   public $guessed=false;
+  public $debitfromtemplate=false;
+  public $creditfromtemplate=false;
   public $analysis = 'none';
   public $comment = '';
   
