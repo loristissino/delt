@@ -37,9 +37,9 @@ $this->menu[] = array('label'=>Yii::t('delt',
     ), 'url'=>array('/firm/' . ($model->frozen_at ? 'unfreeze' : 'freeze'), 'slug'=>$model->slug));
 
 ?>
-<h1><?php echo $model->name ?></h1>
+<h1><?php echo CHtml::encode($model->name) ?></h1>
 
-<p><?php echo $model->description ?></p>
+<p><?php echo nl2br(CHtml::encode($model->description)) ?></p>
 
 
 <p>
