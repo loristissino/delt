@@ -327,7 +327,10 @@ $cs->registerScript(
     }
   }
   function checkCh(ch, event, value, base, decimalChar) {
-    var row = $("#"+event.srcElement.id).attr("_row");
+    console.log(event);
+    var source = event.srcElement ? event.srcElement : (event.currentTarget ? event.currentTarget: null);
+    
+    var row = $("#"+source.id).attr("_row");
     var chars = ch + $("#debit" + row).val() + $("#credit" + row).val();
     console.log(ch);
     console.log(value);
@@ -563,11 +566,13 @@ $cs->registerScriptFile(
   CClientScript::POS_HEAD
 );
 
-$cs->registerScriptFile(
-  Yii::app()->request->baseUrl.'/js/calculator/jquery.calculator-' . Yii::app()->language . '.js',
-  CClientScript::POS_HEAD
-);
-
+if(Yii::app()->language!=='en')
+{
+  $cs->registerScriptFile(
+    Yii::app()->request->baseUrl.'/js/calculator/jquery.calculator-' . Yii::app()->language . '.js',
+    CClientScript::POS_HEAD
+  );
+}
 ?>
 
 <div class="form" style="width: 630px">
