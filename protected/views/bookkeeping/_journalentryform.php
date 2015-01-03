@@ -329,13 +329,11 @@ $cs->registerScript(
     }
   }
   function checkCh(ch, event, value, base, decimalChar) {
-    console.log(event);
     var source = event.srcElement ? event.srcElement : (event.currentTarget ? event.currentTarget: null);
+    console.log(source);
     
     var row = $("#"+source.id).attr("_row");
     var chars = ch + $("#debit" + row).val() + $("#credit" + row).val();
-    console.log(ch);
-    console.log(value);
     if(chars == "=")
     {
       // we do this only if the debit field has an equal sign, and the credit field is empty, or viceversa
@@ -350,8 +348,9 @@ $cs->registerScript(
     {
       var name = $("#name"+row).val();
       var code = name.substring(0, name.indexOf(" "));
+      $("#debit"+row).attr("placeholder", "⌛").addClass("updating");
+      $("#credit"+row).attr("placeholder", "⌛").addClass("updating");
       var jsonUrl = "' . $json_url_aca . '?code=" + code;
-      console.log(jsonUrl);
       $.getJSON(
         jsonUrl,
         {},
@@ -368,8 +367,8 @@ $cs->registerScript(
   
   function placeValue(row, value)
   {
-    $("#debit" + row).val("");
-    $("#credit" + row).val("");
+    $("#debit" + row).val("").attr("placeholder", "").removeClass("updating");
+    $("#credit" + row).val("").attr("placeholder", "").removeClass("updating");
 
     var affected;
 

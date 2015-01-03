@@ -288,6 +288,11 @@ td.centered
   background-color: #C3D9FF;
 }
 
+.updating
+{
+  background-color: yellow;
+}
+
 div.success
 {
   background-color: #90EE90;
