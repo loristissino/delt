@@ -230,7 +230,7 @@ class Account extends CActiveRecord
     {
       $firm = $this->firm;
     }
-    return sprintf('%s - %s', $firm->renderAccountCode($this->code), $this->name);
+    return $firm->renderAccountCodeAndName($firm->renderAccountCode($this->code), $this->name);
   }
   
   public function getAnalysis($amount, $currency='EUR')

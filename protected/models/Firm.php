@@ -580,6 +580,7 @@ class Firm extends CActiveRecord
   public function getAccountBalances($position='', $ids=array(), $reverse=true)
   {
     $result=array();
+    $count = 1;  // for compatibility with templates management, we need to start indexing from 1
     $accounts = $this->getAccountBalancesData($position, $ids);
     
     $grandtotal=0;  
@@ -590,8 +591,8 @@ class Firm extends CActiveRecord
         $account['total']=-$account['total'];
       }
       $grandtotal+=$account['total'];
-      $row=array();
-      $row['name']=$account['code'] . ' - ' . $account['name'];
+      $row=array('debitfromtemplate'=>false, 'creditfromtemplate'=>false);
+      $row['name']=$this->renderAccountCodeAndName($account['code'], $account['name']);
       if($account['total'] > 0)
       {
         $row['debit']='';
@@ -607,16 +608,18 @@ class Firm extends CActiveRecord
         $row['debit']='';
         $row['credit']='';
       }
-      $result[]=$row;
+      $result[$count++]=$row;
     }
     
     if($grandtotal!=0)
     {
       $ob=$grandtotal>0 ? 'D': 'C';
       
-      $name = $this->findClosingAccountName($position, $ob, true, Yii::t('delt', 'Select closing account'));
+      $name = $this->findClosingAccountName($position, $ob, true, ''); //Yii::t('delt', 'Select closing account'));
         
-      $result[]=array(
+      $result[$count++]=array(
+        'debitfromtemplate'=>false,
+        'creditfromtemplate'=>false,
         'name'=>$name,
         'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
         'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
@@ -657,7 +660,7 @@ class Firm extends CActiveRecord
     {
       if($with_code)
       {
-        return $account['code'] . ' - ' . $account['name'];
+        return $this->renderAccountCodeAndName($account['code'], $account['name']);
       }
       else
       {
@@ -2097,6 +2100,11 @@ class Firm extends CActiveRecord
     {
       return $account->consolidatedBalance;
     }
+  }
+  
+  public function renderAccountCodeAndName($code, $name)
+  {
+    return sprintf('%s - %s', $this->renderAccountCode($code), $name);
   }
   
 }
