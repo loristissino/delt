@@ -124,6 +124,8 @@ $cs->registerScript(
       var arr = [];
       for (i=1; i<=n; i++)
       {
+        cleanValue($("#debit"+i));
+        cleanValue($("#credit"+i));
         var obj = {
           name: $("#name"+i).val(),
           debit: $("#debit"+i).val().replace(/[^\d.,]/g, ""),
