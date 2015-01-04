@@ -2066,7 +2066,7 @@ class Firm extends CActiveRecord
     }
   }
   
-  public function findAccount($code)
+  public function findAccount($code, $only_selectable=true)
   {
     if ($this->shortcodes)
     {
@@ -2075,7 +2075,7 @@ class Firm extends CActiveRecord
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('like', 'code', '%' . $code . '%'))
-      ->andWhere('is_selectable = 1')
+      ->andWhere($only_selectable ? 'is_selectable = 1' : '1 = 1')
       ->andWhere('type = 0')
       ->queryAll();
     
@@ -2090,7 +2090,12 @@ class Firm extends CActiveRecord
     }
     else
     {
-      return Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->id, 'is_selectable'=>true, 'type'=>0));
+      $attributes = array('code'=>$code, 'firm_id'=>$this->id, 'type'=>0);
+      if($only_selectable)
+      {
+        $attributes['is_selectable']=true;
+      }
+      return Account::model()->findByAttributes($attributes);
     }
   }
   

@@ -42,7 +42,7 @@ class AccountController extends Controller
   {
     return array(
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('create','update','delete','synchronize','import','export'),
+        'actions'=>array('create','update','delete','synchronize','import','export','dragdrop'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -123,13 +123,18 @@ class AccountController extends Controller
    * If update is successful, the browser will be redirected to the 'view' page.
    * @param integer $id the ID of the model to be updated
    */
-  public function actionUpdate($id)
+  public function actionUpdate($id, $code='')
   {
     $account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     $this->checkFrostiness($this->firm);
     $account->fixDefaultForNames();
     $oldPosition = $account->position;
+    if($code)
+    {
+      $account->code = $code . '.';
+    }
+    $parent = $this->firm->findAccount($code, false);
     
     if(isset($_POST['Account']))
     {
@@ -152,7 +157,17 @@ class AccountController extends Controller
     $this->render('update',array(
       'account'=>$account,
       'firm'=>$this->firm,
+      'parent'=>$parent,
     ));
+  }
+
+
+  public function actionDragdrop($source='', $target='')
+  {
+    $sourceAccount=$this->loadModel($source);
+    $targetAccount=$this->loadModel($target);
+    $code = $targetAccount->code;
+    $this->redirect(array('account/update', 'id'=>$sourceAccount->id, 'code'=>$code));
   }
 
   /**

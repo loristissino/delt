@@ -27,4 +27,6 @@ if($account->isHidden())
 
 <h1><?php echo Yii::t('delt', $account->isHidden()?'Edit item «{name}»':'Edit account «{name}»', array('{name}'=>$account->name)) ?></h1>
 
+<?php echo $this->renderPartial('_children', array('parent'=>$parent, 'type'=>'update')); ?>
+
 <?php echo $this->renderPartial('_form', array('model'=>$account)); ?>
