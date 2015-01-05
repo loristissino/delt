@@ -1,6 +1,11 @@
 <?php 
 
+// FIXME we should use json variables here...
+
 $account_dragdrop_url = addslashes($this->createUrl('account/dragdrop'));
+$confirmation_message = addslashes(Yii::t('delt', 'Do you want «%sourceName%» to be a child of «%targetName%»?'));
+$yes_label = addslashes(Yii::t('delt', 'Yes'));
+$cancel_label = addslashes(Yii::t('delt', 'Cancel'));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -9,49 +14,61 @@ $cs->registerScript(
     // code here
   
   var account_dragdrop_url = "' . $account_dragdrop_url . '";
-  console.log(account_dragdrop_url);
+  var confirmation_message = "' . $confirmation_message . '";
+  var yes_label = "' . $yes_label . '";
+  var cancel_label = "' . $cancel_label . '";
+  console.log (yes_label);
+  console.log (cancel_label);
+  
   
   addEventManagers();
   
   var sourceAccountId;
+  var sourceName;
   var targetAccountId;
   var targetName;
+  var moving = false;
   
   function addEventManagers()
   {
+    $(document).keyup(function(e) {
+      if (e.keyCode == 27)
+      {  // escape has been pressed
+        $("#"+sourceAccountId).removeClass("moving");
+        $( ".dragdrop" ).css( "cursor", "pointer" );
+      }
+    });
+
+    $( ".dragdrop" ).on("dblclick", function(event) {
+      sourceAccountId = event.currentTarget.id;
+      if(!moving)
+      {
+        moving = true;
+        $("#"+sourceAccountId).addClass("moving");
+        $( ".dragdrop" ).css( "cursor", "move" );
+      }
+      else
+      {
+        moving = false;
+        $("#"+sourceAccountId).removeClass("moving");
+        $( ".dragdrop" ).css( "cursor", "pointer" );
+      }
+    });
+
+    $( ".dragdrop" ).on("click", function(event) {
+      if (moving)
+      {
+        targetAccountId = event.currentTarget.id;
+        showConfirmationDialog();
+      }
+    });
+
     $( ".dragdrop" ).attr("draggable", "true");
     
     $( ".dragdrop" ).on("drop", function(event) {
       event.preventDefault();
-      console.log("to: " + event.srcElement.id);
-      targetAccountId = event.srcElement.id;
-      targetName = $("#"+targetAccountId).attr("_name");
-      
-      if(targetAccountId && sourceAccountId && (targetAccountId!=sourceAccountId))
-      {
-        account_dragdrop_url += "?source=" + sourceAccountId.substring(3) + "&target=" + targetAccountId.substring(3);
-        $( "#dialog-message" ).html("Do you want the selected account to be a child of «" + targetName.replace(" ", "&nbsp;") + "»?");
-        $( "#dialog-confirm" ).dialog({
-          resizable: false,
-          height: 200,
-          width: 500,
-          modal: true,
-          buttons: {
-            "Yes": function() {
-              window.location.href = account_dragdrop_url;
-            },
-            Cancel: function() {
-              $( this ).dialog( "close" );
-              $( "#" + targetAccountId ).removeClass("flashed");
-            }
-          },
-          close: function() {
-            $( "#" + targetAccountId ).removeClass("flashed");
-          }
-        });
-                
-      }
-      
+      targetAccountId = event.currentTarget.id;
+      showConfirmationDialog();
     } );
     
     $( ".dragdrop" ).on("dragover", function(event) {
@@ -59,20 +76,70 @@ $cs->registerScript(
     } );
 
     $( ".dragdrop" ).on("dragenter", function(event) {
-      $("#" + event.srcElement.id).addClass("flashed");
+      $("#" + event.currentTarget.id).addClass("flashed");
     } );
     
     $( ".dragdrop" ).on("dragleave", function(event) {
-      $("#" + event.srcElement.id).removeClass("flashed");
+      $("#" + event.currentTarget.id).removeClass("flashed");
     } );
     
     
     $( ".dragdrop" ).on("dragstart", function(event) {
-      console.log("from: " + event.srcElement.id);
-      sourceAccountId = event.srcElement.id;
+      sourceAccountId = event.currentTarget.id;
     } );
     
   }
+
+  function showConfirmationDialog()
+  {
+      targetName = $("#"+targetAccountId).attr("data-name");
+      sourceName = $("#"+sourceAccountId).attr("data-name");
+      
+      if(targetAccountId && sourceAccountId && (targetAccountId!=sourceAccountId))
+      {
+        account_dragdrop_url += "?source=" + sourceAccountId.substring(3) + "&target=" + targetAccountId.substring(3);
+        $( "#dialog-message" ).html(confirmation_message.replace("%sourceName%", sourceName).replace("%targetName%", targetName));
+        $( "#dialog-confirm" ).dialog({
+          resizable: false,
+          height: 200,
+          width: 500,
+          modal: true,
+          buttons: [
+            {
+              text: yes_label,
+              click: function() {
+                window.location.href = account_dragdrop_url;
+              }
+            },
+            {
+              text: cancel_label,
+              click: function() {
+                $( this ).dialog( "close" );
+                $( "#" + targetAccountId ).removeClass("flashed");
+                $( "#" + sourceAccountId ).removeClass("moving");
+                moving = false;
+              }
+            }
+          ],
+          close: function() {
+            $( "#" + targetAccountId ).removeClass("flashed");
+            $( "#" + sourceAccountId ).removeClass("moving");
+            moving = false;
+          }
+        });
+                
+      }
+      
+      else
+      {
+        $( "#" + targetAccountId ).removeClass("flashed");
+      }
+
+  }
+
+
+
+
 
   '
   ,
@@ -103,7 +170,7 @@ $columns = array(
       'type'=>'raw',
       'cssClassExpression'=>'$data->position == \'?\' ? \'unpositioned\' : \'\'',
       'evaluateHtmlOptions'=>true,
-      'htmlOptions'=>array('class'=>'"dragdrop"', 'id'=>'"id_{$data->id}"', '_name'=>'"{$data->name}"'),
+      'htmlOptions'=>array('class'=>'"dragdrop"', 'id'=>'"id_{$data->id}"', 'data-name'=>'"{$data->name}"'),
       ),
     array(
       'class'=>'CDataColumn',
@@ -165,6 +232,6 @@ $this->widget('zii.widgets.grid.CGridView', array(
 )); ?>
 
 
-<div id="dialog-confirm" title="Place the account here?" style="display: none">
-  <p><span class="ui-icon ui-icon-circle-plus" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-message"></span></p>
+<div id="dialog-confirm" title="<?php echo Yii::t('delt', 'Place the account here?') ?>" style="display: none">
+  <p><span class="ui-icon ui-icon-circle-arrow-s" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-message"></span></p>
 </div>

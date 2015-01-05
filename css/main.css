@@ -288,6 +288,11 @@ td.centered
   background-color: #C3D9FF;
 }
 
+.moving
+{
+  background-color: #B4FF1E;
+}
+
 .updating
 {
   background-color: yellow;

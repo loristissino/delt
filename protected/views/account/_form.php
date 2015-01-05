@@ -20,6 +20,8 @@ $cs->registerScript(
         fixtypefield($("#Account_code").val().indexOf(".")>=0);
     }
   );
+
+  $("#Account_code").focus();
   
   fixtypefield(' . $disabled . ');
   
