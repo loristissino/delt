@@ -52,10 +52,8 @@ else
 <div class="menu_below">
   <div id="sidebar">
   <?php if($this->firm): ?>
-      <div class="portlet" id="yw3">
-        <div class="portlet-decoration firm">
-          <div class="portlet-title firm"><?php echo $this->firm->name ?></div>
-        </div>
+      <div class="portlet-decoration firm">
+        <div class="portlet-title firm"><?php echo $this->firm->name ?></div>
       </div>
   <?php endif ?>
   <div>
