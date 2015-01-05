@@ -11,7 +11,6 @@ $cs = Yii::app()->getClientScript();
 $cs->registerScript(
   'drag-and-drop-handler',
   '
-    // code here
   
   var account_dragdrop_url = "' . $account_dragdrop_url . '";
   var confirmation_message = "' . $confirmation_message . '";
@@ -19,7 +18,6 @@ $cs->registerScript(
   var cancel_label = "' . $cancel_label . '";
   console.log (yes_label);
   console.log (cancel_label);
-  
   
   addEventManagers();
   
@@ -46,12 +44,7 @@ $cs->registerScript(
         moving = true;
         $("#"+sourceAccountId).addClass("moving");
         $( ".dragdrop" ).css( "cursor", "move" );
-      }
-      else
-      {
-        moving = false;
-        $("#"+sourceAccountId).removeClass("moving");
-        $( ".dragdrop" ).css( "cursor", "pointer" );
+        disableLinks();
       }
     });
 
@@ -59,7 +52,17 @@ $cs->registerScript(
       if (moving)
       {
         targetAccountId = event.currentTarget.id;
-        showConfirmationDialog();
+        if (targetAccountId == sourceAccountId)
+        {
+          moving = false;
+          $("#"+sourceAccountId).removeClass("moving");
+          $( ".dragdrop" ).css( "cursor", "pointer" );
+          enableLinks();
+        }
+        else
+        {
+          showConfirmationDialog();
+        }
       }
     });
 
@@ -118,6 +121,7 @@ $cs->registerScript(
                 $( "#" + targetAccountId ).removeClass("flashed");
                 $( "#" + sourceAccountId ).removeClass("moving");
                 moving = false;
+                enableLinks();
               }
             }
           ],
@@ -125,6 +129,7 @@ $cs->registerScript(
             $( "#" + targetAccountId ).removeClass("flashed");
             $( "#" + sourceAccountId ).removeClass("moving");
             moving = false;
+            enableLinks();
           }
         });
                 
@@ -133,12 +138,23 @@ $cs->registerScript(
       else
       {
         $( "#" + targetAccountId ).removeClass("flashed");
+        moving = false;
+        enableLinks();
       }
 
   }
 
-
-
+  function disableLinks()
+  {
+    $(".hiddenlink").on("click", function(e){
+          e.preventDefault();
+    })
+  }
+  
+  function enableLinks()
+  {
+    $(".hiddenlink").unbind("click");
+  }
 
 
   '

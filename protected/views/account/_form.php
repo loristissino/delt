@@ -21,7 +21,7 @@ $cs->registerScript(
     }
   );
 
-  $("#Account_code").focus();
+  $("#Account_code").focus().val($("#Account_code").val());
   
   fixtypefield(' . $disabled . ');
   
