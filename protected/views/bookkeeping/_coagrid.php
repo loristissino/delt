@@ -208,7 +208,7 @@ $columns = array(
       ),
     );
 
-if($showclasses)
+if(isset($showclasses) and $showclasses)
 {
   $columns[]='classes';
 }

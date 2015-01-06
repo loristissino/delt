@@ -2066,9 +2066,9 @@ class Firm extends CActiveRecord
     }
   }
   
-  public function findAccount($code, $only_selectable=true)
+  public function findAccount($code, $only_selectable=true, $complete_code=false)
   {
-    if ($this->shortcodes)
+    if (!$complete_code and $this->shortcodes)
     {
       $accounts = Yii::app()->db->createCommand()
       ->select('id, code')
@@ -2078,7 +2078,7 @@ class Firm extends CActiveRecord
       ->andWhere($only_selectable ? 'is_selectable = 1' : '1 = 1')
       ->andWhere('type = 0')
       ->queryAll();
-    
+      
       foreach($accounts as $account)
       {
         if($code==$this->renderAccountCode($account['code']))

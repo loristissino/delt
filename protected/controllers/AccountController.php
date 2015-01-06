@@ -123,18 +123,29 @@ class AccountController extends Controller
    * If update is successful, the browser will be redirected to the 'view' page.
    * @param integer $id the ID of the model to be updated
    */
-  public function actionUpdate($id, $code='')
+  public function actionUpdate($id, $targetcode='', $sourcecode='')
   {
     $account=$this->loadModel($id);
     $this->checkManageability($this->firm=$this->loadFirm($account->firm_id));
     $this->checkFrostiness($this->firm);
     $account->fixDefaultForNames();
     $oldPosition = $account->position;
-    if($code)
+    if($targetcode)
     {
-      $account->code = $code . '.';
+      $parent = $this->firm->findAccount($targetcode, false, true);
     }
-    $parent = $this->firm->findAccount($code, false);
+    else
+    {
+      $parent = $account->getParentAccount();
+    }
+    if($targetcode)
+    {
+      $account->code = $targetcode . '.';
+      if($this->firm->shortcodes and $sourcecode)
+      {
+        $account->code .= $this->firm->renderAccountCode($sourcecode);
+      }
+    }
     
     if(isset($_POST['Account']))
     {
@@ -166,8 +177,7 @@ class AccountController extends Controller
   {
     $sourceAccount=$this->loadModel($source);
     $targetAccount=$this->loadModel($target);
-    $code = $targetAccount->code;
-    $this->redirect(array('account/update', 'id'=>$sourceAccount->id, 'code'=>$code));
+    $this->redirect(array('account/update', 'id'=>$sourceAccount->id, 'targetcode'=>$targetAccount->code, 'sourcecode'=>$sourceAccount->code));
   }
 
   /**

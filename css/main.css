@@ -639,4 +639,16 @@ text-align: center;
   border-color: #C3D9FF;
 }
 
+.withcaption
+{
+  margin-bottom: 0px;
+}
 
+.withnocaption
+{
+}
+
+.caption
+{
+  margin-bottom: 0.75em;
+}

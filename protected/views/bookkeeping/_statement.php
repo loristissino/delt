@@ -27,9 +27,13 @@
     $grandtotal_line = 'Net result';
   }
   
+  $caption = $statement->getValueFromCommentByKeyword('@caption');
+  
 ?>
-<<?php echo $tag0 ?>><?php echo Yii::t('delt', $statement->currentname) ?></<?php echo $tag0 ?>>
-
+<?php echo CHtml::tag($tag0, array('class'=>$caption?'withcaption':'withnocaption'), $statement->currentname) ?>
+<?php if($caption): ?>
+  <div class="caption"><?php echo $caption ?></div>
+<?php endif ?>
 <?php $ggt = 0 ?>
 <?php foreach($order as $key=>$value): ?>
 <?php if($with_subtitles): ?>
@@ -77,7 +81,7 @@
 <?php if($gt): ?>
   <tfoot>
   <tr>
-    <th><?php if($statement->type == 1) echo $model->findClosingAccountName($statement->position, ($gt>0 ? 'C':'D'), false, '') ?></th>
+    <th><?php //if($statement->type == 1) echo $model->findClosingAccountName($statement->position, ($gt>0 ? 'C':'D'), false, '') ?></th>
     <?php for($i=1; $i< $level; $i++): ?>
       <th>&nbsp;</th>
     <?php endfor ?>
