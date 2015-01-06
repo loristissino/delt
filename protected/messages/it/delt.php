@@ -478,6 +478,7 @@ return array(
   'Place the account here?'=>'Conferma spostamento conto',
   'Yes'=>'Sì',
   'Cancel'=>'Annulla',
+  'Difference Yet Unexplained' => 'Differenza non ancora spiegata',
   
 );
 

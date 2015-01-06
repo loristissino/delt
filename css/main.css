@@ -652,3 +652,17 @@ text-align: center;
 {
   margin-bottom: 0.75em;
 }
+
+#postings, #postings tr, #postings td
+{
+  /*border: 1px solid black;*/
+  width: 700px;
+}
+#td_total_debit
+{
+  padding-right: 20px;
+}
+#td_total_credit
+{
+  padding-right: 20px;
+}

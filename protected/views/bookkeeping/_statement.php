@@ -98,7 +98,7 @@
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">
-    <td style="width: 500px;"><?php echo $model->findClosingAccountName($statement->position, ($gt>0 ? 'C':'D'), false, Yii::t('delt', 'Aggregate Grandtotal')) ?></td>
+    <td style="width: 500px;"><?php echo Yii::t('delt', 'Difference Yet Unexplained') ?></td>
     <td class="currency" style="width: 100px;"><?php echo DELT::currency_value($ggt, $model->currency) ?></td>
   </tr>
 </table>

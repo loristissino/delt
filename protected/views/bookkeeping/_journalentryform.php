@@ -631,7 +631,7 @@ if(Yii::app()->language!=='en')
 
   <div id="rows_as_textfields" style="display: block">
     <div class="accountsrows">
-      <table>
+      <table id="postings">
       <thead>
       <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
       </thead>
