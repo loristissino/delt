@@ -55,7 +55,7 @@ class Posting extends CActiveRecord
     return array(
       array('account_id, journalentry_id, amount', 'required'),
       array('account_id, journalentry_id, rank', 'numerical', 'integerOnly'=>true),
-      array('amount', 'length', 'max'=>10),
+      array('amount', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>100),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
@@ -152,5 +152,5 @@ class Posting extends CActiveRecord
   {
     return $this->amount<0 ? -$this->amount: null;
   }  
-
+  
 }

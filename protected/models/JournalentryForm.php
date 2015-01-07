@@ -152,6 +152,7 @@ class JournalentryForm extends CFormModel
       $this->journalentry->deletePostings();
       
       $rank = 1;
+
       foreach($this->postings as $postingform)
       {
         if($postingform->account_id)
