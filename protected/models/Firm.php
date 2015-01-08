@@ -107,7 +107,7 @@ class Firm extends CActiveRecord
         ),
       array('checked_positions', 'safe'),
       array('shortcodes', 'safe'),
-      array('css', 'safe'),
+      array('css', 'validateCss'),
 
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
@@ -271,6 +271,22 @@ class Firm extends CActiveRecord
     }
     $this->currency = strtoupper($this->currency);
   }
+
+  /**
+   * Validates the currency chosen for the firm.
+   */
+  public function validateCss()
+  {
+    if($this->css=='')
+    {
+      return;
+    }
+    if($this->css!=strip_tags($this->css))
+    {
+      $this->addError('css', Yii::t('delt', 'HTML tags are not allowed in the CSS code.'));
+    }
+  }
+
   
   /**
    * Validates the input by checking that the license has been accepted.

@@ -7,6 +7,9 @@ $regenarate_anchor = addslashes(CHtml::link(Yii::t('delt', 'regenerate'), '#', a
 $or_text = addslashes(Yii::t('delt', 'or'));
 $randomize_anchor = addslashes(CHtml::link(Yii::t('delt', 'randomize'), '#', array('id'=>'randomize', 'title'=>Yii::t('delt', 'Click here if you want to create a random slug, which helps in keeping it somehow a bit more private'))));
 
+$show_advanced = addslashes(Yii::t('delt', 'Show advanced options'));
+$hide_advanced = addslashes(Yii::t('delt', 'Hide advanced options'));
+
 $cs = Yii::app()->getClientScript();
 $cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/slugifier.js', CClientScript::POS_END);
 $cs->registerScript(
@@ -126,6 +129,38 @@ $cs->registerScript(
 );
 
 
+$cs->registerScript(
+  'advanced-options-handler',
+  '
+
+  var show_advanced = "' . $show_advanced . '";
+  var hide_advanced = "' . $hide_advanced . '";
+
+  $("#advanced").hide();
+  var visible = false;
+  $("#toggle-advanced-container").html("<hr><a href=\"#advanced\" id=\"toggle-advanced\">" + show_advanced + "</a>");
+
+  $("#toggle-advanced").click( function() {
+    toggleAdvanced();
+    }
+  );
+  
+  function toggleAdvanced()
+  {
+    console.log("toggled");
+    $("#advanced").toggle("slow");
+    visible = ! visible
+    $("#toggle-advanced").html(visible ? hide_advanced : show_advanced);
+  }
+  
+  
+  '
+  ,
+  CClientScript::POS_READY
+);
+
+
+
 $languages_options=array();
 
 if($model->isNewRecord)
@@ -231,6 +266,10 @@ $languages_available = Language::model()->findAllSorted();
     <span class="hint">(<?php echo Yii::t('delt', 'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?', array('{url}'=>$this->createUrl('site/en/cclicense'))) ?>)</span>
     </div>
   <?php endif ?>
+
+  <div id="toggle-advanced-container"></div>
+
+  <div id="advanced">
   
   <?php if($model->id): ?>
     <div class="row">
@@ -269,6 +308,8 @@ $languages_available = Language::model()->findAllSorted();
   <br />
   <span class="hint"><?php echo Yii::t('delt', 'Custom Cascading Style Sheet code used when the firm is shown.') ?> <?php echo Yii::t('delt', 'It is OK to leave it empty, if you don\'t want any customization.') ?></span>
   </div>
+
+  </div><!--advanced-->
  
   <div class="row buttons" id="submitDiv">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save'), array('id'=>'submitButton')); ?>

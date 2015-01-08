@@ -479,6 +479,7 @@ return array(
   'Yes'=>'Sì',
   'Cancel'=>'Annulla',
   'Difference Yet Unexplained' => 'Differenza non ancora spiegata',
+  'If modified, the new address appears after validation.'=>'Se modificato, il nuovo indirizzo compare dopo la validazione.',
   
 );
 

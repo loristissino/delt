@@ -47,7 +47,10 @@ $this->menutitle=UserModule::t('Profile');
 	?>
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('email')); ?></th>
-    	<td><?php echo CHtml::encode($model->email); ?></td>
+    	<td><?php echo CHtml::encode($model->email); ?><br />
+      <span class="socialhint"><?php echo Yii::t('delt', 'If modified, the new address appears after validation.') ?></span>
+      
+      </td>
 	</tr>
 	<tr>
 		<th class="label"><?php echo CHtml::encode($model->getAttributeLabel('create_at')); ?></th>
