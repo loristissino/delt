@@ -153,6 +153,10 @@ class JournalentryForm extends CFormModel
       
       $rank = 1;
 
+      $total_debit = 0;
+      $total_credit = 0;
+      $errors = 0;
+
       foreach($this->postings as $postingform)
       {
         if($postingform->account_id)
@@ -173,21 +177,36 @@ class JournalentryForm extends CFormModel
           $posting->comment = $postingform->comment;
           $posting->rank = $rank++;
           
-          $posting->save(true);
+          if($posting->save(true))
+          {
+            $total_debit += $postingform->debit;
+            $total_credit += $postingform->credit;
+          }
+          else
+          {
+            $errors++;
+          }
         }
       }
       
-      $transaction->commit();
+      if((!$errors) and $total_debit and $total_credit and ($total_debit == $total_credit))
+      {
+        $transaction->commit();
+        Yii::app()->getUser()->setState($this->identifier_code, null);
+        return true;
+      }
+      else
+      {
+        $transaction->rollback();
+        Yii::app()->getUser()->setFlash('delt_failure','An error occurred, and the journal entry could not be saved.'); 
+        return false;
+      }
       
-      Yii::app()->getUser()->setState($this->identifier_code, null);
-
-      return true;
       
     }
     catch(Exception $e)
     {
       Yii::app()->user->setFlash('delt_failure',$e->getMessage()); 
-      $transaction->rollback();
       return false;
     }
     
