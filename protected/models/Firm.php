@@ -2115,12 +2115,20 @@ class Firm extends CActiveRecord
     }
   }
   
-  public function getClosingAmount($code)
+  public function getClosingAmount($code, $posting=0)
   {
+    // the closing amount does not take into consideration the posting $posting, if given, by subrtracting its value
     if($account = $this->findAccount($code))
     {
-      return $account->consolidatedBalance;
+      $amount = $account->consolidatedBalance ;
+      
+      if($p=Posting::model()->findByPK($posting))
+      {
+         $amount -= $p->amount;
+      }
+      return $amount;
     }
+    return false;
   }
   
   public function renderAccountCodeAndName($code, $name)

@@ -332,7 +332,6 @@ $cs->registerScript(
   }
   function checkCh(ch, event, value, base, decimalChar) {
     var source = event.srcElement ? event.srcElement : (event.currentTarget ? event.currentTarget: null);
-    console.log(source);
     
     var row = $("#"+source.id).attr("_row");
     var chars = ch + $("#debit" + row).val() + $("#credit" + row).val();
@@ -352,7 +351,8 @@ $cs->registerScript(
       var code = name.substring(0, name.indexOf(" "));
       $("#debit"+row).attr("placeholder", "⌛").addClass("updating");
       $("#credit"+row).attr("placeholder", "⌛").addClass("updating");
-      var jsonUrl = "' . $json_url_aca . '?code=" + code;
+      var posting_id = $("#row"+row).attr("data-posting-id");
+      var jsonUrl = "' . $json_url_aca . '?code=" + code + "&posting=" + posting_id;
       $.getJSON(
         jsonUrl,
         {},
@@ -640,7 +640,7 @@ if(Yii::app()->language!=='en')
       </tfoot>
       <tbody>
       <?php $row=0; foreach($items as $i=>$item): ?>
-      <tr id="row<?php echo ++$row ?>">
+      <tr id="row<?php echo ++$row ?>" data-posting-id="<?php echo $journalentryform->journalentry? $i : 0 ?>">
       <td class="number" style="width: 200px;">
       <?php echo $this->createIcon('tp', '', array('height'=>1, 'width'=>44)) ?><br />
       <?php echo $row ?><span id="swap<?php echo $row ?>"></span>

@@ -688,13 +688,12 @@ class BookkeepingController extends Controller
    * @param string $account the string to match
    * @param string $slug the slug of the firm
    */
-  public function actionAccountclosingamount($slug='', $code='')
+  public function actionAccountclosingamount($slug='', $code='', $posting=0)
   {
     $firm=$this->loadFirmBySlug($slug);
     $this->checkFrostiness($firm);
-    $this->serveJson(array('amount'=>$firm->getClosingAmount($code)));
+    $this->serveJson(array('amount'=>$firm->getClosingAmount($code, $posting)));
   }
-
 
   public function actionLedger($id /* account_id */, $journalentry=null)
   {
