@@ -757,10 +757,10 @@ class Account extends CActiveRecord
     $matches = array();
     foreach(explode("\n", $this->comment) as $line)
     {
-      if(preg_match('/^@[a-z]*/', $line, $matches))
+      if(preg_match('/^@[a-z][^\ ]*/ ', $line, $matches))
       {
         $keyword=$matches[0];
-        $value = chop(substr($line, strlen($keyword)+1));
+        $value = trim(substr($line, strlen($keyword)+1));
         $result[$keyword]=$value;
       }
       else
@@ -774,7 +774,9 @@ class Account extends CActiveRecord
   public function getValueFromCommentByKeyword($keyword)
   {
     $values=$this->getKeywordsAndValuesFromComment();
-    return isset($values[$keyword]) ? $values[$keyword] : null;
+    
+    $with_locale = $keyword .'-' . $this->firm->language->locale;
+    return isset($values[$with_locale]) ? $values[$with_locale] : (isset($values[$keyword]) ? $values[$keyword] : null);
   }
   
   public function setClassesFromComment(Account $parent = null)

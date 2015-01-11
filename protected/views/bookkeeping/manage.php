@@ -57,4 +57,3 @@ $this->menu[] = array('label'=>Yii::t('delt',
 <div>
 <?php echo $model->getLicenseCode($this) ?>
 </div>
-

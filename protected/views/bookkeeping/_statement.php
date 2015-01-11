@@ -31,7 +31,7 @@
       break;
   }
   
-  $caption = $statement->getValueFromCommentByKeyword('@caption');
+  $caption = str_replace('{date}', $last_date, $statement->getValueFromCommentByKeyword('@caption'));
   
 ?>
 

@@ -132,6 +132,15 @@ class Posting extends CActiveRecord
     ));
     return $this;
   }
+
+  public function included()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'journalentry.is_included = 1',
+    ));
+    return $this;
+  }
+
   
   public function ofFirm($firm_id, $order='journalentry.date ASC, journalentry.rank ASC')
   {

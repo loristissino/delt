@@ -712,7 +712,7 @@ class Firm extends CActiveRecord
    */
   public function cacheGeneralLedgerData()
   {
-    $postings = Posting::model()->with('journalentry')->with('account')->ofFirm($this->id, 'account.code ASC, journalentry.date ASC, journalentry.rank ASC')->findAll();
+    $postings = Posting::model()->with('journalentry')->with('account')->included()->ofFirm($this->id, 'account.code ASC, journalentry.date ASC, journalentry.rank ASC')->findAll();
     
     $code = '';
     foreach($postings as $posting)
@@ -2167,6 +2167,29 @@ class Firm extends CActiveRecord
       }
       return Account::model()->findByAttributes($attributes);
     }
+  }
+  
+  public function getLastDate($type='long')
+  {
+      $date = Yii::app()->db->createCommand()
+      ->select('date')
+      ->from('{{journalentry}}')
+      ->where('is_included =1')
+      ->andWhere('firm_id=:id', array(':id'=>$this->id))
+      ->order('date DESC')
+      ->queryScalar();
+      
+      $language = Yii::app()->getLanguage();
+      Yii::app()->setLanguage($this->language->locale);
+      $result = Yii::app()->dateFormatter->formatDateTime(
+        CDateTimeParser::parse(
+            $date, 
+            'yyyy-MM-dd'
+        ),
+        $type,null
+      );
+      Yii::app()->setLanguage($language);
+      return $result;
   }
   
   public function getClosingAmount($code, $posting=0)
