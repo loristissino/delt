@@ -1672,6 +1672,20 @@ class Firm extends CActiveRecord
         $data['values'][$child->currentname]=$postings;
       }
       
+      // we must get rid of zeroes...
+      
+      foreach($data['values'] as $k=>$v)
+      {
+        foreach($v as $a=>$b)
+        {
+          if((abs($b)<0.00001))
+          {
+            unset($data['values'][$k][$a]);
+            unset($data['totals']['rows'][$a]);
+          }
+        }
+      }
+      
       return $data;
       
     }

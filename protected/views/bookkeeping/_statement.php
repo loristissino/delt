@@ -119,7 +119,7 @@
 <?php endif // statement->type 1 or 2 ?>
 <?php if($statement->type == 3): ?>
 
-<?php /* <pre><?php print_r($data) ?></pre> */ ?>
+<pre><?php print_r($data) ?></pre>
 <div class="statementtable">
 <table>
   <thead>
