@@ -40,7 +40,7 @@ switch($type)
 <?php foreach($accounts as $account): ?><?php
 
 $values = array(
-  DELT::delimittext($account['code'], $delimiter, $charset),
+  DELT::delimittext($model->renderAccountCode($account['code']), $delimiter, $charset),
   DELT::delimittext($account['name'], $delimiter, $charset),
 );
 

@@ -155,6 +155,7 @@ class BookkeepingController extends Controller
           'type'=>Yii::app()->getUser()->getState('type', '2'),
           'charset'=>Yii::app()->getUser()->getState('charset', 'utf-8'),
           'inline'=>$inline,
+          'model'=>$this->firm,
           ), true);
         if($inline)
         {
