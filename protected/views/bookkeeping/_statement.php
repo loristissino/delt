@@ -7,33 +7,41 @@
   $add_to_level = max($maxlevel, 4) - $level; // we add this to every level to avoid blacks when not needed
     
   $order=array();
-  if($statement->type==2) // separate sections
+  
+  switch($statement->type)
   {
-    foreach($statement->getChildren() as $child)
-    {
-      if (DELT::isuppercase($child->position))
+    case 1:  // pancake
+      $order['+']=$statement->currentname;
+      $with_subtitles=false;
+      $grandtotal_line = 'Net result';
+      break;
+    case 2:  // two separate sections
+      foreach($statement->getChildren() as $child)
       {
-        $key=$child->outstanding_balance=='D' ? '+':'-';
-        $order[$key]=$child->currentname;
+        if (DELT::isuppercase($child->position))
+        {
+          $key=$child->outstanding_balance=='D' ? '+':'-';
+          $order[$key]=$child->currentname;
+        }
       }
-    }
-    $with_subtitles=true;
-    $grandtotal_line = ''; // 'Grandtotal';
-  }
-  else  // pancake format
-  {
-    $order['+']=$statement->currentname;
-    $with_subtitles=false;
-    $grandtotal_line = 'Net result';
+      $with_subtitles=true;
+      $grandtotal_line = ''; // 'Grandtotal';
+      break;
+    case 3:
+      break;
   }
   
   $caption = $statement->getValueFromCommentByKeyword('@caption');
   
 ?>
-<?php echo CHtml::tag($tag0, array('class'=>$caption?'withcaption':'withnocaption'), $statement->currentname) ?>
+
+<?php echo CHtml::tag($tag0, array('class'=>'statement-title ' . ($caption?'withcaption':'withnocaption')), $statement->currentname) ?>
 <?php if($caption): ?>
   <div class="caption"><?php echo $caption ?></div>
 <?php endif ?>
+
+<?php if(in_array($statement->type, array(1,2))): ?>
+
 <?php $ggt = 0 ?>
 <?php foreach($order as $key=>$value): ?>
 <?php if($with_subtitles): ?>
@@ -105,5 +113,80 @@
 </div>
 
 <?php endif //$with_subtitles and $ggt?>
-<hr />
 <?php endif //sizeof($data)>0 ?>
+
+
+<?php endif // statement->type 1 or 2 ?>
+<?php if($statement->type == 3): ?>
+
+<?php /* <pre><?php print_r($data) ?></pre> */ ?>
+<div class="statementtable">
+<table>
+  <thead>
+    <tr class="statementrow level2">
+      <td class="empty">&nbsp;</td>
+      <?php foreach($data['totals']['columns'] as $key=>$value): ?>
+        <td class="heading"><?php echo $key ?></td>
+      <?php endforeach ?>
+      <td class="heading"><?php echo Yii::t('delt', 'Total') ?></td>
+    </tr>
+  </thead>
+  <tfoot>
+    <tr class="statementrow level2">
+      <td class="empty"><?php echo Yii::t('delt', 'Ending Balances') ?></td>
+      <?php foreach($data['totals']['columns'] as $key=>$value): ?>
+        <th class="currency"><?php echo DELT::currency_value(
+          $value, $model->currency,
+          false,
+          false,
+          'span',
+          array('class'=>($value>0 ? 'positiveamount': 'negativeamount')))
+        ?></th>
+      <?php endforeach ?>
+      <th class="currency"><?php echo DELT::currency_value(
+          $data['grandtotal'], $model->currency,
+          false,
+          false,
+          'span',
+          array('class'=>($value>0 ? 'positiveamount': 'negativeamount')))
+        ?></th>
+    </tr>
+  </tfoot>
+  <tbody>
+    <?php foreach ($data['totals']['rows'] as $key=>$value): ?>
+      <tr>
+        <td><?php echo $key ?></td>
+        <?php foreach($data['totals']['columns'] as $k=>$v): ?>
+          <?php if(isset($data['values'][$k][$key])): ?>
+            <td class="currency" style="width: 150px;"><?php echo DELT::currency_value(
+              $data['values'][$k][$key], 
+              $model->currency,
+              false,
+              false,
+              'span',
+              array('class'=>($value>0 ? 'positiveamount': 'negativeamount'))
+              )
+          ?></td>
+          <?php else: ?>
+            <td>&nbsp;</td>
+          <?php endif ?>
+        <?php endforeach ?>
+        <td class="currency" style="width: 150px;"><?php echo DELT::currency_value(
+          $value, 
+          $model->currency,
+          false,
+          false,
+          'span',
+          array('class'=>($value>0 ? 'positiveamount': 'negativeamount'))
+          ) ?></td>
+      </tr>
+    <?php endforeach ?>
+  </tbody>
+
+</table>
+</div>
+  
+  
+  
+  
+<?php endif ?>

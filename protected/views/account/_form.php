@@ -104,6 +104,7 @@ $cs->registerScript(
           array(
             '1'=>Yii::t('delt', 'Statement in pancake format'),
             '2'=>Yii::t('delt', 'Statement in two separate sections'),
+            '3'=>Yii::t('delt', 'Statement in analytic format')
             ),
           array(
             'id'=>'typefield')

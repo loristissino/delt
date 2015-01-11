@@ -20,6 +20,7 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 
 <?php foreach($model->getMainPositions() as $statement): ?>
+
   <?php echo $this->renderPartial('_statement', array(
     'statement'=>$statement,
     'data'=>$model->getStatement($statement, $level),
@@ -29,4 +30,5 @@ for($i=1; $i<=$model->COAMaxLevel; $i++)
     'hlevel'=>2,
     'links'=>true,
     )) ?>
+    
 <?php endforeach ?>

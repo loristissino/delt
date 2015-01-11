@@ -1589,56 +1589,96 @@ class Firm extends CActiveRecord
    */
   public function getStatement(Account $statement, $level=1)
   {
-    $position=$statement->position;
-    if($statement->type==2)
-    {
-      $positions=array(strtoupper($position), strtolower($position)); 
-    }
-    else
-    {
-      $positions=array(strtoupper($position)); 
-    }
-
-    $accounts = Yii::app()->db->createCommand()
-      ->select('id, code, level, currentname as name, is_selectable')
-      ->from('{{account}}')
-      ->where('firm_id=:id', array(':id'=>$this->id))
-      ->andWhere(array('in', 'position', $positions))
-      ->andWhere('level <= :level', array(':level'=>$level))
-      ->order('rcode')
-      ->queryAll();
     
-    foreach($accounts as $key=>&$item)
+    if(in_array($statement->type, array(1,2)))
     {
-      $account=Account::model()->findByPk($item['id']);
-      
-      if(($pos=mb_strpos($item['name'], '—')) !== false)
-      {
-        $item['name']=mb_substr($item['name'], 0, $pos); 
-      }
-      
-      
-      $item['amount']=$account->getConsolidatedBalance(true);
-      
-      if($item['amount'] == 0)
-      {
-        unset($accounts[$key]);  // we remove items that yeld a zero value...
-      }
-      
+      $position=$statement->position;
       if($statement->type==2)
       {
-        $ob = ($ancestor=$account->firstAncestor) ? $ancestor->outstanding_balance : $account->outstanding_balance;
-        $item['type']= $ob=='D' ? '+': '-';
+        $positions=array(strtoupper($position), strtolower($position)); 
       }
       else
       {
-        $item['type'] = '+';
-        $item['amount'] = -$item['amount'];
+        $positions=array(strtoupper($position)); 
+      }
+
+      $accounts = Yii::app()->db->createCommand()
+        ->select('id, code, level, currentname as name, is_selectable')
+        ->from('{{account}}')
+        ->where('firm_id=:id', array(':id'=>$this->id))
+        ->andWhere(array('in', 'position', $positions))
+        ->andWhere('level <= :level', array(':level'=>$level))
+        ->order('rcode')
+        ->queryAll();
+      
+      foreach($accounts as $key=>&$item)
+      {
+        $account=Account::model()->findByPk($item['id']);
+        
+        if(($pos=mb_strpos($item['name'], '—')) !== false)
+        {
+          $item['name']=mb_substr($item['name'], 0, $pos); 
+        }
+        
+        
+        $item['amount']=$account->getConsolidatedBalance(true);
+        
+        if($item['amount'] == 0)
+        {
+          unset($accounts[$key]);  // we remove items that yeld a zero value...
+        }
+        
+        if($statement->type==2)
+        {
+          $ob = ($ancestor=$account->firstAncestor) ? $ancestor->outstanding_balance : $account->outstanding_balance;
+          $item['type']= $ob=='D' ? '+': '-';
+        }
+        else
+        {
+          $item['type'] = '+';
+          $item['amount'] = -$item['amount'];
+        }
+        
+      }
+      return $accounts;
+    }
+    elseif($statement->type==3)
+    {
+      // analytic statement
+      
+      $data=array('values'=>array(), 'totals'=>array('rows'=>array(), 'columns'=>array()), 'grandtotal'=>0);
+     
+      $strip = $statement->getValueFromCommentByKeyword('@strip');
+      
+      foreach($statement->getChildren() as $child)
+      {
+        $codes = DELT::splitByDelimiter($child->getValueFromCommentByKeyword('@analyze'));
+        $amount = 0;
+        $postings = array();
+        foreach($codes as $code)
+        {
+          $account = $this->findAccount($code);
+          foreach($account->getPostings() as $posting)
+          {
+            $key = $posting->comment ? $posting->comment : DELT::stripString($strip, $posting->journalentry->description);
+            $amount = $child->outstanding_balance=='C' ? -$posting->amount: $posting->amount;
+            DELT::addValueToArray($postings, $key, $amount);
+            DELT::addValueToArray($data['totals']['rows'], $key, $amount);
+            DELT::addValueToArray($data['totals']['columns'], $child->currentname, $amount);
+            $data['grandtotal'] += $amount;
+          }
+        }
+        
+        $data['values'][$child->currentname]=$postings;
       }
       
+      return $data;
+      
     }
+
+
     
-    return $accounts;
+    
   }
   
   /**

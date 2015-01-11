@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.5.16';
+    return '1.6';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -319,4 +319,44 @@ class DELT
   {
     Yii::trace($message, 'debug.log');
   }
+  
+  public static function splitByDelimiter($text, $delimiter=',')
+  {
+    if (strpos($text, $delimiter))
+    {
+      $values = explode($delimiter, $text);
+    }
+    else
+    {
+      $values = array($text);
+    }
+    array_walk($values, function (&$item) { $item = trim($item); });
+    return $values;
+  }
+  
+  public static function addValueToArray(&$array, $key, $value)
+  {
+    if(isset($array[$key]))
+    {
+      $array[$key] += $value;
+    }
+    else
+    {
+      $array[$key] = $value;
+    }
+  }
+  
+  public function stripString($expression, $text)
+  {
+    // there's no easy way to check whether a regular expression is valid, so we just check if there is at least a slash in it
+    if(strpos($expression, '/')!==false)
+    {
+      return trim(@preg_replace($expression, '', $text));
+    }
+    else
+    {
+      return trim(str_replace($expression, '', $text)); 
+    }
+  }
+  
 }

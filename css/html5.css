@@ -112,6 +112,15 @@ div.statementtable table tr.aggregate
   background-color: #D6D6D6;
 }
 
+div.statementtable table td.heading
+{
+  text-align: center;
+  font-weight: bold;
+  color: #555555;
+}
+
+
+
 span.positiveamount
 {
 }
@@ -145,4 +154,23 @@ a.hiddenlink:hover
 {
   text-decoration: underline;
   color: blue;
+}
+
+.withcaption
+{
+  margin-bottom: 0px;
+}
+
+.withnocaption
+{
+}
+
+.caption
+{
+  margin-bottom: 0.75em;
+}
+
+tfoot
+{
+  font-style: italic;
 }

@@ -435,6 +435,13 @@ div.statementtable table tr.aggregate
   background-color: #D6D6D6;
 }
 
+div.statementtable table td.heading
+{
+  text-align: center;
+  font-weight: bold;
+  color: #555555;
+}
+
 span.positiveamount
 {
 }
@@ -442,6 +449,13 @@ span.positiveamount
 span.negativeamount
 {
   color: red;
+}
+
+.statement-title
+{
+  background-color: #dddddd;
+  color: #222222;
+  margin-top: 40px;
 }
 
 .closing

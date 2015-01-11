@@ -301,6 +301,14 @@ class Account extends CActiveRecord
     return in_array($this->outstanding_balance, array('D', 'C'));
   }
     
+  public function sorted($order='code ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'order'=>$order,
+    ));
+    return $this;
+  }  
+  
   public function belongingTo($firm_id, $order='code ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
@@ -521,7 +529,7 @@ class Account extends CActiveRecord
   
   public function getChildren()
   {
-    return Account::model()->childrenOf($this->id)->findAll();
+    return Account::model()->childrenOf($this->id)->sorted()->findAll();
   }
   
   public function getParentAccount()
@@ -558,6 +566,11 @@ class Account extends CActiveRecord
           ),
       )
     );
+  }
+  
+  public function getPostings()
+  {
+    return Posting::model()->with('journalentry')->belongingTo($this->id)->findAll();
   }
 
   public function checkCode()
