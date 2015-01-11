@@ -3,13 +3,27 @@
 /* @var $model Abcde */
 /* @var $form CActiveForm */
 
+// a quick and dirty function to help setting widths of the table -- FIXME should be improved
+function printWidth($col)
+{
+  $widths = array('icons'=>40, 'account'=>450, 'debit'=>100, 'credit'=>100);
+  if($col=='total')
+  {
+    $w = 0; foreach($widths as $n) $w+=$n;
+  }
+  else
+  {
+    $w = $widths[$col];
+  }
+  echo  'style="width: ' . $w. 'px"';
+}
+
 $this->layout = 'column1_menu_below';
 
 $n = sizeof($items);
 
-$up_icon=addslashes($this->createIcon('arrow_up', Yii::t('delt', 'Up'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: 2px; padding-right: %pr%px', 'title'=>Yii::t('delt', 'Move Up'))));
-$down_icon=addslashes($this->createIcon('arrow_down', Yii::t('delt', 'Down'), array('width'=>8, 'height'=>16, 'style'=>'padding-left: %pl%px;', 'title'=>Yii::t('delt', 'Move Down'))));
 $choose_icon=addslashes($this->createIcon('choose', Yii::t('delt', 'Choose'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Choose'))));
+$delete_icon=addslashes($this->createIcon('delete', Yii::t('delt', 'Delete'), array('width'=>16, 'height'=>16, 'style'=>'padding-top: 0px;', 'title'=>Yii::t('delt', 'Delete'))));
 
 $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
@@ -29,6 +43,8 @@ $placeholder_string = addslashes(Yii::t('delt', 'Start typing (code or name) or 
 
 $unload_alert_string = addslashes(Yii::t('delt', 'There might be some unsaved changes in the form.'));
 
+$spacer = $this->createIcon('tp', '', array('height'=>1, 'width'=>60, 'style'=>''));
+
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
   'swap-rows-handler',
@@ -42,6 +58,8 @@ $cs->registerScript(
 
   var view_as_textfields = true;
   var n = ' . $n . ';
+  var vn = n;
+  var current = 0;
   var fields = new Array("name", "debit", "credit");
 
   var raw_input_icon = "' . $raw_input_icon . '";
@@ -242,73 +260,80 @@ $cs->registerScript(
     
   }
   
-  addArrows();
+  addIcons();
   addEventManagers();
+
   
-  function addArrows()
+  function addIcons()
   {
     for(i=1; i<= n; i++)
     {
-      var down = "<span id=\'down" + i +"\'>' . $down_icon . '</span>";
-      var up   = "<span id=\'up" + i +"\'>' . $up_icon . '</span>";
-      var choose = "<span id=\'choose" + i +"\'>' . $choose_icon . '</span>";
-      var text = "";
-      if(i>1)
-      {
-        text += up.replace("%pr%", (i==n ? "8" : "0"));
-      }
-      if(i<n)
-      {
-        text += down.replace("%pl%", (i==1 ? "10": "0"));
-      }
-      text += choose;
-      $("#swap" +  i).html(text);
-    }
-    for(i=1; i<n; i++)
-    {
-      $("#down" +i).click((function(index)
-        {
-          return function()
-          {
-            swaprows(index, index+1);
-            return false;
-          }
-        })(i));
-    }
-    for(i=2; i<=n; i++)
-    {
-      $("#up" +i).click((function(index)
-        {
-          return function()
-          {
-            swaprows(index, index-1);
-            return false;
-          }
-        })(i));
+      $("#chooseicon" +  i).html("<span id=\'choose" + i +"\'>' . $choose_icon . '</span>");
+      $("#deleteicon" +  i).html("<span class=\"deletebutton\" id=\'delete" + i +"\'>' . $delete_icon . '</span>");
+      $("#delete" + i).hide();
     }
   }
 
 
+  function showDeleteButton(index)
+  {
+    $(".deletebutton").hide();
+    if(vn > 2)
+    {
+      $("#delete"+index).show();
+    }
+    return false;
+  }
+
   function addEventManagers()
   {
     var done=false;
+    
     for(i=1; i<= n; i++)
-    {    
+    {
+      $("#delete"+i).click((function(index)
+        {
+          return function()
+          {
+            if(vn>2)
+            {
+              $("#name" + index).val("");
+              $("#debit" + index).val(0);
+              $("#credit" + index).val(0);
+              $("#row" + index).remove();
+              vn--;
+              updatetotals();
+              return false;
+            }
+          }
+        })(i));
+    
       $("#name" +i).dblclick((function(index)
         {
           return function()
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
+            showDeleteButton(index);
             return false;
           }
         })(i));
+
+      $("#name" +i).mouseover((function(index)
+        {
+          return function()
+          {
+            showDeleteButton(index);
+          }
+        })(i));
+
       $("#choose" +i).click((function(index)
         {
           return function()
           {
             row_number = index;
             $("#chooseaccountdialog").dialog("open");
+            showDeleteButton(index);
             return false;
           }
         })(i));
@@ -425,19 +450,21 @@ $cs->registerScript(
     
     var debit;
     var credit;
-    
     for(i=1; i<=n; i++)
     {
-      debit = accounting.unformat($("#debit"+i).val(), decimal_separator);
-      credit = accounting.unformat($("#credit"+i).val(), decimal_separator);
-      total_debit += debit;
-      total_credit += credit;
-      $("#debit"+i).val(debit ? accounting.formatMoney(debit, currency, 2, thousand_separator, decimal_separator) : "");
-      $("#credit"+i).val(credit ? accounting.formatMoney(credit, currency, 2, thousand_separator, decimal_separator) : "");
-      if(rc)
+      if($("#row"+i).length)
       {
-        $("#debit"+i).removeClass("flashed");
-        $("#credit"+i).removeClass("flashed");
+        debit = accounting.unformat($("#debit"+i).val(), decimal_separator);
+        credit = accounting.unformat($("#credit"+i).val(), decimal_separator);
+        total_debit += debit;
+        total_credit += credit;
+        $("#debit"+i).val(debit ? accounting.formatMoney(debit, currency, 2, thousand_separator, decimal_separator) : "");
+        $("#credit"+i).val(credit ? accounting.formatMoney(credit, currency, 2, thousand_separator, decimal_separator) : "");
+        if(rc)
+        {
+          $("#debit"+i).removeClass("flashed");
+          $("#credit"+i).removeClass("flashed");
+        }
       }
     }
     
@@ -581,7 +608,7 @@ if(Yii::app()->language!=='en')
 }
 ?>
 
-<div class="form" style="width: 630px">
+<div class="form" style="width: 700px">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
   'id'=>'journalentryform',
@@ -631,21 +658,20 @@ if(Yii::app()->language!=='en')
 
   <div id="rows_as_textfields" style="display: block">
     <div class="accountsrows">
-      <table id="postings">
+      <table id="postings" <?php printWidth('total') ?>>
       <thead>
-      <tr><th style="width: 700px"><?php echo Yii::t('delt', 'Row') ?></th><th><?php echo Yii::t('delt', 'Account') ?></th><th><?php echo Yii::t('delt', 'Debit') ?></th><th><?php echo Yii::t('delt', 'Credit') ?></th></tr>
+      <tr><th <?php printWidth('icons') ?>>&nbsp;</th><th <?php printWidth('account') ?>><?php echo Yii::t('delt', 'Account') ?></th><th <?php printWidth('debit') ?>><?php echo Yii::t('delt', 'Debit') ?></th><th <?php printWidth('credit') ?>><?php echo Yii::t('delt', 'Credit') ?></th></tr>
       </thead>
       <tfoot>
-      <tr><th style="width: 700px">&nbsp;</th><th><?php echo Yii::t('delt', 'Sum') ?></th><th class="currency <?php echo $class=$journalentryform->total_debit==$journalentryform->total_credit? 'valuesok':'valueswrong' ?>" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($journalentryform->total_debit, $this->firm->currency) ?></span></th><th class="currency <?php echo $class ?>" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($journalentryform->total_credit, $this->firm->currency) ?></span></th></tr>
+      <tr><th <?php printWidth('icons') ?>>&nbsp;</th><th <?php printWidth('account') ?>><?php echo Yii::t('delt', 'Sum') ?></th><th  <?php printWidth('debit') ?> class="currency <?php echo $class=$journalentryform->total_debit==$journalentryform->total_credit? 'valuesok':'valueswrong' ?>" id="td_total_debit"><span id="total_debit"><?php echo DELT::currency_value($journalentryform->total_debit, $this->firm->currency) ?></span></th><th  <?php printWidth('credit') ?> class="currency <?php echo $class ?>" id="td_total_credit"><span id="total_credit"><?php echo  DELT::currency_value($journalentryform->total_credit, $this->firm->currency) ?></span></th></tr>
       </tfoot>
       <tbody>
       <?php $row=0; foreach($items as $i=>$item): ?>
       <tr id="row<?php echo ++$row ?>" data-posting-id="<?php echo $journalentryform->journalentry? $i : 0 ?>">
-      <td class="number" style="width: 200px;">
-      <?php echo $this->createIcon('tp', '', array('height'=>1, 'width'=>44)) ?><br />
-      <?php echo $row ?><span id="swap<?php echo $row ?>"></span>
+      <td class="number" <?php printWidth('icons') ?>>
+      <span id="chooseicon<?php echo $row ?>"></span>
       </td>
-      <td><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+      <td  <?php printWidth('account') ?> style="width: 300px;"><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
         'id'=>'name'.$row,
         'name'=>"PostingForm[$i][name]",
         'value'=>$item->name,
@@ -659,11 +685,13 @@ if(Yii::app()->language!=='en')
            'class'=>$item->name_errors ? 'error': 'valid',
            ),
         ))
-      ?></td>
-      <td><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( $this->accounts[$row]['debitfromtemplate'] ? ' fromtemplate': ''))) ?></td>
-      <td><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''). ( $this->accounts[$row]['creditfromtemplate'] ? ' fromtemplate': ''))) ?></td>
+      ?><span id="deleteicon<?php echo $row ?>"></span>
+</td>
+      <td <?php printWidth('debit') ?>><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( $this->accounts[$row]['debitfromtemplate'] ? ' fromtemplate': ''))) ?></td>
+      <td <?php printWidth('credit') ?>><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''). ( $this->accounts[$row]['creditfromtemplate'] ? ' fromtemplate': ''))) ?></td>
       </tr>
       <?php endforeach; ?>
+      
       </tbody>
       </table>
     </div><!--accountsrows -->

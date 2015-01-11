@@ -212,6 +212,30 @@ class JournalentryForm extends CFormModel
     
   }
   
+  public function removeEmptyRows($leavelast=true)
+  {
+    $count=1;
+    foreach($this->postings as $row => $posting)
+    {
+      if($posting['name']=='')
+      {
+        if($count<sizeof($this->postings))
+        {
+          unset($this->postings[$row]);
+          
+        }
+        else
+        {
+          if(!$leavelast)
+          {
+            unset($this->postings[$row]);
+          }
+        }
+      }
+      $count++;
+    }
+  }
+  
   public function checkPostings() // $attribute,$params)
   {
     
@@ -223,17 +247,14 @@ class JournalentryForm extends CFormModel
     $bang_accounts = array();
 
     $line_number = 0;
+    $this->removeEmptyRows(false);
+    $this->_addMissingPostings();
+
     foreach($this->postings as $row => $posting)
     {
       $last_line = $row;  //we use this later, for an amount proposal...
       $row_message = Yii::t('delt', 'Row {row}: ', array('{row}'=> ++$line_number));
       
-      if($posting['name']=='')
-      {
-        // when the account name is not given, the whole line is completely ignored...
-        continue;
-      }
-
       if(strpos($posting['name'], '!')!==false)
       {
         // the bang sign means we have to create one (in the final transaction)
@@ -432,6 +453,7 @@ class JournalentryForm extends CFormModel
     $this->total_debit = $grandtotal_debit;
     $this->total_credit = $grandtotal_credit;
     
+    
   }
   
   private function _fixAmounts()
@@ -441,6 +463,16 @@ class JournalentryForm extends CFormModel
       foreach(array('debit', 'credit') as $type)
       {
         $this->postings[$row][$type]=$posting[$type] ? DELT::currency_value($posting[$type], $this->currency) : '';
+      }
+    }
+  }
+  private function _addMissingPostings()
+  {
+    if(($s=sizeof($this->postings))<2)
+    {
+      for($i=$s; $i<2; $i++)
+      {
+        $this->postings[]=new PostingForm();
       }
     }
   }

@@ -435,6 +435,7 @@ class BookkeepingController extends Controller
       $journalentryform->acquireItems($_POST['PostingForm']);
       if(isset($_POST['addline']))
       {
+        $journalentryform->removeEmptyRows(true);
         $journalentryform->postings[] = new PostingForm();
         $journalentryform->show_analysis = false;
       }
