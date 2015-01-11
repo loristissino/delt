@@ -657,7 +657,7 @@ class Firm extends CActiveRecord
       else
       {
         // we relax, and look for a generic one that could fit
-        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'outstanding_balance'=>null, 'type'=>0));
+        $closingAccounts = Account::model()->findAllByAttributes(array('firm_id'=>$this->id, 'position'=>strtolower($position), 'number_of_children'=>0, 'type'=>0));
         if(sizeof($closingAccounts)==1)
         {
           return $closingAccounts[0];
