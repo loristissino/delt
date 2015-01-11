@@ -125,6 +125,14 @@ class Posting extends CActiveRecord
     return $this;
   }
   
+  public function notClosing()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'journalentry.is_closing = 0',
+    ));
+    return $this;
+  }
+  
   public function ofFirm($firm_id, $order='journalentry.date ASC, journalentry.rank ASC')
   {
     $this->getDbCriteria()->mergeWith(array(

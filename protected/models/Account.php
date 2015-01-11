@@ -570,7 +570,7 @@ class Account extends CActiveRecord
   
   public function getPostings()
   {
-    return Posting::model()->with('journalentry')->belongingTo($this->id)->findAll();
+    return Posting::model()->with('journalentry')->belongingTo($this->id)->notClosing()->findAll();
   }
 
   public function checkCode()
