@@ -94,7 +94,7 @@ return array(
   'Create a new one now.' => 'Preparane una adesso.', 
   
   'Row {row}: ' => 'Riga {row}: ',
-  'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by adding an exclamation mark to the name, like in "{code}!").' => 'il conto con codice "{code}" non è disponibile (puoi aggiungere da qui il conto al piano dei conti aggiungendo un punto esclamativo al nome, come in "{code}!").',
+  'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").' => 'il conto con codice "{code}" non è disponibile (puoi aggiungere da qui il conto al piano dei conti inserendo un punto esclamativo allla fine del nome, come in "{code}!").',
   'the value "{value}" is not numeric.' => 'il valore "{value}" non è numerico.',
   'the value "{value}" cannot be negative.' => 'il valore "{value}" non può essere negativo.',
   'you cannot have both a debit and a credit.' => 'non è possibile avere sia un addebito sia un accredito.',

@@ -316,6 +316,7 @@ class BookkeepingController extends Controller
       }
       if(isset($_POST['addline']))
       {
+        $journalentryform->removeEmptyRows(true);
         $journalentryform->postings[] = new PostingForm();
       }
       elseif(!$journalentryform->raw_input)

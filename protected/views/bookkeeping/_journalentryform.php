@@ -345,10 +345,10 @@ $cs->registerScript(
       }
 
       $("#debit" +i).blur(function() {updatetotals(true); });
-      $("#debit" +i).focus(function(obj) { cleanValue($(obj.srcElement)); });
+      $("#debit" +i).focus(function(obj) { cleanValue($(obj.target)); });
       $("#debit" +i).attr("_row", i);
       $("#credit" +i).blur(function() {updatetotals(true); });
-      $("#credit" +i).focus(function(obj) { cleanValue($(obj.srcElement)); });
+      $("#credit" +i).focus(function(obj) { cleanValue($(obj.target)); });
       $("#credit" +i).attr("_row", i);
       $("#debit" +i).calculator({ showOn: "operator", isOperator: checkCh});
       $("#credit" +i).calculator({ showOn: "operator", isOperator: checkCh});
@@ -356,8 +356,7 @@ $cs->registerScript(
     }
   }
   function checkCh(ch, event, value, base, decimalChar) {
-    var source = event.srcElement ? event.srcElement : (event.currentTarget ? event.currentTarget: null);
-    
+    var source = event.target;
     var row = $("#"+source.id).attr("_row");
     var chars = ch + $("#debit" + row).val() + $("#credit" + row).val();
     if(chars == "=")

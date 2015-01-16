@@ -212,27 +212,27 @@ class JournalentryForm extends CFormModel
     
   }
   
+  
+  /**
+   * Removes empty rows (postings) from the journalentryform.
+   * @param boolean $leavelast whether the last empty lines should be kept
+   */
   public function removeEmptyRows($leavelast=true)
   {
-    $count=1;
-    foreach($this->postings as $row => $posting)
+    $foundOne = false;
+    
+    $keys = array_reverse(array_keys($this->postings));
+    
+    foreach($keys as $key)
     {
-      if($posting['name']=='')
+      if(trim($this->postings[$key]['name'])!='')
       {
-        if($count<sizeof($this->postings))
-        {
-          unset($this->postings[$row]);
-          
-        }
-        else
-        {
-          if(!$leavelast)
-          {
-            unset($this->postings[$row]);
-          }
-        }
+        $foundOne = true;
       }
-      $count++;
+      if(($foundOne || !$leavelast) && trim($this->postings[$key]['name'])=='')
+      {
+        unset($this->postings[$key]);
+      }
     }
   }
   
@@ -269,7 +269,7 @@ class JournalentryForm extends CFormModel
       
       if(!$account)
       {
-        $this->addError('postings', $row_message . Yii::t('delt', 'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by adding an exclamation mark to the name, like in "{code}!").', array('{code}'=>$code)));
+        $this->addError('postings', $row_message . Yii::t('delt', 'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").', array('{code}'=>$code)));
         $this->postings[$row]->name_errors=true;
         continue;
       }
