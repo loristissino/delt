@@ -6,7 +6,7 @@
 // a quick and dirty function to help setting widths of the table -- FIXME should be improved
 function printWidth($col)
 {
-  $widths = array('icons'=>40, 'account'=>450, 'debit'=>100, 'credit'=>100);
+  $widths = array('icons'=>40, 'account'=>430, 'debit'=>100, 'credit'=>100);
   if($col=='total')
   {
     $w = 0; foreach($widths as $n) $w+=$n;
@@ -230,11 +230,28 @@ $cs->registerScript(
         if(data.length>=3)
         {
           var name = data[0];
-          var debit = data[1];
-          var credit = data[2];
+          var debit = accounting.unformat(data[1], decimal_separator);
+          var credit = accounting.unformat(data[2], decimal_separator);
           if((debit != "") || (credit !=""))
           {
             $("#name" + (i+1)).val(name);
+            
+            if((debit>0) && (credit>0))
+            {
+              if(debit > credit)
+              {
+                debit = debit - credit;
+                credit = 0;
+              }
+              if(debit < credit)
+              {
+                credit = credit - debit;
+                debit = 0;
+              }
+              $("#debit" + (i+1)).removeClass("error");
+              $("#credit" + (i+1)).removeClass("error");
+            }
+            
             $("#debit" + (i+1)).val(debit);
             $("#credit" + (i+1)).val(credit);
           }
@@ -670,7 +687,7 @@ if(Yii::app()->language!=='en')
       <td class="number" <?php printWidth('icons') ?>>
       <span id="chooseicon<?php echo $row ?>"></span>
       </td>
-      <td  <?php printWidth('account') ?> style="width: 300px;"><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+      <td  <?php printWidth('account') ?> style="width: 250px;"><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
         'id'=>'name'.$row,
         'name'=>"PostingForm[$i][name]",
         'value'=>$item->name,
@@ -680,7 +697,7 @@ if(Yii::app()->language!=='en')
           'minLength'=>2,
           ),
         'htmlOptions'=>array(
-           'size'=>'50',
+           'size'=>'33',
            'class'=>$item->name_errors ? 'error': 'valid',
            ),
         ))
