@@ -23,7 +23,7 @@ $this->layout = 'column1_menu_below';
 $n = sizeof($items);
 
 $choose_icon=addslashes($this->createIcon('choose', Yii::t('delt', 'Choose'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Choose'))));
-$delete_icon=addslashes($this->createIcon('delete', Yii::t('delt', 'Delete'), array('width'=>16, 'height'=>16, 'style'=>'padding-top: 0px;', 'title'=>Yii::t('delt', 'Delete'))));
+$delete_icon=addslashes($this->createIcon('delete', Yii::t('delt', 'Delete'), array('width'=>16, 'height'=>16, 'style'=>'padding-top: 0px;', 'title'=>Yii::t('delt', 'Delete row # {n}'))));
 
 $raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
 $textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
@@ -285,8 +285,10 @@ $cs->registerScript(
   {
     for(i=1; i<= n; i++)
     {
+      var text_delete_icon = "' . $delete_icon  .'".replace("{n}", i);
+    
       $("#chooseicon" +  i).html("<span id=\'choose" + i +"\'>' . $choose_icon . '</span>");
-      $("#deleteicon" +  i).html("<span class=\"deletebutton\" id=\'delete" + i +"\'>' . $delete_icon . '</span>");
+      $("#deleteicon" +  i).html("<span class=\"deletebutton\" id=\'delete" + i +"\'>" + text_delete_icon + "</span>");
       $("#delete" + i).hide();
     }
   }

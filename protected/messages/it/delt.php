@@ -94,6 +94,7 @@ return array(
   'Create a new one now.' => 'Preparane una adesso.', 
   
   'Row {row}: ' => 'Riga {row}: ',
+  'Delete row # {n}' => 'Elimina riga n. {n}', 
   'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").' => 'il conto con codice "{code}" non è disponibile (puoi aggiungere da qui il conto al piano dei conti inserendo un punto esclamativo allla fine del nome, come in "{code}!").',
   'the value "{value}" is not numeric.' => 'il valore "{value}" non è numerico.',
   'the value "{value}" cannot be negative.' => 'il valore "{value}" non può essere negativo.',
