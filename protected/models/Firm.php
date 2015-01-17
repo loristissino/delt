@@ -2031,7 +2031,7 @@ class Firm extends CActiveRecord
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere('level <= 3')
-      ->andWhere('type <> 0')
+      ->andWhere('type in (1, 2)')
       ->order('code')
       ->queryAll();
     

@@ -73,6 +73,7 @@ return array(
   
   'You are creating an account as a child of «%account%»,'=>'Stai per creare un conto come figlio di «%account%»,',
   'You are making the account a child of «%account%»,'=>'Stai per rendere questo conto figlio di «%account%»,',
+  'The account you are updating is a child of «%account%»,'=>'Stai modificando un conto figlio di «%account%»,',
   'which currently has the following children:'=>'che al momento ha i seguenti figli:',
   'which has no children at the moment.'=>'che al momento non ha nessun conto figlio.',
   

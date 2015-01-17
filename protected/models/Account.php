@@ -13,7 +13,7 @@
  * @property integer $id
  * @property integer $account_parent_id the id of the parent account
  * @property integer $firm_id
- * @property integer $type 0=normal account, 1=main position (pancake format), 2=main position (two separate columns), 
+ * @property integer $type 0=normal account, 1=main position (pancake format), 2=main position (two separate columns), 3=main position (analystic format), 
  * @property integer $level
  * @property string $code
  * @property string $rcode
@@ -137,16 +137,6 @@ class Account extends CActiveRecord
    */
   public function validpositions($withUnpositioned=true)
   {
-    /*
-    $positions = array(
-      'P'=>Yii::t('delt', 'Balance Sheet (Asset / Liability / Equity)'),
-      'E'=>Yii::t('delt', 'Income Statement (Revenues / Expenses)'),
-      'M'=>Yii::t('delt', 'Memorandum Accounts Table'),
-      'p'=>Yii::t('delt', 'Transitory Balance Sheet Accounts'),
-      'e'=>Yii::t('delt', 'Transitory Income Statement Accounts'),
-      'r'=>Yii::t('delt', 'Result Accounts (Net profit / Total loss)'),
-      ); 
-    */
     $positions=$this->firm->getValidPositions();
     if($withUnpositioned)
     {
@@ -155,18 +145,6 @@ class Account extends CActiveRecord
     return $positions;
   }
   
-  /*
-  public function getPositionLabel()
-  {
-    switch($this->position)
-    {
-      
-      case 'P': return 'BS';
-      case 'E': return 'IS';
-      default: return $this->position;
-    }
-  }
-  */
 
   /**
    * @return array valid account positions

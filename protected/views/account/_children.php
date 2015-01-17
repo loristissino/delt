@@ -3,8 +3,11 @@
   <?php if($type=='create'): ?>
     <?php echo Yii::t('delt', 'You are creating an account as a child of «%account%»,', array('%account%'=>$parent)) ?> 
   <?php endif ?>
-  <?php if($type=='update'): ?>
+  <?php if($type=='moving'): ?>
     <?php echo Yii::t('delt', 'You are making the account a child of «%account%»,', array('%account%'=>$parent)) ?> 
+  <?php endif ?>
+  <?php if($type=='update'): ?>
+    <?php echo Yii::t('delt', 'The account you are updating is a child of «%account%»,', array('%account%'=>$parent)) ?> 
   <?php endif ?>
   <?php if(sizeof($children)): ?>
     <?php echo Yii::t('delt', 'which currently has the following children:') ?></p>
