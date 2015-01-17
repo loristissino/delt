@@ -12,6 +12,8 @@ $this->breadcrumbs=array(
 */
 $this->css=$model->css;
 
+$last_date = $model->getLastDate();
+
 ?>
 
 <article>
@@ -70,6 +72,7 @@ $this->css=$model->css;
     'maxlevel'=>$maxlevel,
     'hlevel'=>3,
     'links'=>true,
+    'last_date'=> $last_date,
     )) ?>
 <?php endforeach ?>
 </section>  
