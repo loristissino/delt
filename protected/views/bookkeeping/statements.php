@@ -21,7 +21,7 @@ $last_date = $model->getLastDate();
 ?>
 <h1><?php echo Yii::t('delt', 'Statements') ?></h1>
 
-<?php foreach($model->getMainPositions() as $statement): ?>
+<?php foreach($model->getMainPositions(false, array(1,2,3)) as $statement): ?>
 
   <?php echo $this->renderPartial('_statement', array(
     'statement'=>$statement,

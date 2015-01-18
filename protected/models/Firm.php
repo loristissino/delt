@@ -2076,9 +2076,9 @@ class Firm extends CActiveRecord
     
   }
   
-  public function getMainPositions($reversed=false)
+  public function getMainPositions($reversed=false, $types=array(1,2))
   {
-    return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->withOneOfTypes(array(1,2))->ofLevel(1)->findAll();
+    return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->withOneOfTypes($types)->ofLevel(1)->findAll();
   }
   
   public function getMainPosition($position)
