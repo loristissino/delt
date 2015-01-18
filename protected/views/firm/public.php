@@ -63,7 +63,7 @@ $last_date = $model->getLastDate();
 
 <section>
 <h2><?php echo Yii::t('delt', 'Statements') ?></h2>
-<?php foreach($model->getMainPositions() as $statement): ?>
+<?php foreach($model->getMainPositions(false, array(1,2,3)) as $statement): ?>
   <?php echo $this->renderPartial('/bookkeeping/_statement', array(
     'statement'=>$statement,
     'data'=>$model->getStatement($statement, $level),
