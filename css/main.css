@@ -680,3 +680,8 @@ text-align: center;
 {
   padding-right: 20px;
 }
+
+option
+{
+  padding: 0;
+}

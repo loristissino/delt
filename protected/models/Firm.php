@@ -2019,19 +2019,21 @@ class Firm extends CActiveRecord
     return $datetime->getTimeStamp();
   }
   
-  public function getValidPositions()
+  public function getValidPositions($types=array(1,2))
   {
     if($this->positions)
     {
       return $this->positions;
     }
     
+    $t = sprintf('type in (%s)', implode(', ', $types));
+    
     $items = Yii::app()->db->createCommand()
       ->select('id, account_parent_id, position, currentname as name')
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere('level <= 3')
-      ->andWhere('type in (1, 2)')
+      ->andWhere($t)
       ->order('code')
       ->queryAll();
     
@@ -2076,7 +2078,7 @@ class Firm extends CActiveRecord
   
   public function getMainPositions($reversed=false)
   {
-    return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->hidden(1)->ofLevel(1)->findAll();
+    return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->withOneOfTypes(array(1,2))->ofLevel(1)->findAll();
   }
   
   public function getMainPosition($position)

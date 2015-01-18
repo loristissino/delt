@@ -304,6 +304,12 @@ class Account extends CActiveRecord
     return $this;
   }
   
+  public function withOneOfTypes($in=array())
+  {
+    $this->getDbCriteria()->addInCondition('type', $in);
+    return $this;
+  }
+  
   public function ofLevel($level, $comparison='=')
   {
     $this->getDbCriteria()->mergeWith(array(
@@ -600,7 +606,7 @@ class Account extends CActiveRecord
   
   public function hasValidPosition()
   {
-    return in_array(strtolower($this->position), array_map('strtolower', array_keys($this->firm->getValidPositions())));
+    return in_array(strtolower($this->position), array_map('strtolower', array_keys($this->firm->getValidPositions(array(1,2,3)))));
   }
 
   public function checkComment()
@@ -700,7 +706,7 @@ class Account extends CActiveRecord
     }
     else
     {
-      $this->currentname = array_shift(array_filter($names)) . '*'; 
+      $this->currentname = array_shift(array_filter($names)); 
     }
   }
   

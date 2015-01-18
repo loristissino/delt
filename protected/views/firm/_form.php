@@ -84,11 +84,11 @@ $cs->registerScript(
     {
       if($(this).val() == id)
       {
-        $(this).attr("style", "padding: 2em; color: blue; font-weight: bold");
+        $(this).attr("style", "color: blue; font-weight: bold");
       }
       else
       {
-        $(this).attr("style", "padding: 0em; color: black");
+        $(this).attr("style", "color: black");
       }
     }
     )
