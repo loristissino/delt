@@ -568,7 +568,7 @@ class Firm extends CActiveRecord
     $positions=array($position, strtolower($position));
     
     $accounts = Yii::app()->db->createCommand()
-      ->select('SUM(amount) as total, a.code as code, a.currentname as name')
+      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id')
       ->from('{{posting}}')
       ->leftJoin('{{account}} a', 'account_id = a.id')
       ->leftJoin('{{journalentry}} p', 'journalentry_id = p.id')
@@ -609,14 +609,15 @@ class Firm extends CActiveRecord
       $grandtotal+=$account['total'];
       $row=array('debitfromtemplate'=>false, 'creditfromtemplate'=>false);
       $row['name']=$this->renderAccountCodeAndName($account['code'], $account['name']);
+      $row['id']=$account['id'];
       if($account['total'] > 0)
       {
         $row['debit']='';
-        $row['credit']= DELT::currency_value($account['total'], $this->currency);
+        $row['credit']= $account['total'];
       }
       elseif($account['total'] < 0)
       {
-        $row['debit']= DELT::currency_value(-$account['total'], $this->currency);
+        $row['debit']= -$account['total'];
         $row['credit']='';
       }
       else
@@ -631,14 +632,16 @@ class Firm extends CActiveRecord
     {
       $ob=$grandtotal>0 ? 'D': 'C';
       
-      $name = $this->findClosingAccountName($position, $ob, true, ''); //Yii::t('delt', 'Select closing account'));
+      $closingAccount = $this->findClosingAccount($position, $ob);
+      $name = $this->findClosingAccountName($closingAccount);
         
       $result[$count++]=array(
         'debitfromtemplate'=>false,
         'creditfromtemplate'=>false,
         'name'=>$name,
-        'debit'=>($grandtotal>0) ? DELT::currency_value($grandtotal, $this->currency) : '',
-        'credit'=>($grandtotal<0) ? DELT::currency_value(-$grandtotal, $this->currency) : '',
+        'debit'=>($grandtotal>0) ? $grandtotal : 0,
+        'credit'=>($grandtotal<0) ? -$grandtotal : 0,
+        'id'=>($closingAccount) ? $closingAccount->id : null,
         );
     }
     
@@ -665,14 +668,14 @@ class Firm extends CActiveRecord
         else
         {
           // we haven't found anything specific
-          return false;
+          return null;
         }
       }
   }
 
-  public function findClosingAccountName($position, $outstanding_balance, $with_code=true, $default='')
+  public function findClosingAccountName(Account $account=null, $with_code=true, $default='')
   {
-    if($account=$this->findClosingAccount($position, $outstanding_balance))
+    if($account)
     {
       if($with_code)
       {
@@ -1581,6 +1584,13 @@ class Firm extends CActiveRecord
     Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  public function findMainPositionsWeShouldTryToCloseAutomatically()
+  {
+    // we just look for statements that have a type set to 1 (like the income statement)
+    // perhaps this will change for better configurability
+    return Account::model()->belongingTo($this->id)->withOneOfTypes(array(1))->ofLevel(1)->findAll();
+  }
+
   public function cacheStatementsData($level=1)
   {
     /* to prepare the statement, we insert some journal entries using
@@ -1591,44 +1601,67 @@ class Firm extends CActiveRecord
      */
     
     $transaction = $this->getDbConnection()->beginTransaction();
-    // add automatic entries
-
-    $templates = Template::model()->belongingTo($this->id)->automatic(1)->findAll();
+    
+    // first, we close the income statement
 
     $rank = -1;
-    foreach($templates as $template)
-    {
-      $totaldebit=0;
-      $totalcredit=0;
-      $accountsInvolved = $template->getAccountsInvolved($this);
-      foreach($accountsInvolved as $item)
-      {
-        $totaldebit += DELT::getValueFromArray($item, 'debit', 0);
-        $totalcredit += DELT::getValueFromArray($item, 'credit', 0);
-      }
-      
-      if (($totaldebit == $totalcredit) and $totaldebit)
-      {
-        $je = new Journalentry();
-        $je->setDefaultsForAutomaticEntry($this, $template->description, $rank--);
-        $je->save(false);
-        
-        $count = 1;
-        foreach($accountsInvolved as $item)
-        {
-          $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $rank++);
-        }
-      } 
+    foreach($this->findMainPositionsWeShouldTryToCloseAutomatically() as $statement)
+    { 
+      $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1);
     }
+    
+    // then, we add automatic entries from templates
+
+    foreach(Template::model()->belongingTo($this->id)->automatic(1)->findAll() as $template)
+    {
+      $this->_prepareEntriesWith($template->getAccountsInvolved($this), $template->description, $rank--, 0);
+    }
+    
+    // now the data are ready, we can make the queries...
     
     foreach($this->getMainPositions(false, array(1,2,3)) as $statement)
     {
       $this->_cache[$statement->id]=$this->getStatementData($statement, $level);
     }
     
+    // let's roll back to avoid polluting data with automatic things
     $transaction->rollBack();
   }
 
+  private function _prepareEntriesWith($accounts=array(), $description='...', $rank, $is_closing)
+  {
+    $totaldebit=0;
+    $totalcredit=0;
+    foreach($accounts as $item)
+    {
+      if($item['id'])
+      {
+        $totaldebit += DELT::getValueFromArray($item, 'debit', 0);
+        $totalcredit += DELT::getValueFromArray($item, 'credit', 0);
+      }
+    }
+      
+    if (DELT::nearlyZero($totaldebit - $totalcredit) and $totaldebit)
+    {
+      $je = new Journalentry();
+      $je->setDefaultsForAutomaticEntry($this, $description, $rank, $is_closing);
+      $je->save(false);
+      $count = 1;
+      foreach($accounts as $item)
+      {
+        try
+        {
+          $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $count++);
+        }
+        catch(Exception $e)
+        {
+          // echo $e->getMessage();
+          // this shouldn't happen, but better to play safe...
+        }
+      }
+    }
+  } 
+  
   /**
    * Returns the data needed for a generic statement.
    * @param string $position the position required

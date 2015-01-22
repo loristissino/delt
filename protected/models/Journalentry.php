@@ -181,13 +181,13 @@ class Journalentry extends CActiveRecord
     $this->save(false );
   }
   
-  public function setDefaultsForAutomaticEntry($firm, $description, $rank)
+  public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing)
   {
     $this->firm_id = $firm->id;
     $this->date = '2099-01-01';
     $this->description = $description;
     $this->is_confirmed = 1;
-    $this->is_closing = 0;
+    $this->is_closing = $is_closing;
     $this->is_adjustment = 1;
     $this->is_included = 1; 
     $this->rank = $rank;
