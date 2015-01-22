@@ -12,6 +12,6 @@ $this->menu=array(
 );
 
 ?>
-<h1><?php echo Yii::t('delt', 'Statements configuration') ?></h1>
+<h1><?php echo Yii::t('delt', 'Financial Statement Configuration') ?></h1>
 
 <?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderNameWithoutLink', 'buttonsTemplate'=>'{update}{new}')) ?>

@@ -1,6 +1,24 @@
 <?php
 /* @var $this BookkeepingController */
 
+$cs = Yii::app()->getClientScript();  
+$cs->registerScript(
+  'event-handler',
+  '
+    $(".totalcolumn").hide();
+    
+    $("#togglecolumns").click(function() {
+      $(".totalcolumn").toggle();
+      }
+    );
+    
+  '
+  ,
+  CClientScript::POS_READY
+);
+
+
+
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
@@ -49,20 +67,22 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'name'=>'account.debitgrandtotal',
       'value'=>array($this, 'RenderSingleDebit'),
       'type'=>'raw',
-      'htmlOptions'=>array('class'=>'currency'),
+      'htmlOptions'=>array('class'=>'currency totalcolumn'),
       'header'=>Yii::t('delt', 'Total Debit'),
       'footer'=>DELT::currency_value($totaldebits, $this->firm->currency),
-      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
+      'headerHtmlOptions'=>array('class'=>'totalcolumn'),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal totalcolumn'),
       ),
     array(
       'class'=>'CDataColumn',
       'name'=>'account.creditgrandtotal',
       'value'=>array($this, 'RenderSingleCredit'),
       'type'=>'raw',
-      'htmlOptions'=>array('class'=>'currency'),
+      'htmlOptions'=>array('class'=>'currency totalcolumn'),
       'header'=>Yii::t('delt', 'Total Credit'),
       'footer'=>DELT::currency_value($totalcredits, $this->firm->currency),
-      'footerHtmlOptions'=>array('class'=>'currency grandtotal'),
+      'headerHtmlOptions'=>array('class'=>'totalcolumn'),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal totalcolumn'),
       ),
     array(
       'class'=>'CDataColumn',
@@ -103,6 +123,7 @@ echo CHtml::endForm();
 <p>Grandtotal Credit: <?php echo DELT::currency_value(-$this->credit_sum, $this->firm->currency) ?>.</p>
 </div>
 
+<div id="operations">
 <p><?php echo Yii::t('delt', 'With the selected accounts:') ?>
 <?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'balance-form',
@@ -117,3 +138,5 @@ echo CHtml::endForm();
     'containerTag'=>'span',
 ));
 ?></p>
+<p><?php echo Yii::t('delt', 'With the columns of totals:') ?> <span id="togglecolumns"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span></p>
+</div>

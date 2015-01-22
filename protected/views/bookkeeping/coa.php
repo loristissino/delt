@@ -19,7 +19,7 @@ if($model->firm_parent_id)
   $this->menu[]=array('label'=>Yii::t('delt', 'Synchronize'), 'url'=>array('account/synchronize', 'slug'=>$model->slug), 'linkOptions'=>array('title'=>Yii::t('delt', 'Syncronize accounts from ancestor firms')));
 }
 
-$this->menu[]=array('label'=>Yii::t('delt', 'Configuration'), 'url'=>array('bookkeeping/configure', 'slug'=>$model->slug));
+$this->menu[]=array('label'=>Yii::t('delt', 'Configure'), 'url'=>array('bookkeeping/configure', 'slug'=>$model->slug), 'linkOptions'=>array('title'=>Yii::t('delt', 'Configure Financial Statement components')));
 
 ?>
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
