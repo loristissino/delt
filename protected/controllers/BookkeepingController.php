@@ -200,6 +200,8 @@ class BookkeepingController extends Controller
     $maxlevel = $this->firm->getCOAMaxLevel();
     if($level > $maxlevel)
       throw new CHttpException(404,'The requested page does not exist.');
+
+    $this->firm->cacheStatementsData($level);
     $this->render('statements', array(
       'model'=>$this->firm,
       'level'=>$level,
@@ -635,6 +637,7 @@ class BookkeepingController extends Controller
         {
           $template->firm_id = $this->firm->id;
           $template->journalentry_id = $this->journalentry->id;
+          $template->acquireMethods($_POST);
           if($template->save())
           {
             Yii::app()->user->setFlash('delt_success','The template has been correctly saved.'); 
@@ -695,7 +698,12 @@ class BookkeepingController extends Controller
   {
     $firm=$this->loadFirmBySlug($slug);
     $this->checkFrostiness($firm);
-    $this->serveJson(array('amount'=>$firm->getClosingAmount($code, $posting)));
+    $info=$firm->getClosingAmountInfo($code, $posting);
+    if($info['account_id'])
+    {
+      Yii::app()->getUser()->setState('last_account_closed_interactively', $info['account_id']);
+    }
+    $this->serveJson(array('amount'=>$info['amount']));
   }
 
   public function actionLedger($id /* account_id */, $journalentry=null)

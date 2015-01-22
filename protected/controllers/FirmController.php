@@ -99,6 +99,9 @@ class FirmController extends Controller
           {
              $level = $maxlevel;
           }
+          
+          $this->firm->cacheStatementsData($level);
+          
           Event::model()->log($this->DEUser, $this->firm->id, Event::FIRM_SEEN);
           $this->render('public', array(
             'model'=>$this->firm,

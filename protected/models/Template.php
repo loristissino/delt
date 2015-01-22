@@ -13,9 +13,11 @@
  *
  * @property integer $id
  * @property integer $firm_id
+ * @property boolean $automatic
  * @property string $description
  * @property string $info
  * @property integer $journalentry_id the original journalentry id (not stored in the db) 
+ * @property array $postingtypes (not stored in the db as such)
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -27,6 +29,7 @@ class Template extends CActiveRecord
 {
   
   public $journalentry_id;
+  public $methods;
   
   /**
    * Returns the static model of the specified AR class.
@@ -56,10 +59,11 @@ class Template extends CActiveRecord
     return array(
       array('description', 'required'),
       array('firm_id', 'numerical', 'integerOnly'=>true),
+      array('automatic', 'boolean'),
       array('description', 'length', 'max'=>255),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
-      array('id, firm_id, description, info', 'safe', 'on'=>'search'),
+      array('id, firm_id, automatic, description, info', 'safe', 'on'=>'search'),
     );
   }
 
@@ -83,6 +87,7 @@ class Template extends CActiveRecord
     return array(
       'id' => 'ID',
       'firm_id' => 'Firm',
+      'automatic' => Yii::t('delt', 'Automatic'),
       'description' => Yii::t('delt', 'Description'),
       'info' => 'Info',
     );
@@ -101,12 +106,41 @@ class Template extends CActiveRecord
 
     $criteria->compare('id',$this->id);
     $criteria->compare('firm_id',$this->firm_id);
+    $criteria->compare('automatica',$this->automatic);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('info',$this->info,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
     ));
+  }
+  
+  public function belongingTo($firm_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.firm_id = ' . $firm_id,
+    ));
+    return $this;
+  }
+  
+  public function automatic($automatic)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>($automatic?'automatic = 1':'automatic = 0'),
+    ));
+    return $this;
+  }
+
+  
+  
+  
+  public function getMethods()
+  {
+    return array(
+      '$'=>Yii::t('delt', 'Ask'),
+      '?'=>Yii::t('delt', 'Close'),
+      '='=>Yii::t('delt', 'Balance'),
+    );
   }
   
   public function beforeSave()
@@ -116,7 +150,11 @@ class Template extends CActiveRecord
       $accounts = array();
       foreach($journalentry->postings as $posting)
       {
-        $accounts[$posting->account_id] = array('rank'=>$posting->rank, 'type'=>DELT::amount2type($posting->amount, false));
+        $accounts[$posting->account_id] = array(
+          'rank'=>$posting->rank,
+          'type'=>DELT::amount2type($posting->amount, false),
+          'method'=>DELT::getValueFromArray($this->methods, $posting->account_id, ''),
+          );
       }
       $this->info=serialize($accounts);
     }
@@ -129,21 +167,65 @@ class Template extends CActiveRecord
     $result=array();
     if(!$info=unserialize($this->info))
     {
-      return $result;
+      return $result;  // returns an empty array
     }
     
-
     $accounts = Account::model()->findAllByPk(array_keys($info));
+    
+    $total = 0;
+    $balanced_account_id = 0; // the last account for which we have a balance method
     foreach($accounts as $account)
     {
-      $result[$info[$account->id]['rank']]=array(
+      $method = DELT::getValueFromArray($info[$account->id], 'method', '$');
+      if($method=='=')
+      {
+        $balanced_account_id = $account->id;
+      }
+      
+      $amount = $method=='?' ? -$account->consolidatedBalance: 0;
+      $total += $amount;
+      
+      $item = array(
+        'id'=> $account->id,
         'name'=> $account->getCodeAndName($firm),
         'debitfromtemplate'=>$info[$account->id]['type']=='Dr.',
         'creditfromtemplate'=>$info[$account->id]['type']=='Cr.',
+        'method'=>$method,
+        'amount'=>$amount,
       );
+
+      if($amount>0)
+      {
+        $item['debit']=$amount;
+      }
+      if($amount<0)
+      {
+        $item['credit']=-$amount;
+      }
+      
+      $result[$info[$account->id]['rank']]=$item;
+
     }
+    
+    if($balanced_account_id)
+    {
+      if($total>0)
+      {
+        $result[$info[$balanced_account_id]['rank']]['credit']=$total;
+      }
+      else
+      {
+        $result[$info[$balanced_account_id]['rank']]['debit']=-$total;
+      } 
+    }
+    
     ksort($result);
     return $result;
+  }
+  
+  public function acquireMethods($values=array())
+  {
+    $this->methods = DELT::getValueFromArray($values, 'method', array());
   }
   
 }

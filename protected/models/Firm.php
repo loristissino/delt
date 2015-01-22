@@ -1581,6 +1581,54 @@ class Firm extends CActiveRecord
     Account::model()->deleteAllByAttributes(array('firm_id'=>$this->id));
   }
 
+  public function cacheStatementsData($level=1)
+  {
+    /* to prepare the statement, we insert some journal entries using
+     * the templates flagged as "automatic"
+     * 
+     * we open a transaction, add the entries, compute the data,
+     * and rollback
+     */
+    
+    $transaction = $this->getDbConnection()->beginTransaction();
+    // add automatic entries
+
+    $templates = Template::model()->belongingTo($this->id)->automatic(1)->findAll();
+
+    $rank = -1;
+    foreach($templates as $template)
+    {
+      $totaldebit=0;
+      $totalcredit=0;
+      $accountsInvolved = $template->getAccountsInvolved($this);
+      foreach($accountsInvolved as $item)
+      {
+        $totaldebit += DELT::getValueFromArray($item, 'debit', 0);
+        $totalcredit += DELT::getValueFromArray($item, 'credit', 0);
+      }
+      
+      if (($totaldebit == $totalcredit) and $totaldebit)
+      {
+        $je = new Journalentry();
+        $je->setDefaultsForAutomaticEntry($this, $template->description, $rank--);
+        $je->save(false);
+        
+        $count = 1;
+        foreach($accountsInvolved as $item)
+        {
+          $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $rank++);
+        }
+      } 
+    }
+    
+    foreach($this->getMainPositions(false, array(1,2,3)) as $statement)
+    {
+      $this->_cache[$statement->id]=$this->getStatementData($statement, $level);
+    }
+    
+    $transaction->rollBack();
+  }
+
   /**
    * Returns the data needed for a generic statement.
    * @param string $position the position required
@@ -1588,6 +1636,17 @@ class Firm extends CActiveRecord
    * @return array the data
    */
   public function getStatement(Account $statement, $level=1)
+  {
+    if(!isset($this->_cache[$statement->id]))
+    {
+      throw new Exception('Uncached data, something went wrong');
+    }
+    return $this->_cache[$statement->id];
+  }
+
+
+
+  public function getStatementData(Account $statement, $level=1)
   {
     
     if(in_array($statement->type, array(1,2)))
@@ -1602,7 +1661,7 @@ class Firm extends CActiveRecord
         $positions=array(strtoupper($position)); 
       }
 
-      $accounts = Yii::app()->db->createCommand()
+      $data = Yii::app()->db->createCommand()
         ->select('id, code, level, currentname as name, is_selectable')
         ->from('{{account}}')
         ->where('firm_id=:id', array(':id'=>$this->id))
@@ -1610,8 +1669,8 @@ class Firm extends CActiveRecord
         ->andWhere('level <= :level', array(':level'=>$level))
         ->order('rcode')
         ->queryAll();
-      
-      foreach($accounts as $key=>&$item)
+
+      foreach($data as $key=>&$item)
       {
         $account=Account::model()->findByPk($item['id']);
         
@@ -1625,7 +1684,7 @@ class Firm extends CActiveRecord
         
         if($item['amount'] == 0)
         {
-          unset($accounts[$key]);  // we remove items that yeld a zero value...
+          unset($data[$key]);  // we remove items that yeld a zero value...
         }
         
         if($statement->type==2)
@@ -1640,7 +1699,7 @@ class Firm extends CActiveRecord
         }
         
       }
-      return $accounts;
+      
     }
     elseif($statement->type==3)
     {
@@ -1686,12 +1745,9 @@ class Firm extends CActiveRecord
         }
       }
       
-      return $data;
-      
     }
 
-
-    
+    return $data;
     
   }
   
@@ -2194,20 +2250,20 @@ class Firm extends CActiveRecord
       return $result;
   }
   
-  public function getClosingAmount($code, $posting=0)
+  public function getClosingAmountInfo($code, $posting=0)
   {
-    // the closing amount does not take into consideration the posting $posting, if given, by subrtracting its value
+    // the closing amount does not take into consideration the posting $posting, if given, by subtracting its value
     if($account = $this->findAccount($code))
     {
-      $amount = $account->consolidatedBalance ;
+      $amount = $account->consolidatedBalance;
       
       if($p=Posting::model()->findByPK($posting))
       {
          $amount -= $p->amount;
       }
-      return $amount;
+      return array('account_id'=>$account->id, 'amount'=>$amount);
     }
-    return false;
+    return array('account_id'=>null, 'amount'=>0);
   }
   
   public function renderAccountCodeAndName($code, $name)
