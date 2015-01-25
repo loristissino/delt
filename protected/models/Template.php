@@ -115,6 +115,11 @@ class Template extends CActiveRecord
     ));
   }
   
+  public function abbreviatedDescription($chars=15)
+  {
+    return DELT::firstWordsOfString($this->description, $chars);
+  }
+  
   public function belongingTo($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(

@@ -42,6 +42,7 @@ class BookkeepingController extends Controller
   {
     return array(
       'postOnly + deleteTemplate', // we only allow deletion via POST request
+      'postOnly + toggleautomaticstatus', // we only allow deletion via POST request
     );
   }
   
@@ -673,6 +674,19 @@ class BookkeepingController extends Controller
       Yii::app()->user->setFlash('delt_failure','The template could not be deleted.'); 
     }
     $this->redirect(array('bookkeeping/newjournalentry', 'slug'=>$this->firm->slug));
+  }
+
+  public function actionToggleautomaticstatus($id, $status)
+  {
+    $template=$this->loadTemplate($id);
+    $this->firm=$template->firm;
+    $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
+
+    $template->automatic = $status;
+    $template->save();
+
+    $this->redirect(array('bookkeeping/journalentryfromtemplate', 'id'=>$id));
   }
 
   /**

@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.6.11';
+    return '1.6.12';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -346,7 +346,7 @@ class DELT
     }
   }
   
-  public function stripString($expression, $text)
+  public static function stripString($expression, $text)
   {
     // there's no easy way to check whether a regular expression is valid, so we just check if there is at least a slash in it
     if(strpos($expression, '/')!==false)
@@ -364,9 +364,34 @@ class DELT
     return isset($array[$key]) ? $array[$key] : $default;
   }
   
-  public function nearlyZero($v)
+  public static function nearlyZero($v)
   {
     return abs($v)==0;
+  }
+  
+  public function firstPartOfString($string, $chars)
+  {
+    if(strlen($string) < $chars)
+    {
+      return $string;
+    }
+    return mb_strcut($string, 0, $chars) . '…';
+  }
+  
+  public function firstWordsOfString($string, $chars)
+  {
+    if(strlen($string)<$chars)
+    {
+      return $string;
+    }
+    $count = 0;
+    $text = '';
+    $words = explode(' ', $string);
+    while (strlen($text) < $chars)
+    {
+      $text .= $words[$count++]. ' ';
+    }
+    return $text . '…';
   }
   
 }

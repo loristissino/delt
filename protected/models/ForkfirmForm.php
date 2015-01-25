@@ -49,9 +49,9 @@ class ForkfirmForm extends CFormModel
   public function getTypeOptions()
   {
     return array(
-      '100' =>Yii::t('delt', 'Chart of Accounts'),
-      '110' => Yii::t('delt', 'Chart of Accounts and Templates'),
       '111' => Yii::t('delt', 'Chart of Accounts, Templates, and Journal Entries'),
+      '110' => Yii::t('delt', 'Chart of Accounts and Templates'),
+      '100' =>Yii::t('delt', 'Chart of Accounts'),
     );
   }
   
