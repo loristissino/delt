@@ -1602,19 +1602,23 @@ class Firm extends CActiveRecord
     
     $transaction = $this->getDbConnection()->beginTransaction();
     
+    $date = $this->getLastDate('none');
+    
+    $journalentries = array();
+    
     // first, we close the income statement
 
     $rank = -1;
     foreach($this->findMainPositionsWeShouldTryToCloseAutomatically() as $statement)
     { 
-      $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1);
+      $journalentries[] = $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1, $date);
     }
     
     // then, we add automatic entries from templates
 
     foreach(Template::model()->belongingTo($this->id)->automatic(1)->findAll() as $template)
     {
-      $this->_prepareEntriesWith($template->getAccountsInvolved($this), $template->description, $rank--, 0);
+      $journalentries[] = $this->_prepareEntriesWith($template->getAccountsInvolved($this), $template->description, $rank--, 0, $date);
     }
     
     // now the data are ready, we can make the queries...
@@ -1626,32 +1630,42 @@ class Firm extends CActiveRecord
     
     // let's roll back to avoid polluting data with automatic things
     $transaction->rollBack();
+    return $journalentries;
   }
 
-  private function _prepareEntriesWith($accounts=array(), $description='...', $rank, $is_closing)
+  private function _prepareEntriesWith($accounts=array(), $description='...', $rank, $is_closing, $date)
   {
     $totaldebit=0;
     $totalcredit=0;
+    
+    $evaluatedAccounts=array();
+    
     foreach($accounts as $item)
     {
+      $evaluatedAccounts[$item['id']]=$item;
       if($item['id'])
       {
         $totaldebit += DELT::getValueFromArray($item, 'debit', 0);
         $totalcredit += DELT::getValueFromArray($item, 'credit', 0);
       }
     }
+
+    $postings = array();
       
     if (DELT::nearlyZero($totaldebit - $totalcredit) and $totaldebit)
     {
       $je = new Journalentry();
-      $je->setDefaultsForAutomaticEntry($this, $description, $rank, $is_closing);
+      $je->setDefaultsForAutomaticEntry($this, $description, $rank, $is_closing, $date);
       $je->save(false);
+      
       $count = 1;
       foreach($accounts as $item)
       {
         try
         {
-          $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $count++);
+          $info = $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $count++);
+          $info['account_name']=$evaluatedAccounts[$item['id']]['name'];
+          $postings[] = $info;
         }
         catch(Exception $e)
         {
@@ -1659,7 +1673,13 @@ class Firm extends CActiveRecord
           // this shouldn't happen, but better to play safe...
         }
       }
+      $class = 'normal';
     }
+    else
+    {
+      $class = 'excluded';
+    }
+    return array('journalentry'=>array('description'=>$description, 'class'=>$class), 'postings'=>$postings, 'accounts'=>$accounts);
   } 
   
   /**
@@ -2269,6 +2289,11 @@ class Firm extends CActiveRecord
       ->andWhere('firm_id=:id', array(':id'=>$this->id))
       ->order('date DESC')
       ->queryScalar();
+      
+      if($type=='none')
+      {
+        return $date;
+      }
       
       $language = Yii::app()->getLanguage();
       Yii::app()->setLanguage($this->language->locale);

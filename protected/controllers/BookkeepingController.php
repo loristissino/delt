@@ -202,11 +202,12 @@ class BookkeepingController extends Controller
     if($level > $maxlevel)
       throw new CHttpException(404,'The requested page does not exist.');
 
-    $this->firm->cacheStatementsData($level);
+    $automatic_entries = $this->firm->cacheStatementsData($level);
     $this->render('statements', array(
       'model'=>$this->firm,
       'level'=>$level,
       'maxlevel'=>$maxlevel,
+      'automatic_entries'=>$automatic_entries,
     ));
   }
 
@@ -313,6 +314,14 @@ class BookkeepingController extends Controller
     if(isset($_POST['JournalentryForm']))
     {
       $journalentryform->attributes=$_POST['JournalentryForm'];
+      if(isset($_POST['template']))
+      {
+        $template= new Template();
+        $template->description = $_POST['JournalentryForm']['description'];
+        $template->acquireRawPostings($_POST['PostingForm'], $this->firm);
+        return $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
+        
+      }
       if(isset($_POST['PostingForm']))
       {
         $journalentryform->acquireItems($_POST['PostingForm']);
@@ -655,6 +664,7 @@ class BookkeepingController extends Controller
       $template->description = $this->journalentry->description;
     }
 
+    $template->acquirePostingsFromJE($this->journalentry, $this->firm);
     $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
   }
 

@@ -51,7 +51,7 @@ elseif(sizeof($model->templates))
     {
       $title .= ' ' . Yii::t('delt', '(automatic)');
     }
-    $this->menu[]=array('label'=>$template->abbreviatedDescription(), 'url'=>array('bookkeeping/journalentryfromtemplate', 'id'=>$template->id), 'linkOptions'=>array('title'=>$title));
+    $this->menu[]=array('label'=>$template->abbreviatedDescription(15, ' '), 'url'=>array('bookkeeping/journalentryfromtemplate', 'id'=>$template->id), 'linkOptions'=>array('title'=>$title));
   }
 }
 

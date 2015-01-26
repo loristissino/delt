@@ -181,10 +181,10 @@ class Journalentry extends CActiveRecord
     $this->save(false );
   }
   
-  public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing)
+  public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing, $date)
   {
     $this->firm_id = $firm->id;
-    $this->date = '2099-01-01';
+    $this->date = $date;
     $this->description = $description;
     $this->is_confirmed = 1;
     $this->is_closing = $is_closing;
@@ -201,6 +201,7 @@ class Journalentry extends CActiveRecord
     $p->amount = $amount;
     $p->rank = $rank;
     $p->save(false);
+    return array('account_id'=>$account_id, 'amount'=>$amount);
   }
   
 }

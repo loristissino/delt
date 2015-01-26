@@ -18,12 +18,12 @@
   <p><?php echo Yii::t('delt', 'You are going to create a new template with the following accounts:') ?></p>
   <?php
     $methods=Template::model()->getMethods();
-    foreach($this->journalentry->postings as $posting): $type=DELT::amount2type($posting->amount) ?>
+    foreach($model->postings as $posting): $type=DELT::amount2type($posting['amount']) ?>
     <?php echo CHtml::dropDownList(
-      'method['.$posting->account_id . ']',
-      $posting->account_id==Yii::app()->getUser()->getState('last_account_closed_interactively')?'?':'$', 
+      'method['.$posting['account_id'] . ']',
+      $posting['account_id']==Yii::app()->getUser()->getState('last_account_closed_interactively')?'?':'$', 
       $methods) ?>
-    <?php echo $posting->account->getCodeAndName($firm) ?> (<?php echo Yii::t('delt', $type) ?>)
+    <?php echo $posting['account_name'] ?> (<?php echo Yii::t('delt', $type) ?>)
     <br />
   <?php endforeach ?>
 

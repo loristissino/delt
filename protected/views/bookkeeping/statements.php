@@ -35,3 +35,29 @@ $last_date = $model->getLastDate();
     )) ?>
     
 <?php endforeach ?>
+
+<div id="automatic_entriesd">
+<h2><?php echo Yii::t('delt', 'Automatic Entries') ?></h2>
+<table>
+  <tr>
+    <th colspan="2"><?php echo Yii::t('delt', 'Description') ?></th>
+    <th><?php echo Yii::t('delt', 'Debit') ?></th>
+    <th><?php echo Yii::t('delt', 'Credit') ?></th>
+  </tr>
+<?php foreach($automatic_entries as $je): ?>
+  <tr>
+    <td colspan="2" class="description <?php echo $je['journalentry']['class'] ?>"><?php echo $je['journalentry']['description'] ?></td>
+    <td colspan="2"></td>
+  </tr>
+    <?php foreach($je['postings'] as $posting): ?>
+    <tr>
+      <td>&nbsp;&nbsp;&nbsp;</td>
+      <td><div class="<?php echo $posting['amount']>0? 'jdebit': 'jcredit' ?>"><?php echo CHtml::link($posting['account_name'], array('bookkeeping/ledger', 'id'=>$posting['account_id'])) ?></div></td>
+      <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'])) ?>
+      <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'])) ?>
+    </tr>
+    <?php endforeach ?>
+<?php endforeach ?>
+</table>
+
+</div>

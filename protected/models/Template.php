@@ -30,6 +30,7 @@ class Template extends CActiveRecord
   
   public $journalentry_id;
   public $methods;
+  public $postings;
   
   /**
    * Returns the static model of the specified AR class.
@@ -115,9 +116,9 @@ class Template extends CActiveRecord
     ));
   }
   
-  public function abbreviatedDescription($chars=15)
+  public function abbreviatedDescription($chars=15, $glue=' ')
   {
-    return DELT::firstWordsOfString($this->description, $chars);
+    return DELT::firstWordsOfString($this->description, $chars, $glue);
   }
   
   public function belongingTo($firm_id)
@@ -144,7 +145,8 @@ class Template extends CActiveRecord
     return array(
       '$'=>Yii::t('delt', 'Ask'),
       '?'=>Yii::t('delt', 'Close'),
-      '='=>Yii::t('delt', 'Balance'),
+      '='=>Yii::t('delt', 'Balance Anyway'),
+      '/'=>Yii::t('delt', 'Balance On Match'),
     );
   }
   
@@ -182,7 +184,7 @@ class Template extends CActiveRecord
     foreach($accounts as $account)
     {
       $method = DELT::getValueFromArray($info[$account->id], 'method', '$');
-      if($method=='=')
+      if($method=='=' || $method=='/')
       {
         $balanced_account_id = $account->id;
       }
@@ -193,6 +195,7 @@ class Template extends CActiveRecord
       $item = array(
         'id'=> $account->id,
         'name'=> $account->getCodeAndName($firm),
+        'outstanding_balance' => $account->outstanding_balance,
         'debitfromtemplate'=>$info[$account->id]['type']=='Dr.',
         'creditfromtemplate'=>$info[$account->id]['type']=='Cr.',
         'method'=>$method,
@@ -216,11 +219,15 @@ class Template extends CActiveRecord
     {
       if($total>0)
       {
-        $result[$info[$balanced_account_id]['rank']]['credit']=$total;
+        // if the method is "=", we close anyway, else we check whether we have the correct outstanding balance
+        $a = ($method=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='C') ? $total : 0;
+        $result[$info[$balanced_account_id]['rank']]['credit']=$a;
       }
       else
       {
-        $result[$info[$balanced_account_id]['rank']]['debit']=-$total;
+        // if the method is "=", we close anyway, else we check whether we have the correct outstanding balance
+        $a = ($method=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='D') ? -$total : 0;
+        $result[$info[$balanced_account_id]['rank']]['debit']=$a;
       } 
     }
     
@@ -232,5 +239,37 @@ class Template extends CActiveRecord
   {
     $this->methods = DELT::getValueFromArray($values, 'method', array());
   }
+  
+  public function acquireRawPostings($values=array(), $firm)
+  {
+    $this->postings = array();
+    foreach($values as $v)
+    {
+      $code = explode(' ', $v['name'])[0];
+      if($account = $firm->findAccount($code))
+      {
+        $this->postings[] = array(
+          'account_name'=>$account->getCodeAndName($firm),
+          'account_id'=>$account->id,
+          'amount'=>DELT::currency2decimal($v['debit'], $firm->currency)-DELT::currency2decimal($v['credit'], $firm->currency),
+        );
+      }
+    }
+    
+  }
+
+  public function acquirePostingsFromJE(JournalEntry $je, $firm)
+  {
+    $this->postings = array();
+    foreach($je->postings as $posting)
+    {
+      $this->postings[] = array(
+        'account_name'=>$posting->account->getCodeAndName($firm),
+        'account_id'=>$posting->id,
+        'amount'=>$posting->amount
+        );
+    }
+  }
+
   
 }

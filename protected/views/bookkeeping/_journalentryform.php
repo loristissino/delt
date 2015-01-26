@@ -18,7 +18,8 @@ function printWidth($col)
   echo  'style="width: ' . $w. 'px"';
 }
 
-$this->layout = 'column1_menu_below';
+//$this->layout = 'column1_menu_below';
+$this->layout = 'column2';
 
 $n = sizeof($items);
 
@@ -85,6 +86,16 @@ $cs->registerScript(
   $("#load_accounts").hide();
   
   $("#analysis").hide();
+  
+  $("#template_button").after("<a id=\"template_link\" href=\"#\">Create Template</a>");
+  $("#template_button").hide();
+  $("#template_link").click(function() {
+    var input = $("<input>").attr("type", "hidden").attr("name", "template").val("");
+    console.log("submitting...");
+    check_dirty=false;
+    clear_local_storage_on_exit = true;
+    $("#journalentryform").append($(input)).submit();
+  });
   
   updatetotals();
   
@@ -568,10 +579,10 @@ $cs->registerScript(
   
   $(window).bind("unload", prepareExit);
   
-  $("#save_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
+  $("#save_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = true; })
   $("#addline_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = false; })
-  $("#done_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
-  $("#new_button").click(function(e) {check_dirty=false;; clear_local_storage_on_exit = true; })
+  $("#done_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = true; })
+  $("#new_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = true; })
     
   '
 /*
@@ -689,7 +700,7 @@ if(Yii::app()->language!=='en')
       <td class="number" <?php printWidth('icons') ?>>
       <span id="chooseicon<?php echo $row ?>"></span>
       </td>
-      <td  <?php printWidth('account') ?> style="width: 250px;"><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+      <td  <?php printWidth('account') ?> style="width: 450px;"><?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
         'id'=>'name'.$row,
         'name'=>"PostingForm[$i][name]",
         'value'=>$item->name,
@@ -699,7 +710,7 @@ if(Yii::app()->language!=='en')
           'minLength'=>2,
           ),
         'htmlOptions'=>array(
-           'size'=>'33',
+           'size'=>'50',
            'class'=>$item->name_errors ? 'error': 'valid',
            ),
         ))
@@ -726,6 +737,9 @@ if(Yii::app()->language!=='en')
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save', 'id'=>'save_button')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save & Close'), array('name'=>'done', 'id'=>'done_button')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save & New'), array('name'=>'new', 'id'=>'new_button')); ?>
+      <?php if(!$journalentryform->journalentry): ?>
+        <?php echo CHtml::submitButton(Yii::t('delt', 'Create Template'), array('name'=>'template', 'id'=>'template_button')); ?>
+      <?php endif ?>
     </div>
   </div><!-- rows_as_textfields -->
   <div id="rows_as_textarea" style="display: none">

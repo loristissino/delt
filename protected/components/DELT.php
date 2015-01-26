@@ -378,20 +378,23 @@ class DELT
     return mb_strcut($string, 0, $chars) . '…';
   }
   
-  public function firstWordsOfString($string, $chars)
+  public function firstWordsOfString($string, $chars, $glue=' ')
   {
     if(strlen($string)<$chars)
     {
       return $string;
     }
     $count = 0;
-    $text = '';
+    $text = array();
+    $length = 0;
     $words = explode(' ', $string);
-    while (strlen($text) < $chars)
+    while ($length < $chars)
     {
-      $text .= $words[$count++]. ' ';
+      $text[] = $words[$count];
+      $length += strlen($words[$count]) + strlen($glue);
+      $count++;
     }
-    return $text . '…';
+    return implode($glue, $text) . '…';
   }
   
 }
