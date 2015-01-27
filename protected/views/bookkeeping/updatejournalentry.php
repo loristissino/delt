@@ -9,7 +9,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>Yii::t('delt', 'Create Template'), 'url'=>$this->createUrl('bookkeeping/createtemplate', array('id'=>$journalentryform->journalentry->id)),'linkOptions'=>array(
+  array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Create Template'), 'url'=>$this->createUrl('bookkeeping/createtemplatefromjournalentry', array('id'=>$journalentryform->journalentry->id)),'linkOptions'=>array(
     'title'=>Yii::t('delt', 'Create a Template based on this journal entry'),
     ))
   );

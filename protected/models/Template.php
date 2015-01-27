@@ -152,18 +152,9 @@ class Template extends CActiveRecord
   
   public function beforeSave()
   {
-    if($journalentry = Journalentry::model()->findByPk($this->journalentry_id))
+    if(sizeof($this->postings))
     {
-      $accounts = array();
-      foreach($journalentry->postings as $posting)
-      {
-        $accounts[$posting->account_id] = array(
-          'rank'=>$posting->rank,
-          'type'=>DELT::amount2type($posting->amount, false),
-          'method'=>DELT::getValueFromArray($this->methods, $posting->account_id, ''),
-          );
-      }
-      $this->info=serialize($accounts);
+      $this->info=serialize($this->postings );
     }
     
     return parent::beforeSave();
@@ -180,6 +171,7 @@ class Template extends CActiveRecord
     $accounts = Account::model()->findAllByPk(array_keys($info));
     
     $total = 0;
+    $checkedMethod = '';
     $balanced_account_id = 0; // the last account for which we have a balance method
     foreach($accounts as $account)
     {
@@ -187,19 +179,22 @@ class Template extends CActiveRecord
       if($method=='=' || $method=='/')
       {
         $balanced_account_id = $account->id;
+        $checkedMethod = $method;
       }
       
       $amount = $method=='?' ? -$account->consolidatedBalance: 0;
       $total += $amount;
       
+      $comment = DELT::getValueFromArray($info[$account->id], 'comment', '');
       $item = array(
         'id'=> $account->id,
-        'name'=> $account->getCodeAndName($firm),
+        'name'=> $account->getCodeAndName($firm) . ($comment? (' # '.$comment) :''),
         'outstanding_balance' => $account->outstanding_balance,
         'debitfromtemplate'=>$info[$account->id]['type']=='Dr.',
         'creditfromtemplate'=>$info[$account->id]['type']=='Cr.',
         'method'=>$method,
         'amount'=>$amount,
+        'comment'=>$comment,
       );
 
       if($amount>0)
@@ -220,13 +215,13 @@ class Template extends CActiveRecord
       if($total>0)
       {
         // if the method is "=", we close anyway, else we check whether we have the correct outstanding balance
-        $a = ($method=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='C') ? $total : 0;
+        $a = ($checkedMethod=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='C') ? $total : 0;
         $result[$info[$balanced_account_id]['rank']]['credit']=$a;
       }
       else
       {
         // if the method is "=", we close anyway, else we check whether we have the correct outstanding balance
-        $a = ($method=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='D') ? -$total : 0;
+        $a = ($checkedMethod=='=' || $result[$info[$balanced_account_id]['rank']]['outstanding_balance']=='D') ? -$total : 0;
         $result[$info[$balanced_account_id]['rank']]['debit']=$a;
       } 
     }
@@ -235,9 +230,21 @@ class Template extends CActiveRecord
     return $result;
   }
   
-  public function acquireMethods($values=array())
+  public function acquirePostingsFromForm($values=array())
   {
-    $this->methods = DELT::getValueFromArray($values, 'method', array());
+    $accounts = array();
+      
+    $rank=1;
+    foreach($values['method'] as $k=>$v)
+    {
+      $accounts[$k]=array(
+        'rank'=>$rank++,
+        'type'=>DELT::amount2type(DELT::getValueFromArray($values['amount'], $k, 1), false),
+        'method'=>$v,
+        'comment'=>DELT::getValueFromArray($values['comment'], $k, ''),
+        );
+    }
+    $this->postings = $accounts;
   }
   
   public function acquireRawPostings($values=array(), $firm)
@@ -252,6 +259,7 @@ class Template extends CActiveRecord
           'account_name'=>$account->getCodeAndName($firm),
           'account_id'=>$account->id,
           'amount'=>DELT::currency2decimal($v['debit'], $firm->currency)-DELT::currency2decimal($v['credit'], $firm->currency),
+          'comment'=>DELT::findComment($v['name']),
         );
       }
     }
@@ -260,13 +268,15 @@ class Template extends CActiveRecord
 
   public function acquirePostingsFromJE(JournalEntry $je, $firm)
   {
+    $this->firm_id = $firm->id;
     $this->postings = array();
     foreach($je->postings as $posting)
     {
       $this->postings[] = array(
         'account_name'=>$posting->account->getCodeAndName($firm),
         'account_id'=>$posting->id,
-        'amount'=>$posting->amount
+        'amount'=>$posting->amount,
+        'comment'=>$posting->comment,
         );
     }
   }

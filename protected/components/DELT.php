@@ -397,4 +397,13 @@ class DELT
     return implode($glue, $text) . '…';
   }
   
+  public function findComment($text)
+  {
+    if(($pos=mb_strpos($text, '#'))!=false)
+    {
+      return trim(mb_substr($text, $pos+1));
+    }
+    return null;
+  }
+  
 }

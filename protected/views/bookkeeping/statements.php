@@ -46,7 +46,7 @@ $last_date = $model->getLastDate();
   </tr>
 <?php foreach($automatic_entries as $je): ?>
   <tr>
-    <td colspan="2" class="description <?php echo $je['journalentry']['class'] ?>"><?php echo $je['journalentry']['description'] ?></td>
+    <td colspan="2" class="description <?php echo $je['journalentry']['class'] ?>"><?php echo CHtml::link($je['journalentry']['description'], $je['source']['table']=='template'?array('journalentryfromtemplate', 'id'=>$je['source']['id']):'') ?></td>
     <td colspan="2"></td>
   </tr>
     <?php foreach($je['postings'] as $posting): ?>
@@ -57,6 +57,16 @@ $last_date = $model->getLastDate();
       <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'])) ?>
     </tr>
     <?php endforeach ?>
+    <?php if(sizeof($je['postings'])==0): ?>
+      <?php foreach($je['accounts'] as $posting): $posting['amount'] = $posting['debit'] - $posting['credit']; $posting['account_name']=$posting['name']; $posting['account_id']=$posting['id'] ?>
+      <tr>
+        <td>&nbsp;&nbsp;&nbsp;</td>
+        <td class="<?php echo $je['journalentry']['class'] ?>"><div class="<?php echo $posting['amount']>0? 'jdebit': 'jcredit' ?>"><?php echo CHtml::link($posting['account_name'], array('bookkeeping/ledger', 'id'=>$posting['account_id'])) ?></div></td>
+        <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'])) ?>
+        <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'])) ?>
+      </tr>
+      <?php endforeach ?>
+    <?php endif ?>
 <?php endforeach ?>
 </table>
 

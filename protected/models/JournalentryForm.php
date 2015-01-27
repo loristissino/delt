@@ -275,28 +275,11 @@ class JournalentryForm extends CFormModel
       }
       else
       {
-        /*
-        if(!in_array($account->id, $used_accounts))
-        {
-          */
-          $this->postings[$row]->account_id = $account->id;
-          $this->postings[$row]->account = $account;
-          $used_accounts[] = $account->id;
-          
-          if(($pos=mb_strpos($posting['name'], '#'))!=false)
-          {
-            $this->postings[$row]->comment = trim(mb_substr($posting['name'], $pos+1));
-          }
+        $this->postings[$row]->account_id = $account->id;
+        $this->postings[$row]->account = $account;
+        $used_accounts[] = $account->id;
 
-          
-          
-        /*
-         * }
-        else
-        {
-          $this->addError('postings', $row_message . Yii::t('delt', 'the account with code "{code}" makes the row a duplicate.', array('{code}'=>$code)));
-        }
-        */
+        $this->postings[$row]->comment = DELT::findComment($posting['name']);
       }
       
       $errors=false;

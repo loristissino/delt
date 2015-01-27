@@ -1611,14 +1611,18 @@ class Firm extends CActiveRecord
     $rank = -1;
     foreach($this->findMainPositionsWeShouldTryToCloseAutomatically() as $statement)
     { 
-      $journalentries[] = $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1, $date);
+      $entry = $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1, $date);
+      $entry['source']=array('table'=>'statement','id'=>$statement->id);
+      $journalentries[] = $entry;
     }
     
     // then, we add automatic entries from templates
 
     foreach(Template::model()->belongingTo($this->id)->automatic(1)->findAll() as $template)
     {
-      $journalentries[] = $this->_prepareEntriesWith($template->getAccountsInvolved($this), $template->description, $rank--, 0, $date);
+      $entry = $this->_prepareEntriesWith($template->getAccountsInvolved($this), $template->description, $rank--, 0, $date);
+      $entry['source']=array('table'=>'template','id'=>$template->id);
+      $journalentries[] = $entry;
     }
     
     // now the data are ready, we can make the queries...
@@ -1663,7 +1667,7 @@ class Firm extends CActiveRecord
       {
         try
         {
-          $info = $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), $count++);
+          $info = $je->savePosting($item['id'], DELT::getValueFromArray($item, 'debit', 0) - DELT::getValueFromArray($item, 'credit', 0), DELT::getValueFromArray($item, 'comment', null), $count++);
           $info['account_name']=$evaluatedAccounts[$item['id']]['name'];
           $postings[] = $info;
         }

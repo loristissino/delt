@@ -318,9 +318,10 @@ class BookkeepingController extends Controller
       {
         $template= new Template();
         $template->description = $_POST['JournalentryForm']['description'];
+        $template->firm_id = $this->firm->id;
         $template->acquireRawPostings($_POST['PostingForm'], $this->firm);
-        return $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
-        
+        Yii::app()->user->setState('template', $template);
+        $this->redirect('createtemplate');
       }
       if(isset($_POST['PostingForm']))
       {
@@ -386,22 +387,6 @@ class BookkeepingController extends Controller
     }
     $this->render('closingjournalentry', array('position'=>$position, 'model'=>$this->firm));
     
-  }
-
-  public function actionProfitlossjournalentry($slug)
-  {
-    $this->firm=$this->loadModelBySlug($slug);
-    $this->checkFrostiness($this->firm);
-    $this->journalentrydescription=Yii::t('delt', 'Profit/Loss');
-    $this->accounts = $this->firm->getAccountBalances('e');
-    
-    if(sizeof($this->accounts))
-    {
-      return $this->actionNewjournalentry($slug);
-      // we show the standard form
-    }
-    
-    $this->render('closingjournalentry', array('position'=>'e', 'model'=>$this->firm));
   }
   
   public function actionPrepareentry($slug, $op='snapshot')
@@ -619,7 +604,7 @@ class BookkeepingController extends Controller
     $this->checkFrostiness($this->firm);
     
     $this->accounts = $template->getAccountsInvolved($this->firm);
-    
+
     if(sizeof($this->accounts))
     {
       $this->journalentrydescription=$template->description;
@@ -627,27 +612,20 @@ class BookkeepingController extends Controller
       // we show the standard form
     }
     
-    throw new CHttpException(404,'The requested page does not exist.');
+    throw new CHttpException(404, 'Sorry, it looks like the template has some errors in it.');
   }
 
-
-  public function actionCreatetemplate($id)
+  public function actionCreatetemplate()
   {
-    $this->journalentry = $this->loadJournalentry($id);
-    $this->firm=$this->journalentry->firm;
-    $this->checkManageability($this->firm);
-    $this->checkFrostiness($this->firm);
-    
-    $template=new Template;
-
+    $template = Yii::app()->user->getState('template');
+    $this->firm = $this->loadFirm($template->firm_id);
     if(isset($_POST['Template']))
     {
         $template->attributes=$_POST['Template'];
         if($template->validate())
         {
           $template->firm_id = $this->firm->id;
-          $template->journalentry_id = $this->journalentry->id;
-          $template->acquireMethods($_POST);
+          $template->acquirePostingsfromForm($_POST);
           if($template->save())
           {
             Yii::app()->user->setFlash('delt_success','The template has been correctly saved.'); 
@@ -659,13 +637,23 @@ class BookkeepingController extends Controller
           $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
         }
     }
-    if(!$template->description)
-    {
-      $template->description = $this->journalentry->description;
-    }
-
-    $template->acquirePostingsFromJE($this->journalentry, $this->firm);
+    
     $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
+  }
+
+  public function actionCreateTemplateFromJournalEntry($id)
+  {
+    $this->journalentry = $this->loadJournalentry($id);
+    $this->firm=$this->journalentry->firm;
+    $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
+    
+    $template=new Template;
+    $template->acquirePostingsFromJE($this->journalentry, $this->firm);
+    $template->description = $this->journalentry->description;
+    
+    Yii::app()->user->setState('template', $template);
+    $this->redirect(array('createtemplate'));
   }
 
   public function actionDeletetemplate($id)

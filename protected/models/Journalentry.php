@@ -193,12 +193,13 @@ class Journalentry extends CActiveRecord
     $this->rank = $rank;
   }
   
-  public function savePosting($account_id, $amount, $rank)
+  public function savePosting($account_id, $amount, $comment, $rank)
   {
     $p = new Posting();
     $p->journalentry_id = $this->id;
     $p->account_id = $account_id;
     $p->amount = $amount;
+    $p->comment = $comment;
     $p->rank = $rank;
     $p->save(false);
     return array('account_id'=>$account_id, 'amount'=>$amount);
