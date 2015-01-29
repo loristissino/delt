@@ -42,7 +42,7 @@ class BookkeepingController extends Controller
   {
     return array(
       'postOnly + deleteTemplate', // we only allow deletion via POST request
-      'postOnly + toggleautomaticstatus', // we only allow deletion via POST request
+      'postOnly + toggleautomaticstatus', // we allow automatic status change only via POST request
     );
   }
   
@@ -638,6 +638,12 @@ class BookkeepingController extends Controller
         }
     }
     
+    if(sizeof($template->postings)<2)
+    {
+      Yii::app()->user->setFlash('delt_failure','A template must have at least two postings');
+      $this->redirect(Yii::app()->request->urlReferrer);
+    }
+    
     $this->render('createtemplate',array('model'=>$this->firm, 'template'=>$template));
   }
 
@@ -671,20 +677,23 @@ class BookkeepingController extends Controller
     {
       Yii::app()->user->setFlash('delt_failure','The template could not be deleted.'); 
     }
-    $this->redirect(array('bookkeeping/newjournalentry', 'slug'=>$this->firm->slug));
+    $this->redirect(array('template/admin', 'slug'=>$this->firm->slug));
   }
 
-  public function actionToggleautomaticstatus($id, $status)
+  public function actionToggleautomaticstatus($id)
   {
     $template=$this->loadTemplate($id);
+    
     $this->firm=$template->firm;
     $this->checkManageability($this->firm);
     $this->checkFrostiness($this->firm);
 
-    $template->automatic = $status;
+    $template->automatic = !$template->automatic;
     $template->save();
+    
+    //$this->refresh();
 
-    $this->redirect(array('bookkeeping/journalentryfromtemplate', 'id'=>$id));
+    $this->redirect(array('template/admin', 'slug'=>$this->firm->slug));
   }
 
   /**

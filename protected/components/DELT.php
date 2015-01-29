@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.6.12';
+    return '1.7';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -401,7 +401,7 @@ class DELT
   {
     if(($pos=mb_strpos($text, '#'))!=false)
     {
-      return trim(mb_substr($text, $pos+1));
+      return strip_tags(trim(mb_substr($text, $pos+1)));
     }
     return null;
   }

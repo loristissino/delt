@@ -247,5 +247,12 @@ class Controller extends CController
   {
     return CHtml::image(Yii::app()->request->baseUrl.'/images/' . $name . $extension, $alt, $htmlOptions);
   }
+
+  public function createImageButton($name, $alt='', $htmlOptions=array(), $extension='.png')
+  {
+    $htmlOptions['alt']=$alt;
+    return CHtml::imageButton(Yii::app()->request->baseUrl.'/images/' . $name . $extension, $htmlOptions);
+  }
+
   
 }

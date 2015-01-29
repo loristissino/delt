@@ -21,13 +21,13 @@ $money_icon = $this->createIcon('money', Yii::t('delt', 'Amount'), array('width'
   <?php echo $form->errorSummary($model); ?>
 
   <div class="grid-view">
-  <table class="items">
+  <table class="items" style="width: 700px">
   <tr>
     <th id="firm-grid_c0"><?php echo Yii::t('delt', 'Method') ?></th>
-    <th><?php echo Yii::t('delt', 'Account') ?></th>
+    <th style="width: 300px"><?php echo Yii::t('delt', 'Account') ?></th>
     <th><?php echo Yii::t('delt', 'Debit') ?></th>
     <th><?php echo Yii::t('delt', 'Credit') ?></th>
-    <th><?php echo Yii::t('delt', 'Comment') ?></th>
+    <th style="width: 200px"><?php echo Yii::t('delt', 'Comment') ?></th>
   </tr>
   <?php
     $methods=Template::model()->getMethods();  $row=0;
@@ -58,7 +58,7 @@ $money_icon = $this->createIcon('money', Yii::t('delt', 'Amount'), array('width'
       <td style="text-align: center">
         <?php if($posting['amount']<0) echo $money_icon ?>
       </td>
-      <td>
+      <td style="width: 200px">
       <?php echo $posting['comment'] ?>
       </td>
     </tr>
@@ -75,7 +75,7 @@ $money_icon = $this->createIcon('money', Yii::t('delt', 'Amount'), array('width'
     <?php echo $form->checkBox($model, 'automatic') ?>&nbsp;
     <?php echo Yii::t('delt', 'Apply this template automatically.') ?>
   <br />
-  <span class="hint"><?php echo Yii::t('delt', 'This is useful for some closing entries you could wish to be automatically and virtually prepared each time a financial statement is prepared (without actually seeing the journal entry).') ?></span>
+  <span class="hint"><?php echo Yii::t('delt', 'Select when you wish this template to be automatically and virtually used each time a financial statement is prepared (without actually seeing the journal entry).') ?></span>
   </div>
 
   <div class="row buttons">

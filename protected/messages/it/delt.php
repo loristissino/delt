@@ -483,5 +483,23 @@ return array(
   'Difference Yet Unexplained' => 'Differenza non ancora spiegata',
   'If modified, the new address appears after validation.'=>'Se modificato, il nuovo indirizzo compare dopo la validazione.',
   
-);
+  'Use a template'=>'Usa una causale',
+  'Click on a template\'s description to start a journal entry from it.'=>'Fai clic sulla descrizione di una causale per utilizzarla come base di una registrazione contabile.',
+  'Automatic'=>'Automatica',
+  'This template is automatically applied when preparing the statements'=>'Questa causale viene utilizzata automaticamente in sede di preparazione del bilancio',
+  'This template is not used when preparing the statements'=>'Questa causale non viene utilizzata per la preparazione del bilancio',
+  'click to toggle'=>'fai clic per commutare',
+  'Method'=>'Metodo',
+  'Apply this template automatically.'=>'Utilizza automaticamente questa causale',
+  'Select when you wish this template to be automatically and virtually used each time a financial statement is prepared (without actually seeing the journal entry).'=>'Seleziona quando questa causale deve essere automaticamente utilizzata ogni volta che un bilancio viene preparato (senza che le registrazioni contabili appaiano).',
+  'Ask'=>'Chiedi',
+  'Close'=>'Chiudi',
+  'Balance Anyway'=>'Pareggia (sempre)',
+  'Balance On Match'=>'Pareggia (quando corrisponde)',
+  'Automatic Entries' => 'Registrazioni automatiche',
+  'Show automatically-generated entries'=>'Mostra le registrazioni generate automaticamente', 
+  'Hide automatically-generated entries'=>'Nascondi le registrazioni generate automaticamente',
+  'The following journal entries, if present, have been automatically applied in order to prepare the financial statement above.'=>'Le seguenti registrazioni, se presenti, sono state automaticamente utilizzate per la preparazione del bilancio riprodotto qui sopra.',
+  'They are deleted just afterwards, so you will not see them in the journal or in the general ledger'=>'Esse sono state cancellate subito dopo, per cui non ne troverai traccia nel libro giornale o nel libro mastro.',
 
+);

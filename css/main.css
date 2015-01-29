@@ -680,8 +680,11 @@ text-align: center;
   padding-right: 20px;
 }
 
-
-#automatic_entries
+#automatic_entries .descriptionline td
 {
-  display:none;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  font-style: italic;
 }
