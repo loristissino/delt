@@ -50,11 +50,10 @@ $cs = Yii::app()->getClientScript();
 $cs->registerScript(
   'swap-rows-handler',
   '
-  
-  var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
-  
-  var thousand_separator = decimal_separator=="." ? ",":".";
 
+  var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
+  // console.log("decimal separator: " + decimal_separator);
+  var thousand_separator = decimal_separator=="." ? ",":".";
   var currency = "' . $currency_test_string . '".replace(/[\d\.,]/g, "");
 
   var view_as_textfields = true;
@@ -97,6 +96,7 @@ $cs->registerScript(
     $("#journalentryform").append($(input)).submit();
   });
   
+
   updatetotals();
   
   form2localstorage();
@@ -375,10 +375,10 @@ $cs->registerScript(
       }
 
       $("#debit" +i).blur(function() {updatetotals(true); });
-      $("#debit" +i).focus(function(obj) { cleanValue($(obj.target)); });
+      $("#debit" +i).focus(function(obj) { cleanAndPutValue($(obj.target)); });
       $("#debit" +i).attr("_row", i);
       $("#credit" +i).blur(function() {updatetotals(true); });
-      $("#credit" +i).focus(function(obj) { cleanValue($(obj.target)); });
+      $("#credit" +i).focus(function(obj) { cleanAndPutValue($(obj.target)); });
       $("#credit" +i).attr("_row", i);
       $("#debit" +i).calculator({ showOn: "operator", isOperator: checkCh});
       $("#credit" +i).calculator({ showOn: "operator", isOperator: checkCh});
@@ -449,10 +449,17 @@ $cs->registerScript(
   
   function cleanValue(element)
   {
-    value = accounting.unformat(element.val(), decimal_separator);
+    var value = accounting.unformat(element.val(), decimal_separator);
     element.val(value ? accounting.unformat(element.val(), decimal_separator): "");
   }
-
+  
+  function cleanAndPutValue(element)
+  {
+    cleanValue(element);
+    var v = element.val() ? accounting.formatNumber(element.val(), 2, "", decimal_separator) : "";
+    element.val(v);
+    console.log("cleaned " + element.attr("id") + " value: " + v);
+  }
   
   function swaprows(a,b)
   {

@@ -304,13 +304,13 @@ class BookkeepingController extends Controller
     
     if(isset($this->accounts) and sizeof($this->accounts)>0)
     {
-      $journalentryform->acquireItems($this->accounts);
+      $journalentryform->acquireItems($this->accounts, true);
     }
     else
     {
       $journalentryform->postings = array(new PostingForm(), new Postingform());
     }
-        
+    
     if(isset($_POST['JournalentryForm']))
     {
       $journalentryform->attributes=$_POST['JournalentryForm'];
@@ -325,7 +325,7 @@ class BookkeepingController extends Controller
       }
       if(isset($_POST['PostingForm']))
       {
-        $journalentryform->acquireItems($_POST['PostingForm']);
+        $journalentryform->acquireItems($_POST['PostingForm'], false);
       }
       if(isset($_POST['addline']))
       {
@@ -430,7 +430,7 @@ class BookkeepingController extends Controller
     if(isset($_POST['JournalentryForm']))
     {
       $journalentryform->attributes=$_POST['JournalentryForm'];
-      $journalentryform->acquireItems($_POST['PostingForm']);
+      $journalentryform->acquireItems($_POST['PostingForm'], false);
       if(isset($_POST['addline']))
       {
         $journalentryform->removeEmptyRows(true);

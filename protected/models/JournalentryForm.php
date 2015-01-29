@@ -63,8 +63,9 @@ class JournalentryForm extends CFormModel
   }
 
   
-  public function acquireItems($values)
+  public function acquireItems($values, $cleaning=false)
   {
+    
     $this->postings=array();
 
     if($this->raw_input)
@@ -97,6 +98,11 @@ class JournalentryForm extends CFormModel
     foreach($values as $key => $value)
     {
       $this->postings[$key] = new PostingForm();
+      if($cleaning)
+      {
+        $value['debit'] = DELT::currency_value($value['debit'], $this->firm->currency);
+        $value['credit'] = DELT::currency_value($value['credit'], $this->firm->currency);
+      }
       DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit'));
       $this->total_debit += DELT::currency2decimal($this->postings[$key]->debit, $this->firm->currency);
       $this->total_credit += DELT::currency2decimal($this->postings[$key]->credit, $this->firm->currency);

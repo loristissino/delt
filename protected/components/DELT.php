@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.7';
+    return '1.7.1';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -92,6 +92,7 @@ class DELT
     
     return $value;
   }
+
   
   public static function amount2type($amount, $with_html_comment=true)
   {
@@ -366,7 +367,7 @@ class DELT
   
   public static function nearlyZero($v)
   {
-    return abs($v)==0;
+    return abs($v) < 0.0001;
   }
   
   public function firstPartOfString($string, $chars)

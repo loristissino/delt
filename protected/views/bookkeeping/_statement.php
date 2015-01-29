@@ -102,7 +102,7 @@
 <?php if($key=='+') $ggt += $gt; else $ggt -= $gt; ?>
 <?php endforeach ?>
 
-<?php if($with_subtitles and $ggt): ?>
+<?php if($with_subtitles and !DELT::nearlyZero($ggt)): ?>
 <div class="statementtable" style="width: <?php echo 300 + 100*($level) ?>px">
 <table>
   <tr class="statementrow aggregate">
