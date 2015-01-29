@@ -104,7 +104,7 @@ $last_date = $model->getLastDate();
     </tr>
     <?php endforeach ?>
     <?php if(sizeof($je['postings'])==0): ?>
-      <?php foreach($je['accounts'] as $posting): $posting['amount'] = $posting['debit'] - $posting['credit']; $posting['account_name']=$posting['name']; $posting['account_id']=$posting['id'] ?>
+      <?php foreach($je['accounts'] as $posting): $posting['amount'] = DELT::getValueFromArray($posting, 'debit',0) - DELT::getValueFromArray($posting, 'credit', 0); $posting['account_name']=$posting['name']; $posting['account_id']=$posting['id'] ?>
       <tr>
         <td>&nbsp;&nbsp;&nbsp;</td>
         <td class="<?php echo $je['journalentry']['class'] ?>"><div class="<?php echo $posting['amount']>0? 'jdebit': 'jcredit' ?>"><?php echo $posting['account_name'] ? CHtml::encode($posting['account_name']): Yii::t('delt', 'Closing account not found') ?></div></td>
