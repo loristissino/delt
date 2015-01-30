@@ -246,7 +246,7 @@ $cs->registerScript(
           console.log("debit: " + debit);
           var credit = accounting.unformat(data[2], decimal_separator);
           console.log("credit: " + credit);
-          placeValue(debit-credit, i+1);
+          placeValue(i+1, credit-debit);
           $("#debit" + (i+1)).removeClass("error");
           $("#credit" + (i+1)).removeClass("error");
           $("#name" + (i+1)).val(name);
@@ -751,6 +751,7 @@ if(Yii::app()->language!=='en')
       <?php echo Yii::t('delt', 'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).')?><br />
       <?php echo Yii::t('delt', 'When you are done with the spreadsheet, paste here the three columns (name, debit and credit), and switch to text fields mode.')?>
       </span>
+      <br />
       <?php echo $form->textArea($journalentryform, 'raw_input', array('id'=>'raw_input', 'maxlength' => 10000, 'rows' => $n, 'cols' => 65)); ?>
       <?php echo $form->error($journalentryform,'raw_input'); ?>
     </div>
