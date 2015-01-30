@@ -52,7 +52,7 @@ $cs->registerScript(
   '
 
   var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
-  // console.log("decimal separator: " + decimal_separator);
+  console.log("decimal separator: " + decimal_separator);
   var thousand_separator = decimal_separator=="." ? ",":".";
   var currency = "' . $currency_test_string . '".replace(/[\d\.,]/g, "");
 
@@ -229,7 +229,7 @@ $cs->registerScript(
     $("#sort_accounts").show();
     $("#explain").show();
     $("#swap_debits_credits").show();
-    text = $("#raw_input").val();
+    var text = $("#raw_input").val();
     $("#toggle").html(raw_input_icon);
     
     lines = text.replace(/\n$/).split(/\n/);
@@ -238,36 +238,29 @@ $cs->registerScript(
       for(i=0; i<lines.length; i++)
       {
         data = lines[i].split(/\t/);
+        console.log("Evaluating line: " + (i+1));
         if(data.length>=3)
         {
           var name = data[0];
           var debit = accounting.unformat(data[1], decimal_separator);
+          console.log("debit: " + debit);
           var credit = accounting.unformat(data[2], decimal_separator);
-          if((debit != "") || (credit !=""))
-          {
-            $("#name" + (i+1)).val(name);
-            
-            if((debit>0) && (credit>0))
-            {
-              if(debit > credit)
-              {
-                debit = debit - credit;
-                credit = 0;
-              }
-              if(debit < credit)
-              {
-                credit = credit - debit;
-                debit = 0;
-              }
-              $("#debit" + (i+1)).removeClass("error");
-              $("#credit" + (i+1)).removeClass("error");
-            }
-            
-            $("#debit" + (i+1)).val(debit);
-            $("#credit" + (i+1)).val(credit);
-          }
+          console.log("credit: " + credit);
+          placeValue(debit-credit, i+1);
+          $("#debit" + (i+1)).removeClass("error");
+          $("#credit" + (i+1)).removeClass("error");
+          $("#name" + (i+1)).val(name);
+          console.log("Value inserted: " + (debit-credit));
+        }
+        else
+        {
+          $("#name" + (i+1)).val("");
+          $("#debit" + (i+1)).val("");
+          $("#credit" + (i+1)).val("");
+          console.log("Value null");
         }
       }
+      // we clean the remaining lines
       for(k=i+1; k<=n; k++)
       {
         $.each(fields, function()
@@ -282,6 +275,7 @@ $cs->registerScript(
     }
     else  // we have extra lines, we need to do a post...
     {
+      dirty = false;
       $("form#journalentryform").submit();
     }
     
@@ -428,7 +422,7 @@ $cs->registerScript(
 
     var affected;
 
-    if (value > 0)
+    if (value >= 0)
     {
       putFormattedValue($("#credit" + row), value, true);
     }
