@@ -502,4 +502,8 @@ return array(
   'The following journal entries, if present, have been automatically applied in order to prepare the financial statement above.'=>'Le seguenti registrazioni, se presenti, sono state automaticamente utilizzate per la preparazione del bilancio riprodotto qui sopra.',
   'They are deleted just afterwards, so you will not see them in the journal or in the general ledger'=>'Esse sono state cancellate subito dopo, per cui non ne troverai traccia nel libro giornale o nel libro mastro.',
 
+  'swap positions' => 'scambia posizioni',
+  'Swap the positions of the selected journal entries (choose only two entries for this to work)' => 'Scambia le posizioni delle registrazioni contabili selezionate (ne vanno selezionate solo due)',
+  'The entries have been swapped.' => 'Le registrazioni sono state scambiate.',
+  'The entries could not be swapped.' => 'Non è stato possibile scambiare le registrazioni.',
 );

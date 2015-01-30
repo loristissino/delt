@@ -80,4 +80,3 @@ $dataProvider = $model->search();
 <?php else: ?>
   <p><?php echo Yii::t('delt', 'No templates available for this firm.') ?></p>
 <?php endif ?>
-

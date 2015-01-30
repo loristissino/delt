@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.7.2';
+    return '1.7.3';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -360,7 +360,7 @@ class DELT
     }
   }
   
-  public function getValueFromArray($array, $key, $default)
+  public static function getValueFromArray($array, $key, $default)
   {
     return isset($array[$key]) ? $array[$key] : $default;
   }
@@ -370,7 +370,7 @@ class DELT
     return abs($v) < 0.0001;
   }
   
-  public function firstPartOfString($string, $chars)
+  public static function firstPartOfString($string, $chars)
   {
     if(strlen($string) < $chars)
     {
@@ -379,7 +379,7 @@ class DELT
     return mb_strcut($string, 0, $chars) . '…';
   }
   
-  public function firstWordsOfString($string, $chars, $glue=' ')
+  public static function firstWordsOfString($string, $chars, $glue=' ')
   {
     if(strlen($string)<$chars)
     {
@@ -398,7 +398,7 @@ class DELT
     return implode($glue, $text) . '…';
   }
   
-  public function findComment($text)
+  public static function findComment($text)
   {
     if(($pos=mb_strpos($text, '#'))!=false)
     {
@@ -406,5 +406,6 @@ class DELT
     }
     return null;
   }
+  
   
 }

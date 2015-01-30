@@ -100,7 +100,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
 )); 
 echo CHtml::endForm(); ?>
 
-<p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?>
+<p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?><br />
 <?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
@@ -111,6 +111,7 @@ echo CHtml::endForm(); ?>
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
         array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
         array('label'=>Yii::t('delt','toggle in-statement visibility'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'tisv'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Toggle the visibility of the selected journal entries in the preparation of the statements'))),
+        array('label'=>Yii::t('delt','swap positions'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'swap'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Swap the positions of the selected journal entries (choose only two entries for this to work)'))),
     ),
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',

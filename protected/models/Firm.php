@@ -2333,4 +2333,55 @@ class Firm extends CActiveRecord
     return sprintf('%s - %s', $this->renderAccountCode($code), $name);
   }
   
+  public function swapSelectedJournalentries($ids=array())
+  {
+    if(sizeof($ids)!=2)
+    {
+      return false;
+    }
+    return $this->swapRecords(Journalentry::model(), $ids[0], $ids[1], 'rank');
+  }
+  
+  /**
+   * Swaps two records of a table changing their ids.
+   * @param object $model the model to be used to retrieve objects (call passing, for instance, 'Template::model()')
+   * @param integer $id1 the id of the first record
+   * @param integer $id2 the id of the second record
+   * @param string $field the field name to swap
+   * @return boolean true if completed with success, false otherwise
+   * 
+   * @since 1.7.3
+   */
+  public function swapRecords($model, $id1, $id2, $field='id')
+  {
+    $c1 = array('id'=>$id1, 'firm_id'=>$this->id);
+    $c2 = array('id'=>$id2, 'firm_id'=>$this->id);
+    $t1=$model->findByAttributes($c1);
+    $t2=$model->findByAttributes($c2);
+    if($t1 && $t2)
+    {
+      try
+      {
+        $transaction = $t1->getDbConnection()->beginTransaction();
+        $old1 = $t1->$field;
+        $old2 = $t2->$field;
+        $t1->$field=-1;
+        $t1->save();
+        $t2->$field=$old1;
+        $t2->save();
+        $t1->$field=$old2;
+        $t1->save();
+        $transaction->commit();
+        return true;
+      }
+      catch (Exception $e)
+      {
+        $transaction->rollback();
+        return false;
+      }
+    }
+    return false;
+  }
+
+  
 }

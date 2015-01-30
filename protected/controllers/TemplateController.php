@@ -43,7 +43,7 @@ class TemplateController extends Controller
   {
     return array(
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('admin'),
+        'actions'=>array('admin', 'test'),
         'users'=>array('@'),
       ),
       array('deny',  // deny all users

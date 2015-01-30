@@ -563,7 +563,7 @@ class BookkeepingController extends Controller
         // FIXME This could be done in one UPDATE statement (but it's not so easy as it might seem
         if($affected_rows==0)
         {
-          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been toggled.'));  // this shouldn't happen
+          Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'No journal entry has been toggled.'));  // this shouldn't happen
         }
         else
         {
@@ -572,6 +572,17 @@ class BookkeepingController extends Controller
         }
       }  
 
+      if($op=='swap')
+      {
+        if($this->firm->swapSelectedJournalentries($_POST['id']))
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been swapped.'));
+        }
+        else
+        {
+          Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The entries could not be swapped.'));
+        }
+      }  
 
       if($op=='delete')
       {
