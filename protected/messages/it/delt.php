@@ -392,7 +392,7 @@ return array(
   'Create new item' => 'Crea nuova voce', 
   'Edit item «{name}»' => 'Modifica voce «{name}»',
   
-  'Summary for «{item}»' => 'Chiusura per «{item}»',
+  'Closing entry for «{item}» accounts' => 'Chiusura per i conti afferenti a «{item}»',
   
   'Choose an account' => 'Scegli un conto',
   

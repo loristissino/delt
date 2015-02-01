@@ -100,8 +100,8 @@ class JournalentryForm extends CFormModel
       $this->postings[$key] = new PostingForm();
       if($cleaning)
       {
-        $value['debit'] = DELT::currency_value($value['debit'], $this->firm->currency);
-        $value['credit'] = DELT::currency_value($value['credit'], $this->firm->currency);
+        $value['debit'] = DELT::currency_value(DELT::getValueFromArray($value, 'debit', 0), $this->firm->currency);
+        $value['credit'] = DELT::currency_value(DELT::getValueFromArray($value, 'credit', 0), $this->firm->currency);
       }
       DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit'));
       $this->total_debit += DELT::currency2decimal($this->postings[$key]->debit, $this->firm->currency);
