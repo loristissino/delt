@@ -14,13 +14,69 @@ $this->css=$model->css;
 
 $last_date = $model->getLastDate();
 
+$toggle_text = addslashes(Yii::t('delt', 'Toggle the visibility of:'));
+$toggle_description = addslashes(Yii::t('delt', 'firm\'s description'));
+$toggle_excluded = addslashes(Yii::t('delt', 'excluded journal entries'));
+$toggle_journal = addslashes(Yii::t('delt', 'journal'));
+$toggle_statements = addslashes(Yii::t('delt', 'statements'));
+
+$cs = Yii::app()->getClientScript();  
+$cs->registerScript(
+  'toggle-handler',
+  '
+
+var description_visible = true;
+var excluded_visible = true;
+var journal_visible = true;
+var statements_visible = true;
+
+$("#commands").html(
+  "' . $toggle_text . '<br />" +
+  [
+  "<a href=\"#\" id=\"toggle_description\">' . $toggle_description . '</a>",
+  "<a href=\"#\" id=\"toggle_excluded\">' . $toggle_excluded . '</a>",
+  "<a href=\"#\" id=\"toggle_journal\">' . $toggle_journal . '</a>",
+  "<a href=\"#\" id=\"toggle_statements\">' . $toggle_statements . '</a>",
+  ]
+  .join(" - "));
+
+$("#toggle_description").click( function() {
+  description_visible = !description_visible;
+  $("#description").css("display", description_visible ? "block" : "none");
+});
+
+$("#toggle_excluded").click( function() {
+  excluded_visible = !excluded_visible;
+  $(".excluded").css("display", excluded_visible ? "table-row" : "none");
+});
+
+$("#toggle_journal").click( function() {
+  journal_visible = !journal_visible;
+  $("#journal").css("display", journal_visible ? "block" : "none");
+});
+
+$("#toggle_statements").click( function() {
+  statements_visible = !statements_visible;
+  $("#statements").css("display", statements_visible ? "block" : "none");
+});
+
+'
+  ,
+  CClientScript::POS_READY
+);
+
+
+
+
 ?>
 
 <article>
 <h1><?php echo CHtml::encode($model->name) ?></h1>
+<div id="description">
 <p><?php echo nl2br(CHtml::encode($model->description)) ?></p>
 <?php echo $this->renderPartial('_banner', array('firm'=>$model)) ?>
-<section>
+</div>
+<section id="journal">
 <h2><?php echo Yii::t('delt', 'Journal') ?></h2>
 
 <table>
@@ -58,10 +114,10 @@ $last_date = $model->getLastDate();
     <td class="firstjournalentryrow currency lastjournalentryrow"><?php echo DELT::currency_value($tc, $this->firm->currency) ?></td>
   </tr>
 </table>
-</section>
 <hr />
+</section>
 
-<section>
+<section id="statements">
 <h2><?php echo Yii::t('delt', 'Statements') ?></h2>
 <?php foreach($model->getMainPositions(false, array(1,2,3)) as $statement): ?>
   <?php echo $this->renderPartial('/bookkeeping/_statement', array(
@@ -75,11 +131,11 @@ $last_date = $model->getLastDate();
     'last_date'=> $last_date,
     )) ?>
 <?php endforeach ?>
-</section>  
-  
 <hr />
+</section>  
 
 <?php echo $this->renderPartial('_frostiness', array('model'=>$model)) ?>
+<p id="commands"></p>
 
 <?php echo $model->getLicenseCode($this) ?>
 

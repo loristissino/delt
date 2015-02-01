@@ -18,6 +18,7 @@ $mainmenu_items=array(
   <title><?php echo CHtml::encode($this->pageTitle); ?></title>
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/html5.css" >
+  <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/print5.css" media="print" />
   <meta charset="utf-8" />
   <?php if($this->css): ?>
   <style><?php echo $this->css ?></style>
