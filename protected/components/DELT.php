@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.7.5';
+    return '1.7.6';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -405,6 +405,16 @@ class DELT
       return strip_tags(trim(mb_substr($text, $pos+1)));
     }
     return null;
+  }
+  
+  public static function falseValue($value)
+  {
+    return in_array(strtolower($value), array('false', 'no', '0'));
+  }
+
+  public static function trueValue($value)
+  {
+    return in_array(strtolower($value), array('true', 'yes', '1'));
   }
   
   

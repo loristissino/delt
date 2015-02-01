@@ -129,7 +129,7 @@ return array(
   'Closing entry' => 'Registrazione di chiusura',
   'Closing journal entry' => 'Registrazione di chiusura contabile',
 
-  'Please choose the kind of closing you need on the side menu.' => 'Scegli il tipo di chiusura desiderata nel menù a fianco.',
+  'Please choose the kind of closing entry you need on the side menu.' => 'Scegli il tipo di registrazione di chiusura desiderata nel menù a fianco.',
   'Please fix the following errors:' => 'Devi correggere i seguenti errori:',
 
   'This firm does not seem to have accounts with «{position}» position to close.'=> 'Questa azienda non sembra avere conti con collocazione «{position}» da chiudere.',
@@ -500,7 +500,7 @@ return array(
   'Show automatically-generated entries'=>'Mostra le registrazioni generate automaticamente', 
   'Hide automatically-generated entries'=>'Nascondi le registrazioni generate automaticamente',
   'The following journal entries, if present, have been automatically applied in order to prepare the financial statement above.'=>'Le seguenti registrazioni, se presenti, sono state automaticamente utilizzate per la preparazione del bilancio riprodotto qui sopra.',
-  'They are deleted just afterwards, so you will not see them in the journal or in the general ledger'=>'Esse sono state cancellate subito dopo, per cui non ne troverai traccia nel libro giornale o nel libro mastro.',
+  'They are deleted just afterwards, so you will not see them in the journal or in the general ledger.'=>'Esse sono state cancellate subito dopo, per cui non ne troverai traccia nel libro giornale o nel libro mastro.',
 
   'swap positions' => 'scambia posizioni',
   'Swap the positions of the selected journal entries (choose only two entries for this to work)' => 'Scambia le posizioni delle registrazioni contabili selezionate (ne vanno selezionate solo due)',

@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013 Loris Tissino
+ * @copyright Copyright &copy; 2013-2015 Loris Tissino
  * @since 1.0
  */
 /**
@@ -190,6 +190,11 @@ class Account extends CActiveRecord
   public function getName()
   {
     return $this->currentname;
+  }
+  
+  public function getClosingDescription()
+  {
+    return Yii::t('delt', 'Closing entry for «{item}» accounts', array('{item}'=>$this->currentname));
   }
   
   public function getParent()
@@ -755,12 +760,12 @@ class Account extends CActiveRecord
     return $result;
   }
   
-  public function getValueFromCommentByKeyword($keyword)
+  public function getValueFromCommentByKeyword($keyword, $default=null)
   {
     $values=$this->getKeywordsAndValuesFromComment();
     
     $with_locale = $keyword .'-' . $this->firm->language->locale;
-    return isset($values[$with_locale]) ? $values[$with_locale] : (isset($values[$keyword]) ? $values[$keyword] : null);
+    return isset($values[$with_locale]) ? $values[$with_locale] : (isset($values[$keyword]) ? $values[$keyword] : $default);
   }
   
   public function setClassesFromComment(Account $parent = null)

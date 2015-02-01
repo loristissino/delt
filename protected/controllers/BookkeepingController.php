@@ -373,11 +373,12 @@ class BookkeepingController extends Controller
     $this->firm=$this->loadModelBySlug($slug);
     $this->checkFrostiness($this->firm);
     
+    $p=null;
     if($p=$this->firm->getMainPosition($position))
     {
       $this->accounts = $this->firm->getAccountBalances($position);
       $this->is_closing = true;
-      $this->journalentrydescription=Yii::t('delt', 'Closing entry for «{item}» accounts', array('{item}'=>$p->currentname));
+      $this->journalentrydescription=$p->getClosingDescription();
       
       if(sizeof($this->accounts))
       {
@@ -385,7 +386,7 @@ class BookkeepingController extends Controller
         // we show the standard form
       }
     }
-    $this->render('closingjournalentry', array('position'=>$position, 'model'=>$this->firm));
+    $this->render('closingjournalentry', array('position'=>$position, 'model'=>$this->firm, 'closing'=>$p));
     
   }
   

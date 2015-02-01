@@ -81,7 +81,7 @@ $last_date = $model->getLastDate();
 
 <p>
   <?php echo Yii::t('delt', 'The following journal entries, if present, have been automatically applied in order to prepare the financial statement above.') ?>
-  <?php echo Yii::t('delt', 'They are deleted just afterwards, so you will not see them in the journal or in the general ledger') ?>
+  <?php echo Yii::t('delt', 'They are deleted just afterwards, so you will not see them in the journal or in the general ledger.') ?>
 </p>
 
 <table>

@@ -10,16 +10,16 @@ $this->breadcrumbs=array(
 
 $this->menu=array();
 
-foreach($model->getMainPositions(true) as $mp)
+foreach($model->getMainPositionsForClosingEntries() as $mp)
 {
-  $this->menu[]=array('label'=>Yii::t('delt', 'Summary for «{item}»', array('{item}'=>$mp->currentname)), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>$mp->position));
+  $this->menu[]=array('label'=>$mp->getClosingDescription(), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug, 'position'=>$mp->position));
 }
 
 ?>
 <h1><?php echo Yii::t('delt', $this->journalentrydescription) ?></h1>
 
-<?php if($position): ?>
-<p><?php //echo Yii::t('delt', 'This firm does not seem to have accounts of «{position}» position to close.', array('{position}'=>Account::model()->getValidpositionByCode($position))) ?></p>
+<?php if($position and $closing): ?>
+<p><?php echo Yii::t('delt', 'This firm does not seem to have «{position}» accounts to close.', array('{position}'=>$closing->currentname)) ?></p>
 <?php else: ?>
-<p><?php echo Yii::t('delt', 'Please choose the kind of closing you need on the side menu.') ?></p>
+<p><?php echo Yii::t('delt', 'Please choose the kind of closing entry you need on the side menu.') ?></p>
 <?php endif ?>

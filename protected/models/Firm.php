@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013 Loris Tissino
+ * @copyright Copyright &copy; 2013-2015 Loris Tissino
  * @since 1.0
  */
 /**
@@ -643,6 +643,11 @@ class Firm extends CActiveRecord
         'credit'=>($grandtotal<0) ? -$grandtotal : 0,
         'id'=>($closingAccount) ? $closingAccount->id : null,
         );
+        
+        if(sizeof($result)==2 and $result[1]['name']==$name)   // we have already closed everything, this wouldn't make sense
+        {
+          return array();
+        }
     }
     
     return $result;
@@ -1588,7 +1593,9 @@ class Firm extends CActiveRecord
   {
     // we just look for statements that have a type set to 1 (like the income statement)
     // perhaps this will change for better configurability
-    return Account::model()->belongingTo($this->id)->withOneOfTypes(array(1))->ofLevel(1)->findAll();
+    // return Account::model()->belongingTo($this->id)->withOneOfTypes(array(1))->ofLevel(1)->findAll();
+    
+    return $this->getMainPositionsForClosingEntries();
   }
 
   public function cacheStatementsData($level=1)
@@ -1611,7 +1618,7 @@ class Firm extends CActiveRecord
     $rank = -1;
     foreach($this->findMainPositionsWeShouldTryToCloseAutomatically() as $statement)
     { 
-      $entry = $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->currentname, $rank--, 1, $date);
+      $entry = $this->_prepareEntriesWith($this->getAccountBalances($statement->position), $statement->getClosingDescription(), $rank--, 1, $date);
       $entry['source']=array('table'=>'statement','id'=>$statement->id);
       $journalentries[] = $entry;
     }
@@ -2192,6 +2199,19 @@ class Firm extends CActiveRecord
   public function getMainPositions($reversed=false, $types=array(1,2))
   {
     return Account::model()->belongingTo($this->id, $reversed ? 'code DESC' : 'code ASC')->withOneOfTypes($types)->ofLevel(1)->findAll();
+  }
+  
+  public function getMainPositionsForClosingEntries()
+  {
+    $accounts = $this->getMainPositions(true);
+    foreach($accounts as $key=>$account)
+    {
+      if(DELT::falseValue($account->getValueFromCommentByKeyword('@closing', 'yes')))
+      {
+        unset($accounts[$key]);
+      }
+    }
+    return $accounts;
   }
   
   public function getMainPosition($position)
