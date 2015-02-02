@@ -1056,7 +1056,7 @@ class Firm extends CActiveRecord
         {
           $newtemplate = new Template;
           $newtemplate->firm_id = $this->id;
-          foreach(array('description') as $property)
+          foreach(array('description', 'automatic') as $property)
           {
             $newtemplate->$property = $template->$property;
           }
