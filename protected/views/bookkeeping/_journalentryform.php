@@ -44,6 +44,8 @@ $placeholder_string = addslashes(Yii::t('delt', 'Start typing (code or name) or 
 
 $unload_alert_string = addslashes(Yii::t('delt', 'There might be some unsaved changes in the form.'));
 
+$create_template_string = addslashes(Yii::t('delt', 'Create Template'));
+
 $spacer = $this->createIcon('tp', '', array('height'=>1, 'width'=>60, 'style'=>''));
 
 $cs = Yii::app()->getClientScript();  
@@ -86,7 +88,7 @@ $cs->registerScript(
   
   $("#analysis").hide();
   
-  $("#template_button").after("<a id=\"template_link\" href=\"#\">Create Template</a>");
+  $("#template_button").after("<a id=\"template_link\" href=\"#\">' . $create_template_string . '</a>");
   $("#template_button").hide();
   $("#template_link").click(function() {
     var input = $("<input>").attr("type", "hidden").attr("name", "template").val("");

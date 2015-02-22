@@ -624,7 +624,7 @@ class BookkeepingController extends Controller
       // we show the standard form
     }
     
-    throw new CHttpException(404, 'Sorry, it looks like the template has some errors in it.');
+    throw new CHttpException(404, Yii::t('delt', 'Sorry, it looks like the template has some errors in it.'));
   }
 
   public function actionCreatetemplate()
@@ -640,11 +640,11 @@ class BookkeepingController extends Controller
           $template->acquirePostingsfromForm($_POST);
           if($template->save())
           {
-            Yii::app()->user->setFlash('delt_success','The template has been correctly saved.'); 
+            Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The template has been correctly saved.')); 
           }
           else
           {
-            Yii::app()->user->setFlash('delt_failure','The template could not be saved.'); 
+            Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'The template could not be saved.')); 
           }
           $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
         }
@@ -652,7 +652,7 @@ class BookkeepingController extends Controller
     
     if(sizeof($template->postings)<2)
     {
-      Yii::app()->user->setFlash('delt_failure','A template must have at least two postings');
+      Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'A template needs at least two postings.'));
       $this->redirect(Yii::app()->request->urlReferrer);
     }
     

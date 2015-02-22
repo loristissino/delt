@@ -2362,6 +2362,17 @@ class Firm extends CActiveRecord
     return $this->swapRecords(Journalentry::model(), $ids[0], $ids[1], 'rank');
   }
   
+  public function getSelectableAccountsAsArray()
+  {
+    $accounts = Account::model()->belongingTo($this->id)->hidden(0)->selectable(1)->findAll();
+    $result=array();
+    foreach($accounts as $account)
+    {
+      $result[$account->id]=$account->getCodeAndName($this);
+    }
+    return $result;
+  }
+  
   /**
    * Swaps two records of a table changing their ids.
    * @param object $model the model to be used to retrieve objects (call passing, for instance, 'Template::model()')

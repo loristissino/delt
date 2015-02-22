@@ -142,6 +142,7 @@ return array(
   'Template creation' => 'Creazione di causale',
   'The template has been correctly saved.'=>'La causale è stata correttamente salvata.',
   'The template could not be saved.'=>'La causale non è stata salvata.',
+  'A template needs at least two postings.' => 'Una causale deve prevedere almeno due movimentazioni di conto.',
   
   'Create'=>'Crea',
   

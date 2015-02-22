@@ -309,6 +309,14 @@ class Account extends CActiveRecord
     return $this;
   }
   
+  public function selectable($selectable)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>($selectable?'is_selectable <> 0':'is_selectable = 0'),
+    ));
+    return $this;
+  }
+
   public function withOneOfTypes($in=array())
   {
     $this->getDbCriteria()->addInCondition('type', $in);
