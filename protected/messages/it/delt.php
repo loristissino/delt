@@ -461,6 +461,7 @@ return array(
   
   'Sorry, this action has not been implemented yet.' => 'Purtroppo, questa azione non è ancora stata implementata.',
   'Please use the contact form if you want to change your email address.' => 'Contattaci direttamente (tramite il modulo) per cambiare il tuo indirizzo email.',
+  'Template update' => 'Modifica causale',
   
   'Import accounts' => 'Importa conti',
   'Export accounts' => 'Esporta conti',

@@ -54,7 +54,8 @@ $dataProvider = $model->search();
       array(
         // see http://www.yiiframework.com/wiki/106/using-cbuttoncolumn-to-customize-buttons-in-cgridview/
         'class'=>'CButtonColumn',
-        'template'=>'{delete}',
+        'template'=>'{update}{delete}',
+        'updateButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/updatetemplate",array("id"=>$data->primaryKey))',
         'deleteButtonUrl'=>'Yii::app()->controller->createUrl("bookkeeping/deletetemplate",array("id"=>$data->primaryKey))',
         'headerHtmlOptions'=>array('class'=>'buttons'),
         'htmlOptions'=>array('style'=>'text-align: center; width: 50px', 'class'=>'buttons'),
@@ -62,6 +63,10 @@ $dataProvider = $model->search();
           'delete'=>array(
             'label'=>'Delete',
             'options'=>array('title'=>Yii::t('delt', 'Delete')),
+          ),
+          'update'=>array(
+            'label'=>'Edit',
+            'options'=>array('title'=>Yii::t('delt', 'Edit')),
           ),
           'toggle'=>array(
             // FIXM is there a way to use POST with buttons? apparently not...

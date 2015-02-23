@@ -21,38 +21,45 @@ $money_icon = $this->createIcon('money', Yii::t('delt', 'Amount'), array('width'
   <?php echo $form->errorSummary($model); ?>
 
   <div class="grid-view">
-  <table class="items" style="width: 600px">
+  <table class="items" style="width: 700px">
   <tr>
-    <th style="width: 300px"><?php echo Yii::t('delt', 'Account') . ' / ' . Yii::t('delt', 'Comment') . ' / ' . Yii::t('delt', 'Method')?></th>
+    <th id="firm-grid_c0"><?php echo Yii::t('delt', 'Method') ?></th>
+    <th style="width: 300px"><?php echo Yii::t('delt', 'Account') ?></th>
     <th><?php echo Yii::t('delt', 'Debit') ?></th>
     <th><?php echo Yii::t('delt', 'Credit') ?></th>
+    <th style="width: 200px"><?php echo Yii::t('delt', 'Comment') ?></th>
   </tr>
   <?php
     $methods=Template::model()->getMethods();  $row=0;
-    $accounts = $firm->getSelectableAccountsAsArray();
     foreach($model->postings as $posting): $row++?>
     <tr class="<?php echo $row%2==0 ? 'even': 'odd' ?>">
-      <td style="width: 300px">
-      <?php echo CHtml::dropDownList(
-        'method['.$posting['account_id'] . ']',
-        $posting['account_id'], 
-        $accounts) ?>
-        <br />
-      <?php
-        echo CHtml::textField(
-        'comment['.$posting['account_id'] . ']',
-        $posting['comment'])
-      ?>
+      <td>
       <?php echo CHtml::dropDownList(
         'method['.$posting['account_id'] . ']',
         $posting['account_id']==Yii::app()->getUser()->getState('last_account_closed_interactively')?'?':'$', 
         $methods) ?>
+      </td>
+      <td style="width: 300px">
+      <?php echo $posting['account_name'] ?>
+      <?php
+        echo CHtml::hiddenField(
+        'amount['.$posting['account_id'] . ']',
+        $posting['amount'])
+      ?>
+      <?php
+        echo CHtml::hiddenField(
+        'comment['.$posting['account_id'] . ']',
+        $posting['comment'])
+      ?>
       </td>
       <td style="text-align: center">
         <?php if($posting['amount']>0) echo $money_icon ?>
       </td>
       <td style="text-align: center">
         <?php if($posting['amount']<0) echo $money_icon ?>
+      </td>
+      <td style="width: 200px">
+      <?php echo $posting['comment'] ?>
       </td>
     </tr>
   <?php endforeach ?>
@@ -72,7 +79,7 @@ $money_icon = $this->createIcon('money', Yii::t('delt', 'Amount'), array('width'
   </div>
 
   <div class="row buttons">
-    <?php echo CHtml::submitButton(Yii::t('delt', 'Create')); ?>
+    <?php echo CHtml::submitButton(Yii::t('delt', $button)); ?>
   </div>
   </div>
 

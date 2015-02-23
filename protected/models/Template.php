@@ -103,9 +103,6 @@ class Template extends CActiveRecord
     // Warning: Please modify the following code to remove attributes that
     // should not be searched.
 
-    $sort = new CSort;
-    $sort->defaultOrder = 'id ASC';
-
     $criteria=new CDbCriteria;
 
     $criteria->compare('id',$this->id);
@@ -116,8 +113,6 @@ class Template extends CActiveRecord
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
-      'pagination'=>array('pageSize'=>50),
-      'sort' => $sort,
     ));
   }
   
@@ -126,11 +121,10 @@ class Template extends CActiveRecord
     return DELT::firstWordsOfString($this->description, $chars, $glue);
   }
   
-  public function belongingTo($firm_id, $order='id ASC')
+  public function belongingTo($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'t.firm_id = ' . $firm_id,
-        'order'=>$order,
     ));
     return $this;
   }
@@ -280,7 +274,7 @@ class Template extends CActiveRecord
     {
       $this->postings[] = array(
         'account_name'=>$posting->account->getCodeAndName($firm),
-        'account_id'=>$posting->account->id,
+        'account_id'=>$posting->id,
         'amount'=>$posting->amount,
         'comment'=>$posting->comment,
         );

@@ -627,6 +627,16 @@ class BookkeepingController extends Controller
     throw new CHttpException(404, Yii::t('delt', 'Sorry, it looks like the template has some errors in it.'));
   }
 
+  public function actionUpdatetemplate($id)
+  {
+    $template=$this->loadTemplate($id);
+    $this->firm=$template->firm;
+    $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
+
+    $this->render('updatetemplate',array('model'=>$this->firm));
+  }
+
   public function actionCreatetemplate()
   {
     $template = Yii::app()->user->getState('template');
