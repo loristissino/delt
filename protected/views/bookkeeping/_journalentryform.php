@@ -1,6 +1,6 @@
 <?php
-/* @var $this AbcdeController */
-/* @var $model Abcde */
+/* @var $this BookkeepingController */
+/* @var $model Firm */
 /* @var $form CActiveForm */
 
 // a quick and dirty function to help setting widths of the table -- FIXME should be improved
@@ -32,6 +32,7 @@ $load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Loa
 $sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort postings, debits first'))));
 $explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
 $swap_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 'Swap debits and credits'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Swap debit and credits for the whole journal entry'))));
+$help_icon=addslashes($this->createIcon('help', Yii::t('delt', 'Show usage help'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Show usage help'))));
 
 $calculator_icon = addslashes(Yii::app()->request->baseUrl.'/images/calculator.png');
 
@@ -69,6 +70,7 @@ $cs->registerScript(
   var load_accounts_icon = "' . $load_accounts_icon . '";
   var sort_icon = "' . $sort_icon . '";
   var explain_icon = "' . $explain_icon . '";
+  var help_icon = "' . $help_icon . '";
   var swap_debits_credits_icon = "' . $swap_debits_credits_icon . '";
   
   var identifier = "'. $journalentryform->identifier . '";
@@ -81,6 +83,7 @@ $cs->registerScript(
     "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
     "</span>&nbsp;<span id=\"swap_debits_credits\">" + swap_debits_credits_icon + "</span>" + 
     "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" +
+    "</span>&nbsp;<span id=\"help\">" + help_icon + "</span>" +
     "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>"
 
     );
@@ -106,6 +109,12 @@ $cs->registerScript(
   $("#explain").click(function()
     {
       $("#analysis").toggle(500);
+    }
+  );
+
+  $("#help").click(function()
+    {
+      $("#usage").toggle(500);
     }
   );
   
@@ -762,6 +771,8 @@ if(Yii::app()->language!=='en')
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+
+<?php echo $this->renderPartial('_usage_help', array('section'=>'journalentry', 'display'=>'none', 'title'=>'Usage Help', 'class'=>'help')) ?>
 
 <?php
 $this->beginWidget('zii.widgets.jui.CJuiDialog',array(
