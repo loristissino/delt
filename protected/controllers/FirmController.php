@@ -58,7 +58,7 @@ class FirmController extends Controller
         'users'=>array('admin'),
       ),
       array('allow', // allow authenticated user to perform 'public' actions
-        'actions'=>array('public','coa','index','ledger','banner'),
+        'actions'=>array('public','coa','index','ledger','banner','slideshow'),
         'users'=>array('*'),
         ),
       array('deny',  // deny all users
@@ -155,6 +155,16 @@ class FirmController extends Controller
       'accounts'=>$this->firm->accounts,
     ));
   }
+
+  public function actionSlideshow($slug)
+  {
+    $this->firm=$this->loadFirmBySlug($slug, false);
+    
+    $this->render('slideshow', array(
+      'model'=>$this->firm,
+    ));
+  }
+
 
   public function actionOwners($slug)
   {

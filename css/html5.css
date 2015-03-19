@@ -174,3 +174,14 @@ tfoot
 {
   font-style: italic;
 }
+
+td.accountname
+{
+  width: 500px;
+  background-color: #dddddd;
+}
+
+td.currency
+{
+  background-color: #cccccc;
+}

@@ -77,7 +77,8 @@ class Journalentry extends CActiveRecord
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
-      'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id', 'order'=>'postings.rank ASC'),
+      'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id'),
+      'accounts' => array(self::HAS_MANY, 'Account', 'firm_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
     );
   }
@@ -134,6 +135,23 @@ class Journalentry extends CActiveRecord
     ));
     return $this;
   }  
+
+  public function included()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'is_included = 1',
+    ));
+    return $this;
+  }
+
+  public function ofFirm($firm_id, $order='date ASC, t.id ASC, postings.rank ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'firm_id = ' . $firm_id,
+        'order'=>$order,
+    ));
+    return $this;
+  }
     
   public function getDateForFormWidget()
   {

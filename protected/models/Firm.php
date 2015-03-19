@@ -713,10 +713,13 @@ class Firm extends CActiveRecord
     );
   }
   
+  public function getJournalentriesData()
+  {
+    return Journalentry::model()->with('postings')->ofFirm($this->id)->findAll();
+  }
+  
   /**
-   * Returns a data provider for the journal entries of the firm.
-   * @param integer $pagesize the pagesize desired
-   * @return CActiveDataProvider the postings related to the journal entries of the firm
+   * Caches general ledger data.
    */
   public function cacheGeneralLedgerData()
   {

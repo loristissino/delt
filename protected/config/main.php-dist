@@ -83,6 +83,7 @@ return array(
         '/user/<controller:\w+>/<action:\w+>'=>'/user/<controller>/<action>',
         '/firms/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
         '/firms/<slug:[a-z0-9\-]*>/coa'=>'/firm/coa/slug/<slug>',
+        '/firms/<slug:[a-z0-9\-]*>/slideshow'=>'/firm/slideshow/slug/<slug>',
         '/organizations/<slug:[a-z0-9\-]*>'=>'/firm/public/slug/<slug>',
         '<controller:\w+>/<id:\d+>'=>'<controller>/view',
         '<controller:\w+>/<action:\w+>/<id:\d+>'=>'<controller>/<action>',
