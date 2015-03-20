@@ -177,11 +177,18 @@ tfoot
 
 td.accountname
 {
-  width: 500px;
+  width: 400px;
   background-color: #dddddd;
 }
 
 td.currency
 {
   background-color: #cccccc;
+  width: 150px;
+}
+
+table.slideshow.journalentry
+{ 
+  table-layout: fixed;
+  width: 550px;
 }

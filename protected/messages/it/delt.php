@@ -508,4 +508,9 @@ return array(
   'Swap the positions of the selected journal entries (choose only two entries for this to work)' => 'Scambia le posizioni delle registrazioni contabili selezionate (ne vanno selezionate solo due)',
   'The entries have been swapped.' => 'Le registrazioni sono state scambiate.',
   'The entries could not be swapped.' => 'Non è stato possibile scambiare le registrazioni.',
+  
+  'Slideshow' => 'Presentazione',
+  'See more at [%site%](%url%)' => 'Dettagli su [%site%](%url%)',
+  'Thank you.' => 'Grazie.',
+  
 );

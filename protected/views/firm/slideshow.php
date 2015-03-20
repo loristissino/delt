@@ -14,7 +14,7 @@ class: center, middle, inverse
 
 <?php echo CHtml::encode($model->description) . "\n" ?>
 
-.footnote[See more at [<?php echo Yii::app()->name ?>](<?php echo $this->createAbsoluteUrl(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug) ?>)]
+.footnote[<?php echo Yii::t('delt', 'See more at [%site%](%url%)', array('%site%'=>Yii::app()->name, '%url%'=>$this->createAbsoluteUrl(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug))) ?>]
 
 ---
 layout: false
@@ -32,7 +32,14 @@ _<?php echo Yii::app()->dateFormatter->formatDateTime($journalentry->date, 'shor
   <?php endforeach ?>
 </table>
 
-
 ---
 
 <?php endforeach ?>
+
+name: inverse
+layout: true
+class: center, middle, inverse
+
+<?php echo Yii::t('delt', 'Thank you.') ?>
+
+---
