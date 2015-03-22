@@ -2,6 +2,7 @@
 /* @var $this FirmController */
 
 $this->layout='//layouts/remark';
+$this->css=$model->css;
 
 $journalentries = $model->getJournalentriesData();
 

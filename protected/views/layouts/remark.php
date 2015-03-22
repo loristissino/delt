@@ -16,12 +16,16 @@ $cs->registerScriptFile(
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/remark.css" >
   <link rel="stylesheet" href="<?php echo Yii::app()->request->baseUrl; ?>/css/html5.css" >
+  <?php if($this->css): ?>
+  <style><?php echo $this->css ?></style>
+  <?php endif ?>
   <meta charset="utf-8" />
   </head>
   <body>
-     <textarea id="source">
+      <textarea id="source">
 <?php echo $content; ?>
-    </textarea>
+      </textarea>
+    
     <script type="text/javascript">
        var slideshow = remark.create();
     </script>

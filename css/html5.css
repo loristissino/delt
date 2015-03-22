@@ -178,12 +178,10 @@ tfoot
 td.accountname
 {
   width: 400px;
-  background-color: #dddddd;
 }
 
 td.currency
 {
-  background-color: #cccccc;
   width: 150px;
 }
 
