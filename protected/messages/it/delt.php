@@ -517,6 +517,7 @@ return array(
   'Configure' => 'Configura',
   'Financial Statement Configuration' => 'Configurazione voci di bilancio',
   'Here you may configure how the Financial Statement is prepared and the types of accounts available.' => 'Qui puoi configurare il modo in cui il bilancio viene preparato e i tipi di conto disponibili.',
-  
+  'COA' => 'PdC',
+  'Show Chart of Accounts' => 'Mostra Piano dei Conti',
   
 );

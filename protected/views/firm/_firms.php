@@ -8,6 +8,9 @@
     <?php else: ?>
       <span class="nodescription">(<?php echo Yii::t('delt', 'no description provided') ?>)</span>
     <?php endif ?>
+    <?php if($firm->status == Firm::STATUS_SYSTEM): ?>
+      (<?php echo CHtml::link(Yii::t('delt', 'COA'), array(Yii::app()->params['publicpages'][$firm->firmtype].$firm->slug.'/coa'), array('title'=>Yii::t('delt', 'Show Chart of Accounts'))) ?>)
+    <?php endif ?>
   </p>
 <?php endforeach ?>
 </p>
