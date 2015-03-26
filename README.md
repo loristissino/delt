@@ -1,7 +1,7 @@
 # DELT
 
 DELT, or *Double Entry Learning Tool*, is a web application aimed to
-teach students the basic principles of bookkeeping.
+teach students the basic principles of accounting and/or bookkeeping.
 
 ## Aims
 
@@ -24,15 +24,29 @@ wish so.
 
 ## Development
 
-The application is developed in PHP, using the Yii framework. 
+The application is developed in PHP, using the [Yii framework](http://www.yiiframework.com/). 
 
 ## License
 
 DELT is released under the terms of GNU Affero General Public License
 http://www.gnu.org/licenses/agpl-3.0.html.
 
-DELT uses pieces of software that may be subject to different licenses.
-Please read the source code to find out.
+## Credits
+
+DELT uses pieces of software that are subject to different licenses.
+
+Here's a list:
+
+* [Yii-user](http://www.yiiframework.com/extension/yii-user/) ([BSD License](http://www.opensource.org/licenses/bsd-license.php))
+* [HOauth](http://www.yiiframework.com/extension/hoauth) ([GNU GPL v3](http://www.opensource.org/licenses/gpl-3.0.html)) 
+* [Parsedown](http://parsedown.org) ([MIT License](https://github.com/erusev/parsedown/blob/master/LICENSE.txt))
+* [XActionMenu and XBatchMenu](https://github.com/erikuus/Yii-Extensions)
+* [JQuery](http://jquery.com/) (https://github.com/jquery/jquery/blob/master/LICENSE.txt)
+* [RemarkJS](http://remarkjs.com/) (https://github.com/gnab/remark/blob/develop/LICENSE)
+* [JS Calculator](http://keith-wood.name/calculator.html) (MIT License)
+* [Accounting JS](http://josscrowcroft.github.com/accounting.js/) (https://github.com/openexchangerates/accounting.js/blob/master/license)
+* [Slugifier](https://gist.github.com/demoive/4249710)
+
 
 ## Online version
 
