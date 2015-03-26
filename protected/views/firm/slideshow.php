@@ -6,6 +6,8 @@ $this->css=$model->css;
 
 $journalentries = $model->getJournalentriesData();
 
+$journalentryform = new JournalentryForm;  // used for transaction analysis
+
 ?>
 name: inverse
 layout: true
@@ -20,18 +22,16 @@ class: center, middle, inverse
 ---
 layout: false
 
-<?php foreach($journalentries as $journalentry): ?>
-_<?php echo Yii::app()->dateFormatter->formatDateTime($journalentry->date, 'short', null)?>_
+<?php foreach($journalentries as $journalentry): $journalentryform->firm = $model; $journalentryform->loadFromJournalentry($journalentry); $text=$this->renderPartial('_slideshow_journalentry', array('journalentry'=>$journalentry, 'model'=>$model, 'journalentryform'=>$journalentryform), true) ?>
 
-## <?php echo $journalentry->description . "\n" ?>
+<?php echo $text ?>
 
-<br />
+---
+layout: false
 
-<table class="slideshow journalentry">
-  <?php foreach($journalentry->postings as $posting): ?>
-  <?php echo $this->renderPartial('_postingrow', array('posting'=>$posting, 'firm'=>$model, 'excluded'=>false)) ?> 
-  <?php endforeach ?>
-</table>
+<?php echo $text ?>
+
+<?php $this->renderPartial('../bookkeeping/_transaction_analysis', array('items'=>$journalentryform->postings, 'class'=>'slideshow analysis')) ?>
 
 ---
 

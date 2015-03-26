@@ -14,6 +14,6 @@ $this->menu=array(
 ?>
 <h1><?php echo Yii::t('delt', 'Financial Statement Configuration') ?></h1>
 
-<p><?php echo Yii::t('delt', 'Here it is possible to configure how the Financial Statement is prepared and the types of account you may have in your Chart of Accounts.') ?></p>
+<p><?php echo Yii::t('delt', 'Here you may configure how the Financial Statement is prepared and the types of accounts available.') ?></p>
 
 <?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderNameWithoutLink', 'buttonsTemplate'=>'{update}{new}')) ?>

@@ -513,4 +513,10 @@ return array(
   'See more at [%site%](%url%)' => 'Dettagli su [%site%](%url%)',
   'Thank you.' => 'Grazie.',
   
+  'Unknown' => 'Sconosciuta',  // this is related to "Classification"
+  'Configure' => 'Configura',
+  'Financial Statement Configuration' => 'Configurazione voci di bilancio',
+  'Here you may configure how the Financial Statement is prepared and the types of accounts available.' => 'Qui puoi configurare il modo in cui il bilancio viene preparato e i tipi di conto disponibili.',
+  
+  
 );

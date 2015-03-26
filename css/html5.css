@@ -190,3 +190,10 @@ table.slideshow.journalentry
   table-layout: fixed;
   width: 550px;
 }
+
+table.slideshow.analysis
+{
+  padding-top: 50px;
+  table-layout: fixed;
+  font-size: 0.7em;
+}

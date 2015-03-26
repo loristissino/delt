@@ -237,46 +237,13 @@ class Account extends CActiveRecord
     $result=array();
     
     $result['account']=$this->currentname;
-    $result['classification']=$mpa? $mpa->currentname : 'unknown';
+    $result['classification']=$mpa? $mpa->currentname : Yii::t('delt', 'Unknown');
     $result['type']= $this->hasOutstandingBalance() ? ($this->outstanding_balance == $lookup->outstanding_balance ? 'N': 'C') : 'n'; // normal vs contra account
     $result['change']= $this->hasOutstandingBalance() ? ($balance == $this->outstanding_balance ? 'I': 'D') :'n';  // increase vs decrease
     $result['value']=DELT::currency_value(abs($amount), $currency);
-    //$result['ob']=$this->outstanding_balance;
     
     return $result;
     
-    /*
-
-    $explanations = array(
-      'IN' => 'Increase in <em>{category}</em> Account',
-      'DN' => 'Decrease in <em>{category}</em> Account',
-      'IC' => 'Increase in <em>{category}</em> Contra Account',
-      'DC' => 'Decrease in <em>{category}</em> Contra Account',
-    );
-
-    $code =
-      ($balance == $this->outstanding_balance ? 'I': 'D') .   // increase or decrease?
-      ($this->outstanding_balance == $lookup->outstanding_balance ? 'N': 'C')  // normal or contra?
-      ;
-      
-    if($mpa && array_key_exists($code, $explanations))
-    {
-      if(array_key_exists($code, $explanations))
-      {
-        $explanation = Yii::t('delt', $explanations[$code], array('{category}'=>$mpa->currentname));
-      }
-      else
-      {
-        $explanation = Yii::t('delt', 'unexplained entry');
-      }
-    }
-    
-    return Yii::t('delt', '<strong>{account}</strong> - {explanation} for {amount}.', array(
-      '{account}'=>$this->currentname, 
-      '{explanation}'=>$explanation, 
-      '{amount}' => DELT::currency_value(abs($amount), $currency))
-      );
-      */  
   }
   
   public function hasOutstandingBalance()

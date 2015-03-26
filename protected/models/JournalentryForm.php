@@ -111,6 +111,7 @@ class JournalentryForm extends CFormModel
   
   public function loadFromJournalentry(Journalentry $journalentry)
   {
+    $this->postings = array();
     $this->journalentry = $journalentry;
     DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment'));
     $this->date = $journalentry->getDateForFormWidget();
