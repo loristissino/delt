@@ -10,7 +10,22 @@ $this->breadcrumbs=array(
   $account->name,
 );
 
-if($account->isHidden())
+$noc = $account->number_of_children;
+$deletable = $account->isHidden();
+
+if($noc==0)
+{
+  $debitgrandtotal = $account->debitgrandtotal;
+  $creditgrandtotal = $account->creditgrandtotal;
+  $grandtotal = $debitgrandtotal + $creditgrandtotal;
+  $deletable = $debitgrandtotal==0 && $creditgrandtotal==0;
+}
+else
+{
+  $deletable = false;
+}
+
+if($deletable)
 {
   $this->menu=array(
    array('label'=>Yii::t('delt', 'Delete'), 'url'=>$url=$this->createUrl('account/delete', array('id'=>$account->id)),  'linkOptions'=>array(   
