@@ -162,6 +162,23 @@ $cs->registerScript(
   CClientScript::POS_READY
 );
 
+$cs->registerScript(
+  'event-handler',
+  '
+    $(".classes").hide();
+    
+    $("#toggleclasses").click(function() {
+      $(".classes").toggle();
+      }
+    );
+    
+  '
+  ,
+  CClientScript::POS_READY
+);
+
+
+
 $cs->registerCoreScript('jquery.ui');
 $cs->registerCssFile(
 	Yii::app()->clientScript->getCoreScriptUrl().
@@ -206,12 +223,15 @@ $columns = array(
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'centered')
       ),
+    array(
+      'class'=>'CDataColumn',
+      'sortable'=>false,
+      'name'=>'classes',
+      'header'=>Yii::t('delt', 'Classes'),
+      'htmlOptions'=>array('class'=>'classes'),
+      'headerHtmlOptions'=>array('class'=>'classes'),
+      ),
     );
-
-if(isset($showclasses) and $showclasses)
-{
-  $columns[]='classes';
-}
     
 $columns[]=
     array(
@@ -247,6 +267,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'columns'=> $columns,
 )); ?>
 
+<p><span id="toggleclasses"><?php echo CHtml::link(Yii::t('delt', 'Toggle visibility of classes'), "#") ?></span></p>
 
 <div id="dialog-confirm" title="<?php echo Yii::t('delt', 'Place the account here?') ?>" style="display: none">
   <p><span class="ui-icon ui-icon-circle-arrow-s" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-message"></span></p>
