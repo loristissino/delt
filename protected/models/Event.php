@@ -163,7 +163,7 @@ class Event extends CActiveRecord
     ));
   }
   
-  public function log(DEUser $user=null, $firm_id=null, $action=null, $content='')
+  public static function log(DEUser $user=null, $firm_id=null, $action=null, $content='')
   {
     $event = new Event();
     $event->user_id = $user ? $user->id : null;
