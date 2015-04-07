@@ -22,7 +22,7 @@ $mainmenu_items=array(
 <html lang="<?php echo Yii::app()->language ?>">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <!-- blueprint CSS framework -->
   <link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/css/screen.css" media="screen, projection" />

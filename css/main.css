@@ -688,3 +688,80 @@ text-align: center;
   border-top-width: 1px;
   font-style: italic;
 }
+
+#features
+{
+  width: 70%; 
+  float: left;
+}
+
+#badges
+{
+  float: left;
+  width: 30%;
+}
+
+#social
+{
+  clear: both;
+}
+
+@media screen and (max-width: 600px) {
+  body {
+      
+  }
+  
+  #intro h1, h2
+  {
+    font-size: 100%;
+    color: blue;
+  }
+  .container
+  {
+    margin: auto;
+    max-width: 300px;
+    width: 500px;
+  }
+  
+  #logo img
+  {
+    width: 60%;
+    height: 60%;
+  }
+  
+  #mainmenu
+  {
+    display:none;
+  }
+  
+  .span-5
+  {
+    display: none;
+  }
+  
+  .span-19
+  {
+    margin: auto;
+    width: 300px;
+    font-size: 140%;
+  }
+  
+  #features
+  {
+    float: none;
+    width: 100%;
+  }
+
+  #badges
+  {
+    float: none;
+    width: 100%;
+  }
+  
+  #footer
+  {
+    width: 300px;
+  }
+  
+
+}
