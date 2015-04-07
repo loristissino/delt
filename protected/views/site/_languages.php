@@ -8,7 +8,7 @@
   
   foreach($languages as $id => $name)
   {
-    $links[]=CHtml::link($name, $this->createUrl('site/' . $id. '/'. $page));
+    $links[]=CHtml::link($name, $this->createUrl('site/' . $id. '/'. $page), array('rel'=>'alternate', 'hreflang'=>$id));
   }
 
 ?>
