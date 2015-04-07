@@ -760,6 +760,8 @@ text-align: center;
   
   #footer
   {
+    margin: auto;
+    max-width: 200px;
     width: 300px;
   }
   
