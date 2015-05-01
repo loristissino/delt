@@ -28,9 +28,14 @@ else
 ?>
 <?php $this->beginContent('//layouts/main'); ?>
 
-
 <div class="span-19">
   <div id="content">
+    <?php
+      $this->widget('CChallenge', array(
+      'id'=>'challenge',
+      'hideOnEmpty'=>true,
+            ));
+    ?>
   
   <?php if($this->firm): ?>
     <div id="firm_info">

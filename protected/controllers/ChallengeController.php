@@ -1,0 +1,211 @@
+<?php
+/**
+ * ChallengeController class file.
+ *
+ * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
+ * @author Loris Tissino <loris.tissino@gmail.com>
+ * @copyright Copyright &copy; 2013 Loris Tissino
+ * @since 1.8.1
+ * 
+ */
+/**
+ * The ChallengeController class.
+ * 
+ * @package application.controllers
+ * 
+ */
+
+class ChallengeController extends Controller
+{
+  /**
+   * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
+   * using two-column layout. See 'protected/views/layouts/column2.php'.
+   */
+  public $layout='//layouts/column2';
+
+  /**
+   * @return array action filters
+   */
+  public function filters()
+  {
+    return array(
+      'accessControl', // perform access control for CRUD operations
+      'postOnly + delete', // we only allow deletion via POST request,
+      'postOnly + changestatus', // we only allow status change via POST request,
+    );
+  }
+
+  /**
+   * Specifies the access control rules.
+   * This method is used by the 'accessControl' filter.
+   * @return array access control rules
+   */
+  public function accessRules()
+  {
+    return array(
+      array('allow', 
+        'actions'=>array('update','admin','view','index','changestatus'),
+        'users'=>array('@'),
+      ),
+      array('allow', 
+        'actions'=>array('create','delete'),
+        'users'=>array('admin'),
+      ),
+      array('deny',  // deny all users
+        'users'=>array('*'),
+      ),
+    );
+  }
+
+  /**
+   * Displays a particular model.
+   * @param integer $id the ID of the model to be displayed
+   */
+  public function actionView($id)
+  {
+    $this->render('view',array(
+      'model'=>$this->loadModel($id),
+    ));
+  }
+
+  /**
+   * Creates a new model.
+   * If creation is successful, the browser will be redirected to the 'view' page.
+   */
+  public function actionCreate()
+  {
+    $model=new Challenge;
+
+    // Uncomment the following line if AJAX validation is needed
+    // $this->performAjaxValidation($model);
+
+    if(isset($_POST['Challenge']))
+    {
+      $model->attributes=$_POST['Challenge'];
+      if($model->save())
+        $this->redirect(array('view','id'=>$model->id));
+    }
+
+    $this->render('create',array(
+      'model'=>$model,
+    ));
+  }
+
+  /**
+   * Updates a particular model.
+   * If update is successful, the browser will be redirected to the 'view' page.
+   * @param integer $id the ID of the model to be updated
+   */
+  public function actionUpdate($id)
+  {
+    $model=$this->loadModel($id);
+
+    // Uncomment the following line if AJAX validation is needed
+    // $this->performAjaxValidation($model);
+
+    if(isset($_POST['Challenge']))
+    {
+      $model->attributes=$_POST['Challenge'];
+      if($model->save())
+        $this->redirect(array('view','id'=>$model->id));
+    }
+
+    $this->render('update',array(
+      'model'=>$model,
+    ));
+  }
+
+  /**
+   * Deletes a particular model.
+   * If deletion is successful, the browser will be redirected to the 'admin' page.
+   * @param integer $id the ID of the model to be deleted
+   */
+  public function actionDelete($id)
+  {
+    $this->loadModel($id)->delete();
+
+    // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
+    if(!isset($_GET['ajax']))
+      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+  }
+
+  /**
+   * Changes the status of a challenge.
+   * If update is successful, the browser will be redirected to the 'view' page.
+   * @param integer $id the ID of the model to be updated
+   */
+  public function actionChangestatus($id)
+  {
+    $model=$this->loadModel($id);
+    
+    $action = array_keys($_POST)[0];
+    
+    if ($model->changeStatus($action))
+    {
+      Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Changes successfully applied.'));
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested changes.'));
+    }
+    
+    $this->redirect(array('challenge/index'));
+  }
+
+
+  /**
+   * Lists all models.
+   */
+  public function actionIndex()
+  {
+    $dataProvider=Challenge::model()->getChallengesForUser($this->DEUser->id);
+    $this->render('index',array(
+      'dataProvider'=>$dataProvider,
+    ));
+  }
+
+  /**
+   * Manages all models.
+   */
+  public function actionAdmin()
+  {
+    $model=new Challenge('search');
+    $model->unsetAttributes();  // clear any default values
+    if(isset($_GET['Challenge']))
+      $model->attributes=$_GET['Challenge'];
+
+    $this->render('admin',array(
+      'model'=>$model,
+    ));
+  }
+
+  /**
+   * Returns the data model based on the primary key given in the GET variable.
+   * If the data model is not found, an HTTP exception will be raised.
+   * @param integer $id the ID of the model to be loaded
+   * @return Challenge the loaded model
+   * @throws CHttpException
+   */
+  public function loadModel($id)
+  {
+    $model=Challenge::model()->findByPk($id);
+    if($model===null)
+      throw new CHttpException(404,'The requested page does not exist.');
+    if($model->user_id!=$this->DEUser->id)
+      throw new CHttpException(403, 'You are not allowed to access the requested page.');
+    return $model;
+  }
+
+  /**
+   * Performs the AJAX validation.
+   * @param Challenge $model the model to be validated
+   */
+  protected function performAjaxValidation($model)
+  {
+    if(isset($_POST['ajax']) && $_POST['ajax']==='challenge-form')
+    {
+      echo CActiveForm::validate($model);
+      Yii::app()->end();
+    }
+  }
+}

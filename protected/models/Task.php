@@ -17,10 +17,12 @@
  * @property string $description
  * @property string $hint
  * @property string $je_ranks
+ * 
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
- * @property Exercise $exercise * 
+ * @property Exercise $exercise 
+ * @property Journalentry[] $journalentries
  * 
  * @package application.models
  * 
@@ -64,6 +66,7 @@ class Task extends CActiveRecord
     return array(
       'challenges' => array(self::HAS_MANY, 'Challenge', 'task_id'),
       'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
+      'journalentries' => array(self::HAS_MANY, 'Journalentry', 'task_id'),
     );
   }
 

@@ -131,4 +131,9 @@ class Exercise extends CActiveRecord
   {
     return parent::model($className);
   }
+  
+  public function __toString()
+  {
+    return $this->title;
+  }
 }

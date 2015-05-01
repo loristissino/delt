@@ -41,11 +41,11 @@ class AccountController extends Controller
   public function accessRules()
   {
     return array(
-      array('allow', // allow authenticated user to perform 'create' and 'update' actions
+      array('allow', 
         'actions'=>array('create','update','delete','synchronize','import','export','dragdrop'),
         'users'=>array('@'),
       ),
-      array('allow', // allow admin user to perform 'admin' and 'delete' actions
+      array('allow', 
         'actions'=>array('admin'),
         'users'=>array('admin'),
       ),

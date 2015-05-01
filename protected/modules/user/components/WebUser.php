@@ -46,7 +46,7 @@ class WebUser extends CWebUser
         }
     }
 
-    public function model($id=0) {
+    public static function model($id=0) {
         return Yii::app()->getModule('user')->user($id);
     }
 

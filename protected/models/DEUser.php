@@ -22,7 +22,7 @@
  * The followings are the available model relations:
  * @property Firm[] $tblFirms
  * @property Profiles $profiles
- * @property Profiles $id0
+ * @property Challenge[] $challenges
  * 
  * @package application.models
  */
@@ -77,6 +77,7 @@ class DEUser extends CActiveRecord
       'wfirms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0 AND role = "I"'),
       'profiles' => array(self::HAS_ONE, 'Profiles', 'user_id'),
       'id0' => array(self::BELONGS_TO, 'Profiles', 'id'),
+      'challenges' => array(self::HAS_MANY, 'Challenge', 'user_id'),
     );
   }
 
@@ -171,6 +172,11 @@ class DEUser extends CActiveRecord
   public function __toString()
   {
     return $this->username;
+  }
+  
+  public function getOpenChallenges()
+  {
+    return Challenge::model()->forUser($this->id)->started()->completed(false)->findAll();
   }
 
   

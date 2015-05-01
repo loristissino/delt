@@ -18,8 +18,8 @@
  * @property integer $firm_id
  * @property string $assigned_at
  * @property string $started_at
+ * @property string $suspended_at
  * @property string $completed_at
- * @property integer $task_id
  * @property integer $method
  * @property integer $mark
  *
@@ -28,7 +28,6 @@
  * @property Users $instructor
  * @property Users $user
  * @property Firm $firm
- * @property Task $task
  * 
  * 
  * @package application.models
@@ -53,11 +52,11 @@ class Challenge extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
-      array('exercise_id, instructor_id, user_id, firm_id, task_id, method, mark', 'numerical', 'integerOnly'=>true),
-      array('started_at, completed_at', 'safe'),
+      array('exercise_id, instructor_id, user_id, firm_id, method, mark', 'numerical', 'integerOnly'=>true),
+      array('started_at, suspended_at, completed_at', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, completed_at, task_id, method, mark', 'safe', 'on'=>'search'),
+      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, method, mark', 'safe', 'on'=>'search'),
     );
   }
 
@@ -66,14 +65,11 @@ class Challenge extends CActiveRecord
    */
   public function relations()
   {
-    // NOTE: you may need to adjust the relation name and the related
-    // class name for the relations automatically generated below.
     return array(
       'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
       'instructor' => array(self::BELONGS_TO, 'Users', 'instructor_id'),
       'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
-      'task' => array(self::BELONGS_TO, 'Task', 'task_id'),
     );
   }
 
@@ -90,8 +86,8 @@ class Challenge extends CActiveRecord
       'firm_id' => 'Firm',
       'assigned_at' => 'Assigned At',
       'started_at' => 'Started At',
+      'suspended_at' => 'Suspended At',
       'completed_at' => 'Completed At',
-      'task_id' => 'Task',
       'method' => 'Method',
       'mark' => 'Mark',
     );
@@ -122,8 +118,8 @@ class Challenge extends CActiveRecord
     $criteria->compare('firm_id',$this->firm_id);
     $criteria->compare('assigned_at',$this->assigned_at,true);
     $criteria->compare('started_at',$this->started_at,true);
+    $criteria->compare('suspended_at',$this->suspended_at,true);
     $criteria->compare('completed_at',$this->completed_at,true);
-    $criteria->compare('task_id',$this->task_id);
     $criteria->compare('method',$this->method);
     $criteria->compare('mark',$this->mark);
 
@@ -142,4 +138,185 @@ class Challenge extends CActiveRecord
   {
     return parent::model($className);
   }
+  
+  public function __toString()
+  {
+    return $this->exercise->title;
+  }
+  
+  public function forUser($user_id, $order='assigned_at ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.user_id = ' . $user_id,
+        'order'=>$order,
+    ));
+    return $this;
+  }  
+  
+  public function started($started=true)
+  {
+    return $this->_timestampFilter('started', $started);
+  }  
+
+  public function suspended($suspended=true)
+  {
+    return $this->_timestampFilter('suspended', $suspended);
+  }  
+
+  public function completed($completed=true)
+  {
+    return $this->_timestampFilter('completed', $completed);
+  }  
+  
+  private function _timestampFilter($event, $condition)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.' . $event . '_at IS ' . ($condition ? 'NOT ': '') . 'NULL',
+    ));
+    return $this;
+  }
+  
+  public function isStarted()
+  {
+    return $this->started_at != null;
+  }
+  
+  public function isNew()
+  {
+    return !$this->isStarted();
+  }
+
+  public function isSuspended()
+  {
+    return $this->suspended_at != null;
+  }
+
+  public function isCompleted()
+  {
+    return $this->completed_at != null;
+  }
+  
+  public function isOpen()
+  {
+    return $this->isStarted() && !$this->isSuspended() && !$this->isCompleted();
+  }
+  
+  public function getStatus()
+  {
+    if ($this->isOpen()) return 'open';
+    if ($this->isCompleted()) return 'completed';
+    if ($this->isSuspended()) return 'suspended';
+    if ($this->isNew()) return 'new';
+  }
+  
+  private function _suspendChallengesForUser()
+  {
+    $params=array(
+     ':user_id'=>$this->user_id,
+    );
+    Yii::app()->db->createCommand()->update(
+      '{{challenge}}',
+      array('suspended_at'=>date('Y-m-d H:i:s')),
+      
+      array('and',
+        'user_id=:user_id',
+        'started_at  IS NOT NULL',
+        'suspended_at IS NULL',
+        'completed_at IS NULL',
+        ),
+      $params
+      );
+  }
+  
+  
+  public function changeStatus($action)
+  {
+    
+    $transaction = $this->getDbConnection()->beginTransaction();
+    $done = false;
+    
+    try
+    {
+      switch($action)
+      {
+        case 'start':
+          if (!$this->isStarted())
+          {
+            // suspend all the active challenges of the user...
+            $this->_suspendChallengesForUser();
+            // for this one, set started_at and delete suspended_at
+            $this->started_at = date('Y-m-d H:i:s');
+            $this->suspended_at = null;
+            $this->save();
+            
+            $done = true;
+            break;
+          }
+
+        case 'suspend':
+          if (!$this->isSuspended() && !$this->isCompleted())
+          {
+            $this->suspended_at = date('Y-m-d H:i:s');
+            $this->save();
+            $done = true;
+            break;
+          }
+
+        case 'resume':
+          if ($this->isSuspended() && !$this->isCompleted())
+          {
+            // suspend all the active challenges of the user...
+            $this->_suspendChallengesForUser();
+            $this->suspended_at = null;
+            $this->save();
+            $done = true;
+            break;
+          }
+          
+        case 'completed':
+          if ($this->isStarted() && !$this->isSuspended() && !$this->isCompleted())
+          {
+            $this->completed_at = date('Y-m-d H:i:s');
+            $this->suspended_at = null;
+            $this->save();
+            $done = true;
+            break;
+          }
+      }  // end switch
+      
+      if($done)
+      {
+        $transaction->commit();
+        return true;
+      }
+      
+    }  // end try
+    catch (Exception $e)
+    {
+      $transaction->rollBack();
+      return false;
+    }
+    
+    return false;
+    
+  }
+  
+  /**
+   * Returns a data provider for the challenges of a user.
+   * @param  integer $user_id the user id
+   * @return CActiveDataProvider the challenges of the user
+   */
+  public function getChallengesForUser($user_id)
+  {
+    return new CActiveDataProvider($this->forUser($user_id), array(
+      'criteria'=>array(
+          'order' => 'assigned_at DESC',
+        ),
+      'pagination'=>array(
+          'pageSize'=>100,
+          ),
+      )
+    );
+  }
+  
 }

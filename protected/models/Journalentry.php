@@ -21,10 +21,13 @@
  * @property integer $is_included
  * @property integer $rank
  * @property integer $maxrank
+ * @property integer $task_id
+ * 
  *
  * The followings are the available model relations:
  * @property Posting[] $postings
  * @property Firm $firm
+ * @property Task $task
  * 
  * @package application.models
  * 
@@ -60,12 +63,12 @@ class Journalentry extends CActiveRecord
     // will receive user inputs.
     return array(
       array('firm_id, date, description', 'required'),
-      array('firm_id, is_confirmed, is_closing, rank', 'numerical', 'integerOnly'=>true),
+      array('firm_id, is_confirmed, is_closing, rank, task_id', 'numerical', 'integerOnly'=>true),
       array('is_adjustment, is_included', 'safe'),
       array('description', 'length', 'max'=>255),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
-      array('id, firm_id, date, description, is_confirmed, is_closing, is_included, rank', 'safe', 'on'=>'search'),
+      array('id, firm_id, date, description, is_confirmed, is_closing, is_included, rank, task_id', 'safe', 'on'=>'search'),
     );
   }
 
@@ -80,6 +83,7 @@ class Journalentry extends CActiveRecord
       'postings' => array(self::HAS_MANY, 'Posting', 'journalentry_id'),
       'accounts' => array(self::HAS_MANY, 'Account', 'firm_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
+      'task' => array(self::BELONGS_TO, 'Task', 'task_id'),
     );
   }
 
@@ -98,6 +102,7 @@ class Journalentry extends CActiveRecord
       'is_adjustment' => 'Are Exceptions Allowed',
       'is_included' => 'Is Included',
       'rank' => 'Rank',
+      'task_id' => 'Task',
     );
   }
 
@@ -121,6 +126,7 @@ class Journalentry extends CActiveRecord
     $criteria->compare('is_adjustment',$this->is_adjustment);
     $criteria->compare('is_included',$this->is_included);
     $criteria->compare('rank',$this->rank);
+    $criteria->compare('task_id',$this->task_id);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
