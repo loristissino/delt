@@ -5,5 +5,5 @@
     array('class'=>'hiddenlink')
   ) ?>
 <?php else: ?>
-  <?php echo $posting->journalentry->description ?><?php if($posting->journalentry->transaction_id) echo $posting->journalentry->transaction_id ?>
+  <?php echo $posting->journalentry->description ?>
 <?php endif ?>

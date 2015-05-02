@@ -320,6 +320,12 @@ a.hiddenlink:hover
   color: blue;
 }
 
+a.noshownlink
+{
+  text-decoration: none;
+  color: black;
+}
+
 .grandtotal
 {
   color: gray;
@@ -708,7 +714,43 @@ text-align: center;
 
 #challenge
 {
-  background-color: yellow;
+  background-color: #FFFFCC;
+}
+
+#challenge p
+{
+  margin: 0;
+}
+
+
+#challenge .transaction.current
+{
+  background-color: #FFFF77;
+}
+
+#challenge .transaction.current div.description
+{
+  font-size: 150%;
+}
+#challenge .transaction.noncurrent p
+{
+  color: #BFBFBF;
+}
+
+#challenge .transaction.current p
+{
+  margin-left: 40px;
+  margin-right: 40px;
+}
+
+#challenge .transaction.current div.firstline
+{
+  color: black; 
+}
+
+.connected
+{
+  background-color: red;
 }
 
 

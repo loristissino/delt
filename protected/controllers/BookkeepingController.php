@@ -588,7 +588,7 @@ class BookkeepingController extends Controller
       {
         if($this->firm->connectSelectedJournalentriesToTransaction($_POST['id'], Yii::app()->user->getState('transaction')))
         {
-          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been connected.'));
+          //Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been connected.'));
         }
         else
         {

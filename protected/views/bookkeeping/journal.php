@@ -36,7 +36,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'id'=>'firm-grid',
   'dataProvider'=>$this->firm->getJournalentriesAsDataProvider(),
   'selectableRows'=>2, // multiple rows can be selected
-  'rowCssClassExpression'=>'($row%2 ? "even" : "odd") . ($data->journalentry->is_included==0 ? " excluded" : "")',
+  'rowCssClassExpression'=>'"journalentryrow " .($row%2 ? "even" : "odd") . ($data->journalentry->is_included==0 ? " excluded" : "")',
+  'rowHtmlOptionsExpression' => 'array("data-transaction-id"=>$data->journalentry->transaction_id)',
   'columns'=>array(
     array(
       'class'=>'CDataColumn',

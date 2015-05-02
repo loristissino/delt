@@ -1,16 +1,40 @@
 <?php
-  $md = new CMarkdown();
-  $challenge = $this->getChallenge();
+
+$md = new CMarkdown();
+$challenge = $this->getChallenge();
+
+if($challenge)
+{
+  $params = CJavaScript::encode(array('transaction'=>$challenge->transaction_id));
+
+  $cs = Yii::app()->getClientScript();  
+  $cs->registerScript(
+    'challenge-config',
+      'var params = ' .$params. ';
+      execute(params);'
+    ,
+    CClientScript::POS_READY
+  );
+
+  $cs->registerScriptFile(
+    Yii::app()->request->baseUrl.'/js/delt/challenge.js',
+    CClientScript::POS_HEAD
+  );
+}
+
 ?>
 
 <?php if($challenge): ?>
+
   <div id="challenge" >
 
+  <?php echo CHtml::script('params = ' . $params . '; execute(params);') 
+  // we need to call execute() directly, to handle ajax updates reactions ?>
   <h2><?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The running challenge'))); ?> <?php echo CHtml::encode($challenge->exercise->title) ?></h2>
-  <p><?php echo CHtml::encode($challenge->exercise->description) ?></p>
 
+  <div id="challenge_context">
+  <p><?php echo CHtml::encode($challenge->exercise->description) ?></p>
   <?php echo $md->transform($challenge->exercise->introduction) ?>
-  
   <p>
   <?php if($challenge->firm_id): ?>
     <?php echo Yii::t('delt', 'Associated firm:') ?> <?php echo $challenge->firm ?>
@@ -56,7 +80,7 @@
     <?php endif ?>
   <?php endif ?>
   </p>
-
+  </div><!-- challenge_context -->
 
   <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge)) ?>
   
