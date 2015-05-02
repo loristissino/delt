@@ -584,6 +584,19 @@ class BookkeepingController extends Controller
         }
       }  
 
+      if($op=='connect')
+      {
+        if($this->firm->connectSelectedJournalentriesToTransaction($_POST['id'], Yii::app()->user->getState('transaction')))
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been connected.'));
+        }
+        else
+        {
+          Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The entries could not be connected.'));
+        }
+      }  
+
+
       if($op=='delete')
       {
         $affected_rows = $this->firm->deleteSelectedJournalentries($_POST['id']);

@@ -1,3 +1,6 @@
+-- This is just a placeholder. Using sqlite should work, but has never been tested.
+-- If you want to convert tables in sqlite format, you are welcome. Please share your experience.
+
 CREATE TABLE tbl_user (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     username VARCHAR(128) NOT NULL,

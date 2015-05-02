@@ -1004,7 +1004,7 @@ class Firm extends CActiveRecord
     
     if(Firm::model()->findByAttributes(array('slug'=>$this->slug)))
     {
-      $this->slug = md5(rand()+mktime());
+      $this->slug = md5(rand()+time());
     }
 
     $transaction = $this->getDbConnection()->beginTransaction();
@@ -1535,6 +1535,7 @@ class Firm extends CActiveRecord
   {
     $journalentries=$this->_findJournalentries($ids);
     $number=sizeof($journalentries);
+    // FIXME This should be done with a common update query
     foreach($journalentries as $journalentry)
     {
       $journalentry->toggleInStatementVisibility();
@@ -1542,7 +1543,23 @@ class Firm extends CActiveRecord
     return $number;
   }
 
-
+  /**
+   * Connects the specified journal entries to a transaction from a challenge.
+   * @param array $ids the ids of the journal entries to toggle visibility for
+   * @param integer $transaction_id the id of the transaction to connect the entries to
+   * @return integer the number of journal entries toggled
+   */
+  public function connectSelectedJournalentriesToTransaction($ids=array(), $transaction_id)
+  {
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    // FIXME This should be done with a common update query
+    foreach($journalentries as $journalentry)
+    {
+      $journalentry->connectToTransaction($transaction_id);
+    }
+    return $number;
+  }
   
   /**
    * Returns the specified journal entries.

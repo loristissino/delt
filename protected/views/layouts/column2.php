@@ -30,13 +30,13 @@ else
 
 <div class="span-19">
   <div id="content">
-    <?php
-      $this->widget('CChallenge', array(
+
+    <?php if (in_array(Yii::app()->controller->id, array('bookkeeping')))
+        $this->widget('application.components.widgets.CChallenge', array(
       'id'=>'challenge',
       'hideOnEmpty'=>true,
             ));
     ?>
-  
   <?php if($this->firm): ?>
     <div id="firm_info">
       <h1><?php echo $this->firm->name ?></h1>

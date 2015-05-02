@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013 Loris Tissino
+ * @copyright Copyright &copy; 2015 Loris Tissino
  * @since 1.8.1
  * 
  */
@@ -32,6 +32,8 @@ class ChallengeController extends Controller
       'accessControl', // perform access control for CRUD operations
       'postOnly + delete', // we only allow deletion via POST request,
       'postOnly + changestatus', // we only allow status change via POST request,
+      'postOnly + connect', // we only allow status change via POST request,
+      'postOnly + activatetransaction', // we only allow status change via POST request,
     );
   }
 
@@ -44,7 +46,7 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('update','admin','view','index','changestatus'),
+        'actions'=>array('update','admin','view','index','changestatus','connect', 'activatetransaction'),
         'users'=>array('@'),
       ),
       array('allow', 
@@ -142,15 +144,55 @@ class ChallengeController extends Controller
     
     if ($model->changeStatus($action))
     {
-      Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Changes successfully applied.'));
+      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
     }
     else
     {
-      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested changes.'));
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
     
     $this->redirect(array('challenge/index'));
   }
+  
+  /**
+   * Connects a firm to the challenge.
+   * @param integer $id the ID of the model to be updated
+   * @param string $slug the slug of the firm to connect
+   */
+  public function actionConnect($id, $slug)
+  {
+    $model=$this->loadModel($id);
+    
+    $firm=$this->loadFirmBySlug($slug);
+    $this->checkFrostiness($firm);
+    
+    if ($model->connect($firm))
+    {
+      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+    }
+    
+    $this->renderPartial('_challenge');
+  }
+  
+  public function actionActivatetransaction($id, $transaction)
+  {
+    $model=$this->loadModel($id);
+    if ($model->activateTransaction($transaction))
+    {
+      Yii::app()->user->setState('transaction', $transaction);
+      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+    }
+    $this->renderPartial('_challenge');
+  }
+  
 
 
   /**

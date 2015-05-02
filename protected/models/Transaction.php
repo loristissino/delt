@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Task class file.
+ * Transaction class file.
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
@@ -9,7 +9,7 @@
  * @since 1.8
  */
 /**
- * Task represents a single task belonging to an {@link Exercise}
+ * Transaction represents a single task belonging to an {@link Exercise}
  *
  * @property integer $id
  * @property integer $exercise_id
@@ -28,14 +28,14 @@
  * 
  */
 
-class Task extends CActiveRecord
+class Transaction extends CActiveRecord
 {
   /**
    * @return string the associated database table name
    */
   public function tableName()
   {
-    return '{{task}}';
+    return '{{transaction}}';
   }
 
   /**
@@ -64,9 +64,9 @@ class Task extends CActiveRecord
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
-      'challenges' => array(self::HAS_MANY, 'Challenge', 'task_id'),
+      'challenges' => array(self::HAS_MANY, 'Challenge', 'transaction_id'),
       'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
-      'journalentries' => array(self::HAS_MANY, 'Journalentry', 'task_id'),
+      'journalentries' => array(self::HAS_MANY, 'Journalentry', 'transaction_id'),
     );
   }
 
@@ -125,4 +125,10 @@ class Task extends CActiveRecord
   {
     return parent::model($className);
   }
+  
+  public function __toString()
+  {
+    return $this->description;
+  }
+  
 }

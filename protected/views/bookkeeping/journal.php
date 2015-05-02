@@ -101,18 +101,28 @@ $this->widget('zii.widgets.grid.CGridView', array(
 echo CHtml::endForm(); ?>
 
 <p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?><br />
-<?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+<?php 
+
+    $items = array(
+        array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
+        array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+        array('label'=>Yii::t('delt','toggle in-statement visibility'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'tisv'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Toggle the visibility of the selected journal entries in the preparation of the statements'))),
+        array('label'=>Yii::t('delt','swap positions'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'swap'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Swap the positions of the selected journal entries (choose only two entries for this to work)'))),
+    );
+    
+    if (Yii::app()->user->getState('transaction'))
+    {
+      $items[] = array('label'=>Yii::t('delt','connect to current transaction'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'connect'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Connect the selected journal entries to the current transaction (from a challenge)')));
+  
+    }
+
+    $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
 //    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
     'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
 //    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
-    'items'=>array(
-        array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
-        array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
-        array('label'=>Yii::t('delt','toggle in-statement visibility'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'tisv'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Toggle the visibility of the selected journal entries in the preparation of the statements'))),
-        array('label'=>Yii::t('delt','swap positions'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'swap'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Swap the positions of the selected journal entries (choose only two entries for this to work)'))),
-    ),
+    'items'=> $items,
     'htmlOptions'=>array('class'=>'actionBar'),
     'containerTag'=>'span',
 ));

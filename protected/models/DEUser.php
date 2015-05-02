@@ -174,9 +174,9 @@ class DEUser extends CActiveRecord
     return $this->username;
   }
   
-  public function getOpenChallenges()
+  public function getOpenChallenge()
   {
-    return Challenge::model()->forUser($this->id)->started()->completed(false)->findAll();
+    return Challenge::model()->forUser($this->id)->started()->suspended(false)->completed(false)->find();
   }
 
   

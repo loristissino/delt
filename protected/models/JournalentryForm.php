@@ -154,6 +154,8 @@ class JournalentryForm extends CFormModel
         $this->journalentry->rank = $this->journalentry->getCurrentMaxRank() + 1;
       }
       
+      $this->journalentry->transaction_id = Yii::app()->user->getState('transaction');
+      
       $this->journalentry->save(true);
       
       $this->journalentry->deletePostings();

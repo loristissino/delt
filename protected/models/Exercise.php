@@ -23,7 +23,7 @@
  * @property Challenge[] $challenges
  * @property Firm $firm
  * @property Users $user
- * @property Task[] $tasks
+ * @property Transaction[] $transactions
  * 
  *
  * @package application.models
@@ -70,7 +70,7 @@ class Exercise extends CActiveRecord
       'challenges' => array(self::HAS_MANY, 'Challenge', 'exercise_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
       'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
-      'tasks' => array(self::HAS_MANY, 'Task', 'exercise_id'),
+      'transactions' => array(self::HAS_MANY, 'Transaction', 'exercise_id'),
     );
   }
 

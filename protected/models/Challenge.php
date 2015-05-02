@@ -22,6 +22,7 @@
  * @property string $completed_at
  * @property integer $method
  * @property integer $mark
+ * @property integer $transaction_id  (current transaction)
  *
  * The followings are the available model relations:
  * @property Exercise $exercise
@@ -70,6 +71,7 @@ class Challenge extends CActiveRecord
       'instructor' => array(self::BELONGS_TO, 'Users', 'instructor_id'),
       'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
+      'transaction' => array(self::BELONGS_TO, 'Transaction', 'transaction_id'),  // current task
     );
   }
 
@@ -90,6 +92,7 @@ class Challenge extends CActiveRecord
       'completed_at' => 'Completed At',
       'method' => 'Method',
       'mark' => 'Mark',
+      'transaction' => 'Transaction',
     );
   }
 
@@ -122,6 +125,7 @@ class Challenge extends CActiveRecord
     $criteria->compare('completed_at',$this->completed_at,true);
     $criteria->compare('method',$this->method);
     $criteria->compare('mark',$this->mark);
+    $criteria->compare('transaction_id',$this->transaction_id);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
@@ -299,6 +303,34 @@ class Challenge extends CActiveRecord
     
     return false;
     
+  }
+  
+  public function connect(Firm $firm)
+  {
+    try
+    {
+      $this->firm_id = $firm->id;
+      $this->save();
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
+  }
+
+  public function activateTransaction($transaction_id)
+  {
+    try
+    {
+      $this->transaction_id = $transaction_id;
+      $this->save(false);
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
   }
   
   /**
