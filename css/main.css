@@ -712,6 +712,11 @@ text-align: center;
   clear: both;
 }
 
+div.challenge.open
+{
+  background-color: #FFFFCC;
+}
+
 #challenge
 {
   background-color: #FFFFCC;
@@ -759,9 +764,9 @@ text-align: center;
    color: black;
 }
 
-.connected
+#challenge .error
 {
-  background-color: red;
+  background-color: #FFFF77;
 }
 
 

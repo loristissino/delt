@@ -686,7 +686,9 @@ class Account extends CActiveRecord
     }
     else
     {
-      $this->currentname = array_shift(array_filter($names)); 
+      //$n = array_filter($names);   // filters out empty values
+      //$this->currentname = array_shift($n);  // takes the first item of the array (we don't know the key)
+      $this->currentname = str_replace("\n", '', $this->textnames);
     }
   }
   

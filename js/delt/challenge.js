@@ -26,6 +26,8 @@ function execute(params)
 function addLinks(params)
 {
   $("#challenge_commands").hide();
+  
+  $("#challenge_icon").attr('title', params.i18n.icon_title_toggles);
 
   $("#challenge_commands").html(
     [

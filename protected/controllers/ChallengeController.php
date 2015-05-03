@@ -143,6 +143,11 @@ class ChallengeController extends Controller
     
     $action = array_keys($_POST)[0];
     
+    if($action=='check')
+    {
+      return $this->_check($model);
+    }
+    
     if ($model->changeStatus($action))
     {
       //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
@@ -206,6 +211,15 @@ class ChallengeController extends Controller
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
     $this->renderPartial('_challenge');
+  }
+
+  private function _check(Challenge $model)
+  {
+    if($model->isOpen())
+      throw new CHttpException(404,'The requested page does not exist.');
+    
+    $results = $model->check();
+    $this->render('results', array('model'=>$model, 'results'=>$results));
   }
 
   /**

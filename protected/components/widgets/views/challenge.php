@@ -11,6 +11,7 @@ if($challenge)
       'toggle_context'=>Yii::t('delt', 'Context'),
       'toggle_firm'=>Yii::t('delt', 'Firm'),
       'toggle_transactions'=>Yii::t('delt', 'Transactions'),
+      'icon_title_toggles'=>Yii::t('delt', 'Toggle visibility of items...'),
       ),
     ));
 
@@ -27,9 +28,19 @@ if($challenge)
     Yii::app()->request->baseUrl.'/js/delt/challenge.js',
     CClientScript::POS_HEAD
   );
-}
 
 $challenge_visibility = Yii::app()->controller->challenge_visibility;
+
+$challenge_firm_set = !!$challenge->firm_id;
+// there is a firm set for the challenge
+
+$challenge_firm_current = isset(Yii::app()->controller->firm) && $challenge->firm_id == Yii::app()->controller->firm->id;
+// the current firm is the same of the challenge
+
+$is_ajax = Yii::app()->controller->is_ajax;
+
+}
+
 
 ?>
 <?php if($challenge && $challenge_visibility!='none'): ?>
@@ -39,11 +50,11 @@ $challenge_visibility = Yii::app()->controller->challenge_visibility;
   <?php echo CHtml::script('params = ' . $params . '; execute(params);') 
   // we need to call execute() directly, to handle ajax updates reactions ?>
   <h2>
-    <?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('id'=>'challenge_icon', 'width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The running challenge'))); ?>
+    <?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('id'=>'challenge_icon', 'width'=>16, 'height'=>16, 'style'=>'cursor: pointer', 'title'=>Yii::t('delt', 'The running challenge'))); ?>
     <span id="challenge_commands" class="challengeinfo"></span>
     <?php echo CHtml::encode($challenge->exercise->title) ?>
-    <span class="challengeinfo"> - 
     <?php if($challenge->method & Challenge::SHOW_POINTS_DURING_CHALLENGE): ?>
+    <span class="challengeinfo"> - 
       <span class="score">
         <?php echo Yii::t('delt', 'Current score:') ?>
         <?php echo Yii::t('delt', 'One point|{n} points', $challenge->score) ?></span>
@@ -51,12 +62,12 @@ $challenge_visibility = Yii::app()->controller->challenge_visibility;
     </span>
   </h2>
 
-  <div id="challenge_firm">
+  <div id="challenge_firm" style="display: <?php echo !($challenge_firm_set && $challenge_firm_current)&&(!$is_ajax) ? 'visible': 'none' ?>">
     <h3><?php echo Yii::t('delt', 'Firm') ?></h3>
   <p>
-  <?php if($challenge->firm_id): ?>
+  <?php if($challenge_firm_set): ?>
     <?php echo Yii::t('delt', 'Associated firm:') ?> <?php echo $challenge->firm ?>
-    <?php if(isset(Yii::app()->controller->firm) && $challenge->firm_id != Yii::app()->controller->firm->id): ?>
+    <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?>
       <?php echo CHtml::ajaxLink(
         Yii::t('delt', 'Link the firm «%name%» instead', array('%name%'=>Yii::app()->controller->firm)),
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
@@ -108,9 +119,7 @@ $challenge_visibility = Yii::app()->controller->challenge_visibility;
   <hr />
   </div><!-- challenge_context -->
 
-  <?php if ($challenge_visibility=='journal'): ?>
-    <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge)) ?>
-  <?php endif ?>
+  <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge, 'challenge_visibility'=>$challenge_visibility)) ?>
   
   </div><!-- challenge -->
 <?php endif ?>

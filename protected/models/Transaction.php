@@ -19,7 +19,7 @@
  * @property string $je_ranks
  * @property integer $points
  * @property integer $penalties
- * 
+ * @property integer[] $_je_ranks
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
@@ -32,6 +32,9 @@
 
 class Transaction extends CActiveRecord
 {
+  
+  private $_je_ranks;
+  
   /**
    * @return string the associated database table name
    */
@@ -137,4 +140,20 @@ class Transaction extends CActiveRecord
     return $this->description;
   }
   
+  protected function afterFind()
+  {
+    $this->_je_ranks = $this->je_ranks ? explode(',', $this->je_ranks) : array();
+    return parent::afterFind();
+  }
+
+  protected function beforeSave()
+  {
+    $this->je_ranks = implode(',', $this->_je_ranks);
+    return parent::beforeSave();
+  }
+  
+  public function getJERanks()
+  {
+    return $this->_je_ranks;
+  }
 }

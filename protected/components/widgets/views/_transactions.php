@@ -1,4 +1,4 @@
-  <div id="challenge_transactions">
+  <div id="challenge_transactions" style="display: <?php echo $challenge_visibility=='journal' ? 'visible': 'none' ?>">
     
   <h3><?php echo Yii::t('delt', 'Transactions') ?></h3>
   <?php foreach($challenge->exercise->transactions as $transaction): $is_current = $transaction->id == $challenge->transaction_id ?>
@@ -54,7 +54,7 @@
             'type' => 'POST',
             ),
           array(
-            'title' => Yii::t('delt', 'Request a hint for this transaction'),
+            'title' => Yii::t('delt', 'Request a hint for this transaction') . ' (-' . Yii::t('delt', '1 point|{n} points', $transaction->penalties) . ')',
             'confirm' => Yii::t('delt', 'Do you want to receive a hint for this transaction?') . ' ' . Yii::t('delt', 'It will cost you one point.|It will cost you {n} points.', $transaction->penalties),
             )
           )

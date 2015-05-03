@@ -61,6 +61,8 @@ class Controller extends CController
   
   public $challenge_visibility = 'none';
   
+  public $is_ajax = false;
+  
   protected function beforeAction($action)
   {
     $this->DEUser = DEUser::model()->findByPK(Yii::app()->user->id);
@@ -71,6 +73,7 @@ class Controller extends CController
     if($this->getId() == 'challenge' && in_array($this->getAction()->getId(), array('activatetransaction', 'requesthint')))
     {
         $this->challenge_visibility='journal';
+        $this->is_ajax = true;
     }
     
     if($this->id == 'bookkeeping')

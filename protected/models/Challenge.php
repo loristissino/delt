@@ -20,6 +20,7 @@
  * @property string $started_at
  * @property string $suspended_at
  * @property string $completed_at
+ * @property string $checked_at
  * @property integer $method
  * @property integer $score
  * @property integer $transaction_id  (current transaction)
@@ -47,6 +48,8 @@ class Challenge extends CActiveRecord
 
   
   private $_hints = null;  // hints already requested / shown to user
+  private $work;           // just an alias
+  private $specimen;       // just an alias
   
   /**
    * @return string the associated database table name
@@ -69,7 +72,7 @@ class Challenge extends CActiveRecord
       array('started_at, suspended_at, completed_at, hints', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, method, score', 'safe', 'on'=>'search'),
+      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, score', 'safe', 'on'=>'search'),
     );
   }
 
@@ -102,6 +105,7 @@ class Challenge extends CActiveRecord
       'started_at' => 'Started At',
       'suspended_at' => 'Suspended At',
       'completed_at' => 'Completed At',
+      'checked_at' => 'Checked At',
       'method' => 'Method',
       'score' => 'Score',
       'transaction' => 'Transaction',
@@ -178,13 +182,18 @@ class Challenge extends CActiveRecord
   public function suspended($suspended=true)
   {
     return $this->_timestampFilter('suspended', $suspended);
-  }  
+  }
 
   public function completed($completed=true)
   {
     return $this->_timestampFilter('completed', $completed);
   }  
   
+  public function checked($checked=true)
+  {
+    return $this->_timestampFilter('checked', $checked);
+  }  
+
   private function _timestampFilter($event, $condition)
   {
     $this->getDbCriteria()->mergeWith(array(
@@ -212,15 +221,26 @@ class Challenge extends CActiveRecord
   {
     return $this->completed_at != null;
   }
+
+  public function isChecked()
+  {
+    return $this->checked_at != null;
+  }
   
   public function isOpen()
   {
     return $this->isStarted() && !$this->isSuspended() && !$this->isCompleted();
   }
   
+  public function hasFirm()
+  {
+    return !!$this->firm_id;
+  }
+  
   public function getStatus()
   {
     if ($this->isOpen()) return 'open';
+    if ($this->isChecked()) return 'checked';
     if ($this->isCompleted()) return 'completed';
     if ($this->isSuspended()) return 'suspended';
     if ($this->isNew()) return 'new';
@@ -233,7 +253,7 @@ class Challenge extends CActiveRecord
     );
     Yii::app()->db->createCommand()->update(
       '{{challenge}}',
-      array('suspended_at'=>date('Y-m-d H:i:s')),
+      array('suspended_at'=>new CDbExpression('NOW()')),
       
       array('and',
         'user_id=:user_id',
@@ -251,6 +271,7 @@ class Challenge extends CActiveRecord
     
     $transaction = $this->getDbConnection()->beginTransaction();
     $done = false;
+    $now = new CDbExpression('NOW()');
     
     try
     {
@@ -262,7 +283,7 @@ class Challenge extends CActiveRecord
             // suspend all the active challenges of the user...
             $this->_suspendChallengesForUser();
             // for this one, set started_at and delete suspended_at
-            $this->started_at = date('Y-m-d H:i:s');
+            $this->started_at = $now;
             $this->suspended_at = null;
             $this->save();
             
@@ -273,8 +294,9 @@ class Challenge extends CActiveRecord
         case 'suspend':
           if (!$this->isSuspended() && !$this->isCompleted())
           {
-            $this->suspended_at = date('Y-m-d H:i:s');
+            $this->suspended_at = $now;
             $this->save();
+            Yii::app()->user->setState('transaction', null);
             $done = true;
             break;
           }
@@ -286,15 +308,26 @@ class Challenge extends CActiveRecord
             $this->_suspendChallengesForUser();
             $this->suspended_at = null;
             $this->save();
+            Yii::app()->user->setState('transaction', $this->transaction_id);
             $done = true;
             break;
           }
           
         case 'completed':
-          if ($this->isStarted() && !$this->isSuspended() && !$this->isCompleted())
+          if ($this->isStarted() && !$this->isSuspended() && !$this->isCompleted() && $this->hasFirm())
           {
-            $this->completed_at = date('Y-m-d H:i:s');
+            $this->firm->freeze(Yii::app()->user->id);
+            $this->completed_at = $now;
             $this->suspended_at = null;
+            $this->save();
+            $done = true;
+            break;
+          }
+          
+        case 'checked':
+          if ($this->isCompleted())
+          {
+            $this->checked_at = $now;
             $this->save();
             $done = true;
             break;
@@ -367,6 +400,9 @@ class Challenge extends CActiveRecord
   protected function afterFind()
   {
     $this->_hints = $this->hints ? explode(',', $this->hints) : array();
+    $this->work = $this->firm;
+    $this->specimen = $this->exercise->firm;
+    
     return parent::afterFind();
   }
 
@@ -401,5 +437,101 @@ class Challenge extends CActiveRecord
     $this->_hints = array_diff($this->_hints, array($transaction_id));
     $this->save();
   }
+  
+  public function check()
+  {
+    $fatal = false;
+    $results = array('warnings'=>array(), 'firm'=>array(), 'transactions'=>array(), 'score'=>0, 'possiblescore'=>0);
+
+    if ($this->work->firm_parent_id != $this->specimen->firm_parent_id)
+    {
+      $results['warnings'][]=Yii::t('delt', 'Different parents');
+    }
+    
+    if ($this->work->language_id != $this->specimen->language_id)
+    {
+      $results['warnings'][]=Yii::t('delt', 'Different languages');
+    }
+    
+    if ($this->work->frozen_at > $this->completed_at)
+    {
+      $results['firm']['errors'][]=Yii::t('delt', 'The firm has been frozen after having been marked completed.');
+      $fatal = true;
+    }
+    
+    foreach($this->exercise->transactions as $transaction)
+    {
+      $results['transactions'][$transaction->id] = $this->checkTransaction($transaction);
+      $results['score'] += $results['transactions'][$transaction->id]['points'] - $results['transactions'][$transaction->id]['penalties'];
+      $results['possiblescore'] += $transaction->points;
+    }
+    
+    if($fatal)
+    {
+      $results['score'] = 0;
+    }
+    $this->score = $results['score'];
+    $this->changeStatus('checked');
+    return $results;
+  }
+  
+  public function checkTransaction(Transaction $transaction)
+  {
+    $result = array();
+    
+    $wje = $this->findJournalEntriesOfWork($transaction);
+    $sje = $this->findJournalEntriesOfSpecimen($transaction);
+    
+    $sizeOfWJE = sizeof($wje);
+    $sizeOfSJE = sizeof($sje);
+
+    $result['points'] = 0; // if we find errors, we put this to 0 afterwards
+    $result['description'] = $transaction->description;
+    $result['errors'] = array();
+    
+    if ( $sizeOfWJE != $sizeOfSJE )
+    {
+      $result['points'] = 0;
+      $result['errors'] = array(Yii::t('delt', 'Not the same number of journal entries (expected: %number_expected%, found: %number_found%)', 
+        array('%number_expected%'=>$sizeOfSJE, '%number_found%'=>$sizeOfWJE))
+        );
+    }
+    else
+    {
+      for ($i=0; $i< $sizeOfSJE; $i++)   // they are sorted the same way, so we just go in parallel
+      {
+        if($wje[$i]->date != $sje[$i]->date)
+        {
+          $result['errors'][] = Yii::t('delt', 'Journal entry %id%: not the correct date (expected: %date_expected%, found: %date_found%)', 
+            array(
+              '%id%'=>$wje[$i]->id,
+              '%date_expected%' => Yii::app()->dateFormatter->formatDateTime($sje[$i]->date, 'short', null),
+              '%date_found%' => Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null),
+              )
+            );
+        }
+      }
+      if (sizeof($result['errors'])==0)
+      {
+        $result['points'] = $transaction->points; // good!
+      } 
+    }
+    
+    $result['penalties'] = $this->hasHint($transaction->id) ? $transaction->penalties : 0;
+    
+    return $result;
+  }
+  
+  private function findJournalEntriesOfWork(Transaction $transaction)
+  {
+    return Journalentry::model()->ofFirm($this->work->id)->included()->connectedTo($transaction->id)->with('postings')->findAll();
+  }
+
+  private function findJournalEntriesOfSpecimen(Transaction $transaction)
+  {
+    return Journalentry::model()->ofFirm($this->specimen->id)->included()->withRanks($transaction->getJERanks())->with('postings')->findAll();
+    
+  }
+
   
 }
