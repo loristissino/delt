@@ -59,9 +59,32 @@ class Controller extends CController
   
   public $css; // custom css
   
+  public $challenge_visibility = 'none';
+  
   protected function beforeAction($action)
   {
     $this->DEUser = DEUser::model()->findByPK(Yii::app()->user->id);
+    
+    // we need to take note of the context for the challenge when it is first shown,
+    // because ajax call will have different actions associated but we want to keep the initial status
+    
+    if($this->getId() == 'challenge' && in_array($this->getAction()->getId(), array('activatetransaction', 'requesthint')))
+    {
+        $this->challenge_visibility='journal';
+    }
+    
+    if($this->id == 'bookkeeping')
+    {
+      if($this->action->id == 'journal')
+      {
+        $this->challenge_visibility='journal';
+      }
+      else
+      {
+        $this->challenge_visibility='bookkeeping';
+      }
+    }
+    
     return parent::beforeAction($action);
   }
 

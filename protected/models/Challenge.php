@@ -21,8 +21,9 @@
  * @property string $suspended_at
  * @property string $completed_at
  * @property integer $method
- * @property integer $mark
+ * @property integer $score
  * @property integer $transaction_id  (current transaction)
+ * @property string $hints
  *
  * The followings are the available model relations:
  * @property Exercise $exercise
@@ -36,6 +37,17 @@
  */
 class Challenge extends CActiveRecord
 {
+  
+  const
+     SHOW_POINTS_DURING_CHALLENGE          =   1,
+     ALLOW_SHOW_CORRECT_ENTRIES            =   2,
+     SHOW_CHECKS_ON_TRANSACTION_CHANGE     =   4,
+     SHOW_CHECKS_ON_CHALLENGE_COMPLETED    =   8
+     ;
+
+  
+  private $_hints = null;  // hints already requested / shown to user
+  
   /**
    * @return string the associated database table name
    */
@@ -53,11 +65,11 @@ class Challenge extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
-      array('exercise_id, instructor_id, user_id, firm_id, method, mark', 'numerical', 'integerOnly'=>true),
-      array('started_at, suspended_at, completed_at', 'safe'),
+      array('exercise_id, instructor_id, user_id, firm_id, method, score', 'numerical', 'integerOnly'=>true),
+      array('started_at, suspended_at, completed_at, hints', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, method, mark', 'safe', 'on'=>'search'),
+      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, method, score', 'safe', 'on'=>'search'),
     );
   }
 
@@ -91,8 +103,9 @@ class Challenge extends CActiveRecord
       'suspended_at' => 'Suspended At',
       'completed_at' => 'Completed At',
       'method' => 'Method',
-      'mark' => 'Mark',
+      'score' => 'Score',
       'transaction' => 'Transaction',
+      'hints' => 'Hints',
     );
   }
 
@@ -124,9 +137,9 @@ class Challenge extends CActiveRecord
     $criteria->compare('suspended_at',$this->suspended_at,true);
     $criteria->compare('completed_at',$this->completed_at,true);
     $criteria->compare('method',$this->method);
-    $criteria->compare('mark',$this->mark);
+    $criteria->compare('score',$this->score);
     $criteria->compare('transaction_id',$this->transaction_id);
-
+    
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
     ));
@@ -349,6 +362,44 @@ class Challenge extends CActiveRecord
           ),
       )
     );
+  }
+    
+  protected function afterFind()
+  {
+    $this->_hints = $this->hints ? explode(',', $this->hints) : array();
+    return parent::afterFind();
+  }
+
+  protected function beforeSave()
+  {
+    $this->hints = implode(',', $this->_hints);
+    return parent::beforeSave();
+  }
+  
+  public function hasHint($transaction_id)
+  {
+    return in_array($transaction_id, $this->_hints);
+  }
+
+  public function addHint($transaction_id)
+  {
+    if ($transaction = Transaction::model()->findByPK($transaction_id))
+    {
+      if(!$this->hasHint($transaction_id))
+      {
+        $this->_hints[] = $transaction_id;
+        $this->score -= $transaction->penalties;
+        $this->save();
+        return true;
+      }
+    }
+    return false;
+  }
+
+  public function removeHint($transaction_id)
+  {
+    $this->_hints = array_diff($this->_hints, array($transaction_id));
+    $this->save();
   }
   
 }

@@ -17,6 +17,8 @@
  * @property string $description
  * @property string $hint
  * @property string $je_ranks
+ * @property integer $points
+ * @property integer $penalties
  * 
  *
  * The followings are the available model relations:
@@ -47,7 +49,7 @@ class Transaction extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, event_date, description, je_ranks', 'required'),
-      array('exercise_id', 'numerical', 'integerOnly'=>true),
+      array('exercise_id, points, penalties', 'numerical', 'integerOnly'=>true),
       array('je_ranks', 'length', 'max'=>255),
       array('hint', 'safe'),
       // The following rule is used by search().
@@ -82,6 +84,8 @@ class Transaction extends CActiveRecord
       'description' => 'Description',
       'hint' => 'Hint',
       'je_ranks' => 'Je Ranks',
+      'points' => 'Points',
+      'penalties' => 'Penalties',
     );
   }
 
@@ -109,6 +113,8 @@ class Transaction extends CActiveRecord
     $criteria->compare('description',$this->description,true);
     $criteria->compare('hint',$this->hint,true);
     $criteria->compare('je_ranks',$this->je_ranks,true);
+    $criteria->compare('points',$this->points,true);
+    $criteria->compare('penalties',$this->penalties,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,

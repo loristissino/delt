@@ -4,24 +4,17 @@
  
 class CChallenge extends CWidget
 {
-  
     public $hideOnEmpty=false;
     public $title='Challenge Manager';
+    public $challenge;
  
     public function getChallenge()
     {
-      if (Yii::app()->controller->DEUser)
+      if ($this->challenge = Yii::app()->controller->DEUser->getOpenChallenge())
       {
-        if ($challenge = Yii::app()->controller->DEUser->getOpenChallenge())
-        {
-          Yii::app()->user->setState('transaction', $challenge->transaction_id);
-        }
-        return $challenge;
+        Yii::app()->user->setState('transaction', $this->challenge->transaction_id);
       }
-      else
-      {
-        return false;
-      }
+      return $this->challenge;
     }
     
     public function run()

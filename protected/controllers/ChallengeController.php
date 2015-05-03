@@ -32,8 +32,9 @@ class ChallengeController extends Controller
       'accessControl', // perform access control for CRUD operations
       'postOnly + delete', // we only allow deletion via POST request,
       'postOnly + changestatus', // we only allow status change via POST request,
-      'postOnly + connect', // we only allow status change via POST request,
-      'postOnly + activatetransaction', // we only allow status change via POST request,
+      'postOnly + connect', // we only allow connection change via POST request,
+      'postOnly + activatetransaction', // we only allow transaction activation via POST request,
+      'postOnly + requesthint', // we only allow hint requests via POST request,
     );
   }
 
@@ -46,7 +47,7 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('update','admin','view','index','changestatus','connect', 'activatetransaction'),
+        'actions'=>array('update','admin','view','index','changestatus','connect', 'activatetransaction', 'requesthint'),
         'users'=>array('@'),
       ),
       array('allow', 
@@ -193,7 +194,19 @@ class ChallengeController extends Controller
     $this->renderPartial('_challenge');
   }
   
-
+  public function actionRequesthint($id, $transaction)
+  {
+    $model=$this->loadModel($id);
+    if ($model->addHint($transaction))
+    {
+      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+    }
+    $this->renderPartial('_challenge');
+  }
 
   /**
    * Lists all models.
@@ -220,6 +233,7 @@ class ChallengeController extends Controller
       'model'=>$model,
     ));
   }
+  
 
   /**
    * Returns the data model based on the primary key given in the GET variable.

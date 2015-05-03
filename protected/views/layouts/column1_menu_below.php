@@ -27,6 +27,12 @@ else
 <?php $this->beginContent('//layouts/main'); ?>
 
   <div id="content">
+    <?php
+      $this->widget('application.components.widgets.CChallenge', array(
+        'id'=>'challenge',
+        'hideOnEmpty'=>true,
+      ));
+    ?>
   
   <?php if($this->firm): ?>
     <div id="firm_info">

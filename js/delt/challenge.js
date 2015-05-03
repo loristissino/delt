@@ -8,7 +8,9 @@ function execute(params)
   {
     // ...
   }
+  
   updateConnections();
+  addLinks(params);
   
   $(".transaction").each(function(i, obj)
   {
@@ -20,6 +22,45 @@ function execute(params)
   );
   
 }
+
+function addLinks(params)
+{
+  $("#challenge_commands").hide();
+
+  $("#challenge_commands").html(
+    [
+      '<a href="#" id="toggle_firm">' + params.i18n.toggle_firm + '</a>',
+      '<a href="#" id="toggle_context">' + params.i18n.toggle_context + '</a>',
+      '<a href="#" id="toggle_transactions">' + params.i18n.toggle_transactions + '</a>',
+    ].join(" - ")
+    );
+
+  $("#challenge_icon").click(function()
+  {
+     $("#challenge_commands").toggle(200);
+  }
+  );
+    
+  $("#toggle_context").click(function()
+    {
+      $("#challenge_context").toggle(500);
+    }
+  );
+  $("#toggle_firm").click(function()
+    {
+      $("#challenge_firm").toggle(500);
+    }
+  );
+  $("#toggle_transactions").click(function()
+    {
+      $("#challenge_transactions").toggle(500);
+    }
+  );
+
+
+}
+
+
 
 function updateConnections()
 {

@@ -5,7 +5,14 @@ $challenge = $this->getChallenge();
 
 if($challenge)
 {
-  $params = CJavaScript::encode(array('transaction'=>$challenge->transaction_id));
+  $params = CJavaScript::encode(array(
+    'transaction'=>$challenge->transaction_id,
+    'i18n'=>array(
+      'toggle_context'=>Yii::t('delt', 'Context'),
+      'toggle_firm'=>Yii::t('delt', 'Firm'),
+      'toggle_transactions'=>Yii::t('delt', 'Transactions'),
+      ),
+    ));
 
   $cs = Yii::app()->getClientScript();  
   $cs->registerScript(
@@ -22,19 +29,30 @@ if($challenge)
   );
 }
 
+$challenge_visibility = Yii::app()->controller->challenge_visibility;
+
 ?>
+<?php if($challenge && $challenge_visibility!='none'): ?>
 
-<?php if($challenge): ?>
-
-  <div id="challenge" >
+  <div id="challenge" lang="<?php echo $challenge->exercise->firm->language->locale ?>">
 
   <?php echo CHtml::script('params = ' . $params . '; execute(params);') 
   // we need to call execute() directly, to handle ajax updates reactions ?>
-  <h2><?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The running challenge'))); ?> <?php echo CHtml::encode($challenge->exercise->title) ?></h2>
+  <h2>
+    <?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('id'=>'challenge_icon', 'width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The running challenge'))); ?>
+    <span id="challenge_commands" class="challengeinfo"></span>
+    <?php echo CHtml::encode($challenge->exercise->title) ?>
+    <span class="challengeinfo"> - 
+    <?php if($challenge->method & Challenge::SHOW_POINTS_DURING_CHALLENGE): ?>
+      <span class="score">
+        <?php echo Yii::t('delt', 'Current score:') ?>
+        <?php echo Yii::t('delt', 'One point|{n} points', $challenge->score) ?></span>
+    <?php endif ?>
+    </span>
+  </h2>
 
-  <div id="challenge_context">
-  <p><?php echo CHtml::encode($challenge->exercise->description) ?></p>
-  <?php echo $md->transform($challenge->exercise->introduction) ?>
+  <div id="challenge_firm">
+    <h3><?php echo Yii::t('delt', 'Firm') ?></h3>
   <p>
   <?php if($challenge->firm_id): ?>
     <?php echo Yii::t('delt', 'Associated firm:') ?> <?php echo $challenge->firm ?>
@@ -80,9 +98,19 @@ if($challenge)
     <?php endif ?>
   <?php endif ?>
   </p>
+  <hr />
+  </div><!-- challenge_firm -->
+
+  <div id="challenge_context">
+    <h3><?php echo Yii::t('delt', 'Context') ?></h3>
+  <?php echo CHtml::encode($challenge->exercise->description) ?>
+  <?php echo $md->transform($challenge->exercise->introduction) ?>
+  <hr />
   </div><!-- challenge_context -->
 
-  <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge)) ?>
+  <?php if ($challenge_visibility=='journal'): ?>
+    <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge)) ?>
+  <?php endif ?>
   
-  </div>
+  </div><!-- challenge -->
 <?php endif ?>

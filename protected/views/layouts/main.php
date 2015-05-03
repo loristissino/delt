@@ -18,6 +18,7 @@ $mainmenu_items=array(
         array('url'=>Yii::app()->getModule('user')->profileUrl, 'label'=>Yii::app()->getModule('user')->t("Profile"), 'visible'=>!Yii::app()->user->isGuest),
         array('url'=>Yii::app()->getModule('user')->logoutUrl, 'label'=>$logoutLabel, 'visible'=>!Yii::app()->user->isGuest),
       );
+
 ?>
 <!DOCTYPE html>
 <html lang="<?php echo Yii::app()->language ?>">
@@ -44,7 +45,6 @@ $mainmenu_items=array(
 </head>
 
 <body>
-
 <div class="container" id="page">
 
   <div id="header">
