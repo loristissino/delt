@@ -1,4 +1,4 @@
-<?php
+  <?php
 
 /**
  * Challenge class file.
@@ -446,7 +446,7 @@ class Challenge extends CActiveRecord
     $this->save();
   }
   
-  public function check()
+  public function check($final=true)
   {
     $fatal = false;
     $results = array('warnings'=>array(), 'firm'=>array(), 'transactions'=>array(), 'score'=>0, 'possiblescore'=>0);
@@ -469,18 +469,24 @@ class Challenge extends CActiveRecord
     if ($this->work->frozen_at > $this->completed_at)
     {
       $results['firm']['errors'][]=Yii::t('delt', 'The firm has been frozen after having been marked completed.');
-      $fatal = true;
+      if ($final)
+      {
+        $fatal = true;
+      }
     }
     
     if (!$this->work->frozen_at)
     {
       $results['firm']['errors'][]=Yii::t('delt', 'The firm has been unfrozen after having been marked completed.');
-      $fatal = true;
+      if ($final)
+      {
+        $fatal = true;
+      }
     }
     
     foreach($this->exercise->transactions as $transaction)
     {
-      $results['transactions'][$transaction->id] = $this->checkTransaction($transaction);
+      $results['transactions'][$transaction->id] = $this->checkTransaction($transaction, $final);
       $results['score'] += $results['transactions'][$transaction->id]['points'] - $results['transactions'][$transaction->id]['penalties'];
       $results['possiblescore'] += $transaction->points;
     }
@@ -489,12 +495,13 @@ class Challenge extends CActiveRecord
     {
       $results['score'] = 0;
     }
+    
     $this->score = $results['score'];
     $this->changeStatus('checked');
     return $results;
   }
   
-  public function checkTransaction(Transaction $transaction)
+  public function checkTransaction(Transaction $transaction, $final=true)
   {
     $result = array();
     
@@ -504,16 +511,19 @@ class Challenge extends CActiveRecord
     $sizeOfWJE = sizeof($wje);
     $sizeOfBJE = sizeof($bje);
 
-    $result['points'] = 0; // if we find errors, we put this to 0 afterwards
+    $result['points'] = 0; // if we don't find any error, we'll assign the points afterwards
     $result['description'] = $transaction->description;
     $result['errors'] = array();
     
     if ( $sizeOfWJE != $sizeOfBJE )
     {
       $result['points'] = 0;
+      if (!(($sizeOfWJE==0 && !$final)))
+      {
       $result['errors'] = array(Yii::t('delt', 'Wrong number of journal entries (expected: %number_expected%, found: %number_found%)', 
         array('%number_expected%'=>$sizeOfBJE, '%number_found%'=>$sizeOfWJE))
         );
+      }
     }
     else
     {
@@ -521,9 +531,9 @@ class Challenge extends CActiveRecord
       {
         if($wje[$i]->date != $bje[$i]->date)
         {
-          $result['errors'][] = Yii::t('delt', 'Journal entry %id%: wrong date (expected: %date_expected%, found: %date_found%)', 
+          $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong date (expected: %date_expected%, found: %date_found%)', 
             array(
-              '%id%'=>$wje[$i]->id,
+              '%number%'=>1+$i,
               '%date_expected%' => Yii::app()->dateFormatter->formatDateTime($bje[$i]->date, 'short', null),
               '%date_found%' => Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null),
               )
@@ -535,9 +545,9 @@ class Challenge extends CActiveRecord
         
         if($sizeOfWJEPostings != $sizeOfBJEPostings)
         {
-          $result['errors'][] = Yii::t('delt', 'Journal entry %id%: wrong number of postings (expected: %postings_expected%, found: %postings_found%)', 
+          $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong number of postings (expected: %postings_expected%, found: %postings_found%)', 
             array(
-              '%id%'=>$wje[$i]->id,
+              '%number%'=>1+$i,
               '%postings_expected%' => $sizeOfBJEPostings,
               '%postings_found%' => $sizeOfWJEPostings,
               )
@@ -549,10 +559,10 @@ class Challenge extends CActiveRecord
           {
             if (!DELT::nearlyZero($wje[$i]->postings[$j]->amount - $bje[$i]->postings[$j]->amount))
             {
-              $result['errors'][] = Yii::t('delt', 'Journal entry %id%: wrong amount for posting %number% (expected: %amount_expected%, found: %amount_found%)', 
+              $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong amount for posting %posting% (expected: %amount_expected%, found: %amount_found%)', 
             array(
-              '%id%'=>$wje[$i]->id,
-              '%number%'=>1+$j,
+              '%number%'=>1+$i,
+              '%posting%'=>1+$j,
               '%amount_expected%' => DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
               '%amount_found%' => DELT::currency_value($wje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
               )
@@ -561,10 +571,10 @@ class Challenge extends CActiveRecord
             
             if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
             {
-              $result['errors'][] = Yii::t('delt', 'Journal entry %id%: wrong account for posting %number% (expected: «%account_expected%», found: «%account_found%»)', 
+              $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong account for posting %posting% (expected: «%account_expected%», found: «%account_found%»)', 
             array(
-              '%id%'=>$wje[$i]->id,
-              '%number%'=>1+$j,
+              '%number%'=>1+$i,
+              '%posting%'=>1+$j,
               '%account_expected%' => $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
               '%account_found%' => $wje[$i]->postings[$j]->account->getCodeAndName($this->work),
               )

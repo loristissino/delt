@@ -34,6 +34,7 @@ class ChallengeController extends Controller
       'postOnly + changestatus', // we only allow status change via POST request,
       'postOnly + connect', // we only allow connection change via POST request,
       'postOnly + activatetransaction', // we only allow transaction activation via POST request,
+      'postOnly + checktransaction', // we only allow transaction activation via POST request,
       'postOnly + requesthint', // we only allow hint requests via POST request,
     );
   }
@@ -187,6 +188,16 @@ class ChallengeController extends Controller
   public function actionActivatetransaction($id, $transaction)
   {
     $model=$this->loadModel($id);
+    
+    if ($model->method & Challenge::SHOW_CHECKS_ON_TRANSACTION_CHANGE)
+    {
+      $result = $model->check(false);
+    }
+    else
+    {
+      $result = array();
+    }
+    
     if ($model->activateTransaction($transaction))
     {
       Yii::app()->user->setState('transaction', $transaction);
@@ -196,7 +207,7 @@ class ChallengeController extends Controller
     {
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
-    $this->renderPartial('_challenge');
+    $this->renderPartial('_challenge', array('result'=>$result));
   }
   
   public function actionRequesthint($id, $transaction)
@@ -212,6 +223,13 @@ class ChallengeController extends Controller
     }
     $this->renderPartial('_challenge');
   }
+
+  public function actionChecktransaction($id, $transaction)
+  {
+    
+    $this->renderPartial('_challenge', array('result'=>$result));
+  }
+
 
   private function _check(Challenge $model)
   {

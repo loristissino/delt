@@ -73,6 +73,11 @@
         <?php echo $md->transform($transaction->hint) ?>
         </div>
       <?php endif ?>
+      <?php if(isset($result['transactions'][$transaction->id])): ?>
+        <div class="result">
+          <?php echo Yii::app()->controller->renderPartial('/challenge/_checks', array('source'=>$result['transactions'][$transaction->id])) ?>
+        </div>
+      <?php endif ?>
     </div>
   <?php endforeach ?>
   <hr />

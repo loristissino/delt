@@ -39,8 +39,10 @@ $challenge_firm_current = isset(Yii::app()->controller->firm) && $challenge->fir
 
 $is_ajax = Yii::app()->controller->is_ajax;
 
-}
+$score = DELT::getValueFromArray($this->result, 'score', 0);
+$percentage = round(100 * $score / DELT::getValueFromArray($this->result, 'possiblescore', 1)) . '%';
 
+}
 
 ?>
 <?php if($challenge && $challenge_visibility!='none'): ?>
@@ -57,7 +59,8 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <span class="challengeinfo"> - 
       <span class="score">
         <?php echo Yii::t('delt', 'Current score:') ?>
-        <?php echo Yii::t('delt', 'One point|{n} points', $challenge->score) ?></span>
+        <?php echo Yii::t('delt', 'One point|{n} points', $score) ?>
+        <?php echo '(' . $percentage . ')' ?></span>
     <?php endif ?>
     </span>
   </h2>
@@ -110,7 +113,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
   <hr />
   </div><!-- challenge_context -->
 
-  <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge, 'challenge_visibility'=>$challenge_visibility)) ?>
+  <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge, 'challenge_visibility'=>$challenge_visibility, 'result'=>$this->result)) ?>
   
   </div><!-- challenge -->
 <?php endif ?>

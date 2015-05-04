@@ -748,7 +748,7 @@ div.challenge.open
   padding-right: 40px;
 }
 
-#challenge div.checks
+#challenge .noncurrent div.checks
 {
   padding-left: 40px;
   padding-right: 40px;

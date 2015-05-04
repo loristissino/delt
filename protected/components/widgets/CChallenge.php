@@ -7,6 +7,7 @@ class CChallenge extends CWidget
     public $hideOnEmpty=false;
     public $title='Challenge Manager';
     public $challenge;
+    public $result;
  
     public function getChallenge()
     {
