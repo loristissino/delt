@@ -207,13 +207,18 @@ class Account extends CActiveRecord
     return sprintf('%s - %s', $this->code, $this->name);
   }
   
-  public function getCodeAndName(Firm $firm=null)
+  public function getCodeAndName(Firm $firm=null, $for_comparisons=false)
   {
     if(!$firm)
     {
       $firm = $this->firm;
     }
     return $firm->renderAccountCodeAndName($firm->renderAccountCode($this->code), $this->name);
+  }
+  
+  public function getCodeAndNameForComparison(Firm $firm)
+  {
+    return $firm->renderAccountCodeAndName($firm->renderAccountCode($this->code), strtolower($this->name), '/[^a-z0-9]/');
   }
   
   public function getAnalysis($amount, $currency='EUR')

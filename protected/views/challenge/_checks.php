@@ -1,3 +1,4 @@
+<div class="checks">
 <?php if(isset($source['warnings']) && sizeof($source['warnings'])): ?>
   <div class="warnings">
   <?php foreach($source['warnings'] as $warning): ?>
@@ -14,3 +15,4 @@
 <?php else: ?>
   <p class="ok"><?php echo $this->createIcon('accept', Yii::t('delt', 'OK'), array('width'=>16, 'height'=>16)) ?></p>
 <?php endif ?>
+</div>

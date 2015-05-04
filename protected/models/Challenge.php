@@ -558,6 +558,34 @@ class Challenge extends CActiveRecord
               )
             );
             }
+            
+            if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
+            {
+              $result['errors'][] = Yii::t('delt', 'Journal entry %id%: wrong account for posting %number% (expected: «%account_expected%», found: «%account_found%»)', 
+            array(
+              '%id%'=>$wje[$i]->id,
+              '%number%'=>1+$j,
+              '%account_expected%' => $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
+              '%account_found%' => $wje[$i]->postings[$j]->account->getCodeAndName($this->work),
+              )
+            );
+            }
+            else
+            {
+              if ($wje[$i]->postings[$j]->account->getCodeAndName($this->work) != $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark))
+              {
+                $result['warnings'][] = Yii::t('delt', 'Journal entry %id%: wrong account name for posting %number% (expected: «%account_expected%», found: «%account_found%»)', 
+              array(
+                '%id%'=>$wje[$i]->id,
+                '%number%'=>1+$j,
+                '%account_expected%' => $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
+                '%account_found%' => $wje[$i]->postings[$j]->account->getCodeAndName($this->work),
+                )
+              );
+              }
+              
+            }
+            
           }
         }
         

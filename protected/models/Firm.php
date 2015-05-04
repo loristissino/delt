@@ -2368,8 +2368,13 @@ class Firm extends CActiveRecord
     return array('account_id'=>null, 'amount'=>0);
   }
   
-  public function renderAccountCodeAndName($code, $name)
+  public function renderAccountCodeAndName($code, $name, $regexp=false)
   {
+    // added $regexp parameter for comparison of account names (challenges)
+    if ($regexp)
+    {
+      return sprintf('%s - %s', $this->renderAccountCode($code), preg_replace($regexp, '', $name));
+    }
     return sprintf('%s - %s', $this->renderAccountCode($code), $name);
   }
   
