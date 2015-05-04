@@ -166,12 +166,6 @@ class Journalentry extends CActiveRecord
     ));
     return $this;
   }
-
-  public function withRanks($ranks)
-  {
-    $this->getDbCriteria()->addInCondition('t.rank', $ranks);
-    return $this;
-  }
     
   public function getDateForFormWidget()
   {

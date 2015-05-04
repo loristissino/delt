@@ -769,6 +769,11 @@ div.challenge.open
   background-color: #FFFF77;
 }
 
+#challenge_context p.description
+{
+   background-color: #FFFF77;
+   font-style: italic;
+}
 
 @media screen and (max-width: 600px) {
   body {

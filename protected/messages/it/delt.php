@@ -520,4 +520,8 @@ return array(
   'COA' => 'PdC',
   'Show Chart of Accounts' => 'Mostra Piano dei Conti',
   
+  'Challenges' => 'Sfide',
+  'Introduction' => 'Introduzione',
+  'Transactions' => 'Transazioni',
+  
 );

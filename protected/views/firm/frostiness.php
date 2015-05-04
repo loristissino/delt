@@ -8,11 +8,20 @@ $this->breadcrumbs=array(
   $model->frozen_at ? 'Unfreeze' : 'Freeze',
 );
 
+$linkedToCompletedChallenge = false;
+if ($challenge = $model->getChallenge())
+{
+  if ($challenge->isCompleted())
+  {
+    $linkedToCompletedChallenge = true;
+  }
+}
+
 ?>
 
 <h1><?php echo $model->name ?></h1>
 
-<?php echo $this->renderPartial('_frostiness', array('model'=>$model)) ?>
+<?php echo $this->renderPartial('_frostiness', array('model'=>$model, 'warning'=>$linkedToCompletedChallenge)) ?>
 
 <?php if(!$model->frozen_at): ?>
 
@@ -40,7 +49,7 @@ $this->breadcrumbs=array(
   )); ?>
 
     <div class="row">
-      <?php echo CHtml::submitButton(Yii::t('delt', 'Unfreeze'), array('name'=>'unfreeze')) ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Unfreeze'), array('name'=>'unfreeze', 'class'=>($linkedToCompletedChallenge?'dangerous':''))) ?>
     </div>
 
   <?php $this->endWidget() ?>

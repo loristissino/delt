@@ -8,8 +8,8 @@ if($challenge)
   $params = CJavaScript::encode(array(
     'transaction'=>$challenge->transaction_id,
     'i18n'=>array(
-      'toggle_context'=>Yii::t('delt', 'Context'),
       'toggle_firm'=>Yii::t('delt', 'Firm'),
+      'toggle_context'=>Yii::t('delt', 'Introduction'),
       'toggle_transactions'=>Yii::t('delt', 'Transactions'),
       'icon_title_toggles'=>Yii::t('delt', 'Toggle visibility of items...'),
       ),
@@ -66,29 +66,20 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <h3><?php echo Yii::t('delt', 'Firm') ?></h3>
   <p>
   <?php if($challenge_firm_set): ?>
-    <?php echo Yii::t('delt', 'Associated firm:') ?> <?php echo $challenge->firm ?>
-    <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?>
-      <?php echo CHtml::ajaxLink(
-        Yii::t('delt', 'Link the firm «%name%» instead', array('%name%'=>Yii::app()->controller->firm)),
+    <?php echo Yii::t('delt', 'Linked firm:') ?> <?php echo CHtml::link($challenge->firm, array('bookkeeping/manage', 'slug'=>$challenge->firm->slug), array('title'=>Yii::t('delt', 'Manage'))) ?>
+    <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?><br />
+      <?php echo Yii::app()->controller->createIcon('bell', Yii::t('delt', 'Warning'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'We have a problem here.'))) ?>
+      <?php echo Yii::t('delt', 'You are not currently working with the firm linked to this challenge.') ?>
+      <?php echo CHtml::link(
+        Yii::t('delt', 'Link current firm'),
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
         array(
-          'replace' => '#challenge',
-          'type' => 'POST',
-          ),
-        array(
-          'title' => Yii::t('delt', 'Connect this firm with the active challenge'),
+          'submit'=>$url,
+          'title' => Yii::t('delt', 'Link the firm «%name%» to the current challenge', array('%name%'=>Yii::app()->controller->firm)),
           )
         )
-        ?>
-      <?php else: ?>
-        <?php if (!in_array(Yii::app()->controller->action->id, array('manage', 'activatetransaction'))): ?>
-          <?php echo CHtml::link(
-            Yii::t('delt', 'Manage'),
-            array('bookkeeping/manage', 'slug'=>$challenge->firm->slug)
-            )
-            ?>
-       <?php endif ?>
-    <?php endif ?>
+        ?>.
+      <?php endif ?>
   <?php else: ?>
     <?php if(Yii::app()->controller->firm): ?>
       <?php echo CHtml::ajaxLink(
@@ -113,9 +104,9 @@ $is_ajax = Yii::app()->controller->is_ajax;
   </div><!-- challenge_firm -->
 
   <div id="challenge_context">
-    <h3><?php echo Yii::t('delt', 'Context') ?></h3>
-  <?php echo CHtml::encode($challenge->exercise->description) ?>
-  <?php echo $md->transform($challenge->exercise->introduction) ?>
+    <h3><?php echo Yii::t('delt', 'Introduction') ?></h3>
+  <p class="description"><?php echo CHtml::encode($challenge->exercise->description) ?></p>
+  <div class="introduction"><?php echo $md->transform($challenge->exercise->introduction) ?></div>
   <hr />
   </div><!-- challenge_context -->
 

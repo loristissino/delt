@@ -51,7 +51,7 @@ $this->menu[] = array('label'=>Yii::t('delt',
 </p>
 
 <?php if($model->frozen_at): ?>
-  <?php echo $this->renderPartial('/firm/_frostiness', array('model'=>$model)) ?>
+  <?php echo $this->renderPartial('/firm/_frostiness', array('model'=>$model, 'warning'=>false)) ?>
 <?php endif ?>
 
 <div>

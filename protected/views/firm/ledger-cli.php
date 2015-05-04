@@ -24,7 +24,7 @@ $this->breadcrumbs=array(
 <?php echo $data ?>
 </pre>
 
-<?php echo $this->renderPartial('_frostiness', array('model'=>$model)) ?>
+<?php echo $this->renderPartial('_frostiness', array('model'=>$model, 'warning'=>false)) ?>
 
 <?php echo $model->getLicenseCode($this) ?>
 

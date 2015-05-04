@@ -134,7 +134,7 @@ $("#toggle_statements").click( function() {
 <hr />
 </section>  
 
-<?php echo $this->renderPartial('_frostiness', array('model'=>$model)) ?>
+<?php echo $this->renderPartial('_frostiness', array('model'=>$model, 'warning'=>false)) ?>
 <p id="commands"></p>
 
 <?php echo $model->getLicenseCode($this) ?>

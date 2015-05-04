@@ -75,4 +75,5 @@
       <?php endif ?>
     </div>
   <?php endforeach ?>
+  <hr />
   </div>

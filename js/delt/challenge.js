@@ -69,7 +69,7 @@ function updateConnections()
   $(".journalentryrow").each(function(i, obj)
   {
     console.log("working on " + i);
-    if ($(obj).data("transaction-id")==params.transaction)
+    if ($(obj).data("transaction-id")==params.transaction && !$(obj).hasClass("excluded"))
     {
       $(obj).addClass('connected');
       $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFFFCC':'#FFFF99');

@@ -2433,6 +2433,11 @@ class Firm extends CActiveRecord
     }
     return false;
   }
+  
+  public function getChallenge()
+  {
+    return Challenge::model()->linkedToFirm($this->id)->find();
+  }
 
   
 }

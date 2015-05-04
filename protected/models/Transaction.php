@@ -16,10 +16,8 @@
  * @property string $event_date
  * @property string $description
  * @property string $hint
- * @property string $je_ranks
  * @property integer $points
  * @property integer $penalties
- * @property integer[] $_je_ranks
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
@@ -32,8 +30,6 @@
 
 class Transaction extends CActiveRecord
 {
-  
-  private $_je_ranks;
   
   /**
    * @return string the associated database table name
@@ -51,13 +47,12 @@ class Transaction extends CActiveRecord
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-      array('exercise_id, event_date, description, je_ranks', 'required'),
+      array('exercise_id, event_date, description', 'required'),
       array('exercise_id, points, penalties', 'numerical', 'integerOnly'=>true),
-      array('je_ranks', 'length', 'max'=>255),
       array('hint', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, event_date, description, hint, je_ranks', 'safe', 'on'=>'search'),
+      array('id, exercise_id, event_date, description, hint', 'safe', 'on'=>'search'),
     );
   }
 
@@ -86,7 +81,6 @@ class Transaction extends CActiveRecord
       'event_date' => 'Event Date',
       'description' => 'Description',
       'hint' => 'Hint',
-      'je_ranks' => 'Je Ranks',
       'points' => 'Points',
       'penalties' => 'Penalties',
     );
@@ -115,7 +109,6 @@ class Transaction extends CActiveRecord
     $criteria->compare('event_date',$this->event_date,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('hint',$this->hint,true);
-    $criteria->compare('je_ranks',$this->je_ranks,true);
     $criteria->compare('points',$this->points,true);
     $criteria->compare('penalties',$this->penalties,true);
 
@@ -140,20 +133,4 @@ class Transaction extends CActiveRecord
     return $this->description;
   }
   
-  protected function afterFind()
-  {
-    $this->_je_ranks = $this->je_ranks ? explode(',', $this->je_ranks) : array();
-    return parent::afterFind();
-  }
-
-  protected function beforeSave()
-  {
-    $this->je_ranks = implode(',', $this->_je_ranks);
-    return parent::beforeSave();
-  }
-  
-  public function getJERanks()
-  {
-    return $this->_je_ranks;
-  }
 }

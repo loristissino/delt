@@ -47,7 +47,7 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('update','admin','view','index','changestatus','connect', 'activatetransaction', 'requesthint'),
+        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint'),
         'users'=>array('@'),
       ),
       array('allow', 
@@ -181,7 +181,7 @@ class ChallengeController extends Controller
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
     
-    $this->renderPartial('_challenge');
+    $this->redirect(array('bookkeeping/manage', 'slug'=>$firm->slug));
   }
   
   public function actionActivatetransaction($id, $transaction)

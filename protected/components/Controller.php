@@ -78,7 +78,7 @@ class Controller extends CController
     
     if($this->id == 'bookkeeping')
     {
-      if($this->action->id == 'journal')
+      if(in_array($this->action->id, array('journal', 'updatejournalentry', 'newjournalentry')))
       {
         $this->challenge_visibility='journal';
       }

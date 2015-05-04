@@ -41,7 +41,7 @@ $cs->registerScript(
 
 ?>
 
-<h1>Challenges</h1>
+<h1><?php echo Yii::t('delt', 'Challenges') ?></h1>
 
 <div id="challenges">
 <?php $this->widget('zii.widgets.CListView', array(

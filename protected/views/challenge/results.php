@@ -40,8 +40,7 @@ $md = new CMarkdown();
   <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', $results['score']) . ' (' .  round(100*$results['score']/$results['possiblescore']) . '%)' ?></h2>
 
 </div>
-<?php /*
 <pre>
 <?php print_r($results) ?>
 </pre>
-*/ ?>
+
