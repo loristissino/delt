@@ -523,5 +523,15 @@ return array(
   'Challenges' => 'Sfide',
   'Introduction' => 'Introduzione',
   'Transactions' => 'Transazioni',
-  
+  'Hint' => 'Suggerimento',
+  'Help' => 'Aiuto',
+  'Current score: %percentage%%' => 'Punteggio attuale: %percentage%%',
+  'connect to current transaction' => 'collega alla transazione corrente',
+  'Start' => 'Inizia',
+  'Resume' => 'Riprendi',
+  'Suspend' => 'Sospendi',
+  'Mark Completed' => 'Contrassegna come completata',
+  'Results' => 'Risultati',
+  'Begin' => 'Procedi',
 );
+

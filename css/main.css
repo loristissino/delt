@@ -742,7 +742,7 @@ div.challenge.open
   color: #BFBFBF;
 }
 
-#challenge .transaction.current p
+#challenge .transaction.current p, ul
 {
   padding-left: 40px;
   padding-right: 40px;
