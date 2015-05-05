@@ -737,12 +737,12 @@ div.challenge.open
 {
   font-size: 150%;
 }
-#challenge .transaction.noncurrent p
+#challenge .transaction.noncurrent p, ul, li
 {
   color: #BFBFBF;
 }
 
-#challenge .transaction.current p, ul
+#challenge .transaction.current p, ul, li
 {
   padding-left: 40px;
   padding-right: 40px;
