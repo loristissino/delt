@@ -39,9 +39,6 @@ $challenge_firm_current = isset(Yii::app()->controller->firm) && $challenge->fir
 
 $is_ajax = Yii::app()->controller->is_ajax;
 
-$score = DELT::getValueFromArray($this->result, 'score', 0);
-$percentage = round(100 * $score / DELT::getValueFromArray($this->result, 'possiblescore', 1)) . '%';
-
 }
 
 ?>
@@ -58,9 +55,8 @@ $percentage = round(100 * $score / DELT::getValueFromArray($this->result, 'possi
     <?php if($challenge->method & Challenge::SHOW_POINTS_DURING_CHALLENGE): ?>
     <span class="challengeinfo"> - 
       <span class="score">
-        <?php echo Yii::t('delt', 'Current score:') ?>
-        <?php echo Yii::t('delt', 'One point|{n} points', $score) ?>
-        <?php echo '(' . $percentage . ')' ?></span>
+        <?php echo Yii::t('delt', 'Current score: %percentage%%', array('%percentage%'=>round($challenge->rate/10, 1))) ?>
+      </span>
     <?php endif ?>
     </span>
   </h2>
@@ -99,7 +95,9 @@ $percentage = round(100 * $score / DELT::getValueFromArray($this->result, 'possi
         ?>
 
     <?php else: ?>
+      <?php if($challenge->exercise->firm->parent): ?>
       <?php echo Yii::t('delt', 'Begin with forking this firm:') ?> <?php echo CHtml::link($challenge->exercise->firm->parent, array('firm/fork', 'slug'=>$challenge->exercise->firm->parent->slug)) ?>
+      <?php endif ?>
     <?php endif ?>
   <?php endif ?>
   </p>

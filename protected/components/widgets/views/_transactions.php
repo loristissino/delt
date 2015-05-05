@@ -41,12 +41,12 @@
       ?>
       <?php endif ?>
        
-      <?php if($transaction->hint): ?>
-        <?php if(!($has_hint = $challenge->hasHint($transaction->id))): ?>
+      <?php if($transaction->hint): $has_hint = $challenge->hasHint($transaction->id) ?>
+        <?php if (!($has_hint || !$is_current)): ?>
         - 
         <?php endif ?>
         <?php echo CHtml::ajaxLink(
-          $has_hint ? '' : Yii::t('delt', 'Request hint'),
+          ($has_hint || !$is_current) ? '' : Yii::t('delt', 'Hint'),
           // we have to prepare ajax links even if we don't need them (because of ajax calls), so we provide empty ones
           $url=CHtml::normalizeUrl(array('challenge/requesthint', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
           array(
@@ -60,6 +60,26 @@
           )
         ?>
       <?php endif ?>
+      
+      <?php $been_shown = $challenge->beenShown($transaction->id) ?>
+      <?php if ($is_current): ?>
+      - 
+      <?php endif ?>
+      <?php echo CHtml::ajaxLink(
+        $is_current ? Yii::t('delt', 'Help') : '',
+        // we have to prepare ajax links even if we don't need them (because of ajax calls), so we provide empty ones
+        $url=CHtml::normalizeUrl(array('challenge/requesthelp', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
+        array(
+          'update' => '#journalentries_shown',
+          'type' => 'POST',
+          ),
+        array(
+          'title' => Yii::t('delt', 'Show how this transaction should be recorded') . ($been_shown? '' : ' (-' . Yii::t('delt', '1 point|{n} points', $transaction->points) . ')'),
+          'confirm' => $been_shown ? null : Yii::t('delt', 'Do you want to be shown how to record this transaction?') . ' ' . Yii::t('delt', 'It will cost you one point.|It will cost you {n} points.', $transaction->points),
+          )
+        )
+      ?>
+      
       - <?php echo Yii::t('delt', 'One point|{n} points', $transaction->points) ?>
       
       </div><!-- firstline -->
@@ -80,5 +100,9 @@
       <?php endif ?>
     </div>
   <?php endforeach ?>
+  <br />
+  
+  <div id="journalentries_shown"></div>
+
   <hr />
   </div>

@@ -21,6 +21,8 @@ function execute(params)
   }
   );
   
+  //$("#journalentries_shown").hide();
+  
 }
 
 function addLinks(params)
@@ -58,8 +60,14 @@ function addLinks(params)
       $("#challenge_transactions").toggle(500);
     }
   );
-
-
+  /*
+  $(".showjournalentries").click(function()
+    {
+      $("#journalenties_shown").toggle(200);
+      return false;
+    }
+  );
+  */
 }
 
 

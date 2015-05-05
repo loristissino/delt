@@ -781,6 +781,16 @@ div.challenge.open
    font-style: italic;
 }
 
+#journalentries_shown
+{
+  margin-left: 40px;
+  margin-right: 40px;
+  border-radius: 2px;
+  background-color: white;
+  background-position: left top;
+  background-repeat: repeat;
+}
+
 @media screen and (max-width: 600px) {
   body {
       

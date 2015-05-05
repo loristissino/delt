@@ -22,9 +22,10 @@
  * @property string $completed_at
  * @property string $checked_at
  * @property integer $method
- * @property integer $score
+ * @property integer $rate     // success rate (normalized 0 - 1000)
  * @property integer $transaction_id  (current transaction)
  * @property string $hints
+ * @property string $shown
  *
  * The followings are the available model relations:
  * @property Exercise $exercise
@@ -47,7 +48,8 @@ class Challenge extends CActiveRecord
      ;
 
   
-  private $_hints = null;  // hints already requested / shown to user
+  private $_hints = null;  // hints requested by the user and shown
+  private $_shown = null;  // transactions shown to user
   private $work;           // just an alias
   private $benchmark;       // just an alias
   
@@ -68,11 +70,11 @@ class Challenge extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
-      array('exercise_id, instructor_id, user_id, firm_id, method, score', 'numerical', 'integerOnly'=>true),
-      array('started_at, suspended_at, completed_at, hints', 'safe'),
+      array('exercise_id, instructor_id, user_id, firm_id, method, rate', 'numerical', 'integerOnly'=>true),
+      array('started_at, suspended_at, completed_at, hints, shown', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, score', 'safe', 'on'=>'search'),
+      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, rate', 'safe', 'on'=>'search'),
     );
   }
 
@@ -107,9 +109,10 @@ class Challenge extends CActiveRecord
       'completed_at' => 'Completed At',
       'checked_at' => 'Checked At',
       'method' => 'Method',
-      'score' => 'Score',
+      'rate' => 'Rate',
       'transaction' => 'Transaction',
       'hints' => 'Hints',
+      'shown' => 'Shown',
     );
   }
 
@@ -141,7 +144,7 @@ class Challenge extends CActiveRecord
     $criteria->compare('suspended_at',$this->suspended_at,true);
     $criteria->compare('completed_at',$this->completed_at,true);
     $criteria->compare('method',$this->method);
-    $criteria->compare('score',$this->score);
+    $criteria->compare('rate',$this->rate);
     $criteria->compare('transaction_id',$this->transaction_id);
     
     return new CActiveDataProvider($this, array(
@@ -408,6 +411,7 @@ class Challenge extends CActiveRecord
   protected function afterFind()
   {
     $this->_hints = $this->hints ? explode(',', $this->hints) : array();
+    $this->_shown = $this->shown ? explode(',', $this->shown) : array();
     $this->work = $this->firm;
     $this->benchmark = $this->exercise->firm;
     
@@ -417,12 +421,18 @@ class Challenge extends CActiveRecord
   protected function beforeSave()
   {
     $this->hints = implode(',', $this->_hints);
+    $this->shown = implode(',', $this->_shown);
     return parent::beforeSave();
   }
   
   public function hasHint($transaction_id)
   {
     return in_array($transaction_id, $this->_hints);
+  }
+
+  public function beenShown($transaction_id)
+  {
+    return in_array($transaction_id, $this->_shown);
   }
 
   public function addHint($transaction_id)
@@ -432,10 +442,23 @@ class Challenge extends CActiveRecord
       if(!$this->hasHint($transaction_id))
       {
         $this->_hints[] = $transaction_id;
-        $this->score -= $transaction->penalties;
         $this->save();
-        return true;
       }
+      return true;
+    }
+    return false;
+  }
+
+  public function addShown($transaction_id)
+  {
+    if ($transaction = Transaction::model()->findByPK($transaction_id))
+    {
+      if(!$this->beenShown($transaction_id))
+      {
+        $this->_shown[] = $transaction_id;
+        $this->save();
+      }
+      return true;
     }
     return false;
   }
@@ -443,6 +466,12 @@ class Challenge extends CActiveRecord
   public function removeHint($transaction_id)
   {
     $this->_hints = array_diff($this->_hints, array($transaction_id));
+    $this->save();
+  }
+
+  public function removeShown($transaction_id)
+  {
+    $this->_shown = array_diff($this->_shown, array($transaction_id));
     $this->save();
   }
   
@@ -496,8 +525,12 @@ class Challenge extends CActiveRecord
       $results['score'] = 0;
     }
     
-    $this->score = $results['score'];
-    $this->changeStatus('checked');
+    $this->rate = round(1000*$results['score']/$results['possiblescore']);
+    if($final)
+    {
+      $this->changeStatus('checked');
+    }
+    $this->save();
     return $results;
   }
   

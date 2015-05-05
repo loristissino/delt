@@ -13,7 +13,10 @@
     <?php else: ?>
       <?php echo $this->createIcon('book', Yii::t('delt', 'Challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'A challenge'))); ?>
     <?php endif ?>
-    <?php echo CHtml::encode($data->exercise); ?>
+    <?php echo CHtml::encode($data->exercise); ?> 
+    <span class="score">
+      <?php echo Yii::t('delt', '(%percentage%%)', array('%percentage%'=>round($data->rate/10))) ?>
+    </span>
     <br />
     
     <?php /*
@@ -79,7 +82,18 @@
       <?php endif ?>
     <?php endif ?>
   <?php else: ?>
-    <?php echo CHtml::submitButton(Yii::t('delt', 'Check'), array('name'=>'check', 'id'=>'check_button_'.$data->id, 'class'=>'checkButton', 'data-id'=>$data->id)); ?>
+    <?php if($data->isChecked()): ?>
+      <?php echo CHtml::link(Yii::t('delt', 'Results'),
+        $url = CHtml::normalizeUrl(array('challenge/results', 'id'=>$data->id)),
+        array(
+          'title'=>Yii::t('delt', 'See results for this challenge'),
+          )
+        );
+      ?>
+    <?php else: ?> 
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Check'), array('name'=>'check', 'id'=>'check_button_'.$data->id, 'class'=>'checkButton', 'data-id'=>$data->id)); ?>
+    <?php endif ?>
+ 
   <?php endif ?>
 
   <?php if($data->isOpen()): ?>

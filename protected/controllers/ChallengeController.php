@@ -36,6 +36,7 @@ class ChallengeController extends Controller
       'postOnly + activatetransaction', // we only allow transaction activation via POST request,
       'postOnly + checktransaction', // we only allow transaction activation via POST request,
       'postOnly + requesthint', // we only allow hint requests via POST request,
+      'postOnly + requestshow', // we only allow hint requests via POST request,
     );
   }
 
@@ -48,7 +49,7 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint'),
+        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint', 'requesthelp', 'results'),
         'users'=>array('@'),
       ),
       array('allow', 
@@ -161,6 +162,18 @@ class ChallengeController extends Controller
     $this->redirect(array('challenge/index'));
   }
   
+
+  public function actionResults($id)
+  {
+    $model=$this->loadModel($id);
+    
+    if(!$model->isChecked())
+      throw new CHttpException(404,'The requested page does not exist.');
+    
+    return $this->_check($model);
+  }
+  
+  
   /**
    * Connects a firm to the challenge.
    * @param integer $id the ID of the model to be updated
@@ -221,7 +234,26 @@ class ChallengeController extends Controller
     {
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
-    $this->renderPartial('_challenge');
+    $this->renderPartial('_challenge', array('result'=>array()));
+  }
+  
+  public function actionRequesthelp($id, $transaction)
+  {
+    $model=$this->loadModel($id);
+    if ($model->addShown($transaction))
+    {
+      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+    }
+    else
+    {
+      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+    }
+    
+    $this->firm = $this->loadFirm($model->exercise->firm_id, false);
+    
+    $postings = Posting::model()->ofFirm($model->exercise->firm_id)->with('journalentry')->with('account')->connectedTo($transaction)->findAll();
+    
+    $this->renderPartial('_journalentries', array('postings'=>$postings, 'model'=>$this->firm));
   }
 
   public function actionChecktransaction($id, $transaction)

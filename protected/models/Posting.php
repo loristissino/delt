@@ -158,7 +158,14 @@ class Posting extends CActiveRecord
     ));
     return $this;
   }
-
+  
+  public function connectedTo($transaction_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'transaction_id = ' . $transaction_id,
+    ));
+    return $this;
+  }
   
   public function getDebit()
   {

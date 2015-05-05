@@ -58,18 +58,22 @@ CREATE TABLE IF NOT EXISTS `tbl_challenge` (
   `started_at` timestamp NULL DEFAULT NULL,
   `suspended_at` timestamp NULL DEFAULT NULL,
   `completed_at` timestamp NULL DEFAULT NULL,
+  `checked_at` timestamp NULL DEFAULT NULL,
   `method` int(11) NOT NULL,
-  `mark` int(11) DEFAULT NULL,
+  `rate` int(3) NOT NULL DEFAULT '0',
   `transaction_id` int(11) DEFAULT NULL,
+  `hints` varchar(255) DEFAULT NULL,
+  `shown` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `mark` (`mark`),
+  KEY `mark` (`rate`),
   KEY `assigned_at` (`assigned_at`),
   KEY `instructor_id` (`instructor_id`),
   KEY `user_id` (`user_id`),
   KEY `firm_id` (`firm_id`),
   KEY `exercise_id` (`exercise_id`),
   KEY `suspended_at` (`suspended_at`),
-  KEY `transaction_id` (`transaction_id`)
+  KEY `transaction_id` (`transaction_id`),
+  KEY `checked_at` (`checked_at`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -111,7 +115,6 @@ CREATE TABLE IF NOT EXISTS `tbl_exercise` (
   KEY `user_id` (`user_id`),
   KEY `firm_id` (`firm_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
 -- --------------------------------------------------------
 
 --
@@ -305,7 +308,8 @@ CREATE TABLE IF NOT EXISTS `tbl_transaction` (
   `event_date` date NOT NULL,
   `description` text NOT NULL,
   `hint` text,
-  `je_ranks` varchar(255) NOT NULL,
+  `points` int(11) NOT NULL DEFAULT '10',
+  `penalties` int(11) NOT NULL DEFAULT '5',
   PRIMARY KEY (`id`),
   KEY `exercise_id` (`exercise_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
@@ -379,11 +383,11 @@ ALTER TABLE `tbl_account`
 -- Constraints for table `tbl_challenge`
 --
 ALTER TABLE `tbl_challenge`
-  ADD CONSTRAINT `tbl_challenge_ibfk_6` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_challenge_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_challenge_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_challenge_ibfk_3` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_challenge_ibfk_5` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `tbl_challenge_ibfk_5` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_challenge_ibfk_6` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_event`

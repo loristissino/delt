@@ -713,6 +713,7 @@ class Firm extends CActiveRecord
     );
   }
   
+  
   public function getJournalentriesData()
   {
     return Journalentry::model()->with('postings')->ofFirm($this->id)->findAll();
