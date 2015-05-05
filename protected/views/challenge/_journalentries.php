@@ -36,13 +36,5 @@
   <?php echo $this->renderPartial('/firm/_postingrow', array('posting'=>$posting, 'firm'=>$model, 'excluded'=>$excluded, 'linked'=>false)) ?>
   <?php endif ?>
 <?php endforeach ?>
-  <tr>
-    <td class="firstjournalentryrow" colspan="2"></td>
-    <td class="firstjournalentryrow">
-      <?php echo Yii::t('delt', 'Total:') ?>
-    </td>
-    <td class="firstjournalentryrow currency lastjournalentryrow"><?php echo DELT::currency_value($td, $this->firm->currency) ?></td>
-    <td class="firstjournalentryrow currency lastjournalentryrow"><?php echo DELT::currency_value($tc, $this->firm->currency) ?></td>
-  </tr>
 </table>
 <?php $this->endWidget(); ?>
