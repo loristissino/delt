@@ -11,7 +11,7 @@
           ' ',
           $url=CHtml::normalizeUrl(array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
           array(
-            'update' => '#challenge',
+            'replace' => '#challenge',
             'type' => 'POST',
             ),
           array(
@@ -105,4 +105,4 @@
   <div id="journalentries_shown"></div>
 
   <hr />
-  </div>
+  <!-- transaction --></div>

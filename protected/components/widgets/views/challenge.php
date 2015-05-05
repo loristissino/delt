@@ -44,7 +44,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
 ?>
 <?php if($challenge && $challenge_visibility!='none'): ?>
 
-  <div id="challenge" lang="<?php echo $challenge->exercise->firm->language->locale ?>">
+  <div id="challenge" lang="<?php echo $challenge->exercise->firm->language->language_code ?>">
 
   <?php echo CHtml::script('params = ' . $params . '; execute(params);') 
   // we need to call execute() directly, to handle ajax updates reactions ?>
@@ -110,5 +110,5 @@ $is_ajax = Yii::app()->controller->is_ajax;
 
   <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge, 'challenge_visibility'=>$challenge_visibility, 'result'=>$this->result)) ?>
   
-  </div><!-- challenge -->
+  <!-- challenge --></div>
 <?php endif ?>

@@ -712,6 +712,7 @@ text-align: center;
   clear: both;
 }
 
+
 div.challenge.open
 {
   background-color: #FFFFCC;
@@ -733,22 +734,24 @@ div.challenge.open
   background-color: #FFFF77;
 }
 
-#challenge .transaction.current div.description
-{
-  font-size: 150%;
-}
-#challenge .transaction.noncurrent p, ul, li
-{
-  color: #BFBFBF;
-}
 
-#challenge .transaction.current p, ul, li
+#challenge .transaction.current div.description, #challenge .transaction.current div.hint
 {
   padding-left: 40px;
   padding-right: 40px;
 }
 
-#challenge .noncurrent div.checks
+#challenge .transaction.current div.description
+{
+  font-size: 150%;
+}
+
+#challenge .transaction.noncurrent div.description
+{
+  color: #BFBFBF;
+}
+
+#challenge div.checks
 {
   padding-left: 40px;
   padding-right: 40px;
@@ -790,6 +793,7 @@ div.challenge.open
   background-position: left top;
   background-repeat: repeat;
 }
+
 
 @media screen and (max-width: 600px) {
   body {
