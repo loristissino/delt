@@ -168,6 +168,14 @@ class Challenge extends CActiveRecord
     return $this->exercise->title;
   }
   
+  public function setInitialDefaults()
+  {
+    $this->assigned_at = new CDbExpression('NOW()');
+    $this->rate = 0;
+    $this->_hints = array();
+    $this->_shown = array();
+  }
+  
   public function forUser($user_id, $order='assigned_at ASC')
   {
     $this->getDbCriteria()->mergeWith(array(

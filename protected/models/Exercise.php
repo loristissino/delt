@@ -136,4 +136,60 @@ class Exercise extends CActiveRecord
   {
     return $this->title;
   }
+  
+  public function ofUser($user_id, $order='assigned_at ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.user_id = ' . $user_id,
+        'order'=>$order,
+    ));
+    return $this;
+  }  
+  
+  /**
+   * Returns a data provider for the exercise prepared by the user.
+   * @param  integer $user_id the user id
+   * @return CActiveDataProvider the challenges of the user
+   */
+  public function getExercisesOfUser($user_id, $order='title ASC')
+  {
+    return new CActiveDataProvider($this->ofUser($user_id, $order), array(
+      'criteria'=>array(
+        ),
+      'pagination'=>array(
+          'pageSize'=>100,
+          ),
+      )
+    );
+  }
+  
+  public function invite($users=array(), $method=13)
+  {
+    $count = 0;
+    foreach($users as $username)
+    {
+      $username=trim($username);
+      try
+      {
+        if ($DEUser = DEUser::model()->getBy('username', $username))
+        {
+          $challenge = new Challenge();
+          $challenge->setInitialDefaults();
+          $challenge->exercise_id = $this->id;
+          $challenge->instructor_id = Yii::app()->controller->DEUser->id;
+          $challenge->user_id =$DEUser->id;
+          $challenge->method = $method;
+          $challenge->save();
+          $count++;
+        }
+      }
+      catch(Exception $e)
+      {
+        // nothing special...
+      }
+    }
+    return $count;
+  }
+  
+  
 }

@@ -74,21 +74,18 @@ $is_ajax = Yii::app()->controller->is_ajax;
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
         array(
           'submit'=>$url,
-          'title' => Yii::t('delt', 'Link the firm «%name%» to the current challenge', array('%name%'=>Yii::app()->controller->firm)),
+          'title' => Yii::t('delt', 'Link the firm «%name%» to this challenge', array('%name%'=>Yii::app()->controller->firm)),
           )
         )
         ?>.
       <?php endif ?>
   <?php else: ?>
     <?php if(Yii::app()->controller->firm): ?>
-      <?php echo CHtml::ajaxLink(
+      <?php echo CHtml::link(
         Yii::t('delt', 'Link the firm «%name%» to this challenge', array('%name%'=>Yii::app()->controller->firm)),
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
         array(
-          'replace' => '#challenge',
-          'type' => 'POST',
-          ),
-        array(
+          'submit'=>$url,
           'title' => Yii::t('delt', 'Connect this firm with the active challenge'),
           )
         )
