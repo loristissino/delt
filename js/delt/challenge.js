@@ -14,8 +14,8 @@ function execute(params)
   
   $(".transaction").each(function(i, obj)
   {
-    $(obj).click(function() {
-      updateConnections();
+    $(obj).hover(function() {
+      updateConnections($(obj).data('id'));
       }
     );
   }
@@ -72,12 +72,12 @@ function addLinks(params)
 
 
 
-function updateConnections()
+function updateConnections(id)
 {
   $(".journalentryrow").each(function(i, obj)
   {
     console.log("working on " + i);
-    if ($(obj).data("transaction-id")==params.transaction && !$(obj).hasClass("excluded"))
+    if ($(obj).data("transaction-id")==id && !$(obj).hasClass("excluded"))
     {
       $(obj).addClass('connected');
       $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFFFCC':'#FFFF99');

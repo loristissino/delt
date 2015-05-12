@@ -253,7 +253,11 @@ class Challenge extends CActiveRecord
   
   public function hasFirm()
   {
-    return !!$this->firm_id;
+    if (!$this->firm_id)
+    {
+      return false;
+    }
+    return ($this->firm->status > 0);
   }
   
   public function getStatus()
@@ -304,6 +308,7 @@ class Challenge extends CActiveRecord
             // for this one, set started_at and delete suspended_at
             $this->started_at = $now;
             $this->suspended_at = null;
+            $this->rate = 0;
             $this->save();
             
             $done = true;

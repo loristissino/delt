@@ -731,7 +731,8 @@ div.challenge.open
 
 #challenge .transaction.current
 {
-  background-color: #FFFF77;
+  border-style: inset;
+  border-width: 4px;
 }
 
 
@@ -743,12 +744,18 @@ div.challenge.open
 
 #challenge .transaction.current div.description
 {
-  font-size: 150%;
+}
+
+#challenge .transaction:hover 
+{
+  background-color: #FFFF77;
+  font-size: 120%;
+  color: black;
 }
 
 #challenge .transaction.noncurrent div.description
 {
-  color: #BFBFBF;
+  /*color: #BFBFBF;*/
 }
 
 #challenge div.checks

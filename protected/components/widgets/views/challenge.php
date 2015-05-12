@@ -31,7 +31,7 @@ if($challenge)
 
 $challenge_visibility = Yii::app()->controller->challenge_visibility;
 
-$challenge_firm_set = !!$challenge->firm_id;
+$challenge_firm_set = $challenge->hasFirm();
 // there is a firm set for the challenge
 
 $challenge_firm_current = isset(Yii::app()->controller->firm) && $challenge->firm_id == Yii::app()->controller->firm->id;
@@ -41,7 +41,10 @@ $is_ajax = Yii::app()->controller->is_ajax;
 
 }
 
+
 ?>
+
+
 <?php if($challenge && $challenge_visibility!='none'): ?>
 
   <div id="challenge" lang="<?php echo $challenge->exercise->firm->language->language_code ?>">
@@ -96,6 +99,12 @@ $is_ajax = Yii::app()->controller->is_ajax;
       <?php echo Yii::t('delt', 'Begin with forking this firm:') ?> <?php echo CHtml::link($challenge->exercise->firm->parent, array('firm/fork', 'slug'=>$challenge->exercise->firm->parent->slug)) ?>
       <?php endif ?>
     <?php endif ?>
+  <?php endif ?>
+  
+  <?php if($challenge_firm_set): ?>
+  <?php /* TODO
+  <br />
+  <?php echo "unlink" */ ?>
   <?php endif ?>
   </p>
   <hr />

@@ -289,7 +289,15 @@ class FirmController extends Controller
             $newfirm->fixAccounts();
             $newfirm->fixAccountNames();
             Event::model()->log($this->DEUser, $newfirm->id, Event::FIRM_FORKED, array('parent_firm_id'=>$firm->id, 'type'=>$form->type));
+            
+            if($challenge = $this->DEUser->getOpenChallenge())
+            {
+              $challenge->connect($newfirm);
+              $this->redirect(array('bookkeeping/journal','slug'=>$newfirm->slug));
+            }
+            
             $this->redirect(array('bookkeeping/manage','slug'=>$newfirm->slug));
+            
           }
           catch(Exception $e)
           {

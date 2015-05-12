@@ -97,7 +97,7 @@
   <?php endif ?>
 
   <?php if($data->isOpen()): ?>
-    <?php if($data->firm): ?>
+    <?php if($data->hasFirm()): ?>
       <?php echo CHtml::link($data->firm, array('bookkeeping/journal', 'slug'=>$data->firm->slug), array('title'=>Yii::t('delt', 'Go to the journal of the firm «%name%»', array('%name%'=>$data->firm->name)))) ?>
     <?php else: ?>
       <?php echo CHtml::link(Yii::t('delt', 'Begin'), array('bookkeeping/index'), array('title'=>Yii::t('delt', 'Start the challenge by forking a firm'))) ?>
