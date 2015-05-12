@@ -29,6 +29,11 @@ if($challenge)
     CClientScript::POS_HEAD
   );
 
+  $cs->registerScriptFile(
+    Yii::app()->request->baseUrl.'/js/jquery.pin.js',
+    CClientScript::POS_HEAD
+  );
+
 $challenge_visibility = Yii::app()->controller->challenge_visibility;
 
 $challenge_firm_set = $challenge->hasFirm();

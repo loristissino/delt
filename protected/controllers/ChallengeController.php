@@ -32,7 +32,7 @@ class ChallengeController extends Controller
       'accessControl', // perform access control for CRUD operations
       'postOnly + delete', // we only allow deletion via POST request,
       'postOnly + changestatus', // we only allow status change via POST request,
-      'postOnly + connect', // we only allow connection change via POST request,
+      // FIXME 'postOnly + connect', // we only allow connection change via POST request,
       'postOnly + activatetransaction', // we only allow transaction activation via POST request,
       'postOnly + checktransaction', // we only allow transaction activation via POST request,
       'postOnly + requesthint', // we only allow hint requests via POST request,

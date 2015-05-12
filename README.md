@@ -46,6 +46,7 @@ Here's a list:
 * [JS Calculator](http://keith-wood.name/calculator.html) (MIT License)
 * [Accounting JS](http://josscrowcroft.github.com/accounting.js/) (https://github.com/openexchangerates/accounting.js/blob/master/license)
 * [Slugifier](https://gist.github.com/demoive/4249710)
+* [jQuery.pin](https://github.com/webpop/jquery.pin)
 
 
 ## Online version
