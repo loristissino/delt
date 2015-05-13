@@ -560,6 +560,12 @@ class Challenge extends CActiveRecord
     $result['points'] = 0; // if we don't find any error, we'll assign the points afterwards
     $result['description'] = $transaction->description;
     $result['errors'] = array();
+    $result['checked'] = true;
+    
+    if($sizeOfWJE==0)
+    {
+      $result['checked'] = false;
+    }
     
     if ( $sizeOfWJE != $sizeOfBJE )
     {

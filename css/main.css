@@ -733,7 +733,7 @@ div.challenge.open
 {
   border-style: inset;
   border-width: 4px;
-  background-color: #FFFFCC;
+  background-color: #FFFF77;
 }
 
 
@@ -749,8 +749,8 @@ div.challenge.open
 
 #challenge .transaction:hover 
 {
-  background-color: #FFFF77;
-  font-size: 120%;
+  background-color: #EEEEEE;
+  /*font-size: 120%;*/
   color: black;
 }
 
@@ -783,7 +783,7 @@ div.challenge.open
 
 #challenge .error
 {
-  background-color: #FFFF77;
+  /*background-color: #FFFF77;*/
 }
 
 #challenge_context p.description

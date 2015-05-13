@@ -13,8 +13,5 @@
   <?php endforeach // errors ?>
   </div>
 <?php else: ?>
-  <?php if(!isset($source['points']) || $source['points']): ?>
-  <p class="ok"><?php echo $this->createIcon('accept', Yii::t('delt', 'OK'), array('width'=>16, 'height'=>16)) ?></p>
-  <?php endif ?>
 <?php endif ?>
 </div>

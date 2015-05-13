@@ -1,10 +1,19 @@
   <div id="challenge_transactions" style="display: <?php echo $challenge_visibility=='journal' ? 'visible': 'none' ?>">
     
   <h3><?php echo Yii::t('delt', 'Transactions') ?></h3>
-  <?php foreach($challenge->exercise->transactions as $transaction): $is_current = $transaction->id == $challenge->transaction_id ?>
+  <?php foreach($challenge->exercise->transactions as $transaction):
+    $is_current = $transaction->id == $challenge->transaction_id;
+    $ok = isset($result['transactions'][$transaction->id]) && $result['transactions'][$transaction->id]['points']>0?>
     <div class="transaction <?php echo $is_current ? 'current':'noncurrent' ?>" data-id=<?php echo $transaction->id ?>>
       
       <div class="firstline">
+        <?php if(isset($result['transactions'][$transaction->id]) && $result['transactions'][$transaction->id]['checked']):?>
+        <?php if($ok): ?>
+          <?php echo Yii::app()->controller->createIcon('accept', Yii::t('delt', 'OK'), array('width'=>16, 'height'=>16)) ?>
+        <?php else: ?>
+          <?php echo Yii::app()->controller->createIcon('exclamation', Yii::t('delt', 'Errors'), array('width'=>16, 'height'=>16)) ?>
+        <?php endif ?>
+        <?php endif ?>
       <?php if($is_current): ?>
         <?php echo Yii::app()->controller->createIcon('page_edit', Yii::t('delt', 'Current transaction'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The transaction you are working on'))); ?>
         <?php echo CHtml::ajaxLink(
