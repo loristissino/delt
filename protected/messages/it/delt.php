@@ -533,5 +533,14 @@ return array(
   'Mark Completed' => 'Contrassegna come completata',
   'Results' => 'Risultati',
   'Begin' => 'Procedi',
+  'Request a hint for this transaction' => 'Richiedi un suggerimento per questa transazione',
+  'Let me show you how this transaction should be recorded' => 'Fatti mostrare come questa transazione dovrebbe essere registrata',
+  '1 point|{n} points' => '1 punto|{n} punti',
+  'One point|{n} points' => 'Un punto|{n} punti',
+  'It will cost you one point.|It will cost you {n} points.' => 'Ti costerà un punto.|Ti costerà {n} punti.',
+  'Do you want to be shown how to record this transaction?' => 'Vuoi che ti venga mostrato come registrare questa transazione?',
+  'Do you want to receive a hint for this transaction?' => 'Vuoi ricevere un suggerimento per questa transazione?',
+  'Linked firm:' => 'Azienda collegata:', 
+  'Mark this transaction as current' => 'Contrassegna questa transazione come corrente',
 );
 

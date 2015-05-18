@@ -20,7 +20,7 @@ $md = new CMarkdown();
 
   <h2><?php echo Yii::t('delt', 'Firm') ?></h2>
   <p><?php echo $model->firm ?></p>
-  <?php $this->renderPartial('_checks', array('source'=>$results['firm'])) ?>
+  <?php $this->renderPartial('_checks', array('source'=>$results['firm'], 'with_oks'=>true)) ?>
   <hr />
 
   <h2><?php echo Yii::t('delt', 'Transactions') ?></h2>
@@ -28,7 +28,7 @@ $md = new CMarkdown();
     <div class="transaction">
       <?php echo $md->transform($transaction['description']) ?>
     </div>
-    <?php $this->renderPartial('_checks', array('source'=>$transaction)) ?>
+    <?php $this->renderPartial('_checks', array('source'=>$transaction, 'with_oks'=>true)) ?>
     <div class="points extrainfo">
     <?php echo Yii::t('delt', 'Points: %points%. Penalties: %penalties%',
       array('%points%'=>$transaction['points'], '%penalties%'=>$transaction['penalties']))
@@ -40,6 +40,3 @@ $md = new CMarkdown();
   <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', $results['score']) . ' (' .  round(100*$results['score']/$results['possiblescore']) . '%)' ?></h2>
 
 </div>
-<pre>
-<?php print_r($results) ?>
-</pre>

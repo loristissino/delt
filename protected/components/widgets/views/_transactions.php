@@ -83,7 +83,7 @@
           'type' => 'POST',
           ),
         array(
-          'title' => Yii::t('delt', 'Show how this transaction should be recorded') . ($been_shown? '' : ' (-' . Yii::t('delt', '1 point|{n} points', $transaction->points) . ')'),
+          'title' => Yii::t('delt', 'Let me show you how this transaction should be recorded') . ($been_shown? '' : ' (-' . Yii::t('delt', '1 point|{n} points', $transaction->points) . ')'),
           'confirm' => $been_shown ? null : Yii::t('delt', 'Do you want to be shown how to record this transaction?') . ' ' . Yii::t('delt', 'It will cost you one point.|It will cost you {n} points.', $transaction->points),
           )
         )
@@ -104,7 +104,7 @@
       <?php endif ?>
       <?php if(isset($result['transactions'][$transaction->id])): ?>
         <div class="result">
-          <?php echo Yii::app()->controller->renderPartial('/challenge/_checks', array('source'=>$result['transactions'][$transaction->id])) ?>
+          <?php echo Yii::app()->controller->renderPartial('/challenge/_checks', array('source'=>$result['transactions'][$transaction->id], 'with_oks'=>false)) ?>
         </div>
       <?php endif ?>
     </div>

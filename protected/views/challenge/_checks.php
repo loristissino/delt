@@ -12,7 +12,7 @@
     <p class="error"><?php echo $this->createIcon('exclamation', Yii::t('delt', 'Error'), array('width'=>16, 'height'=>16)) ?> <?php echo $error ?></p>
   <?php endforeach // errors ?>
   </div>
-<?php else: ?>
+<?php elseif($with_oks): ?>
   <?php if(isset($source['penalties']) && $source['penalties']): ?>
     <?php echo Yii::app()->controller->createIcon('helped', Yii::t('delt', 'OK with help'), array('width'=>16, 'height'=>16)) ?>
   <?php else: ?>
