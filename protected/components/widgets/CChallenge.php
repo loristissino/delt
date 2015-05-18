@@ -25,7 +25,16 @@ class CChallenge extends CWidget
     
     public function run()
     {
-        $this->render('challenge');
+      $this->getChallenge();
+      if($this->challenge)
+      {
+        $this->result = $this->challenge->getResults();
+      }
+      else
+      {
+        $this->result = array();
+      }
+      $this->render('challenge', array('challenge'=>$this->challenge));
     }
     
 }

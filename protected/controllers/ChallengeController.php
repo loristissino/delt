@@ -33,7 +33,7 @@ class ChallengeController extends Controller
       'postOnly + delete', // we only allow deletion via POST request,
       'postOnly + changestatus', // we only allow status change via POST request,
       // FIXME 'postOnly + connect', // we only allow connection change via POST request,
-      'postOnly + activatetransaction', // we only allow transaction activation via POST request,
+      //'postOnly + activatetransaction', // we only allow transaction activation via POST request,
       'postOnly + checktransaction', // we only allow transaction activation via POST request,
       'postOnly + requesthint', // we only allow hint requests via POST request,
       'postOnly + requestshow', // we only allow hint requests via POST request,
@@ -202,25 +202,15 @@ class ChallengeController extends Controller
   {
     $model=$this->loadModel($id);
     
-    if ($model->method & Challenge::SHOW_CHECKS_ON_TRANSACTION_CHANGE)
-    {
-      $result = $model->check(false);
-    }
-    else
-    {
-      $result = array();
-    }
-    
     if ($model->activateTransaction($transaction))
     {
       Yii::app()->user->setState('transaction', $transaction);
-      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
     }
     else
     {
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
-    $this->renderPartial('_challenge', array('result'=>$result));
+    $this->renderPartial('_challenge', array('result'=>$model->getResults()));
   }
   
   public function actionRequesthint($id, $transaction)
@@ -268,7 +258,7 @@ class ChallengeController extends Controller
     if($model->isOpen())
       throw new CHttpException(404,'The requested page does not exist.');
     
-    $results = $model->check();
+    $results = $model->getResults();
     $this->render('results', array('model'=>$model, 'results'=>$results));
   }
 

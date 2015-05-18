@@ -13,5 +13,10 @@
   <?php endforeach // errors ?>
   </div>
 <?php else: ?>
+  <?php if(isset($source['penalties']) && $source['penalties']): ?>
+    <?php echo Yii::app()->controller->createIcon('helped', Yii::t('delt', 'OK with help'), array('width'=>16, 'height'=>16)) ?>
+  <?php else: ?>
+    <?php echo Yii::app()->controller->createIcon('accept', Yii::t('delt', 'OK'), array('width'=>16, 'height'=>16)) ?>
+  <?php endif ?>
 <?php endif ?>
 </div>

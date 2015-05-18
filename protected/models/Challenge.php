@@ -488,6 +488,19 @@ class Challenge extends CActiveRecord
     $this->save();
   }
   
+  public function getResults()
+  {
+    if ($this->isOpen() && $this->method & Challenge::SHOW_CHECKS_ON_TRANSACTION_CHANGE)
+    {
+      return $this->check(false);
+    }
+    if ($this->isCompleted() && $this->method & Challenge::SHOW_CHECKS_ON_CHALLENGE_COMPLETED)
+    {
+      return $this->check(true);
+    }
+    return array();
+  }
+  
   public function check($final=true)
   {
     $fatal = false;
@@ -665,12 +678,12 @@ class Challenge extends CActiveRecord
   
   private function findJournalEntriesOfWork(Transaction $transaction)
   {
-    return Journalentry::model()->ofFirm($this->work->id, 'date ASC, t.id ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
+    return Journalentry::model()->ofFirm($this->work->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
   }
 
   private function findJournalEntriesOfBenchmark(Transaction $transaction)
   {
-    return Journalentry::model()->ofFirm($this->benchmark->id, 'date ASC, t.id ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
+    return Journalentry::model()->ofFirm($this->benchmark->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
     
   }
 

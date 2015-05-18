@@ -1,7 +1,6 @@
 <?php
 
 $md = new CMarkdown();
-$challenge = $this->getChallenge();
 
 if($challenge)
 {
@@ -45,7 +44,6 @@ $challenge_firm_current = isset(Yii::app()->controller->firm) && $challenge->fir
 $is_ajax = Yii::app()->controller->is_ajax;
 
 }
-
 
 ?>
 

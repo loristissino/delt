@@ -34,7 +34,6 @@ else
       $this->widget('application.components.widgets.CChallenge', array(
         'id'=>'challenge',
         'hideOnEmpty'=>true,
-        'result'=>array(),
       ));
     ?>
   <?php if($this->firm): ?>

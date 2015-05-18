@@ -12,6 +12,7 @@ function execute(params)
   updateConnections();
   addLinks(params);
   
+  /*
   $(".transaction").each(function(i, obj)
   {
     $(obj).hover(function() {
@@ -20,6 +21,7 @@ function execute(params)
     );
   }
   );
+  */
   
   $("#challenge .transaction.current").attr('style', 'width: 680px').pin();
   
