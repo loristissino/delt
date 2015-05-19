@@ -37,6 +37,7 @@ $md = new CMarkdown();
     <hr />
   <?php endforeach // transactions?>
 
-  <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', $results['score']) . ' (' .  round(100*$results['score']/$results['possiblescore']) . '%)' ?></h2>
+  <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', $results['score']) . ' (' . 
+    Yii::app()->numberFormatter->formatDecimal(round(1000*$results['score']/$results['possiblescore'])/10) . '%)' ?></h2>
 
 </div>

@@ -61,7 +61,10 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <?php if($challenge->method & Challenge::SHOW_POINTS_DURING_CHALLENGE): ?>
     <span class="challengeinfo"> - 
       <span class="score">
-        <?php echo Yii::t('delt', 'Current score: %percentage%%', array('%percentage%'=>round($challenge->rate/10, 1))) ?>
+        <?php echo Yii::t('delt', 'Current score: %percentage%%', array(
+          '%percentage%'=>Yii::app()->numberFormatter->formatDecimal(
+            $challenge->rate/10)))
+        ?>
       </span>
     <?php endif ?>
     </span>

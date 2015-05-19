@@ -72,14 +72,12 @@ function addLinks(params)
   */
 }
 
-
-
 function updateConnections(id)
 {
   $(".journalentryrow").each(function(i, obj)
   {
-    console.log("working on " + i);
-    if ($(obj).data("transaction-id")==params.transaction && !$(obj).hasClass("excluded"))
+    //console.log("working on " + i);
+    if (params.transaction && $(obj).data("transaction-id")==params.transaction && !$(obj).hasClass("excluded"))
     {
       $(obj).addClass('connected');
       $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFFFCC':'#FFFF99');

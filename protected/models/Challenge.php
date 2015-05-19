@@ -41,13 +41,14 @@ class Challenge extends CActiveRecord
 {
   
   const
-     SHOW_POINTS_DURING_CHALLENGE          =   1,
-     ALLOW_SHOW_CORRECT_ENTRIES            =   2,
-     SHOW_CHECKS_ON_TRANSACTION_CHANGE     =   4,
-     SHOW_CHECKS_ON_CHALLENGE_COMPLETED    =   8
+     SHOW_POINTS_DURING_CHALLENGE                 =   1,
+     ALLOW_SHOW_CORRECT_ENTRIES                   =   2,
+     SHOW_CHECKS_ON_TRANSACTION_CHANGE            =   4,
+     SHOW_CHECKS_ON_CHALLENGE_COMPLETED           =   8,
+     SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE   =  16,
+     SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETED  =  32
      ;
 
-  
   private $_hints = null;  // hints requested by the user and shown
   private $_shown = null;  // transactions shown to user
   private $work;           // just an alias
@@ -174,6 +175,7 @@ class Challenge extends CActiveRecord
     $this->rate = 0;
     $this->_hints = array();
     $this->_shown = array();
+    $this->transaction_id = null;
   }
   
   public function forUser($user_id, $order='assigned_at ASC')
@@ -506,6 +508,11 @@ class Challenge extends CActiveRecord
     $fatal = false;
     $results = array('warnings'=>array(), 'firm'=>array(), 'transactions'=>array(), 'score'=>0, 'possiblescore'=>0);
 
+    if(!$this->work)
+    {
+      return $results;
+    }
+
     if ($this->work->firm_parent_id != $this->benchmark->firm_parent_id)
     {
       $results['firm']['warnings'][]=Yii::t('delt', 'Different parents');
@@ -564,8 +571,8 @@ class Challenge extends CActiveRecord
   {
     $result = array();
     
-    $wje = $this->findJournalEntriesOfWork($transaction);
-    $bje = $this->findJournalEntriesOfBenchmark($transaction);
+    $wje = $this->_findJournalEntriesOfWork($transaction);
+    $bje = $this->_findJournalEntriesOfBenchmark($transaction);
     
     $sizeOfWJE = sizeof($wje);
     $sizeOfBJE = sizeof($bje);
@@ -585,23 +592,25 @@ class Challenge extends CActiveRecord
       $result['points'] = 0;
       if (!(($sizeOfWJE==0 && !$final)))
       {
-      $result['errors'] = array(Yii::t('delt', 'Wrong number of journal entries (expected: %number_expected%, found: %number_found%)', 
-        array('%number_expected%'=>$sizeOfBJE, '%number_found%'=>$sizeOfWJE))
-        );
+      $result['errors'] = array(Yii::t('delt', 'Wrong number of journal entries')
+         .$this->_expectedValues(
+          $sizeOfBJE,
+          $sizeOfWJE
+        ));
       }
     }
     else
     {
       for ($i=0; $i< $sizeOfBJE; $i++)   // they are sorted the same way, so we just go in parallel
       {
+        
+        $jen = Yii::t('delt', 'Journal entry %number%: ', array('%number%'=>$i+1));
+        
         if($wje[$i]->date != $bje[$i]->date)
         {
-          $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong date (expected: %date_expected%, found: %date_found%)', 
-            array(
-              '%number%'=>1+$i,
-              '%date_expected%' => Yii::app()->dateFormatter->formatDateTime($bje[$i]->date, 'short', null),
-              '%date_found%' => Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null),
-              )
+          $result['errors'][] = $jen . Yii::t('delt', 'wrong date') . $this->_expectedValues(
+              Yii::app()->dateFormatter->formatDateTime($bje[$i]->date, 'short', null),
+              Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null)
             );
         }
 
@@ -610,53 +619,51 @@ class Challenge extends CActiveRecord
         
         if($sizeOfWJEPostings != $sizeOfBJEPostings)
         {
-          $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong number of postings (expected: %postings_expected%, found: %postings_found%)', 
-            array(
-              '%number%'=>1+$i,
-              '%postings_expected%' => $sizeOfBJEPostings,
-              '%postings_found%' => $sizeOfWJEPostings,
-              )
+          $result['errors'][] = $jen . Yii::t('delt', 'wrong number of postings') . $this->_expectedValues(
+              $sizeOfBJEPostings,
+              $sizeOfWJEPostings
             );
         }
         else
         {
           for ($j=0; $j< $sizeOfBJEPostings; $j++)
           {
+            
             if (!DELT::nearlyZero($wje[$i]->postings[$j]->amount - $bje[$i]->postings[$j]->amount))
             {
-              $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong amount for posting %posting% (expected: %amount_expected%, found: %amount_found%)', 
-            array(
-              '%number%'=>1+$i,
-              '%posting%'=>1+$j,
-              '%amount_expected%' => DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
-              '%amount_found%' => DELT::currency_value($wje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
-              )
-            );
+              $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting %number%', 
+                array(
+                  '%number%'=>1+$j,
+                  )
+                ) . $this->_expectedValues(
+                    DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
+                    DELT::currency_value($wje[$i]->postings[$j]->amount, $this->benchmark->currency, true)
+                  );
             }
             
             if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
             {
-              $result['errors'][] = Yii::t('delt', 'Journal entry %number%: wrong account for posting %posting% (expected: «%account_expected%», found: «%account_found%»)', 
-            array(
-              '%number%'=>1+$i,
-              '%posting%'=>1+$j,
-              '%account_expected%' => $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
-              '%account_found%' => $wje[$i]->postings[$j]->account->getCodeAndName($this->work),
-              )
-            );
+              $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting %number%', 
+                array(
+                  '%number%'=>1+$j,
+                )
+              ) . $this->_expectedValues(
+                    $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
+                    $wje[$i]->postings[$j]->account->getCodeAndName($this->work)
+              );
             }
             else
             {
               if ($wje[$i]->postings[$j]->account->getCodeAndName($this->work) != $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark))
               {
-                $result['warnings'][] = Yii::t('delt', 'Journal entry %id%: wrong account name for posting %number% (expected: «%account_expected%», found: «%account_found%»)', 
-              array(
-                '%id%'=>$wje[$i]->id,
-                '%number%'=>1+$j,
-                '%account_expected%' => $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
-                '%account_found%' => $wje[$i]->postings[$j]->account->getCodeAndName($this->work),
-                )
-              );
+                $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting %number%', 
+                  array(
+                    '%number%'=>1+$j,
+                    )
+                ) . $this->_expectedValues(
+                      $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
+                      $wje[$i]->postings[$j]->account->getCodeAndName($this->work)
+                      );
               }
               
             }
@@ -676,16 +683,35 @@ class Challenge extends CActiveRecord
     return $result;
   }
   
-  private function findJournalEntriesOfWork(Transaction $transaction)
+  private function _findJournalEntriesOfWork(Transaction $transaction)
   {
     return Journalentry::model()->ofFirm($this->work->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
   }
 
-  private function findJournalEntriesOfBenchmark(Transaction $transaction)
+  private function _findJournalEntriesOfBenchmark(Transaction $transaction)
   {
     return Journalentry::model()->ofFirm($this->benchmark->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
     
   }
 
+  private function _expectedValues($expected, $found)
+  {
+    if (
+      ($this->isOpen() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE)
+      or
+      ($this->isCompleted() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETED)
+      )
+    {
+      return ' (' . Yii::t('delt', 'expected: «%expected%», found: «%found%»', array(
+        '%expected%' => $expected,
+        '%found%' => $found,
+        )
+      ) . ')';
+    }
+    else
+    {
+      return '';
+    }
+  }
   
 }

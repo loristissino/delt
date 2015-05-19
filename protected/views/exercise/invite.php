@@ -28,7 +28,7 @@ $this->menu=array(
 )); ?>
 
 <?php echo CHtml::textArea('users', '', array('cols'=>30, 'rows'=>10)) ?><br />
-<?php echo CHtml::textField('method', '13') ?>
+<?php echo CHtml::textField('method', '61') ?>
 
 <div class="actions buttons">
   <?php echo CHtml::submitButton(Yii::t('delt', 'Invite'), array('name'=>'invite')) ?>

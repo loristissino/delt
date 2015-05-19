@@ -127,10 +127,17 @@ class ExerciseController extends Controller
     if(Yii::app()->request->getIsPostRequest())
     {
       $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
-      $method = DELT::getValueFromArray($_POST, 'method', 13);
+      $method = DELT::getValueFromArray($_POST, 'method', 61);
       
       $invited = $model->invite($users, $method);
-      Yii::app()->user->setFlash('delt_success', 'Invited: '. $invited) ;
+      if($invited)
+      {
+        Yii::app()->user->setFlash('delt_success', 'Invited: '. $invited);
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure', 'No user invited');
+      }
       $this->redirect(array('index'));
     }
 

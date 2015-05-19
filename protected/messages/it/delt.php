@@ -542,5 +542,18 @@ return array(
   'Do you want to receive a hint for this transaction?' => 'Vuoi ricevere un suggerimento per questa transazione?',
   'Linked firm:' => 'Azienda collegata:', 
   'Mark this transaction as current' => 'Contrassegna questa transazione come corrente',
+  'Begin with forking this firm:' => 'Inizia con il duplicare questa azienda:',
+  'expected: «%expected%», found: «%found%»' => 'atteso: «%expected%», trovato: «%found%»',
+  'Wrong number of journal entries' => 'Numero errato di registrazioni contabili',
+  'Journal entry %number%: ' => 'Registrazione %number%: ',
+  'wrong date' => 'data errata',
+  'wrong number of postings' => 'numero di righe errato',
+  'wrong amount for posting %number%' => 'importo errato nella riga %number%',
+  'wrong account for posting %number%' => 'conto errato nella riga %number%',
+  'wrong account name for posting %number%' => 'nome di conto errato nella riga %number%',
+  'Are you sure you you are done with this challenge?' => 'Sei sicuro di aver completato questa sfida?',
+  'Check' => 'Controlla',
+  'Score' => 'Esito',
+  'Challenge «%title%»: results' => 'Sfida «%title%»: risultati',
 );
 

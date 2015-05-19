@@ -15,12 +15,11 @@
     <?php endif ?>
     <?php echo CHtml::encode($data->exercise); ?> 
     <span class="score">
-      <?php echo Yii::t('delt', '(%percentage%%)', array('%percentage%'=>round($data->rate/10))) ?>
+      <?php echo '('. Yii::app()->numberFormatter->formatDecimal($data->rate/10) . '%)' ?>
     </span>
     <br />
     
     <?php /*
-
     <b><?php echo CHtml::encode($data->getAttributeLabel('instructor_id')); ?>:</b>
     <?php echo CHtml::encode($data->instructor_id); ?>
     <br />
@@ -78,7 +77,7 @@
     <?php else: ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Suspend'), array('name'=>'suspend', 'id'=>'suspend_button_'.$data->id)); ?>
       <?php if($data->hasFirm()): ?>
-        <?php echo CHtml::submitButton(Yii::t('delt', 'Mark Completed'), array('name'=>'completed', 'id'=>'completed_button', 'confirm'=>Yii::t('delt', 'Are you sure?'))); ?>
+        <?php echo CHtml::submitButton(Yii::t('delt', 'Mark Completed'), array('name'=>'completed', 'id'=>'completed_button', 'confirm'=>Yii::t('delt', 'Are you sure you you are done with this challenge?'))); ?>
       <?php endif ?>
     <?php endif ?>
   <?php else: ?>

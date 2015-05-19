@@ -163,7 +163,7 @@ class Exercise extends CActiveRecord
     );
   }
   
-  public function invite($users=array(), $method=13)
+  public function invite($users=array(), $method=61)
   {
     $count = 0;
     foreach($users as $username)
