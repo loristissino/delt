@@ -555,5 +555,11 @@ return array(
   'Check' => 'Controlla',
   'Score' => 'Esito',
   'Challenge «%title%»: results' => 'Sfida «%title%»: risultati',
+  
+  
+  'This is the place where our <a href="%url%">twitter feed</a> should be placed.' => 'Questo è il posto dove il nostro <a href="%url%">feed twitter</a> dovrebbe essere posto.',
+  'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
+  'Click on the link above to access it.' => 'Fai clic sul link qui sopra per accedervi.',
+  
 );
 
