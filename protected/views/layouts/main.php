@@ -67,7 +67,7 @@ $mainmenu_items=array(
   <div class="clear"></div>
 
   <div id="footer">
-    Website based on <a href="http://loristissino.github.com/delt/">DELT</a>, Double Entry Learning Tool (release <?php echo DELT::getVersion() ?>) - Copyright &copy; <?php echo date('Y'); ?> by DELT Project. All Rights Reserved.<br/>
+    Website based on <a href="http://loristissino.github.com/delt/">DELT</a>, Double Entry Learning Tool (release <?php echo DELT::getVersion() ?>) - Copyright &copy; <?php echo date('Y'); ?> by DELT Project. All Rights Reserved. <a href="<?php echo Yii::app()->params['privacy_url'] ?>">Privacy and cookie policy</a><br/>
     <?php echo Yii::powered(); ?>
     <?php echo Yii::app()->params['tagLine'] ?>
   </div><!-- footer -->

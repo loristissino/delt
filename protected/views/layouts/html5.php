@@ -43,7 +43,7 @@ $mainmenu_items=array(
 
   <footer>
     <hr />
-    <p>This page belongs to the website <?php echo CHtml::link(Yii::app()->name, $this->createUrl('/site')) ?>.</p>
+    <p>This page belongs to the website <?php echo CHtml::link(Yii::app()->name, $this->createUrl('/site')) ?>. <a href="<?php echo Yii::app()->params['privacy_url'] ?>">Privacy and cookie policy</a></p>
   </footer>
 
   <?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
