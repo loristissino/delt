@@ -140,6 +140,7 @@ return array(
     
         'You must agree with the Terms of Service and the Privacy Policy.' => 'Devi accettare Termini e condizioni e dichiarare di aver preso visione dell\'Informativa sul trattamento dei dati personali.',
         'We use cookies to store the information concerning your activities on our website.' => 'Usiamo i cookie per memorizzare le informazioni riguardanti le tue attività nel nostro sito.',
+        'By clicking the button «I understand» or by continuing to use the website, you confirm your acceptance of the cookies' => 'Cliccando sul pulsante «Ho capito» o continuando a usare il sito web, confermi la tua accettazione dei cookie.',
         'See our <a href="{privacy_url}">privacy policy</a> to find out more.' => 'Accedi all\'<a href="{privacy_url}">informativa sul trattamento dei dati personali</a> per saperne di più.',
         
         'I want to receive email notices and news from the website.' => 'Desidero ricevere informazioni e notizie dal sito web.',
