@@ -143,5 +143,7 @@ return array(
         'See our <a href="{privacy_url}">privacy policy</a> to find out more.' => 'Accedi all\'<a href="{privacy_url}">informativa sul trattamento dei dati personali</a> per saperne di più.',
         
         'I want to receive email notices and news from the website.' => 'Desidero ricevere informazioni e notizie dal sito web.',
+        
+        'I understand' => 'Ho capito',
 
 );

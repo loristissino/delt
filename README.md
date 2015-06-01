@@ -47,6 +47,7 @@ Here's a list:
 * [Accounting JS](http://josscrowcroft.github.com/accounting.js/) (https://github.com/openexchangerates/accounting.js/blob/master/license)
 * [Slugifier](https://gist.github.com/demoive/4249710)
 * [jQuery.pin](https://github.com/webpop/jquery.pin)
+* [CookieMonster](https://github.com/bizley-code/Yii-CookieMonster) (https://github.com/bizley-code/Yii-CookieMonster/blob/master/LICENSE)
 
 
 ## Online version

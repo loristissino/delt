@@ -47,5 +47,6 @@ $mainmenu_items=array(
   </footer>
 
   <?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
+  <?php include_once('_cookie_monster.php') ?>
 </body>
 </html>
