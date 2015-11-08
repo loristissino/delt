@@ -555,7 +555,7 @@ return array(
   'Check' => 'Controlla',
   'Score' => 'Esito',
   'Challenge «%title%»: results' => 'Sfida «%title%»: risultati',
-  
+  'Points: %points%. Penalties: %penalties%' => 'Punti: %points%. Penalità: %penalties%',
   
   'This is where our <a href="%url%">twitter feed</a> should be placed.' => 'Questo è il luogo dove il nostro <a href="%url%">feed twitter</a> dovrebbe essere posto.',
   'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',

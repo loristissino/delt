@@ -198,7 +198,7 @@ class JournalentryForm extends CFormModel
         }
       }
       
-      if((!$errors) and $total_debit and $total_credit and ($total_debit == $total_credit))
+      if((!$errors) and $total_debit and $total_credit and DELT::nearlyZero($total_debit - $total_credit))
       {
         $transaction->commit();
         Yii::app()->getUser()->setState($this->identifier_code, null);
