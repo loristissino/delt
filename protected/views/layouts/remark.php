@@ -29,7 +29,7 @@ $cs->registerScriptFile(
     <script type="text/javascript">
        var slideshow = remark.create();
     </script>
-  <?php if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
-  <?php include_once('_cookie_monster.php') ?>
+  <?php // if(isset(Yii::app()->params['analytics'])) include_once(Yii::app()->params['analytics']) ?>
+  <?php //include_once('_cookie_monster.php') ?>
   </body>
 </html>
