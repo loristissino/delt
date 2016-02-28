@@ -1802,14 +1802,16 @@ class Firm extends CActiveRecord
         foreach($codes as $code)
         {
           $account = $this->findAccount($code);
-          foreach($account->getPostings() as $posting)
-          {
+          if ($account) {
+            foreach($account->getPostings() as $posting)
+            {
             $key = $posting->comment ? $posting->comment : DELT::stripString($strip, $posting->journalentry->description);
             $amount = $child->outstanding_balance=='C' ? -$posting->amount: $posting->amount;
             DELT::addValueToArray($postings, $key, $amount);
             DELT::addValueToArray($data['totals']['rows'], $key, $amount);
             DELT::addValueToArray($data['totals']['columns'], $child->currentname, $amount);
             $data['grandtotal'] += $amount;
+            }
           }
         }
         
