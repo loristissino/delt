@@ -194,8 +194,11 @@ class BookkeepingController extends Controller
     ));
   }
 
-  public function actionStatements($slug, $level=1)
+  public function actionStatements($slug, $level=1, $start="1900-01-01", $end="2999-12-31")
   {
+    $startDate = DELT::getValidatedDate($start, '1900-01-01');
+    $endDate = DELT::getValidatedDate($start, '2999-12-31');
+    
     $this->firm=$this->loadModelBySlug($slug);
     $maxlevel = $this->firm->getCOAMaxLevel();
     if($level > $maxlevel)

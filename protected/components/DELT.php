@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.8.10';
+    return '1.8.11';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -279,6 +279,11 @@ class DELT
     $date=DateTime::createFromFormat('Y-m-d', $date);
     $format = DELT::getConvertedJQueryUIDateFormat();
     return $date->format($format);
+  }
+  
+  public static function getValidatedDate($date, $default)
+  {
+    return date('Y-m-d', strtotime($date))==$date ? $date: $default;
   }
   
   public static function delimittext($text, $delimiter, $charset='')
