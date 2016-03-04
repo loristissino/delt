@@ -274,7 +274,7 @@ class Template extends CActiveRecord
     {
       $this->postings[] = array(
         'account_name'=>$posting->account->getCodeAndName($firm),
-        'account_id'=>$posting->id,
+        'account_id'=>$posting->account->id,
         'amount'=>$posting->amount,
         'comment'=>$posting->comment,
         );
