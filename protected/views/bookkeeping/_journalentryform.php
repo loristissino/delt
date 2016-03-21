@@ -728,8 +728,8 @@ if(Yii::app()->language!=='en')
         ))
       ?><span id="deleteicon<?php echo $row ?>"></span>
 </td>
-      <td <?php printWidth('debit') ?>><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( $this->accounts[$row]['debitfromtemplate'] ? ' fromtemplate': ''))) ?></td>
-      <td <?php printWidth('credit') ?>><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': ''). ( $this->accounts[$row]['creditfromtemplate'] ? ' fromtemplate': ''))) ?></td>
+      <td <?php printWidth('debit') ?>><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'debitfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
+      <td <?php printWidth('credit') ?>><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'creditfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
       </tr>
       <?php endforeach; ?>
       
