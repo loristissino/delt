@@ -138,5 +138,5 @@ echo CHtml::endForm();
     'containerTag'=>'span',
 ));
 ?></p>
-<p><?php echo Yii::t('delt', 'With the columns of totals:') ?> <span id="togglecolumns"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span></p>
+<p><?php echo Yii::t('delt', 'For the columns of totals:') ?> <span id="togglecolumns"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span></p>
 </div>

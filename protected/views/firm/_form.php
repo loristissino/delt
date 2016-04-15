@@ -229,12 +229,6 @@ $languages_available = Language::model()->findAllSorted();
     <?php echo $form->error($model,'currency'); ?>
   </div>
 
-  <div class="row">
-    <?php echo $form->labelEx($model,'csymbol'); ?>
-    <?php echo $form->textField($model,'csymbol',array('size'=>1,'maxlength'=>1)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'An optional symbol for the currency, that could be used instead of the one provided')?>)</span>
-    <?php echo $form->error($model,'csymbol'); ?>
-  </div>
-
 
   <div class="row">
     <?php echo $form->labelEx($model,'language_id'); ?>
@@ -284,6 +278,12 @@ $languages_available = Language::model()->findAllSorted();
       </span>
     </div>
   <?php endif ?>
+
+  <div class="row">
+    <?php echo $form->labelEx($model,'csymbol'); ?>
+    <?php echo $form->textField($model,'csymbol',array('size'=>1,'maxlength'=>1)); ?><br /><span class="hint">(<?php echo Yii::t('delt', 'An optional symbol for the currency, that could be used instead of the one provided')?>)</span>
+    <?php echo $form->error($model,'csymbol'); ?>
+  </div>
 
   <div class="row">
     <?php echo $form->labelEx($model,'checked_positions'); ?>

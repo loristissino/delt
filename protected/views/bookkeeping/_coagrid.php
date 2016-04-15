@@ -267,7 +267,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'columns'=> $columns,
 )); ?>
 
-<p><span id="toggleclasses"><?php echo CHtml::link(Yii::t('delt', 'Toggle visibility of classes'), "#") ?></span></p>
+<p><?php echo Yii::t('delt', 'For the column of classes:') ?> <span id="toggleclasses"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span></p>
 
 <div id="dialog-confirm" title="<?php echo Yii::t('delt', 'Place the account here?') ?>" style="display: none">
   <p><span class="ui-icon ui-icon-circle-arrow-s" style="float:left; margin:0 7px 20px 0;"></span><span id="dialog-message"></span></p>

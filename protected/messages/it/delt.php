@@ -312,6 +312,8 @@ return array(
   'Trial Balance Export to CSV file' => 'Esportazione situazione contabile su file CSV',
   'Trial Balance Export' => 'Esportazione situazione contabile',
   'Export (CSV)' => 'Esporta (CSV)',
+  'For the columns of totals:' => 'Per le colonne dei totali:',
+  'toggle visibility' => 'commuta visibilità',
   
   'signed amount' => 'importo con segno',
   'unsigned amount, with type' => 'importo senza segno, con tipo',
@@ -556,6 +558,10 @@ return array(
   'Score' => 'Esito',
   'Challenge «%title%»: results' => 'Sfida «%title%»: risultati',
   'Points: %points%. Penalties: %penalties%' => 'Punti: %points%. Penalità: %penalties%',
+  
+  'Show advanced options' => 'Mostra opzioni avanzate',
+  'Hide advanced options' => 'Nascondi opzioni avanzate',
+  'For the column of classes:' => 'Per la colonna delle classi:',
   
   'This is where our <a href="%url%">twitter feed</a> should be placed.' => 'Questo è il luogo dove il nostro <a href="%url%">feed twitter</a> dovrebbe essere posto.',
   'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
