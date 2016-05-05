@@ -62,6 +62,18 @@ function addLinks(params)
       $("#challenge_transactions").toggle(500);
     }
   );
+  $(".checks").click(function()
+	{
+	  $(".checks").hide(500);
+	  return false;
+	}
+  );
+  $(".transaction").click(function()
+	{
+	  $(".checks").show(500);
+	}
+  );
+  
   /*
   $(".showjournalentries").click(function()
     {
