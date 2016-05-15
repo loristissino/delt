@@ -87,7 +87,7 @@ class Challenge extends CActiveRecord
     return array(
       'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
       'instructor' => array(self::BELONGS_TO, 'Users', 'instructor_id'),
-      'user' => array(self::BELONGS_TO, 'Users', 'user_id'),
+      'user' => array(self::BELONGS_TO, 'DEUser', 'user_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
       'transaction' => array(self::BELONGS_TO, 'Transaction', 'transaction_id'),  // current task
     );

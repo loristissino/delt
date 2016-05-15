@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite'),
+        'actions'=>array('index', 'invite', 'view'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
