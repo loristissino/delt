@@ -176,6 +176,14 @@ class Event extends CActiveRecord
     $event->save();
   }
   
+  public function ofFirm($firm_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.firm_id = ' . $firm_id,
+    ));
+    return $this;
+  }  
+
   public function getActionDescription()
   {
     $constants = $this->getClassConstants();
@@ -192,6 +200,11 @@ class Event extends CActiveRecord
   {
     $excluded = Yii::app()->params['referer_excluded'];
     return substr($this->referer, 0, strlen($excluded))!=$excluded ? $this->referer : false;
+  }
+  
+  public function getDecodedContent()
+  {
+	 return $this->content ? json_decode($this->content) : '';
   }
   
   

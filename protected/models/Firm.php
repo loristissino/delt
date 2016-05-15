@@ -578,7 +578,7 @@ class Firm extends CActiveRecord
       ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
       ->andWhere($closing_entries_included ? ' TRUE': 'p.is_closing = FALSE')
       ->order('a.code')
-      ->group('a.code, a.currentname')
+      ->group('a.code, a.currentname, a.id')
       ->having('total <> 0')
       ->queryAll();
       //->text;
@@ -2445,6 +2445,11 @@ class Firm extends CActiveRecord
   public function getChallenge()
   {
     return Challenge::model()->linkedToFirm($this->id)->find();
+  }
+  
+  public function getEvents()
+  {
+    return Event::model()->ofFirm($this->id)->findAll();
   }
 
   

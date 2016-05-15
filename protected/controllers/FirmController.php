@@ -54,7 +54,7 @@ class FirmController extends Controller
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
-        'actions'=>array('admin','delete'),
+        'actions'=>array('admin','delete','history'),
         'users'=>array('admin'),
       ),
       array('allow', // allow authenticated user to perform 'public' actions
@@ -155,6 +155,17 @@ class FirmController extends Controller
       'accounts'=>$this->firm->accounts,
     ));
   }
+
+  public function actionHistory($slug)
+  {
+    $this->firm=$this->loadFirmBySlug($slug, false);
+    
+    $this->render('history', array(
+      'model'=>$this->firm,
+      'events'=>$this->firm->getEvents(),
+    ));
+  }
+
 
   public function actionSlideshow($slug)
   {
