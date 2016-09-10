@@ -431,7 +431,7 @@ class Account extends CActiveRecord
    */  
   private function _computeRcode()
   {
-    $this->rcode = $this->code . str_repeat('~', 16);
+    $this->rcode = $this->code . str_repeat('~', 16-strlen($this->code));
   }
   
   

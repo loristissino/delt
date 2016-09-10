@@ -52,7 +52,7 @@ $this->menu=array(
 				<em><?php echo $challenge->user ?></em> 
 				<?php endif ?>
 			</td>
-			<td>
+			<td title="<?php echo $challenge->user ?>">
 				<?php if($challenge->firm): ?>
 				<?php echo CHtml::encode($challenge->firm->getOwners(true)) ?>
 				<?php endif ?>

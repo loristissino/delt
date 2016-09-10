@@ -285,11 +285,13 @@ CREATE TABLE IF NOT EXISTS `tbl_posting` (
   `post_id` int(11) NOT NULL,
   `amount` decimal(10,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
+  `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `postrank` (`post_id`,`rank`),
   KEY `account_id` (`account_id`),
   KEY `post_id` (`post_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=45 ;
+
 
 --
 -- Dump dei dati per la tabella `tbl_posting`
