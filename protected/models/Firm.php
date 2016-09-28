@@ -1917,7 +1917,7 @@ class Firm extends CActiveRecord
     $account->firm = $this;
     $account->position = '?';
     $account->outstanding_balance = '/';
-    $account->id = '!' . md5($name . rand(0, 100000));
+    $account->id = substr('!' . md5($name . rand(0, 100000)), 0, 16);
     return $account;
   }
   

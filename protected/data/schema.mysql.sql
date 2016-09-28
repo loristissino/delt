@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
   `currentname` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `number_of_children` int(11) NOT NULL DEFAULT '0',
-  `comment` text CHARACTER SET utf8 NOT NULL,
+  `comment` text CHARACTER SET utf8 NULL DEFAULT NULL,
   `classes` varchar(255) COLLATE utf8_bin DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `firm_code` (`firm_id`,`code`),
