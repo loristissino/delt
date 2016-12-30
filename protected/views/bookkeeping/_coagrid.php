@@ -3,7 +3,7 @@
 // FIXME we should use json variables here...
 
 $account_dragdrop_url = addslashes($this->createUrl('account/dragdrop'));
-$confirmation_message = addslashes(Yii::t('delt', 'Do you want «%sourceName%» to be a child of «%targetName%»?'));
+$confirmation_message = addslashes(Yii::t('delt', 'Do you want «{sourceName}» to be a child of «{{targetName}»?'));
 $yes_label = addslashes(Yii::t('delt', 'Yes'));
 $cancel_label = addslashes(Yii::t('delt', 'Cancel'));
 
@@ -101,7 +101,7 @@ $cs->registerScript(
       if(targetAccountId && sourceAccountId && (targetAccountId!=sourceAccountId))
       {
         account_dragdrop_url += "?source=" + sourceAccountId.substring(3) + "&target=" + targetAccountId.substring(3);
-        $( "#dialog-message" ).html(confirmation_message.replace("%sourceName%", sourceName).replace("%targetName%", targetName));
+        $( "#dialog-message" ).html(confirmation_message.replace("{sourceName}", sourceName).replace("{targetName}", targetName));
         $( "#dialog-confirm" ).dialog({
           resizable: false,
           height: 200,

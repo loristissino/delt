@@ -90,7 +90,7 @@ else
   <?php /*twitter timeline*/ // $this->widget('ext.widgets.delt.TimelinesWidget', array('timeline'=>$this->timeline)); ?>
   
   <h2>Twitter feed</h2>
-  <p><?php echo Yii::t('delt', 'This is where our <a href="%url%">twitter feed</a> should be placed.', array('%url%'=>Yii::app()->params['twitterFeed'])) ?>
+  <p><?php echo Yii::t('delt', 'This is where our <a href="{url}">twitter feed</a> should be placed.', array('{url}'=>Yii::app()->params['twitterFeed'])) ?>
   <br />
   <?php echo Yii::t('delt', 'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.') ?><br />
   <?php echo Yii::t('delt', 'Click on the link above to access it.') ?>

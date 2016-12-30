@@ -604,7 +604,7 @@ class Challenge extends CActiveRecord
       for ($i=0; $i< $sizeOfBJE; $i++)   // they are sorted the same way, so we just go in parallel
       {
         
-        $jen = Yii::t('delt', 'Journal entry %number%: ', array('%number%'=>$i+1));
+        $jen = Yii::t('delt', 'Journal entry {number}: ', array('{number}'=>$i+1));
         
         if($wje[$i]->date != $bje[$i]->date)
         {
@@ -631,9 +631,9 @@ class Challenge extends CActiveRecord
             
             if (!DELT::nearlyZero($wje[$i]->postings[$j]->amount - $bje[$i]->postings[$j]->amount))
             {
-              $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting %number%', 
+              $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting {number}', 
                 array(
-                  '%number%'=>1+$j,
+                  '{number}'=>1+$j,
                   )
                 ) . $this->_expectedValues(
                     DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
@@ -643,9 +643,9 @@ class Challenge extends CActiveRecord
             
             if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
             {
-              $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting %number%', 
+              $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting {number}', 
                 array(
-                  '%number%'=>1+$j,
+                  '{number}'=>1+$j,
                 )
               ) . $this->_expectedValues(
                     $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
@@ -656,9 +656,9 @@ class Challenge extends CActiveRecord
             {
               if ($wje[$i]->postings[$j]->account->getCodeAndName($this->work) != $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark))
               {
-                $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting %number%', 
+                $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting {number}', 
                   array(
-                    '%number%'=>1+$j,
+                    '{number}'=>1+$j,
                     )
                 ) . $this->_expectedValues(
                       $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
@@ -702,9 +702,9 @@ class Challenge extends CActiveRecord
       ($this->isCompleted() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETED)
       )
     {
-      return ' (' . Yii::t('delt', 'expected: «%expected%», found: «%found%»', array(
-        '%expected%' => $expected,
-        '%found%' => $found,
+      return ' (' . Yii::t('delt', 'expected: «{expected}», found: «{found}»', array(
+        '{expected}' => $expected,
+        '{found}' => $found,
         )
       ) . ')';
     }

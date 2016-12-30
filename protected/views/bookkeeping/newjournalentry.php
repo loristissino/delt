@@ -14,7 +14,7 @@ if(sizeof($model->templates))
 
   foreach($model->templates as $template)
   {
-    $title = Yii::t('delt', 'Use the template «%description%»', array('%description%'=>$template->description));
+    $title = Yii::t('delt', 'Use the template «{description}»', array('{description}'=>$template->description));
     
     if($template->automatic)
     {

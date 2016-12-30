@@ -14,7 +14,7 @@ $md = new CMarkdown();
 
 ?>
 
-<h1><?php echo Yii::t('delt', 'Challenge «%title%»: results', array('%title%'=>$model->exercise->title)) ?></h1>
+<h1><?php echo Yii::t('delt', 'Challenge «{title}»: results', array('{title}'=>$model->exercise->title)) ?></h1>
 
 <div id="challenge">
 
@@ -30,8 +30,8 @@ $md = new CMarkdown();
     </div>
     <?php $this->renderPartial('_checks', array('source'=>$transaction, 'with_oks'=>true)) ?>
     <div class="points extrainfo">
-    <?php echo Yii::t('delt', 'Points: %points%. Penalties: %penalties%',
-      array('%points%'=>$transaction['points'], '%penalties%'=>$transaction['penalties']))
+    <?php echo Yii::t('delt', 'Points: {points}. Penalties: {penalties}',
+      array('{points}'=>$transaction['points'], '{penalties}'=>$transaction['penalties']))
     ?>
     </div>
     <hr />

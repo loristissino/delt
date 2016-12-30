@@ -557,7 +557,7 @@ class Account extends CActiveRecord
     $parent_code = $this->getComputedParentCode();
     if($parent_code && !Account::model()->findByAttributes(array('firm_id'=>$this->firm_id, 'code'=>$parent_code)))
     {
-      $this->addError('code', Yii::t('delt', 'The parent account, with code «%code%», does not exist.', array('%code%'=>$parent_code)));
+      $this->addError('code', Yii::t('delt', 'The parent account, with code «{code}», does not exist.', array('{code}'=>$parent_code)));
     }
   }
 

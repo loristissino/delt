@@ -147,8 +147,8 @@
   'Sum' => 
   'Totale',
 
-  'The journal entry «%description%» has been correctly saved.' => 
-  'La registrazione «%description%» è stata salvata.',
+  'The journal entry «{description}» has been correctly saved.' => 
+  'La registrazione «{description}» è stata salvata.',
 
   'You can now prepare a new one.' => 
   'Puoi prepararne una nuova.',
@@ -171,17 +171,17 @@
   'Delete this account' => 
   'Elimina questo conto',
 
-  'The parent account, with code «%code%», does not exist.' => 
-  'Il conto di livello superiore, con codice «%code%», non esiste.',
+  'The parent account, with code «{code}», does not exist.' => 
+  'Il conto di livello superiore, con codice «{code}», non esiste.',
 
-  'You are creating an account as a child of «%account%»,' => 
-  'Stai per creare un conto come figlio di «%account%»,',
+  'You are creating an account as a child of «{account}»,' => 
+  'Stai per creare un conto come figlio di «{account}»,',
 
-  'You are making the account a child of «%account%»,' => 
-  'Stai per rendere questo conto figlio di «%account%»,',
+  'You are making the account a child of «{account}»,' => 
+  'Stai per rendere questo conto figlio di «{account}»,',
 
-  'The account you are updating is a child of «%account%»,' => 
-  'Stai modificando un conto figlio di «%account%»,',
+  'The account you are updating is a child of «{account}»,' => 
+  'Stai modificando un conto figlio di «{account}»,',
 
   'which currently has the following children:' => 
   'che al momento ha i seguenti figli:',
@@ -300,8 +300,8 @@
   'Firm not found' => 
   'Azienda non trovata',
 
-  'Sorry, we could not find a firm with the slug «%slug%».' => 
-  'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «%slug%».',
+  'Sorry, we could not find a firm with the slug «{slug}».' => 
+  'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «{slug}».',
 
   'Try forking another one.' => 
   'Prova a duplicarne un\'altra.',
@@ -861,11 +861,11 @@
   'Try to set my language for the firm.' => 
   'Imposta la mia lingua per l\'azienda, se disponibile.',
 
-  'The firm «%firm%» has been frozen on <a href=\"%url%\" target=\"_blank\" title=\"%title%\">%date%</a>.' => 
-  'L\'azienda «%firm%» è stata congelata  <a href=\"%url%\" target=\"_blank\" title=\"%title%\">%date%</a>.',
+  'The firm «{firm}» has been frozen on <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.' => 
+  'L\'azienda «{firm}» è stata congelata  <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.',
 
-  'The firm «%firm%» is not currently frozen.' => 
-  'L\'azienda «%firm%» al momento non è congelata.',
+  'The firm «{firm}» is not currently frozen.' => 
+  'L\'azienda «{firm}» al momento non è congelata.',
 
   'See this timestamp in a different timezone' => 
   'Vedi questa marca temporale in un fuso orario diverso',
@@ -891,8 +891,8 @@
   'Frozen firm' => 
   'Azienda congelata',
 
-  'Template «%description%»' => 
-  'Causale «%description%»',
+  'Template «{description}»' => 
+  'Causale «{description}»',
 
   'Delete this template' => 
   'Elimina questa causale',
@@ -1137,8 +1137,8 @@
   'text-based ledger-cli\'s format for transactions' => 
   'formato di rappresentazione del libro giornale usato da ledger-cli',
 
-  'Do you want «%sourceName%» to be a child of «%targetName%»?' => 
-  'Vuoi che «%sourceName%\"» diventi figlio di «%targetName%»?',
+  'Do you want «{sourceName}» to be a child of «{targetName}»?' => 
+  'Vuoi che «{sourceName}\"» diventi figlio di «{targetName}»?',
 
   'Place the account here?' => 
   'Conferma spostamento conto',
@@ -1224,8 +1224,8 @@
   'Slideshow' => 
   'Presentazione',
 
-  'See more at [%site%](%url%)' => 
-  'Dettagli su [%site%](%url%)',
+  'See more at [{site}]({url})' => 
+  'Dettagli su [{site}]({url})',
 
   'Thank you.' => 
   'Grazie.',
@@ -1260,8 +1260,8 @@
   'Help' => 
   'Aiuto',
 
-  'Current score: %percentage%%' => 
-  'Punteggio attuale: %percentage%%',
+  'Current score: {percentage}%' => 
+  'Punteggio attuale: {percentage}%',
 
   'connect to current transaction' => 
   'collega alla transazione corrente',
@@ -1314,14 +1314,14 @@
   'Begin with forking this firm:' => 
   'Inizia con il duplicare questa azienda:',
 
-  'expected: «%expected%», found: «%found%»' => 
-  'atteso: «%expected%», trovato: «%found%»',
+  'expected: «{expected}», found: «{found}»' => 
+  'atteso: «{expected}», trovato: «{found}»',
 
   'Wrong number of journal entries' => 
   'Numero errato di registrazioni contabili',
 
-  'Journal entry %number%: ' => 
-  'Registrazione %number%: ',
+  'Journal entry {number}: ' => 
+  'Registrazione {number}: ',
 
   'wrong date' => 
   'data errata',
@@ -1329,14 +1329,14 @@
   'wrong number of postings' => 
   'numero di righe errato',
 
-  'wrong amount for posting %number%' => 
-  'importo errato nella riga %number%',
+  'wrong amount for posting {number}' => 
+  'importo errato nella riga {number}',
 
-  'wrong account for posting %number%' => 
-  'conto errato nella riga %number%',
+  'wrong account for posting {number}' => 
+  'conto errato nella riga {number}',
 
-  'wrong account name for posting %number%' => 
-  'nome di conto errato nella riga %number%',
+  'wrong account name for posting {number}' => 
+  'nome di conto errato nella riga {number}',
 
   'Are you sure you you are done with this challenge?' => 
   'Sei sicuro di aver completato questa sfida?',
@@ -1347,11 +1347,14 @@
   'Score' => 
   'Esito',
 
-  'Challenge «%title%»: results' => 
-  'Sfida «%title%»: risultati',
+  'Challenge «{title}»: results' => 
+  'Sfida «{title}»: risultati',
 
-  'Points: %points%. Penalties: %penalties%' => 
-  'Punti: %points%. Penalità: %penalties%',
+  'Points: {points}. Penalties: {penalties}' => 
+  'Punti: {points}. Penalità: {penalties}',
+
+  'Go to the journal of the firm «{name}»' =>
+  'Vai al libro giornale dell\'azienda «{name}»' =>
 
   'Show advanced options' => 
   'Mostra opzioni avanzate',
@@ -1362,8 +1365,8 @@
   'For the column of classes:' => 
   'Per la colonna delle classi:',
 
-  'This is where our <a href=\"%url%\">twitter feed</a> should be placed.' => 
-  'Questo è il luogo dove il nostro <a href=\"%url%\">feed twitter</a> dovrebbe essere posto.',
+  'This is where our <a href=\"{url}\">twitter feed</a> should be placed.' => 
+  'Questo è il luogo dove il nostro <a href=\"{url}\">feed twitter</a> dovrebbe essere posto.',
 
   'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
   'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
@@ -1372,3 +1375,5 @@
   'Fai clic sul link qui sopra per accedervi.',
 
   );
+
+

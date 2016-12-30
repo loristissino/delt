@@ -348,7 +348,7 @@ class BookkeepingController extends Controller
             }
             elseif(isset($_POST['new']))
             {
-              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «%description%» has been correctly saved.', array('%description%'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
+              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «{description}» has been correctly saved.', array('{description}'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
               $this->redirect(array('bookkeeping/newjournalentry','slug'=>$this->firm->slug));
             }
             else
@@ -454,7 +454,7 @@ class BookkeepingController extends Controller
             }
             elseif(isset($_POST['new']))
             {
-              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «%description%» has been correctly saved.', array('%description%'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
+              Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The journal entry «{description}» has been correctly saved.', array('{description}'=>$journalentryform->description)) . ' ' . Yii::t('delt', 'You can now prepare a new one.'));
               $this->redirect(array('bookkeeping/newjournalentry','slug'=>$this->firm->slug));
             }
             elseif(isset($_POST['save']))

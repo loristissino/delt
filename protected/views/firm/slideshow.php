@@ -17,7 +17,7 @@ class: center, middle, inverse
 
 <?php echo CHtml::encode($model->description) . "\n" ?>
 
-.footnote[<?php echo Yii::t('delt', 'See more at [%site%](%url%)', array('%site%'=>Yii::app()->name, '%url%'=>$this->createAbsoluteUrl(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug))) ?>]
+.footnote[<?php echo Yii::t('delt', 'See more at [{site}]({url})', array('{site}'=>Yii::app()->name, '{url}'=>$this->createAbsoluteUrl(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug))) ?>]
 
 ---
 layout: false
