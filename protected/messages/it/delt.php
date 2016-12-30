@@ -1354,7 +1354,7 @@
   'Punti: {points}. Penalità: {penalties}',
 
   'Go to the journal of the firm «{name}»' =>
-  'Vai al libro giornale dell\'azienda «{name}»' =>
+  'Vai al libro giornale dell\'azienda «{name}»',
 
   'Show advanced options' => 
   'Mostra opzioni avanzate',
