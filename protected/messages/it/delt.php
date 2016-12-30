@@ -202,10 +202,10 @@
   'Aggiungi una riga',
 
   'The above outstanding balance is the consolidated algebraic sum of the debits and the credits of the following accounts:' => 
-  'L'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
+  'L\'eccedenza qui sopra riportata è la somma algebrica consolidata dei conti sottoindicati:',
 
   'This firm does not have any journal entry yet.' => 
-  'Quest'azienda non ha ancora nessuna registrazione in partita doppia.',
+  'Quest\'azienda non ha ancora nessuna registrazione in partita doppia.',
 
   'Create a new one now.' => 
   'Preparane una adesso.',
@@ -247,7 +247,7 @@
   'Sei sicuro di voler eliminare questa registrazione contabile?',
 
   'Fork an existing firm' => 
-  'Duplica un'azienda esistente',
+  'Duplica un\'azienda esistente',
 
   'Public firms' => 
   'Aziende pubbliche',
@@ -256,10 +256,10 @@
   'Le tue aziende',
 
   'Create firm' => 
-  'Crea un'azienda',
+  'Crea un\'azienda',
 
   'A firm you know the slug of' => 
-  'Un'azienda di cui conosci lo slug',
+  'Un\'azienda di cui conosci lo slug',
 
   'Fork' => 
   'Duplica',
@@ -268,7 +268,7 @@
   'Azienda non trovata',
 
   'Try forking another one.' => 
-  'Prova a duplicarne un'altra.',
+  'Prova a duplicarne un\'altra.',
 
   'Closing entry' => 
   'Registrazione di chiusura',
@@ -316,7 +316,7 @@
   'Crea',
 
   'Fork the firm «{firm}»' => 
-  'Duplica l'azienda «{firm}»',
+  'Duplica l\'azienda «{firm}»',
 
   'Do you want to proceed?' => 
   'Vuoi procedere?',
@@ -352,10 +352,10 @@
   'Mostra',
 
   'The information about the firm has been correctly saved.' => 
-  'Le informazioni sull'azienda sono state correttamente salvate.',
+  'Le informazioni sull\'azienda sono state correttamente salvate.',
 
   'The information about the firm could not be saved.' => 
-  'Le informazioni sull'azienda non sono state salvate.',
+  'Le informazioni sull\'azienda non sono state salvate.',
 
   'This slug is already in use.' => 
   'Questo slug è già in uso.',
@@ -379,7 +379,7 @@
   'Devi confermare di accettare la licenza per i contenuti.',
 
   'The firm has been successfully forked.' => 
-  'L'azienda è stata correttamente duplicata.',
+  'L\'azienda è stata correttamente duplicata.',
 
   'Data correctly imported.' => 
   'Dati correttamente importati.',
@@ -388,22 +388,22 @@
   'Seleziona la data dal calendario',
 
   'the amount of the debit has been computed by difference;' => 
-  'l'ammontare dell'addebito è stato calcolato per differenza;',
+  'l\'ammontare dell\'addebito è stato calcolato per differenza;',
 
   'the amount of the credit has been computed by difference;' => 
-  'l'ammontare dell'accredito è stato calcolato per differenza;',
+  'l\'ammontare dell\'accredito è stato calcolato per differenza;',
 
   'the amount of the debit has been computed as a balance for the account;' => 
-  'l'ammontare dell'addebito è stato calcolato a saldo del conto;',
+  'l\'ammontare dell\'addebito è stato calcolato a saldo del conto;',
 
   'the amount of the credit has been computed as a balance for the account;' => 
-  'l'ammontare dell'accredito è stato calcolato a saldo del conto;',
+  'l\'ammontare dell\'accredito è stato calcolato a saldo del conto;',
 
   'it must be checked.' => 
   'va controllato.',
 
   'Start typing (code or name) or double-click...' => 
-  'Digita codice o nome, oppure fa' un doppio clic',
+  'Digita codice o nome, oppure fa\' un doppio clic',
 
   'Row' => 
   'Riga',
@@ -421,22 +421,22 @@
   'Sei sicuro di voler eliminare questa azienda?',
 
   'The firm has been correctly deleted.' => 
-  'L'azienda è stata correttamente eliminata.',
+  'L\'azienda è stata correttamente eliminata.',
 
   'Create a Firm' => 
-  'Crea un'azienda',
+  'Crea un\'azienda',
 
   'The firm has been successfully created.' => 
-  'L'azienda è stata correttamente creata.',
+  'L\'azienda è stata correttamente creata.',
 
   'The language is used for the names of the accounts, not for the user interface' => 
-  'La lingua è usata per i nomi dei conti, non per l'interfaccia utente',
+  'La lingua è usata per i nomi dei conti, non per l\'interfaccia utente',
 
   'The file seems to be invalid.' => 
   'Il file non appare valido.',
 
   'Importing data to a firm will erase all current content.' => 
-  'L'importazione di dati per un'azienda comporta la cancellazione di tutti i contenuti correnti.',
+  'L\'importazione di dati per un\'azienda comporta la cancellazione di tutti i contenuti correnti.',
 
   'Depth' => 
   'Profondità',
@@ -499,7 +499,7 @@
   'Ordina i conti, mettendo prima gli addebiti',
 
   'Swap debit and credits for the whole journal entry' => 
-  'Scambia gli addebiti con gli accrediti per l'intera registrazione contabile',
+  'Scambia gli addebiti con gli accrediti per l\'intera registrazione contabile',
 
   'Image from gravatar.com' => 
   'Immagine da gravatar.com',
@@ -547,7 +547,7 @@
   'Sincronizza',
 
   'Syncronize accounts from ancestor firms' => 
-  'Sincronizza conti da un'azienda di cui questa è derivazione',
+  'Sincronizza conti da un\'azienda di cui questa è derivazione',
 
   'Synchronize accounts' => 
   'Sincronizza conti',
@@ -577,7 +577,7 @@
   'Vuoi che altre lingue / locali vengano supportati?',
 
   'The information about the firm is being saved.' => 
-  'Memorizzazione delle informazioni relative all'azienda in corso.',
+  'Memorizzazione delle informazioni relative all\'azienda in corso.',
 
   'Clear' => 
   'Svuota',
@@ -601,7 +601,7 @@
   'Grazie per averci contattato. Ti risponderemo il più presto possibile.',
 
   'Please enter the letters as they are shown in the image above.' => 
-  'Inserisci le lettere dell'immagine qui sopra. ',
+  'Inserisci le lettere dell\'immagine qui sopra. ',
 
   'Letters are not case-sensitive.' => 
   'Non viene tenuta in considerata la differenza tra maiuscole e minuscole.',
@@ -640,7 +640,7 @@
   'Licenza',
 
   'The firm is being forked.' => 
-  'Duplicazione dell'azienda in corso.',
+  'Duplicazione dell\'azienda in corso.',
 
   'The data are being imported.' => 
   'Importazione dei dati in corso.',
@@ -655,7 +655,7 @@
   'Per questioni di sicurezza, non usare una password che usi anche in altri siti.',
 
   'Your email is going to be used only for passowrd recovery and for important news regarding the website.' => 
-  'Il tuo indirizzo di posta elettronica verrà usato solo per l'eventuale recupero della password e per l'invio di notizie importanti riguardanti il sito.',
+  'Il tuo indirizzo di posta elettronica verrà usato solo per l\'eventuale recupero della password e per l\'invio di notizie importanti riguardanti il sito.',
 
   'We will not show it in the website nor give it away without your consent.' => 
   'Non verrà mostrato nel sito web né ceduto ad altri senza il tuo consenso.',
@@ -724,13 +724,13 @@
   'declina',
 
   'Accept the invitation to share the management of this firm' => 
-  'Accetta l'invito a condividere la gestione di questa azienda',
+  'Accetta l\'invito a condividere la gestione di questa azienda',
 
   'Decline the invitation to share the management of this firm' => 
-  'Declina l'invito a condividere la gestione di questa azienda',
+  'Declina l\'invito a condividere la gestione di questa azienda',
 
   'Are you sure you want to decline the invitation to share the management of this firm?' => 
-  'Sei sicuro di voler declinare l'invito a condividere la gestione di questa azienda?',
+  'Sei sicuro di voler declinare l\'invito a condividere la gestione di questa azienda?',
 
   'There must be at least one name for the account.' => 
   'Ci deve essere almeno un nome per il conto.',
@@ -739,13 +739,13 @@
   'Non puoi rimuovere il locale (codice della lingua). È stato ripristinato.',
 
   'You are now allowed to manage the firm «{firm}».' => 
-  'Adesso sei autorizzato a gestire l'azienda «{firm}».',
+  'Adesso sei autorizzato a gestire l\'azienda «{firm}».',
 
   'You successfully declined the invitation to manage the firm «{firm}».' => 
-  'Hai declinato l'offerta di condivisione della gestione dell'azienda «{firm}».',
+  'Hai declinato l\'offerta di condivisione della gestione dell\'azienda «{firm}».',
 
   'An invitation has been sent to «{username}». When accepted, the firm will be considered shared.' => 
-  'Un invito è stato inviato a «{username}». Quando accettato, l'azienda verrà considerata condivisa.',
+  'Un invito è stato inviato a «{username}». Quando accettato, l\'azienda verrà considerata condivisa.',
 
   'regenerate' => 
   'rigenera',
@@ -757,19 +757,19 @@
   'oppure',
 
   'Click here if you want to regenerate the slug from the name of the firm' => 
-  'Fai clic qui se vuoi rigenerare lo slug a partire dal nome dell'azienda',
+  'Fai clic qui se vuoi rigenerare lo slug a partire dal nome dell\'azienda',
 
   'Click here if you want to create a random slug, which helps in keeping it somehow a bit more private' => 
-  'Fai clic qui se vuoi far generare uno slug casuale, in modo da rendere l'azienda un po' più privata',
+  'Fai clic qui se vuoi far generare uno slug casuale, in modo da rendere l\'azienda un po\' più privata',
 
   'Manage one of your firms' => 
   'Gestisci una delle tue aziende',
 
   'Create a new, empty firm' => 
-  'Crea un'azienda nuova (vuota)',
+  'Crea un\'azienda nuova (vuota)',
 
   'Fork (duplicate) an existing firm' => 
-  'Duplica un'azienda esistente',
+  'Duplica un\'azienda esistente',
 
   'View and edit the Chart of Accounts' => 
   'Visualizza e modifica il Piano dei conti',
@@ -790,7 +790,7 @@
   'Tipo di fruizione',
 
   'Try to set my language for the firm.' => 
-  'Imposta la mia lingua per l'azienda, se disponibile.',
+  'Imposta la mia lingua per l\'azienda, se disponibile.',
 
   'See this timestamp in a different timezone' => 
   'Vedi questa marca temporale in un fuso orario diverso',
@@ -808,10 +808,10 @@
   'Puoi congelarla, se lo desideri. Non potrai apportare modifiche fino a che non verrà scongelata.',
 
   'You successfully freezed the firm «{firm}».' => 
-  'L'azienda «{firm}» è stata congelata.',
+  'L\'azienda «{firm}» è stata congelata.',
 
   'You successfully unfreezed the firm «{firm}».' => 
-  'L'azienda «{firm}» è stata scongelata.',
+  'L\'azienda «{firm}» è stata scongelata.',
 
   'Frozen firm' => 
   'Azienda congelata',
@@ -835,10 +835,10 @@
   'Disconosci azienda',
 
   'Disown the firm «{name}»' => 
-  'Disconosci l'azienda «{name}»',
+  'Disconosci l\'azienda «{name}»',
 
   'You can disown this firm, if you want. It will be left to the other owners.' => 
-  'Puoi disconoscere quest'azienda, se lo desideri. Verrà lasciata agli altri gestori.',
+  'Puoi disconoscere quest\'azienda, se lo desideri. Verrà lasciata agli altri gestori.',
 
   'Configuration' => 
   'Configurazione',
@@ -862,7 +862,7 @@
   'Il piano dei conti è vuoto.',
 
   'You probably created a new one from scratch instead of forking an existing one.' => 
-  'Probabilmente hai creato un'azienda nuova anziché duplicarne una esistente.',
+  'Probabilmente hai creato un\'azienda nuova anziché duplicarne una esistente.',
 
   'Format' => 
   'Formato',
@@ -883,16 +883,16 @@
   'Analisi della scrittura contabile',
 
   'Transaction analysis is currently disabled. Please save the journal entry first.' => 
-  'L'analisi della scrittura contabile può essere effettuata solo dopo che essa è stata salvata.',
+  'L\'analisi della scrittura contabile può essere effettuata solo dopo che essa è stata salvata.',
 
   'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.' => 
-  'L'analisi della scrittura contabile è sperimentale e dipende dalla correttezza dell'impostazione del piano dei conti.',
+  'L\'analisi della scrittura contabile è sperimentale e dipende dalla correttezza dell\'impostazione del piano dei conti.',
 
   'unexplained entry' => 
   'scrittura non spiegabile',
 
   'Transaction analysis is meaningless for closing entries.' => 
-  'L'analisi non ha significato per le scritture di chiusura.',
+  'L\'analisi non ha significato per le scritture di chiusura.',
 
   'Classification' => 
   'Classificazione',
@@ -916,7 +916,7 @@
   'Nota che quando crei una nuova azienda da zero, essa non avrà alcuna configurazione né alcun conto nel piano dei conti.',
 
   'You might prefer to start by {forking} an existing firm (have a look at the standard ones provided).' => 
-  'Potresti preferire iniziare con la  {forking} di un'azienda esistente (prova a dare un'occhiata a quelle fornite).',
+  'Potresti preferire iniziare con la  {forking} di un\'azienda esistente (prova a dare un\'occhiata a quelle fornite).',
 
   'forking (duplicating)' => 
   'duplicazione (forking)',
@@ -925,7 +925,7 @@
   'Applica alle registrazioni contabili selezionate:',
 
   'Please select the entries you would like to perform this action on!' => 
-  'Seleziona le registrazioni contabili su cui vuoi effettuare l'operazione!',
+  'Seleziona le registrazioni contabili su cui vuoi effettuare l\'operazione!',
 
   'include' => 
   'includi',
@@ -952,7 +952,7 @@
   'Rendi visibili gli effetti di questa registrazione nel bilancio se non lo sono, o viceversa',
 
   'Are you sure to perform this action on checked items?' => 
-  'Sei sicuro di voler effettuare l'operazione sugli elementi selezionati?',
+  'Sei sicuro di voler effettuare l\'operazione sugli elementi selezionati?',
 
   'One journal entry has been included. | {n} journal entries have been included.' => 
   'Una registrazione contabile è stata inclusa. | {n} registrazioni contabili sono state incluse.',
@@ -982,7 +982,7 @@
   'Prepara una registrazione contabile per la chiusura dei conti selezionati',
 
   'Prepare a journal entry that will open the selected accounts with the current outstanding balance' => 
-  'Prepara una registrazione contabile per l'apertura dei conti selezionati con l'eccedenza attuale',
+  'Prepara una registrazione contabile per l\'apertura dei conti selezionati con l\'eccedenza attuale',
 
   'Notes' => 
   'Note',
@@ -1012,7 +1012,7 @@
   'Capisco, e sono consapevole di quello che faccio.',
 
   'The action cannot be undone.' => 
-  'L'operazione è irreversibile.',
+  'L\'operazione è irreversibile.',
 
   'Sorry, this action has not been implemented yet.' => 
   'Purtroppo, questa azione non è ancora stata implementata.',
@@ -1048,7 +1048,7 @@
   'Approfondisci',
 
   'You can export the data of this firm in the following formats:' => 
-  'Puoi esportare i dati di quest'azienda nei seguenti formati:',
+  'Puoi esportare i dati di quest\'azienda nei seguenti formati:',
 
   'standard JSON-based format used by DELT' => 
   'formato standard di DELT, basato su JSON',
@@ -1267,10 +1267,10 @@
   'Stai modificando un conto figlio di «{account}»,',
 
   'Sorry, we could not find a firm with the slug «{slug}».' => 
-  'Purtroppo, non siamo riusciti a trovare un'azienda con lo slug «{slug}».',
+  'Purtroppo, non siamo riusciti a trovare un\'azienda con lo slug «{slug}».',
 
   'The firm «{firm}» is not currently frozen.' => 
-  'L'azienda «{firm}» al momento non è congelata.',
+  'L\'azienda «{firm}» al momento non è congelata.',
 
   'Template «{description}»' => 
   'Causale «{description}»',
@@ -1306,7 +1306,7 @@
   'Punti: {points}. Penalità: {penalties}',
 
   'Go to the journal of the firm «{name}»' => 
-  'Vai al libro giornale dell'azienda «{name}»',
+  'Vai al libro giornale dell\'azienda «{name}»',
 
   'the account with code \"{code}\" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in \"{code}!\").' => 
   'il conto con codice \"{code}\" non è disponibile (puoi aggiungere da qui il conto al piano dei conti inserendo un punto esclamativo allla fine del nome, come in \"{code}!\").',
@@ -1320,7 +1320,7 @@
   'Fields with <span class=\"required\">*</span> are required.' => 
   'I campi indicati con <span class=\"required\"> * </span> sono obbligatori.',
 
-  'The children accounts won't be deleted, but they will remain orphans.' => 
+  'The children accounts won\'t be deleted, but they will remain orphans.' => 
   'I conti figli non verranno cancellati, ma resteranno orfani.',
 
   'Wonder what a <a href=\"http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug\" title=\"A slug is the part of a URL which identifies a page using human-readable keywords.\" target=\"_blank\">slug</a> is?' => 
@@ -1329,16 +1329,16 @@
   'You must provide a three-letter <a href=\"http://en.wikipedia.org/wiki/ISO_4217\" title=\"Find more on Wikipedia\" target=\"_blank\">ISO 4217 code</a>, like EUR, USD, or GBP' => 
   'Devi indicare un <a href=\"http://it.wikipedia.org/wiki/ISO_4217\" title=\"Trova ulteriori informazioni su Wikipedia\" target=\"_blank\">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
 
-  'I agree on the fact that the contents of the firm I'm creating will be available under the <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 
-  'Accetto il fatto che i contenuti dell'azienda che sto creando saranno disponibili con licenza <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 
+  'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
 
   'the account with code \"{code}\" makes the row a duplicate.' => 
   'il conto con codice \"{code}\" rende la riga un duplicato.',
 
   'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the \"Load all accounts\" icon above to load all available accounts).' => 
-  'Copia i contenuti dell'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l'area di testo è vuota, puoi fare clic sull'icona \"Carica i conti\" qui sopra per caricare tutti i conti disponibili).',
+  'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona \"Carica i conti\" qui sopra per caricare tutti i conti disponibili).',
 
-  'You can synchronize your firm's chart of accounts with the one of one of the following ancestors:' => 
+  'You can synchronize your firm\'s chart of accounts with the one of one of the following ancestors:' => 
   'Puoi sincronizzare il piano dei conti della tua azienda con quelli di una delle seguenti aziende:',
 
   'Just <a href=\"{url}\" target=\"_blank\">drop us a message</a>!' => 
@@ -1354,36 +1354,36 @@ a) the contents of the firm are available under the Creative Commons Attribution
 b) your name will be listed as an author.
 
 Do you want to accept the invitation to share the management of this firm?' => 
-  'Accettando l'invito, ti dichiari d'accordo sulle seguenti condizioni:
+  'Accettando l\'invito, ti dichiari d\'accordo sulle seguenti condizioni:
 
-a) i contenuti dell'azienda sono pubblicati sotto Creative Commons Attribution-ShareAlike 3.0 Unported License;
+a) i contenuti dell\'azienda sono pubblicati sotto Creative Commons Attribution-ShareAlike 3.0 Unported License;
 
 b) il tuo nome verrà elencato come autore.
 
-Vuoi accettare l'invito a condividere la gestione dell'azienda?',
+Vuoi accettare l\'invito a condividere la gestione dell\'azienda?',
 
-  'Edit your profile's settings' => 
+  'Edit your profile\'s settings' => 
   'Modifica il tuo profilo utente',
 
-  'Edit firm's settings' => 
-  'Modifica le impostazioni dell'azienda',
+  'Edit firm\'s settings' => 
+  'Modifica le impostazioni dell\'azienda',
 
   'The firm «{firm}» has been frozen on <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.' => 
-  'L'azienda «{firm}» è stata congelata  <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.',
+  'L\'azienda «{firm}» è stata congelata  <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.',
 
   'Curious about <a href=\"{url}\" target=\"_blank\">why</a> you have to accept a Creative Commons License?' => 
   'Ti interessa sapere <a href=\"{url}\" target=\"_blank\">perché</a> devi accettare una licenza Creative Commons?',
 
-  'text-based ledger-cli's format for transactions' => 
+  'text-based ledger-cli\'s format for transactions' => 
   'formato di rappresentazione del libro giornale usato da ledger-cli',
 
-  'Click on a template's description to start a journal entry from it.' => 
+  'Click on a template\'s description to start a journal entry from it.' => 
   'Fai clic sulla descrizione di una causale per utilizzarla come base di una registrazione contabile.',
 
   'This is where our <a href=\"{url}\">twitter feed</a> should be placed.' => 
   'Questo è il luogo dove il nostro <a href=\"{url}\">feed twitter</a> dovrebbe essere posto.',
 
-  'Until we find out how to be sure to respect the cookie law, you won't see it directly.' => 
+  'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
   'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
 
   );
