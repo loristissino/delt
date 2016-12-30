@@ -1276,7 +1276,7 @@
   'Causale «{description}»',
 
   'Do you want «{sourceName}» to be a child of «{targetName}»?' => 
-  'Vuoi che «{sourceName}\"» diventi figlio di «{targetName}»?',
+  'Vuoi che «{sourceName}"» diventi figlio di «{targetName}»?',
 
   'See more at [{site}]({url})' => 
   'Dettagli su [{site}]({url})',
@@ -1308,59 +1308,47 @@
   'Go to the journal of the firm «{name}»' => 
   'Vai al libro giornale dell\'azienda «{name}»',
 
-  'the account with code \"{code}\" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in \"{code}!\").' => 
-  'il conto con codice \"{code}\" non è disponibile (puoi aggiungere da qui il conto al piano dei conti inserendo un punto esclamativo allla fine del nome, come in \"{code}!\").',
+  'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").' => 
+  'il conto con codice "{code}" non è disponibile (puoi aggiungere da qui il conto al piano dei conti inserendo un punto esclamativo allla fine del nome, come in "{code}!").',
 
-  'the value \"{value}\" is not numeric.' => 
-  'il valore \"{value}\" non è numerico.',
+  'the value "{value}" is not numeric.' => 
+  'il valore "{value}" non è numerico.',
 
-  'the value \"{value}\" cannot be negative.' => 
-  'il valore \"{value}\" non può essere negativo.',
+  'the value "{value}" cannot be negative.' => 
+  'il valore "{value}" non può essere negativo.',
 
-  'Fields with <span class=\"required\">*</span> are required.' => 
-  'I campi indicati con <span class=\"required\"> * </span> sono obbligatori.',
+  'Fields with <span class="required">*</span> are required.' => 
+  'I campi indicati con <span class="required"> * </span> sono obbligatori.',
 
   'The children accounts won\'t be deleted, but they will remain orphans.' => 
   'I conti figli non verranno cancellati, ma resteranno orfani.',
 
-  'Wonder what a <a href=\"http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug\" title=\"A slug is the part of a URL which identifies a page using human-readable keywords.\" target=\"_blank\">slug</a> is?' => 
-  'Ti chiedi che cosa sia uno <a href=\"http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug\" title=\"Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani.\" target=\"_blank\">slug</a>?',
+  'Wonder what a <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="A slug is the part of a URL which identifies a page using human-readable keywords." target="_blank">slug</a> is?' => 
+  'Ti chiedi che cosa sia uno <a href="http://en.wikipedia.org/wiki/Slug_(web_publishing)#Slug" title="Uno slug è la parte di un URL che identifica una pagina web mediante parole chiave comprensibili da esseri umani." target="_blank">slug</a>?',
 
-  'You must provide a three-letter <a href=\"http://en.wikipedia.org/wiki/ISO_4217\" title=\"Find more on Wikipedia\" target=\"_blank\">ISO 4217 code</a>, like EUR, USD, or GBP' => 
-  'Devi indicare un <a href=\"http://it.wikipedia.org/wiki/ISO_4217\" title=\"Trova ulteriori informazioni su Wikipedia\" target=\"_blank\">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
+  'You must provide a three-letter <a href="http://en.wikipedia.org/wiki/ISO_4217" title="Find more on Wikipedia" target="_blank">ISO 4217 code</a>, like EUR, USD, or GBP' => 
+  'Devi indicare un <a href="http://it.wikipedia.org/wiki/ISO_4217" title="Trova ulteriori informazioni su Wikipedia" target="_blank">codice ISO 4217</a> di tre lettere, come EUR, USD o GBP',
 
-  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 
-  'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href=\"http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}\" target=\"_blank\">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  'I agree on the fact that the contents of the firm I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 
+  'Accetto il fatto che i contenuti dell\'azienda che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
 
-  'the account with code \"{code}\" makes the row a duplicate.' => 
-  'il conto con codice \"{code}\" rende la riga un duplicato.',
+  'the account with code "{code}" makes the row a duplicate.' => 
+  'il conto con codice "{code}" rende la riga un duplicato.',
 
-  'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the \"Load all accounts\" icon above to load all available accounts).' => 
-  'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona \"Carica i conti\" qui sopra per caricare tutti i conti disponibili).',
+  'Copy the contents of the text area to a spreadsheet (fields are separated by tabs), and edit the data there (if the text area is empty, you can click on the "Load all accounts" icon above to load all available accounts).' => 
+  'Copia i contenuti dell\'area di testo in un foglio elettronico (i campi sono separati da tabulatori) e modifica lì i dati (se l\'area di testo è vuota, puoi fare clic sull\'icona "Carica i conti" qui sopra per caricare tutti i conti disponibili).',
 
   'You can synchronize your firm\'s chart of accounts with the one of one of the following ancestors:' => 
   'Puoi sincronizzare il piano dei conti della tua azienda con quelli di una delle seguenti aziende:',
 
-  'Just <a href=\"{url}\" target=\"_blank\">drop us a message</a>!' => 
-  'Basta che ci <a href=\"{url}\" target=\"_blank\">invii un messaggio</a>!',
+  'Just <a href="{url}" target="_blank">drop us a message</a>!' => 
+  'Basta che ci <a href="{url}" target="_blank">invii un messaggio</a>!',
 
-  'Copy of \"{name}\"' => 
-  'Copia di \"{name}\"',
+  'Copy of "{name}"' => 
+  'Copia di "{name}"',
 
-  'By accepting the invitation, you agree on the following terms:
-
-a) the contents of the firm are available under the Creative Commons Attribution-ShareAlike 3.0 Unported License;
-
-b) your name will be listed as an author.
-
-Do you want to accept the invitation to share the management of this firm?' => 
-  'Accettando l\'invito, ti dichiari d\'accordo sulle seguenti condizioni:
-
-a) i contenuti dell\'azienda sono pubblicati sotto Creative Commons Attribution-ShareAlike 3.0 Unported License;
-
-b) il tuo nome verrà elencato come autore.
-
-Vuoi accettare l\'invito a condividere la gestione dell\'azienda?',
+  'By accepting the invitation, you agree on the following terms:\n\na) the contents of the firm are available under the Creative Commons Attribution-ShareAlike 3.0 Unported License;\n\nb) your name will be listed as an author.\n\nDo you want to accept the invitation to share the management of this firm?' => 
+  'Accettando l\'invito, ti dichiari d\'accordo sulle seguenti condizioni:\n\na) i contenuti dell\'azienda sono pubblicati sotto Creative Commons Attribution-ShareAlike 3.0 Unported License;\n\nb) il tuo nome verrà elencato come autore.\n\nVuoi accettare l\'invito a condividere la gestione dell\'azienda?',
 
   'Edit your profile\'s settings' => 
   'Modifica il tuo profilo utente',
@@ -1368,11 +1356,11 @@ Vuoi accettare l\'invito a condividere la gestione dell\'azienda?',
   'Edit firm\'s settings' => 
   'Modifica le impostazioni dell\'azienda',
 
-  'The firm «{firm}» has been frozen on <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.' => 
-  'L\'azienda «{firm}» è stata congelata  <a href=\"{url}\" target=\"_blank\" title=\"{title}\">{date}</a>.',
+  'The firm «{firm}» has been frozen on <a href="{url}" target="_blank" title="{title}">{date}</a>.' => 
+  'L\'azienda «{firm}» è stata congelata  <a href="{url}" target="_blank" title="{title}">{date}</a>.',
 
-  'Curious about <a href=\"{url}\" target=\"_blank\">why</a> you have to accept a Creative Commons License?' => 
-  'Ti interessa sapere <a href=\"{url}\" target=\"_blank\">perché</a> devi accettare una licenza Creative Commons?',
+  'Curious about <a href="{url}" target="_blank">why</a> you have to accept a Creative Commons License?' => 
+  'Ti interessa sapere <a href="{url}" target="_blank">perché</a> devi accettare una licenza Creative Commons?',
 
   'text-based ledger-cli\'s format for transactions' => 
   'formato di rappresentazione del libro giornale usato da ledger-cli',
@@ -1380,8 +1368,8 @@ Vuoi accettare l\'invito a condividere la gestione dell\'azienda?',
   'Click on a template\'s description to start a journal entry from it.' => 
   'Fai clic sulla descrizione di una causale per utilizzarla come base di una registrazione contabile.',
 
-  'This is where our <a href=\"{url}\">twitter feed</a> should be placed.' => 
-  'Questo è il luogo dove il nostro <a href=\"{url}\">feed twitter</a> dovrebbe essere posto.',
+  'This is where our <a href="{url}">twitter feed</a> should be placed.' => 
+  'Questo è il luogo dove il nostro <a href="{url}">feed twitter</a> dovrebbe essere posto.',
 
   'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
   'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
