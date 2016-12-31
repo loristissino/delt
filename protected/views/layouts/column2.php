@@ -10,6 +10,8 @@ if($this->firm)
     array('label'=>Yii::t('delt', 'Statements'), 'url'=>array('/bookkeeping/statements', 'slug'=>$this->firm->slug, 'level'=>$this->firm->getCOAMaxLevel())),
     array('label'=>Yii::t('delt', 'Public View'), 'url'=>array(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug)),
     array('label'=>Yii::t('delt', 'Slideshow'), 'url'=>array(Yii::app()->params['publicpages'][$this->firm->firmtype].$this->firm->slug.'/slideshow')),
+    array('label'=>Yii::t('delt', 'Log'), 'url'=>array('/firm/log', 'slug'=>$this->firm->slug)),
+    array('label'=>Yii::t('delt', 'Settings'), 'url'=>array('/firm/update', 'id'=>$this->firm->id)),
     );
 }
 else

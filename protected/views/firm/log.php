@@ -1,7 +1,7 @@
 <?php
 /* @var $this FirmController */
 
-$this->layout='//layouts/html5';
+$this->layout='//layouts/column2';
 /*
 $this->breadcrumbs=array(
   'Firms'=>array('/firm/index'),

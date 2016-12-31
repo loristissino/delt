@@ -50,11 +50,11 @@ class FirmController extends Controller
       */
 
       array('allow', // allow authenticated user to perform the following actions
-        'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation','disown','freeze','unfreeze'),
+        'actions'=>array('create','update','fork','prefork','owners','delete','share','invitation','disown','freeze','unfreeze','log'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
-        'actions'=>array('admin','delete','history'),
+        'actions'=>array('admin','delete','log'),
         'users'=>array('admin'),
       ),
       array('allow', // allow authenticated user to perform 'public' actions
@@ -156,11 +156,11 @@ class FirmController extends Controller
     ));
   }
 
-  public function actionHistory($slug)
+  public function actionLog($slug)
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
     
-    $this->render('history', array(
+    $this->render('log', array(
       'model'=>$this->firm,
       'events'=>$this->firm->getEvents(),
     ));
