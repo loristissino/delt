@@ -33,7 +33,7 @@ class UsersCommand extends CConsoleCommand
   {
     $date = date('Y-m-d', time()-7*24*60*60); // we give users a week to confirm the registration
       
-    $users=User::model()->findAllByAttributes(array('status'=>0));
+    $users=DEUser::model()->findAllByAttributes(array('status'=>0));
     foreach($users as $user)
     {
       if ($user->create_at < $date)

@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013-2015 Loris Tissino
+ * @copyright Copyright &copy; 2013-2017 Loris Tissino
  * @since 1.0
  */
 /**
@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.8.22';
+    return '1.8.23';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
