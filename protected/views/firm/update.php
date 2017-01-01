@@ -5,7 +5,7 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name=>array('bookkeeping/manage','slug'=>$model->slug),
-  'Update',
+  'Settings',
 );
 
 $this->menu[]=array('label'=>Yii::t('delt', 'Configuration'), 'url'=>array('bookkeeping/configure', 'slug'=>$model->slug));
@@ -47,7 +47,7 @@ $cs->registerScript(
 
 ?>
 
-<h1><?php echo Yii::t('delt', 'Edit Firm «{name}»', array('{name}'=>$model->name)) ?></h1>
+<h1><?php echo Yii::t('delt', 'Settings for «{name}»', array('{name}'=>$model->name)) ?></h1>
 
 <?php echo $this->renderPartial('_form', array('model'=>$model)); ?>
 

@@ -2,21 +2,19 @@
 /* @var $this FirmController */
 
 $this->layout='//layouts/column2';
-/*
-$this->breadcrumbs=array(
-  'Firms'=>array('/firm/index'),
-  $model->name => array('/firm/public', 'slug'=>$model->slug),
-  'Public',
-);
-*/
 
+$this->breadcrumbs=array(
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
+  'Activity Log',
+);
 ?>
 
 <article>
 <h1><?php echo CHtml::encode($model->name) ?></h1>
 <p><?php echo CHtml::encode($model->description) ?></p>
 <section>
-<h2><?php echo Yii::t('delt', 'History') ?></h2>
+<h2><?php echo Yii::t('delt', 'Activity Log') ?></h2>
 <p>
 <?php foreach($events as $event): ?>
 		<?php echo $event->happened_at ?>: 

@@ -1374,10 +1374,22 @@
   'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
   'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
 
+  'Management' => 
+  'Gestione',
+
+  'Edit Settings' => 
+  'Modifica impostazioni',
+
   'Settings' => 
   'Impostazioni',
 
-  'Log' => 
-  'Registro',
+  'Settings for «{name}»' => 
+  'Impostazioni per «{name}»',
+
+  'Activity Log' => 
+  'Registro delle attività',
+
+  'View Log' => 
+  'Visualizza registro',
 
   );

@@ -13,7 +13,7 @@ $this->menu=array();
 
 if(!$model->frozen_at)
 {
-  $this->menu[] = array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('/firm/update', 'id'=>$model->id));
+  $this->menu[] = array('label'=>Yii::t('delt', 'Edit Settings'), 'url'=>array('/firm/update', 'id'=>$model->id));
   $this->menu[] = array('label'=>Yii::t('delt', 'Delete'), 'url'=>array('/firm/delete', 'slug'=>$model->slug), 'linkOptions'=>array(
     'title'=>Yii::t('delt', 'Delete this firm'),
     ));
@@ -31,10 +31,11 @@ if(!$model->frozen_at)
   $this->menu[] = array('label'=>Yii::t('delt', 'Share'), 'url'=>array('/firm/share', 'slug'=>$model->slug));
 }
 
-
 $this->menu[] = array('label'=>Yii::t('delt', 
     $model->frozen_at ? 'Unfreeze' : 'Freeze'
     ), 'url'=>array('/firm/' . ($model->frozen_at ? 'unfreeze' : 'freeze'), 'slug'=>$model->slug));
+
+$this->menu[]=array('label'=>Yii::t('delt', 'View Log'), 'url'=>array('/firm/log', 'slug'=>$this->firm->slug));
 
 ?>
 <h1><?php echo CHtml::encode($model->name) ?></h1>
