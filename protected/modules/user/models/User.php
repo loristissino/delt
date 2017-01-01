@@ -5,7 +5,7 @@ class User extends CActiveRecord
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
-  const STATUS_WAITING=-2;
+    const STATUS_WAITING=-2;
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
@@ -141,7 +141,7 @@ class User extends CActiveRecord
 				self::STATUS_NOACTIVE => UserModule::t('Not active'),
 				self::STATUS_ACTIVE => UserModule::t('Active'),
 				self::STATUS_BANNED => UserModule::t('Banned'),
-        self::STATUS_WAITING => UserModule::t('Waiting for email validation')
+                self::STATUS_WAITING => UserModule::t('Waiting for email validation')
 			),
 			'AdminStatus' => array(
 				'0' => UserModule::t('No'),
