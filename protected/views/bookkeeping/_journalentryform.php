@@ -26,13 +26,13 @@ $n = sizeof($items);
 $choose_icon=addslashes($this->createIcon('choose', Yii::t('delt', 'Choose'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Choose'))));
 $delete_icon=addslashes($this->createIcon('delete', Yii::t('delt', 'Delete'), array('width'=>16, 'height'=>16, 'style'=>'padding-top: 0px;', 'title'=>Yii::t('delt', 'Delete row # {n}'))));
 
-$raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
-$textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
-$load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 0px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
-$sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Sort postings, debits first'))));
-$explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
-$swap_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 'Swap debits and credits'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Swap debit and credits for the whole journal entry'))));
-$help_icon=addslashes($this->createIcon('help', Yii::t('delt', 'Show usage help'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px;', 'title'=>Yii::t('delt', 'Show usage help'))));
+$raw_input_icon=addslashes($this->createIcon('text_align_left', Yii::t('delt', 'Raw input'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Switch to raw input mode'))));
+$textfields_icon=addslashes($this->createIcon('application_form', Yii::t('delt', 'Text fields'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Switch to text fields mode'))));
+$load_accounts_icon=addslashes($this->createIcon('table_go', Yii::t('delt', 'Load accounts'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Load all accounts'))));
+$sort_icon=addslashes($this->createIcon('sortdc', Yii::t('delt', 'Sort postings'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Sort postings, debits first'))));
+$explain_icon=addslashes($this->createIcon('analyze', Yii::t('delt', 'Analyze the transaction'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Analyze the transaction'))));
+$swap_debits_credits_icon=addslashes($this->createIcon('arrows', Yii::t('delt', 'Swap debits and credits'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Swap debit and credits for the whole journal entry'))));
+$help_icon=addslashes($this->createIcon('help', Yii::t('delt', 'Show usage help'), array('width'=>16, 'height'=>16, 'style'=>'padding-bottom: 8px; padding-right: 4px;', 'title'=>Yii::t('delt', 'Show usage help'))));
 
 $calculator_icon = addslashes(Yii::app()->request->baseUrl.'/images/calculator.png');
 
@@ -80,15 +80,14 @@ $cs->registerScript(
   
   $("#commands").html(
     "<span id=\"toggle\">" + raw_input_icon + 
-    "</span>&nbsp;<span id=\"sort_accounts\">" + sort_icon + "</span>" +
-    "</span>&nbsp;<span id=\"swap_debits_credits\">" + swap_debits_credits_icon + "</span>" + 
-    "</span>&nbsp;<span id=\"explain\">" + explain_icon + "</span>" +
-    "</span>&nbsp;<span id=\"help\">" + help_icon + "</span>" +
-    "</span>&nbsp;<span id=\"load_accounts\">" + load_accounts_icon + "</span>"
+    "</span><span id=\"sort_accounts\">" + sort_icon + "</span>" +
+    "</span><span id=\"swap_debits_credits\">" + swap_debits_credits_icon + "</span>" + 
+    "</span><span id=\"explain\">" + explain_icon + "</span>" +
+    "</span><span id=\"load_accounts\">" + load_accounts_icon + "</span>" +
+    "</span><span id=\"help\">" + help_icon + "</span>"
 
     );
   $("#load_accounts").hide();
-  
   $("#analysis").hide();
   
   $("#template_button").after("<a id=\"template_link\" href=\"#\">' . $create_template_string . '</a>");

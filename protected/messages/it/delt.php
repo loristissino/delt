@@ -877,19 +877,19 @@
   'Risultato netto',
 
   'Analyze the transaction' => 
-  'Analizza la scrittura contabile',
+  'Analizza la registrazione contabile',
 
   'Transaction analysis' => 
-  'Analisi della scrittura contabile',
+  'Analisi della registrazione contabile',
 
   'Transaction analysis is currently disabled. Please save the journal entry first.' => 
-  'L\'analisi della scrittura contabile può essere effettuata solo dopo che essa è stata salvata.',
+  'L\'analisi della registrazione contabile può essere effettuata solo dopo che essa è stata salvata.',
 
   'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.' => 
-  'L\'analisi della scrittura contabile è sperimentale e dipende dalla correttezza dell\'impostazione del piano dei conti.',
+  'L\'analisi della registrazione contabile è sperimentale e dipende dalla correttezza dell\'impostazione del piano dei conti.',
 
   'unexplained entry' => 
-  'scrittura non spiegabile',
+  'registrazione non spiegabile',
 
   'Transaction analysis is meaningless for closing entries.' => 
   'L\'analisi non ha significato per le scritture di chiusura.',
@@ -1391,5 +1391,8 @@
 
   'View Log' => 
   'Visualizza registro',
+
+  'Show usage help' => 
+  'Mostra guida per l\'uso',
 
   );
