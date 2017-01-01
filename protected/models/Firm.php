@@ -1866,7 +1866,7 @@ class Firm extends CActiveRecord
     {
       if(sizeof(Event::model()->findByAttributes(array('firm_id'=>$this->id))))
       {
-        $this->slug = '~' . md5($this->id);
+        $this->slug = substr('~' . md5($this->id), 0, 32);
         $exit = $this->status = self::STATUS_CLEARED;
         $this->save(false);
       }
