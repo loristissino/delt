@@ -1394,5 +1394,11 @@
 
   'Show usage help' => 
   'Mostra guida per l\'uso',
+  
+  'This firm is stale'=>
+  'Questa azienda risulta inutilizzata',
+  
+  'Since this firm is stale, it will be deleted in 30 days.' =>
+  'Visto che questa azienda è inutilizzata, verrà eliminata nei prossimi tra 30 giorni.',
 
   );
