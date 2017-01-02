@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013 Loris Tissino
+ * @copyright Copyright &copy; 2013-2017 Loris Tissino
  * @since 1.0
  * 
  * @package application.commands
@@ -20,6 +20,7 @@
 
 class FirmsCommand extends CConsoleCommand
 {
+  private $benchmarks;
   
   public function actionIndex()
   {
@@ -27,6 +28,61 @@ class FirmsCommand extends CConsoleCommand
     foreach($firms as $firm)
     {
       echo implode("\t", array($firm->id, $firm->status, $firm->language->language_code, $firm->slug, $firm->name)) . "\n";
+    }
+  }
+
+  public function actionMarkStale()
+  {
+    $reference_date = date('Y-m-d', time() - 24*60*60*365);
+    echo $reference_date . "\n";
+
+    $this->benchmarks = array();
+    foreach (Exercise::model()->findAll() as $exercise)
+    {
+      $this->benchmarks[] = $exercise->firm_id;
+      if ($exercise->firm)
+      {
+        $this->benchmarks[] = $exercise->firm->firm_parent_id;
+      }
+    }
+    
+    $firms=Firm::model()->findAll();
+    foreach($firms as $firm)
+    {
+      echo $firm->id . ": ";
+      $this->setStaleStatusIfNeeded($firm, $reference_date);
+      echo "\n";
+    }
+  }
+  
+  public function actionDeleteExtraStale()
+  {
+    $reference_date = date('Y-m-d', time() - 24*60*60*(365+31));  // after one month of being stale, we delete the firm.
+    echo $reference_date . "\n";
+    
+    $firms=Firm::model()->findAllByAttributes(array('status'=>Firm::STATUS_STALE));
+    foreach($firms as $firm)
+    {
+      echo $firm->id . ": ";
+      
+      $lastEvent = Event::model()->ofFirm($firm->id)->sorted()->find();
+      if (!$lastEvent || $lastEvent->happened_at < $reference_date)
+      {
+         if ($firm->softDelete())
+         {
+           Event::model()->log(null, $firm->id, Event::FIRM_DELETED);
+           echo "deleted";
+         }
+         else
+         {
+           echo "NOT deleted for unknown reason";
+         }
+      }
+      else
+      {
+        echo "kept in stale state";
+      }
+      echo "\n";
     }
   }
 
@@ -74,7 +130,7 @@ class FirmsCommand extends CConsoleCommand
     $firms = Firm::model()->findAllByAttributes(array('status'=>Firm::STATUS_DELETED));
     foreach($firms as $firm)
     {
-      echo $firm->id . " ";
+      echo $firm->id . ": ";
       switch($firm->safeDelete())
       {
         case Firm::STATUS_CLEARED:
@@ -105,7 +161,59 @@ class FirmsCommand extends CConsoleCommand
     $firm->fixAccounts();
     $firm->fixAccountNames();
     echo "fixed!\n";
-    
   }
 
+  protected function setStaleStatusIfNeeded($firm, $reference_date)
+  {    
+    if ($firm->status == Firm::STATUS_STALE)
+    {
+      echo "ALREADY STALE";
+      return false;
+    }
+    if ($firm->status == Firm::STATUS_SYSTEM)
+    {
+      // firms set as public are always kept
+      echo "KEPT (system)";
+      return false;
+    }
+    
+    if (in_array($firm->id, $this->benchmarks))
+    {
+      // firms used as benchmarks for challenges are always kept
+      echo "KEPT (benchmark)";
+      return false;
+    }
+    
+    foreach($firm->getAllOwnersExcept(-1, ', p.is_blogger') as $owner)
+    {
+      if ($owner->is_blogger)
+      {
+        echo "KEPT (owned by blogger: " . $owner->username . ")";
+        return false;
+      }
+    }
+
+    $lastEvent = Event::model()->ofFirm($firm->id)->sorted()->find();
+    if (!$lastEvent)
+    {
+      echo "STALE (no events)";
+      return $this->markStale($firm);
+    }
+    elseif ($lastEvent->happened_at < $reference_date)
+    {
+      echo "STALE (last event: " . $lastEvent->happened_at . ")";
+      return $this->markStale($firm);
+    }
+    else
+    {
+      echo "KEPT (active)";
+      return false;
+    }
+  }
+  
+  protected function markStale($firm)
+  {
+    $firm->status = Firm::STATUS_STALE;
+    return $firm->save(false);
+  }
 }

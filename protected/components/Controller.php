@@ -159,6 +159,14 @@ class Controller extends CController
     {
       $this->checkManageability($firm);
     }
+    
+    if ($firm->status == Firm::STATUS_STALE)
+    {
+      $firm->status = Firm::STATUS_PRIVATE;
+      // we don't need to take care of other cases, because they won't go stale anyway...
+      $firm->save(false);
+    }
+    
     return $firm;
   }
   

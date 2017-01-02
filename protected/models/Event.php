@@ -182,7 +182,15 @@ class Event extends CActiveRecord
         'condition'=>'t.firm_id = ' . $firm_id,
     ));
     return $this;
-  }  
+  }
+  
+  public function sorted($order='happened_at DESC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'order'=>$order,
+    ));
+    return $this;
+  }
 
   public function getActionDescription()
   {

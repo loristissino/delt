@@ -4,7 +4,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013-2015 Loris Tissino
+ * @copyright Copyright &copy; 2013-2017 Loris Tissino
  * @since 1.0
  */
 /**
@@ -50,6 +50,7 @@ class Firm extends CActiveRecord
   // positive values for firms that we do want to show
   const STATUS_SYSTEM = 1;
   const STATUS_PRIVATE = 2;
+  const STATUS_STALE = 3;
   
   // types of "firms"
   const FIRMTYPE_BUSINESS = 1;
@@ -203,12 +204,12 @@ class Firm extends CActiveRecord
    * @param integer $user_id the id of the {@link DEUser} that must be ecluded
    * @return array the owners of the firm (as PDO objects)
    */
-  public function getAllOwnersExcept($user_id)
+  public function getAllOwnersExcept($user_id, $extra_fields='')
   {
     // FIXME: merge / integrate with Firm::getOwners()
     
     $users = Yii::app()->db->createCommand()
-      ->select('u.username, p.first_name, p.last_name')
+      ->select('u.username, p.first_name, p.last_name' . $extra_fields)
       ->from('{{users}} u')
       ->leftJoin('{{firm_user}} fu', 'id = fu.user_id')
       ->leftJoin('{{profiles}} p', 'u.id = p.user_id')
@@ -2451,6 +2452,5 @@ class Firm extends CActiveRecord
   {
     return Event::model()->ofFirm($this->id)->findAll();
   }
-
   
 }

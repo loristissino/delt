@@ -21,7 +21,14 @@ else
   {
     foreach($this->DEUser->firms as $firm)
     {
-      $this->firmmenu[]=array('label'=>$firm, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug));
+      $label = $firm;
+      $linkOptions = array();
+      if ($firm->status == Firm::STATUS_STALE)
+      {
+        $linkOptions['style'] = 'color:red';
+        $linkOptions['title'] = Yii::t('delt', 'This firm is stale');
+      }
+      $this->firmmenu[]=array('label'=>$label, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug), 'linkOptions'=>$linkOptions);
     }
   }
 }
