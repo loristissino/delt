@@ -968,6 +968,7 @@ class Firm extends CActiveRecord
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
 
+    /*
     $slug=Yii::t('delt', 'copy-of-{slug}', array('{slug}'=>$source->slug));
     $testsubstr=substr($slug, 0, 28);
     
@@ -980,12 +981,19 @@ class Firm extends CActiveRecord
     {
       $this->slug=$slug;
     }
+    */
+    /*
+    $this->slug = substr(md5($model->name . rand(0, 100000)), 32);
     
     if(Firm::model()->findByAttributes(array('slug'=>$this->slug)))
     {
       $this->slug = md5(rand()+time());
     }
+    */
+    
+    $this->slug = substr(md5($this->name . rand(0, 100000)), 32);
 
+    
     $transaction = $this->getDbConnection()->beginTransaction();
     
     try

@@ -775,6 +775,13 @@ div.challenge.open
    font-size: 67%
 }
 
+#challenge .hint
+{
+  padding-left: 40px;
+  padding-right: 40px;
+  color: #9F9FFF;
+}
+
 #challenge .score
 {
    background-color: #FFFF77;

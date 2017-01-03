@@ -2,66 +2,45 @@
 /* @var $this ExerciseController */
 /* @var $model Exercise */
 
+$md = new CMarkdown();
+
 $this->breadcrumbs=array(
   'Exercises'=>array('index'),
   $model->title,
 );
 
-$this->layout = '//layouts/column1';
+$this->layout = '//layouts/column2';
 
 $this->menu=array(
-  array('label'=>'List Exercise', 'url'=>array('index')),
-  array('label'=>'Create Exercise', 'url'=>array('create')),
-  array('label'=>'Update Exercise', 'url'=>array('update', 'id'=>$model->id)),
-  array('label'=>'Delete Exercise', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
-  array('label'=>'Manage Exercise', 'url'=>array('admin')),
+  array('label'=>'List Exercises', 'url'=>array('index')),
+  array('label'=>'Edit Exercise', 'url'=>array('update', 'id'=>$model->id)),
+  array('label'=>'View Transactions', 'url'=>array('transactions', 'id'=>$model->id)),
+  array('label'=>'View Report', 'url'=>array('report', 'id'=>$model->id)),
+  array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
+  //array('label'=>'Delete Exercise', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+  //array('label'=>'Manage Exercises', 'url'=>array('admin')),
 );
 ?>
 
-<h1>View Exercise #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('delt', 'Exercise «{name}»', array('{name}'=>$model->title)) ?></h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
   'data'=>$model,
   'attributes'=>array(
-    'id',
-    'user_id',
-    'firm_id',
+    array(
+        'label'=>'Benchmark Firm',
+        'type'=>'raw',
+        'value'=>CHtml::link(CHtml::encode($model->firm->name),
+           array('bookkeeping/manage','slug'=>$model->firm->slug)
+        ),
+    ),
     'slug',
     'title',
     'description',
-    'introduction',
+    array(
+        'label'=>'introduction',
+        'type'=>'raw',
+        'value'=>$md->transform($model->introduction),
+        ),
   ),
 )); ?>
-
-<?php if(sizeof($model->challenges)): ?>
-	<table>
-		<tr>
-			<th>Firm</th>
-			<th>Owner</th>
-			<th>Assigned</th>
-			<th>Completed</th>
-			<th>Checked</th>
-			<th>Rate</th>
-		</tr>
-	<?php foreach($model->challenges as $challenge): ?>
-		<tr>
-			<td>
-				<?php if($challenge->firm): ?>
-				<?php echo CHtml::link(CHtml::encode($challenge->firm->name), array('/firms/' . $challenge->firm->slug), array('title'=>$challenge->firm_id)) ?>
-				<?php else: ?>
-				<em><?php echo $challenge->user ?></em> 
-				<?php endif ?>
-			</td>
-			<td title="<?php echo $challenge->user ?>">
-				<?php if($challenge->firm): ?>
-				<?php echo CHtml::encode($challenge->firm->getOwners(true)) ?>
-				<?php endif ?>
-			</td>
-			<td><?php echo $challenge->assigned_at ?></td>
-			<td><?php echo $challenge->completed_at ?></td>
-			<td><?php echo $challenge->checked_at ?></td>
-			<td style="text-align: right"><?php echo Yii::app()->numberFormatter->formatDecimal(round($challenge->rate/10)). '%' ?></td>		</tr>
-	<?php endforeach ?>
-	</table>
-<?php endif ?>
-

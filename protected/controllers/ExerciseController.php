@@ -5,7 +5,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2015-17 Loris Tissino
+ * @copyright Copyright &copy; 2015-2017 Loris Tissino
  * @since 1.8.3
  * 
  */
@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'create'),
+        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'report', 'transactions'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -68,6 +68,18 @@ class ExerciseController extends Controller
       'model'=>$this->loadModel($id),
     ));
   }
+
+  /**
+   * Shows the report of challenges of an exercise.
+   * @param integer $id the ID of the exercise
+   */
+  public function actionReport($id)
+  {
+    $this->render('report',array(
+      'model'=>$this->loadModel($id),
+    ));
+  }
+
 
   /**
    * Creates a new model.
@@ -109,7 +121,7 @@ class ExerciseController extends Controller
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
-    if(Yii::app()->request->isPostRequest())
+    if(Yii::app()->request->getIsPostRequest())
     {
       $model->attributes=$_POST['Exercise'];
       if($model->save())
@@ -120,6 +132,37 @@ class ExerciseController extends Controller
       'model'=>$model,
     ));
   }
+
+  /**
+   * Manages transactions belonging to this exercise.
+   * @param integer $id the ID of the exercise
+   */
+  public function actionTransactions($id)
+  {
+    $model=$this->loadModel($id);
+
+    if(Yii::app()->request->getIsPostRequest())
+    {
+      $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
+      $method = DELT::getValueFromArray($_POST, 'method', 61);
+      
+      $invited = $model->invite($users, $method);
+      if($invited)
+      {
+        Yii::app()->user->setFlash('delt_success', 'Invited: '. $invited);
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure', 'No user invited');
+      }
+      $this->redirect(array('index'));
+    }
+
+    $this->render('transactions',array(
+      'model'=>$model,
+    ));
+  }
+
 
   /**
    * Invites users to start a challenge based on this exercise.

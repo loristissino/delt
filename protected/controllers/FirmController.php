@@ -229,7 +229,7 @@ class FirmController extends Controller
         {
           if(!$model->slug)
           {
-            $model->slug = md5($model->name . rand(0, 100000));
+            $model->slug = substr(md5($model->name . rand(0, 100000)), 32);
           }
         }
       }

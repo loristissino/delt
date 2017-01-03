@@ -52,7 +52,7 @@ else
       </div>
     <?php endif ?>
 
-    <?php $this->renderPartial('/layouts/_flashes'); ?>
+    <?php $this->renderPartial('//layouts/_flashes'); ?>
 
     <?php echo $content; ?>
   </div><!-- content -->
