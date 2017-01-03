@@ -20,21 +20,14 @@
   <?php echo $form->errorSummary($model); ?>
 
   <div class="row">
-    <?php echo $form->labelEx($model,'user_id'); ?>
-    <?php echo $form->textField($model,'user_id'); ?>
-    <?php echo $form->error($model,'user_id'); ?>
-  </div>
-
-  <div class="row">
     <?php echo $form->labelEx($model,'firm_id'); ?>
-    <?php echo $form->textField($model,'firm_id'); ?>
+       <?php echo $form->dropDownList(
+          $model, 
+          'firm_id',
+          CHtml::listData($this->DEUser->firms, 'id', 'name')
+        )
+       ?>
     <?php echo $form->error($model,'firm_id'); ?>
-  </div>
-
-  <div class="row">
-    <?php echo $form->labelEx($model,'slug'); ?>
-    <?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?>
-    <?php echo $form->error($model,'slug'); ?>
   </div>
 
   <div class="row">
@@ -44,19 +37,25 @@
   </div>
 
   <div class="row">
+    <?php echo $form->labelEx($model,'slug'); ?>
+    <?php echo $form->textField($model,'slug',array('size'=>32,'maxlength'=>32)); ?>
+    <?php echo $form->error($model,'slug'); ?>
+  </div>
+
+  <div class="row">
     <?php echo $form->labelEx($model,'description'); ?>
     <?php echo $form->textField($model,'description',array('size'=>60,'maxlength'=>255)); ?>
     <?php echo $form->error($model,'description'); ?>
   </div>
 
   <div class="row">
-    <?php echo $form->labelEx($model,'introduction'); ?>
+    <?php echo $form->labelEx($model,'introduction'); ?><span class="hint"><?php echo Yii::t('delt', 'You can use Markdown syntax in this field.') ?></span>
     <?php echo $form->textArea($model,'introduction',array('rows'=>6, 'cols'=>50)); ?>
     <?php echo $form->error($model,'introduction'); ?>
   </div>
 
   <div class="row buttons">
-    <?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+    <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save')); ?>
   </div>
 
 <?php $this->endWidget(); ?>

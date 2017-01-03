@@ -6,6 +6,9 @@ $this->breadcrumbs=array(
   'Challenges',
 );
 
+$this->menu=array(
+  array('label'=>'Manage Exercises', 'url'=>array('exercise/index')),
+);
 
 $ajax_loader_icon=addslashes($this->createIcon('ajax-loader', Yii::t('delt', 'Please wait...'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Please wait')), '.gif'));
 $please_wait_text = addslashes(Yii::t('delt', 'The challenge is being checked.') . ' ' . Yii::t('delt', 'Please wait a few seconds...'));

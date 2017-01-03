@@ -96,7 +96,7 @@ class Firm extends CActiveRecord
       array('currency', 'length', 'max'=>5),
       array('csymbol', 'length', 'max'=>1),
       array('description', 'safe'),
-      array('slug', 'validateSlug'),
+      array('slug', 'SlugValidator', 'model'=>Firm::model()),
       array('firmtype', 'validateFirmtype'),
       array('currency', 'validateCurrency'),
       array('license_confirmation', 'validateLicense'),
@@ -222,32 +222,9 @@ class Firm extends CActiveRecord
       
     return $users;    
   }
-  
-  /**
-   * Validates the slug chosen for the firm.
-   */
-  public function validateSlug()
-  {
-    if(strlen($this->slug)>32)
-    {
-      $this->addError('slug', Yii::t('delt', 'The maximum length of a slug is of 32 characters.'));
-      return;
-    }
-    if(preg_match('/[^0-9a-z\-]/', $this->slug))
-    {
-      $this->addError('slug', Yii::t('delt', 'Only lowercase letters, digits and minus sign are allowed.'));
-      return;
-    }
-    
-    $f=Firm::model()->findByAttributes(array('slug'=>$this->slug));
-    if($f and $f->id != $this->id)
-    {
-      $this->addError('slug', Yii::t('delt', 'This slug is already in use.'));
-    }
-  }
 
   /**
-   * Validates the slug chosen for the firm.
+   * Validates the type chosen for the firm.
    */
   public function validateFirmtype()
   {

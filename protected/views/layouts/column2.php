@@ -44,24 +44,15 @@ else
         'hideOnEmpty'=>true,
       ));
     ?>
-  <?php if($this->firm): ?>
-    <div id="firm_info">
-      <h1><?php echo $this->firm->name ?></h1>
-      <p><?php echo $this->createAbsoluteUrl('firm/view', array('slug'=>$this->firm->slug)) ?></p>
-      <p><?php echo $this->firm->getOwners(true) ?></p>
-    </div>
-  <?php endif ?>
+    <?php if($this->firm): ?>
+      <div id="firm_info">
+        <h1><?php echo $this->firm->name ?></h1>
+        <p><?php echo $this->createAbsoluteUrl('firm/view', array('slug'=>$this->firm->slug)) ?></p>
+        <p><?php echo $this->firm->getOwners(true) ?></p>
+      </div>
+    <?php endif ?>
 
-  <?php if(Yii::app()->user->hasFlash('delt_success')): ?>
-    <div class="success">
-    <?php echo Yii::t('delt', Yii::app()->user->getFlash('delt_success')) ?>
-    </div>
-  <?php endif ?>
-  <?php if(Yii::app()->user->hasFlash('delt_failure')): ?>
-    <div class="failure">
-    <?php echo Yii::t('delt', Yii::app()->user->getFlash('delt_failure')) ?>
-    </div>
-  <?php endif ?>
+    <?php $this->renderPartial('/layouts/_flashes'); ?>
 
     <?php echo $content; ?>
   </div><!-- content -->

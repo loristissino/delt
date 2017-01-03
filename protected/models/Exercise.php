@@ -48,9 +48,9 @@ class Exercise extends CActiveRecord
     // NOTE: you should only define rules for those attributes that
     // will receive user inputs.
     return array(
-      array('user_id, firm_id, slug, title', 'required'),
+      array('title, slug', 'required'),
       array('user_id, firm_id', 'numerical', 'integerOnly'=>true),
-      array('slug', 'length', 'max'=>32),
+      array('slug', 'SlugValidator', 'model'=>Exercise::model()),
       array('title, description', 'length', 'max'=>255),
       array('introduction', 'safe'),
       // The following rule is used by search().
@@ -81,12 +81,12 @@ class Exercise extends CActiveRecord
   {
     return array(
       'id' => 'ID',
-      'user_id' => 'User',
-      'firm_id' => 'Firm',
-      'slug' => 'Slug',
-      'title' => 'Title',
-      'description' => 'Description',
-      'introduction' => 'Introduction',
+      'user_id' => Yii::t('delt', 'User'),
+      'firm_id' => Yii::t('delt', 'Benchmark Firm'),
+      'slug' => Yii::t('delt', 'Slug'),
+      'title' => Yii::t('delt', 'Title'),
+      'description' => Yii::t('delt', 'Description'),
+      'introduction' => Yii::t('delt', 'Introduction'),
     );
   }
 

@@ -5,7 +5,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2015 Loris Tissino
+ * @copyright Copyright &copy; 2015-17 Loris Tissino
  * @since 1.8.3
  * 
  */
@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view'),
+        'actions'=>array('index', 'invite', 'view', 'create'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -82,9 +82,14 @@ class ExerciseController extends Controller
 
     if(isset($_POST['Exercise']))
     {
+      $_POST['Exercise']['user_id']=$this->DEUser->id;
       $model->attributes=$_POST['Exercise'];
+      
       if($model->save())
+      {
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully created.'));
         $this->redirect(array('view','id'=>$model->id));
+      }
     }
 
     $this->render('create',array(
