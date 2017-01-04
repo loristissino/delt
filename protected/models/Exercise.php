@@ -163,6 +163,21 @@ class Exercise extends CActiveRecord
     );
   }
   
+  public function getChallenges($session)
+  {
+    return Challenge::model()->ofExercise($this->id)->withSession($session)->findAll();
+  }
+  
+  public function getSessions()
+  {
+    return Yii::app()->db->createCommand()
+           ->select('count(*) AS cnt, session')
+           ->from('tbl_challenge') 
+           ->group('session') 
+           ->where('exercise_id='. $this->id)
+           ->queryAll(); 
+  }
+
   public function invite($users=array(), $method=61, $session='')
   {
     $count = 0;

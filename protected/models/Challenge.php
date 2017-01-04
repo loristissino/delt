@@ -5,7 +5,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013-2015 Loris Tissino
+ * @copyright Copyright &copy; 2013-2017 Loris Tissino
  * @since 1.8
  */
 /**
@@ -190,12 +190,21 @@ class Challenge extends CActiveRecord
     return $this;
   }  
 
-  public function ofSession($session, $order='assigned_at ASC')
+  public function withSession($session, $order='assigned_at ASC')
   {
     $p = new CdbCriteria();
-    $p->addCondition('t.session LIKE %:session%');
-    $p->addOrder($order);
-    $p->params = array(':session' => $session);
+    $p->addSearchCondition('t.session', $session);
+    $p->order = $order;
+    
+    $this->getDbCriteria()->mergeWith($p);
+    return $this;
+  }
+  
+  public function ofExercise($id)
+  {
+    $p = new CdbCriteria();
+    $p->addCondition('t.exercise_id = :id');
+    $p->params = array(':id' => $id);
     
     $this->getDbCriteria()->mergeWith($p);
     return $this;
@@ -442,7 +451,10 @@ class Challenge extends CActiveRecord
     $this->_hints = $this->hints ? explode(',', $this->hints) : array();
     $this->_shown = $this->shown ? explode(',', $this->shown) : array();
     $this->work = $this->firm;
-    $this->benchmark = $this->exercise->firm;
+    if ($this->exercise)
+    {
+      $this->benchmark = $this->exercise->firm;
+    }
     
     return parent::afterFind();
   }

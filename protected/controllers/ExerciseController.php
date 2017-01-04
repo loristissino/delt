@@ -73,10 +73,23 @@ class ExerciseController extends Controller
    * Shows the report of challenges of an exercise.
    * @param integer $id the ID of the exercise
    */
-  public function actionReport($id)
+  public function actionReport($id, $session="")
   {
+    $model = $this->loadModel($id);
+    if ($session)
+    {
+      $challenges=$model->getChallenges($session);
+      $sessions=false;
+    }
+    else
+    {
+      $challenges = false;
+      $sessions=$model->getSessions();
+    }
     $this->render('report',array(
-      'model'=>$this->loadModel($id),
+      'model'=>$model,
+      'challenges'=>$challenges,
+      'sessions'=>$sessions,
     ));
   }
 
