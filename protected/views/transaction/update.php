@@ -11,6 +11,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
+	array('label'=>'View Transactions', 'url'=>array('exercise/transactions', 'id'=>$this->exercise->id)),
+  array('label'=>'Delete', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('delt', 'Are you sure you want to delete this transaction?'))),
 );
 ?>
 

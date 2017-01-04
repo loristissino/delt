@@ -13,6 +13,7 @@ $this->breadcrumbs=array(
 
 $this->menu=array(
   array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>'New Transaction', 'url'=>array('transaction/create', 'exercise_id'=>$model->id)),
 );
 ?>
 

@@ -15,6 +15,7 @@
  * @property integer $exercise_id
  * @property integer $instructor_id
  * @property integer $user_id
+ * @property string $session
  * @property integer $firm_id
  * @property string $assigned_at
  * @property string $started_at
@@ -72,7 +73,7 @@ class Challenge extends CActiveRecord
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
       array('exercise_id, instructor_id, user_id, firm_id, method, rate', 'numerical', 'integerOnly'=>true),
-      array('started_at, suspended_at, completed_at, hints, shown', 'safe'),
+      array('started_at, suspended_at, completed_at, hints, shown, session', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, rate', 'safe', 'on'=>'search'),
@@ -103,6 +104,7 @@ class Challenge extends CActiveRecord
       'exercise_id' => 'Exercise',
       'instructor_id' => 'Instructor',
       'user_id' => 'User',
+      'session' => 'Session',
       'firm_id' => 'Firm',
       'assigned_at' => 'Assigned At',
       'started_at' => 'Started At',
@@ -139,6 +141,7 @@ class Challenge extends CActiveRecord
     $criteria->compare('exercise_id',$this->exercise_id);
     $criteria->compare('instructor_id',$this->instructor_id);
     $criteria->compare('user_id',$this->user_id);
+    $criteria->compare('session',$this->session);
     $criteria->compare('firm_id',$this->firm_id);
     $criteria->compare('assigned_at',$this->assigned_at,true);
     $criteria->compare('started_at',$this->started_at,true);
@@ -184,6 +187,17 @@ class Challenge extends CActiveRecord
         'condition'=>'t.user_id = ' . $user_id,
         'order'=>$order,
     ));
+    return $this;
+  }  
+
+  public function ofSession($session, $order='assigned_at ASC')
+  {
+    $p = new CdbCriteria();
+    $p->addCondition('t.session LIKE %:session%');
+    $p->addOrder($order);
+    $p->params = array(':session' => $session);
+    
+    $this->getDbCriteria()->mergeWith($p);
     return $this;
   }  
 

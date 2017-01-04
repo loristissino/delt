@@ -967,41 +967,14 @@ class Firm extends CActiveRecord
     
     $this->status = self::STATUS_PRIVATE;
     $this->firm_parent_id = $source->id;
-
-    /*
-    $slug=Yii::t('delt', 'copy-of-{slug}', array('{slug}'=>$source->slug));
-    $testsubstr=substr($slug, 0, 28);
     
-    $number = $this->countFirmsWithSlugStartingWith($testsubstr);
-    if($number>0)
-    {
-      $this->slug=$testsubstr . '-' . ++$number;
-    }
-    else
-    {
-      $this->slug=$slug;
-    }
-    */
-    /*
-    $this->slug = substr(md5($model->name . rand(0, 100000)), 32);
-    
-    if(Firm::model()->findByAttributes(array('slug'=>$this->slug)))
-    {
-      $this->slug = md5(rand()+time());
-    }
-    */
-    
-    $this->slug = substr(md5($this->name . rand(0, 100000)), 32);
-
+    $this->slug = substr(md5($this->name . rand(0, 100000)), 0, 32);
     
     $transaction = $this->getDbConnection()->beginTransaction();
     
     try
     {
       $this->save(false);
-      
-      $this->slug=substr($this->slug, 0, 32);
-      //when data is truncated during saving, the field retains the complete string, so we truncate it here
             
       $fu = new FirmUser();
       $fu->firm_id=$this->id;

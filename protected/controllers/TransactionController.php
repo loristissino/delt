@@ -66,8 +66,9 @@ class TransactionController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($exercise_id)
 	{
+    $this->loadExercise($exercise_id);
 		$model=new Transaction;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -75,9 +76,10 @@ class TransactionController extends Controller
 
 		if(isset($_POST['Transaction']))
 		{
+      $_POST['Transaction']['exercise_id']=$this->exercise->id;
 			$model->attributes=$_POST['Transaction'];
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('exercise/transactions','id'=>$this->exercise->id));
 		}
 
 		$this->render('create',array(
@@ -116,11 +118,19 @@ class TransactionController extends Controller
 	 */
 	public function actionDelete($id)
 	{
-		$this->loadModel($id)->delete();
+    $transaction = $this->loadModel($id);
+    try {
+      $transaction->delete();
+      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The transaction has been successfully deleted.'));
+    }
+    catch (Exception $e)
+    {
+      Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The transaction could not be deleted.'));
+    }
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('exercise/transactions', 'id'=>$this->exercise->id));
 	}
 
 	/**
@@ -135,11 +145,16 @@ class TransactionController extends Controller
 		$model=Transaction::model()->findByPk($id);
 		if($model===null)
 			throw new CHttpException(404,'The requested page does not exist.');
-    $this->exercise = Exercise::model()->findByPk($model->exercise_id);
-    if($this->exercise->user_id!==$this->DEUser->id)
-      throw new CHttpException(403, 'You are not allowed to access the requested page.');
+    $this->loadExercise($model->exercise_id);
 		return $model;
 	}
+  
+  public function loadExercise($id)
+  {
+    $this->exercise = Exercise::model()->findByPk($id);
+    if($this->exercise->user_id!==$this->DEUser->id)
+      throw new CHttpException(403, 'You are not allowed to access the requested page.');
+  }
 
 	/**
 	 * Performs the AJAX validation.

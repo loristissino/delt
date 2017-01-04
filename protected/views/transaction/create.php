@@ -3,13 +3,14 @@
 /* @var $model Transaction */
 
 $this->breadcrumbs=array(
-	'Transactions'=>array('index'),
-	'Create',
+  'Exercises'=>array('exercise/index'),
+  $this->exercise->title=>array('exercise/view', 'id'=>$this->exercise->id),
+  'Transactions'=>array('exercise/transactions', 'id'=>$this->exercise->id),
+  'Create',
 );
 
 $this->menu=array(
-	array('label'=>'List Transaction', 'url'=>array('index')),
-	array('label'=>'Manage Transaction', 'url'=>array('admin')),
+	array('label'=>'View Transactions', 'url'=>array('exercise/transactions', 'id'=>$this->exercise->id)),
 );
 ?>
 

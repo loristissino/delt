@@ -163,7 +163,7 @@ class Exercise extends CActiveRecord
     );
   }
   
-  public function invite($users=array(), $method=61)
+  public function invite($users=array(), $method=61, $session='')
   {
     $count = 0;
     foreach($users as $username)
@@ -179,6 +179,7 @@ class Exercise extends CActiveRecord
           $challenge->instructor_id = Yii::app()->controller->DEUser->id;
           $challenge->user_id =$DEUser->id;
           $challenge->method = $method;
+          $challenge->session = $session;
           $challenge->save();
           $count++;
         }

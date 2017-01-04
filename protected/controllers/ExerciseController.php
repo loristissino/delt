@@ -45,11 +45,11 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'report', 'transactions'),
+        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'transactions'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
-        'actions'=>array('create','delete'),
+        'actions'=>array(),
         'users'=>array('admin'),
       ),
       array('deny',  // deny all users
@@ -175,16 +175,17 @@ class ExerciseController extends Controller
     if(Yii::app()->request->getIsPostRequest())
     {
       $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
+      $session = DELT::getValueFromArray($_POST, 'session', '');
       $method = DELT::getValueFromArray($_POST, 'method', 61);
       
-      $invited = $model->invite($users, $method);
+      $invited = $model->invite($users, $method, $session);
       if($invited)
       {
-        Yii::app()->user->setFlash('delt_success', 'Invited: '. $invited);
+        Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Users invited: {number}.', array('{number}'=>$invited)));
       }
       else
       {
-        Yii::app()->user->setFlash('delt_failure', 'No user invited');
+        Yii::app()->user->setFlash('delt_failure', 'No users have been invited.');
       }
       $this->redirect(array('index'));
     }
@@ -203,11 +204,20 @@ class ExerciseController extends Controller
    */
   public function actionDelete($id)
   {
-    $this->loadModel($id)->delete();
+    $exercise = $this->loadModel($id);
+    try {
+      $exercise->delete();
+      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully deleted.'));
+    }
+    catch (Exception $e)
+    {
+      Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The exercise could not be deleted.'));
+      $this->redirect(array('exercise/view', 'id'=>$exercise->id));
+    }
 
     // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
     if(!isset($_GET['ajax']))
-      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('index'));
   }
 
   /**

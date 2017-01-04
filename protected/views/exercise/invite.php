@@ -9,10 +9,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'List Exercise', 'url'=>array('index')),
-  array('label'=>'Create Exercise', 'url'=>array('create')),
+  array('label'=>'List Exercises', 'url'=>array('index')),
   array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
-  array('label'=>'Manage Exercise', 'url'=>array('admin')),
 );
 ?>
 
@@ -27,8 +25,21 @@ $this->menu=array(
   'action'=>array('invite', 'id'=>$model->id),
 )); ?>
 
-<?php echo CHtml::textArea('users', '', array('cols'=>30, 'rows'=>10)) ?><br />
-<?php echo CHtml::textField('method', '61') ?>
+
+  <div class="row">
+    <?php echo CHtml::label(Yii::t('delt', 'List of usernames'), 'users') ?>
+    <?php echo CHtml::textArea('users', '', array('cols'=>30, 'rows'=>10)) ?>
+  </div>
+
+  <div class="row">
+    <?php echo CHtml::label(Yii::t('delt', 'Session'), 'session') ?>
+    <?php echo CHtml::textField('session', date('Ymd')) ?>
+  </div>
+
+  <div class="row">
+    <?php echo CHtml::label(Yii::t('delt', 'Method'), 'method') ?>
+    <?php echo CHtml::textField('method', '61') ?>
+  </div>
 
 <div class="actions buttons">
   <?php echo CHtml::submitButton(Yii::t('delt', 'Invite'), array('name'=>'invite')) ?>

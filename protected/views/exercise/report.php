@@ -12,7 +12,7 @@ $this->layout = '//layouts/column1_menu_below';
 
 $this->menu=array(
   array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
-  //array('label'=>'Manage Exercises', 'url'=>array('admin')),
+  array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
 );
 ?>
 

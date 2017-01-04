@@ -6,7 +6,7 @@ $this->layout = 'column1';
 
 $this->breadcrumbs=array(
   'Challenges'=>array('index'),
-  $model->id=>array('view','id'=>$model->id),
+  $model->exercise->title,
   'Results',
 );
 
