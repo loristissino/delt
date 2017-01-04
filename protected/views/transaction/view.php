@@ -1,0 +1,35 @@
+<?php
+/* @var $this TransactionController */
+/* @var $model Transaction */
+
+$this->breadcrumbs=array(
+  'Exercises'=>array('exercise/index'),
+  $this->exercise->title=>array('exercise/view', 'id'=>$this->exercise->id),
+  'Transactions',
+  $model->event_date,
+);
+
+$this->menu=array(
+	array('label'=>'List Transaction', 'url'=>array('index')),
+	array('label'=>'Create Transaction', 'url'=>array('create')),
+	array('label'=>'Update Transaction', 'url'=>array('update', 'id'=>$model->id)),
+	array('label'=>'Delete Transaction', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+	array('label'=>'Manage Transaction', 'url'=>array('admin')),
+);
+?>
+
+<h1>View Transaction #<?php echo $model->id; ?></h1>
+
+<?php $this->widget('zii.widgets.CDetailView', array(
+	'data'=>$model,
+	'attributes'=>array(
+		'id',
+		'exercise_id',
+		'rank',
+		'event_date',
+		'description',
+		'hint',
+		'points',
+		'penalties',
+	),
+)); ?>

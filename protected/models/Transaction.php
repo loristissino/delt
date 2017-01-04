@@ -5,7 +5,7 @@
  *
  * @license http://www.gnu.org/licenses/agpl-3.0.html GNU Affero General Public License
  * @author Loris Tissino <loris.tissino@gmail.com>
- * @copyright Copyright &copy; 2013-2015 Loris Tissino
+ * @copyright Copyright &copy; 2013-2017 Loris Tissino
  * @since 1.8
  */
 /**
@@ -13,6 +13,7 @@
  *
  * @property integer $id
  * @property integer $exercise_id
+ * @property integer $rank
  * @property string $event_date
  * @property string $description
  * @property string $hint
@@ -48,7 +49,7 @@ class Transaction extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, event_date, description', 'required'),
-      array('exercise_id, points, penalties', 'numerical', 'integerOnly'=>true),
+      array('exercise_id, rank, points, penalties', 'numerical', 'integerOnly'=>true),
       array('hint', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
@@ -78,6 +79,7 @@ class Transaction extends CActiveRecord
     return array(
       'id' => 'ID',
       'exercise_id' => 'Exercise',
+      'rank' => 'Rank',
       'event_date' => 'Event Date',
       'description' => 'Description',
       'hint' => 'Hint',
@@ -106,6 +108,7 @@ class Transaction extends CActiveRecord
 
     $criteria->compare('id',$this->id);
     $criteria->compare('exercise_id',$this->exercise_id);
+    $criteria->compare('rank',$this->rank);
     $criteria->compare('event_date',$this->event_date,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('hint',$this->hint,true);
@@ -131,6 +134,23 @@ class Transaction extends CActiveRecord
   public function __toString()
   {
     return $this->description;
+  }
+  
+  public function safeSave()
+  {
+    try
+    {
+      $this->save();
+      return true;
+    }
+    catch (Exception $e)
+    {
+      if (strpos($e->getMessage(), 'Invalid datetime format')!==false)
+      {
+        $this->addError('event_date', 'Invalid date');
+      }
+      return false;
+    }
   }
   
 }

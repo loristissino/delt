@@ -16,12 +16,14 @@ $this->menu=array(
 );
 ?>
 
-<h1>Transactions</h1>
+<h1><?php echo Yii::t('delt', 'Transactions') ?></h1>
 <div id="challenge">
 <?php foreach($model->transactions as $transaction): ?>
   <div class="transaction">
-  <b><?php echo Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null) ?></b>
-  <span class="score">(<?php echo Yii::t('delt', 'points: {points}; penalties: {penalties}', array('{points}'=>$transaction->points, '{penalties}'=>$transaction->penalties)) ?>)</span>
+  <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id)) ?></b>
+  <span class="score">
+    (<?php echo Yii::t('delt', 'points: {points}; penalties: {penalties}', array('{points}'=>$transaction->points, '{penalties}'=>$transaction->penalties)) ?>)
+  </span>
   <div class="description">
     <?php echo $md->transform($transaction->description) ?>
   </div>

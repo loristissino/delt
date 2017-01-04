@@ -42,5 +42,19 @@ $this->menu=array(
         'type'=>'raw',
         'value'=>$md->transform($model->introduction),
         ),
+    array(
+        'label'=>'Transactions',
+        'type'=>'raw',
+        'value'=>CHtml::link(sizeof($model->transactions),
+           array('transactions','id'=>$model->id)
+          ),
+        ),
+    array(
+        'label'=>'Challenges',
+        'type'=>'raw',
+        'value'=>CHtml::link(sizeof($model->challenges),
+           array('report','id'=>$model->id)
+          ),
+        ),
   ),
 )); ?>
