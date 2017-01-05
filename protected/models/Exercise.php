@@ -259,12 +259,13 @@ class Exercise extends CActiveRecord
   
   private function _wordwrap($value)
   {
-    return wordwrap($value, 60, "\r\n");
+    return wordwrap($value, 60, "\n");
   }
   
   private function _fixLongText($value, $indentation)
   {
-    return $this->_addSpaces(explode("\r\n", implode("\r\n", array_map(array($this, '_wordwrap'), explode("\r\n", $value)))), $indentation);
+    $value = str_replace("\r", '', $value);
+    return $this->_addSpaces(explode("\n", implode("\n", array_map(array($this, '_wordwrap'), explode("\n", $value)))), $indentation);
   }
   
   public function createYaml()
@@ -291,13 +292,14 @@ class Exercise extends CActiveRecord
       $yaml[] = '     penalties: ' . $transaction->penalties;
     }
     
-    $this->yaml = implode("\r\n", $yaml);
+    $this->yaml = implode("\n", $yaml);
     
   }
   
   public function importFromYaml($string)
   {
-    $values = Spyc::YAMLLoadString($string);
+    $values = Spyc::YAMLLoadString(str_replace("\r", '', $string));
+    
     if (!is_array($values))
     {
       return false;
@@ -308,7 +310,7 @@ class Exercise extends CActiveRecord
     try
     {
       Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
-      DELT::array2object($values, $this, array('slug', 'title', 'description', 'method'));
+      DELT::array2object($values, $this, array('title', 'description', 'method'));
       $this->save(false);
       foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
       {
