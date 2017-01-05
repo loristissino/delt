@@ -36,7 +36,8 @@ class ChallengeController extends Controller
       //'postOnly + activatetransaction', // we only allow transaction activation via POST request,
       'postOnly + checktransaction', // we only allow transaction activation via POST request,
       'postOnly + requesthint', // we only allow hint requests via POST request,
-      'postOnly + requestshow', // we only allow hint requests via POST request,
+      'postOnly + requestshow', // we only allow show requests via POST request,
+      'postOnly + getinvited', // we only allow show requests via POST request,
     );
   }
 
@@ -49,7 +50,7 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint', 'requesthelp', 'results'),
+        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint', 'requesthelp', 'results', 'getinvited'),
         'users'=>array('@'),
       ),
       array('allow', 
@@ -133,6 +134,35 @@ class ChallengeController extends Controller
     if(!isset($_GET['ajax']))
       $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
   }
+
+  public function actionGetinvited()
+  {
+    if(isset($_POST['slug']))
+    {
+      $slug=trim($_POST['slug']);
+      $exercise = Exercise::model()->findByAttributes(array('slug'=>$slug));
+      
+      if (!$exercise)
+      {
+        Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'There is not such an exercise. Wrong slug?'));
+        $this->redirect(array('index', 'exercise'=>$slug));
+      }
+      else
+      {
+        if ($exercise->invite(array($this->DEUser->username), false, Yii::t('delt', 'self').'-'.date('Ymd')))
+        {
+          Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'You got invited!'));
+        }
+        else
+        {
+          Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'You already got invited to this.'));
+        }
+      }
+      
+      $this->redirect(array('index'));
+    }
+  }
+
 
   /**
    * Changes the status of a challenge.
@@ -265,11 +295,12 @@ class ChallengeController extends Controller
   /**
    * Lists all models.
    */
-  public function actionIndex()
+  public function actionIndex($exercise='')
   {
     $dataProvider=Challenge::model()->getChallengesForUser($this->DEUser->id);
     $this->render('index',array(
       'dataProvider'=>$dataProvider,
+      'slug'=>$exercise,
     ));
   }
 

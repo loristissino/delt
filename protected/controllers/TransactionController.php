@@ -71,6 +71,8 @@ class TransactionController extends Controller
     $this->loadExercise($exercise_id);
 		$model=new Transaction;
 
+    $model->event_date = DELT::getDateForFormWidget(Yii::app()->getUser()->getState('lasttransactiondate', date('Y-m-d')));
+
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
@@ -79,7 +81,10 @@ class TransactionController extends Controller
       $_POST['Transaction']['exercise_id']=$this->exercise->id;
 			$model->attributes=$_POST['Transaction'];
 			if($model->safeSave())
+      {
+        Yii::app()->getUser()->setState('lasttransactiondate', $model->event_date);
 				$this->redirect(array('exercise/transactions','id'=>$this->exercise->id));
+      }
 		}
 
 		$this->render('create',array(
@@ -95,6 +100,8 @@ class TransactionController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+    
+    $model->event_date = DELT::getDateForFormWidget($model->event_date);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -103,7 +110,10 @@ class TransactionController extends Controller
 		{
 			$model->attributes=$_POST['Transaction'];
 			if($model->safeSave())
+      {
+        Yii::app()->getUser()->setState('lasttransactiondate', $model->event_date);
 				$this->redirect(array('exercise/transactions','id'=>$model->exercise_id));
+      }
 		}
 
 		$this->render('update',array(

@@ -52,3 +52,21 @@ $cs->registerScript(
   'itemView'=>'_view',
 )); ?>
 </div>
+
+<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and get invited.') ?></p>
+  <?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'choseexerciseform',
+    'enableAjaxValidation'=>false,
+    'method'=>'POST',
+    'action'=>$this->createUrl('challenge/getinvited'),
+  )); ?>
+
+  <div class="row">
+    <?php echo CHtml::label('Slug', false) ?>
+    <?php echo CHtml::textField('slug', $slug, array('size'=>40, 'value'=>$slug)) ?>
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Invite me!'), array('name'=>'getinvited')) ?>
+  </div>
+
+<?php $this->endWidget() ?>
+
+

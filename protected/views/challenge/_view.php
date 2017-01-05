@@ -19,45 +19,6 @@
     </span>
     <br />
     
-    <?php /*
-    <b><?php echo CHtml::encode($data->getAttributeLabel('instructor_id')); ?>:</b>
-    <?php echo CHtml::encode($data->instructor_id); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('user_id')); ?>:</b>
-    <?php echo CHtml::encode($data->user_id); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('firm_id')); ?>:</b>
-    <?php echo CHtml::encode($data->firm); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('assigned_at')); ?>:</b>
-    <?php echo CHtml::encode($data->assigned_at); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('started_at')); ?>:</b>
-    <?php echo CHtml::encode($data->started_at); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('suspended_at')); ?>:</b>
-    <?php echo CHtml::encode($data->suspended_at); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('completed_at')); ?>:</b>
-    <?php echo CHtml::encode($data->completed_at); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('method')); ?>:</b>
-    <?php echo CHtml::encode($data->method); ?>
-    <br />
-
-    <b><?php echo CHtml::encode($data->getAttributeLabel('mark')); ?>:</b>
-    <?php echo CHtml::encode($data->mark); ?>
-    <br />
-
-    */ ?>
-    
   </div>
 
 <div class="form" style="width: 700px">
