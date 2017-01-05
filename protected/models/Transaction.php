@@ -138,6 +138,8 @@ class Transaction extends CActiveRecord
   
   public function safeSave()
   {
+    $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->event_date);
+    $this->event_date = $date->format('Y-m-d');
     try
     {
       $this->save();

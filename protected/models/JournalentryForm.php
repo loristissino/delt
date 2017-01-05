@@ -141,11 +141,11 @@ class JournalentryForm extends CFormModel
     $transaction = $this->journalentry->getDbConnection()->beginTransaction();
     try
     {
+      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
+      
       // we must convert the date from the user input
       // since we use jquery.ui.datepicker and its i18n features, we
       // use the browser locale to know the format used
-      
-      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
       $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->date);
       $this->journalentry->date= $date ? $date->format('Y-m-d'): $this->date;
       

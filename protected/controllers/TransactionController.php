@@ -78,7 +78,7 @@ class TransactionController extends Controller
 		{
       $_POST['Transaction']['exercise_id']=$this->exercise->id;
 			$model->attributes=$_POST['Transaction'];
-			if($model->save())
+			if($model->safeSave())
 				$this->redirect(array('exercise/transactions','id'=>$this->exercise->id));
 		}
 

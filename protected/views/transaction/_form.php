@@ -27,7 +27,25 @@
 
 	<div class="row">
 		<?php echo $form->labelEx($model,'event_date'); ?>
-		<?php echo $form->textField($model,'event_date', array('size'=>10,'maxlength'=>10)); ?>
+		<?php //echo $form->textField($model,'event_date', array('size'=>10,'maxlength'=>10)); ?>
+
+    <?php $this->widget('zii.widgets.jui.CJuiDatePicker', array(
+      'name'=>'Transaction[event_date]',
+      'value'=>$model->event_date,
+      'language'=>Yii::app()->language,
+      'options'=>array(
+          'showAnim'=>'fold', // 'show' (the default), 'slideDown', 'fadeIn', 'fold'
+          'showOn'=>'both', // 'focus', 'button', 'both'
+          'buttonText'=>Yii::t('delt','Select date from calendar'),
+          'buttonImage'=>Yii::app()->request->baseUrl.'/images/calendar.png',
+          'buttonImageOnly'=>true,
+      ),
+      'htmlOptions'=>array(
+          'style'=>'width:80px;vertical-align:top',
+          'class'=>'datepicker',
+      ),
+    ));
+    ?>
 		<?php echo $form->error($model,'event_date'); ?>
 	</div>
 
