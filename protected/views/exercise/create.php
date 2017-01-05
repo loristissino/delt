@@ -8,11 +8,10 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'List Exercise', 'url'=>array('index')),
-  array('label'=>'Manage Exercise', 'url'=>array('admin')),
+  array('label'=>'List Exercises', 'url'=>array('index')),
 );
 ?>
 
-<h1>Create Exercise</h1>
+<h1><?php echo Yii::t('delt', 'Create Exercise') ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>

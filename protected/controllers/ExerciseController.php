@@ -108,6 +108,7 @@ class ExerciseController extends Controller
     if(isset($_POST['Exercise']))
     {
       $_POST['Exercise']['user_id']=$this->DEUser->id;
+      $_POST['Exercise']['method'] = $this->_computeMethod($_POST['Exercise']);
       $model->attributes=$_POST['Exercise'];
       
       if($model->save())
@@ -130,12 +131,13 @@ class ExerciseController extends Controller
   public function actionUpdate($id)
   {
     $model=$this->loadModel($id);
-
+    
     // Uncomment the following line if AJAX validation is needed
     // $this->performAjaxValidation($model);
 
     if(Yii::app()->request->getIsPostRequest())
     {
+      $_POST['Exercise']['method'] = $this->_computeMethod($_POST['Exercise']);
       $model->attributes=$_POST['Exercise'];
       if($model->save())
         $this->redirect(array('view','id'=>$model->id));
@@ -189,7 +191,8 @@ class ExerciseController extends Controller
     {
       $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
       $session = DELT::getValueFromArray($_POST, 'session', '');
-      $method = DELT::getValueFromArray($_POST, 'method', 61);
+
+      $method = $this->_computeMethod($_POST['Exercise']);
       
       $invited = $model->invite($users, $method, $session);
       if($invited)
@@ -288,4 +291,20 @@ class ExerciseController extends Controller
       Yii::app()->end();
     }
   }
+  
+  private function _computeMethod($array)
+  {
+    return array_sum(
+      array_map(
+        function($a,$b) { return $a*$b; }, 
+          $array['method_items'], 
+          array_keys($array['method_items']
+          )
+        )
+      );
+  }
+
+  
+  
+  
 }

@@ -18,6 +18,7 @@
  * @property string $title
  * @property string $description
  * @property string $introduction
+ * @property integer $method  // the default method
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
@@ -32,6 +33,8 @@
 
 class Exercise extends CActiveRecord
 {
+  public $method_items;
+  
   /**
    * @return string the associated database table name
    */
@@ -49,7 +52,7 @@ class Exercise extends CActiveRecord
     // will receive user inputs.
     return array(
       array('title, slug', 'required'),
-      array('user_id, firm_id', 'numerical', 'integerOnly'=>true),
+      array('user_id, firm_id, method', 'numerical', 'integerOnly'=>true),
       array('slug', 'SlugValidator', 'model'=>Exercise::model()),
       array('title, description', 'length', 'max'=>255),
       array('introduction', 'safe'),
@@ -87,6 +90,7 @@ class Exercise extends CActiveRecord
       'title' => Yii::t('delt', 'Title'),
       'description' => Yii::t('delt', 'Description'),
       'introduction' => Yii::t('delt', 'Introduction'),
+      'method' => Yii::t('delt', 'Default Options'),
     );
   }
 
@@ -115,6 +119,7 @@ class Exercise extends CActiveRecord
     $criteria->compare('title',$this->title,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('introduction',$this->introduction,true);
+    $criteria->compare('method',$this->method,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
@@ -180,6 +185,10 @@ class Exercise extends CActiveRecord
 
   public function invite($users=array(), $method=61, $session='')
   {
+    if ($method===false)
+    {
+      $method = $this->method; // we use the default set in Exercise
+    }
     $count = 0;
     foreach($users as $username)
     {
@@ -207,5 +216,26 @@ class Exercise extends CActiveRecord
     return $count;
   }
   
+  protected function afterConstruct()
+  {
+    $this->_loadMethodItems();
+    return parent::afterConstruct();
+  }
+
+  protected function afterFind()
+  {
+    $this->_loadMethodItems();
+    return parent::afterFind();
+  }
+  
+  private function _loadMethodItems()
+  {
+    $this->method_items = Challenge::model()->getMethodItems();
+    foreach($this->method_items as $key=>$value)
+    {
+      $this->method_items[$key]['value']=$this->method & $key;
+    }
+  }
+
   
 }

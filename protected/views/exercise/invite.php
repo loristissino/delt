@@ -36,9 +36,12 @@ $this->menu=array(
     <?php echo CHtml::textField('session', date('Ymd')) ?>
   </div>
 
-  <div class="row">
-    <?php echo CHtml::label(Yii::t('delt', 'Method'), 'method') ?>
-    <?php echo CHtml::textField('method', '61') ?>
+  <div class="row checkbox">
+    <?php echo CHtml::label(Yii::t('delt', 'Options'), 'method') ?>
+    <?php foreach($model->method_items as $key=>$value): ?>
+      <?php echo $form->checkBox($model, 'method_items['.$key.']', array('checked'=>$value['value']!=0)) ?>&nbsp;
+      <?php echo Yii::t('delt', $value['label']) ?><br />
+    <?php endforeach ?>
   </div>
 
 <div class="actions buttons">

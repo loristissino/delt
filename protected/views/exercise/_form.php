@@ -53,6 +53,14 @@
     <?php echo $form->textArea($model,'introduction',array('rows'=>6, 'cols'=>50)); ?>
     <?php echo $form->error($model,'introduction'); ?>
   </div>
+  
+  <div class="row checkbox">
+    <?php echo $form->label($model, 'method') ?>
+    <?php foreach($model->method_items as $key=>$value): ?>
+      <?php echo $form->checkBox($model, 'method_items['.$key.']', array('checked'=>$value['value']!=0)) ?>&nbsp;
+      <?php echo Yii::t('delt', $value['label']) ?><br />
+    <?php endforeach ?>
+  </div>  
 
   <div class="row buttons">
     <?php echo CHtml::submitButton($model->isNewRecord ? Yii::t('delt', 'Create') : Yii::t('delt', 'Save')); ?>

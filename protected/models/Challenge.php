@@ -40,14 +40,15 @@
  */
 class Challenge extends CActiveRecord
 {
+  public $method_items;
   
   const
      SHOW_POINTS_DURING_CHALLENGE                 =   1,
-     ALLOW_SHOW_CORRECT_ENTRIES                   =   2,
+     SHOW_CORRECT_ENTRIES                         =   2,
      SHOW_CHECKS_ON_TRANSACTION_CHANGE            =   4,
-     SHOW_CHECKS_ON_CHALLENGE_COMPLETED           =   8,
+     SHOW_CHECKS_ON_CHALLENGE_COMPLETION          =   8,
      SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE   =  16,
-     SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETED  =  32
+     SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION =  32
      ;
 
   private $_hints = null;  // hints requested by the user and shown
@@ -445,7 +446,7 @@ class Challenge extends CActiveRecord
       )
     );
   }
-    
+  
   protected function afterFind()
   {
     $this->_hints = $this->hints ? explode(',', $this->hints) : array();
@@ -455,8 +456,15 @@ class Challenge extends CActiveRecord
     {
       $this->benchmark = $this->exercise->firm;
     }
-    
+    $this->_loadMethodItems();
+
     return parent::afterFind();
+  }
+  
+  protected function afterConstruct()
+  {
+    $this->_loadMethodItems();
+    return parent::afterConstruct();
   }
 
   protected function beforeSave()
@@ -522,7 +530,7 @@ class Challenge extends CActiveRecord
     {
       return $this->check(false);
     }
-    if ($this->isCompleted() && $this->method & Challenge::SHOW_CHECKS_ON_CHALLENGE_COMPLETED)
+    if ($this->isCompleted() && $this->method & Challenge::SHOW_CHECKS_ON_CHALLENGE_COMPLETION)
     {
       return $this->check(true);
     }
@@ -709,6 +717,25 @@ class Challenge extends CActiveRecord
     return $result;
   }
   
+  public function getClassConstants()
+  {
+    $reflect = new ReflectionClass(get_class($this));
+    return array_flip($reflect->getConstants());
+  }
+  
+  public function getMethodItems()
+  {
+    $items = array(
+      self::SHOW_POINTS_DURING_CHALLENGE =>array('label'=>'Show points during challenge'),
+      self::SHOW_CORRECT_ENTRIES =>array('label'=>'Show correct entries'),
+      self::SHOW_CHECKS_ON_TRANSACTION_CHANGE =>array('label'=>'Show checks on transaction change'),
+      self::SHOW_CHECKS_ON_CHALLENGE_COMPLETION =>array('label'=>'Show checks on challenge completion'),
+      self::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE =>array('label'=>'Show expected values on transaction change'),
+      self::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION =>array('label'=>'Show expected values on challenge completion'),
+    );
+    return $items;
+  }
+
   private function _findJournalEntriesOfWork(Transaction $transaction)
   {
     return Journalentry::model()->ofFirm($this->work->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
@@ -725,7 +752,7 @@ class Challenge extends CActiveRecord
     if (
       ($this->isOpen() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE)
       or
-      ($this->isCompleted() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETED)
+      ($this->isCompleted() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION)
       )
     {
       return ' (' . Yii::t('delt', 'expected: «{expected}», found: «{found}»', array(
@@ -737,6 +764,15 @@ class Challenge extends CActiveRecord
     else
     {
       return '';
+    }
+  }
+
+  private function _loadMethodItems()
+  {
+    $this->method_items = self::model()->getMethodItems();
+    foreach($this->method_items as $key=>$value)
+    {
+      $this->method_items[$key]['value']=$this->method & $key;
     }
   }
   
