@@ -2,6 +2,43 @@
 /* @var $this ExerciseController */
 /* @var $model Exercise */
 /* @var $form CActiveForm */
+
+//$regenarate_anchor = addslashes(CHtml::link(Yii::t('delt', 'regenerate'), '#', array('id'=>'regenerate', 'title'=>Yii::t('delt', 'Click here if you want to regenerate the slug from the name of the firm'))));
+
+$cs = Yii::app()->getClientScript();
+$cs->registerScriptFile(Yii::app()->request->baseUrl.'/js/slugifier.js', CClientScript::POS_END);
+$cs->registerScript(
+  'slugify-handler',
+  '
+    
+  var slugified = ' . ($model->slug ? 'true':'false') . ';
+  
+  function slugit()
+  {
+     $("#Exercise_slug").val($("#Exercise_title").val().slugify().substring(0,32));
+  }
+  
+  $("#Exercise_title").keyup(function()
+    {
+      if(!slugified)
+      {
+        slugit();
+      }
+    }
+  );
+  
+  $("#Exercise_slug").change(function()
+    {
+      if ($("#Exercise_slug").val()!="")
+        slugified=true;
+    }
+  );
+  
+  '
+  ,
+  CClientScript::POS_READY
+);
+
 ?>
 
 <div class="form">
