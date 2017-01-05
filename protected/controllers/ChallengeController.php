@@ -182,7 +182,7 @@ class ChallengeController extends Controller
     
     if ($model->changeStatus($action))
     {
-      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+      Event::model()->log($this->DEUser, null, $model->last_action, array('challenge_id'=>$model->id));
     }
     else
     {
@@ -218,7 +218,7 @@ class ChallengeController extends Controller
     
     if ($model->connect($firm))
     {
-      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+      Event::model()->log($this->DEUser, $firm->id, Event::CHALLENGE_FIRM_CONNECTED, array('challenge_id'=>$model->id));
     }
     else
     {

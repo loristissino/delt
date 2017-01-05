@@ -205,7 +205,6 @@ class Exercise extends CActiveRecord
     $count = 0;
     foreach($users as $username)
     {
-      $username=trim($username);
       try
       {
         if ($DEUser = DEUser::model()->getBy('username', $username))

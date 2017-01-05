@@ -304,6 +304,7 @@ class FirmController extends Controller
             if($challenge = $this->DEUser->getOpenChallenge())
             {
               $challenge->connect($newfirm);
+              Event::model()->log($this->DEUser, $newfirm->id, Event::CHALLENGE_FIRM_CONNECTED, array('challenge_id'=>$challenge->id));
               $this->redirect(array('bookkeeping/journal','slug'=>$newfirm->slug));
             }
             

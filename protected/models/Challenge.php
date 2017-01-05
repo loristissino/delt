@@ -41,6 +41,7 @@
 class Challenge extends CActiveRecord
 {
   public $method_items;
+  public $last_action;
   
   const
      SHOW_POINTS_DURING_CHALLENGE                 =   1,
@@ -336,7 +337,7 @@ class Challenge extends CActiveRecord
             $this->suspended_at = null;
             $this->rate = 0;
             $this->save();
-            
+            $this->last_action = Event::CHALLENGE_ACCEPTED;
             $done = true;
             break;
           }
@@ -347,6 +348,7 @@ class Challenge extends CActiveRecord
             $this->suspended_at = $now;
             $this->save();
             Yii::app()->user->setState('transaction', null);
+            $this->last_action = Event::CHALLENGE_SUSPENDED;
             $done = true;
             break;
           }
@@ -359,6 +361,7 @@ class Challenge extends CActiveRecord
             $this->suspended_at = null;
             $this->save();
             Yii::app()->user->setState('transaction', $this->transaction_id);
+            $this->last_action = Event::CHALLENGE_RESUMED;
             $done = true;
             break;
           }
@@ -370,6 +373,7 @@ class Challenge extends CActiveRecord
             $this->completed_at = $now;
             $this->suspended_at = null;
             $this->save();
+            $this->last_action = Event::CHALLENGE_COMPLETED;
             $done = true;
             break;
           }
@@ -379,6 +383,7 @@ class Challenge extends CActiveRecord
           {
             $this->checked_at = $now;
             $this->save();
+            $this->last_action = Event::CHALLENGE_CHECKED;
             $done = true;
             break;
           }

@@ -86,6 +86,8 @@ class ExerciseController extends Controller
       $challenges = false;
       $sessions=$model->getSessions();
     }
+    Event::model()->log($this->DEUser, null, Event::EXERCISE_REPORT, array('exercise_id'=>$model->id, 'session'=>$session));
+
     $this->render('report',array(
       'model'=>$model,
       'challenges'=>$challenges,
@@ -114,6 +116,7 @@ class ExerciseController extends Controller
       if($model->save())
       {
         Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully created.'));
+        Event::model()->log($this->DEUser, null, Event::EXERCISE_CREATED, array('exercise_id'=>$model->id, 'title'=>$model->title));
         $this->redirect(array('view','id'=>$model->id));
       }
     }
@@ -140,7 +143,10 @@ class ExerciseController extends Controller
       $_POST['Exercise']['method'] = $this->_computeMethod($_POST['Exercise']);
       $model->attributes=$_POST['Exercise'];
       if($model->save())
+      {
+        Event::model()->log($this->DEUser, null, Event::EXERCISE_EDITED, array('exercise_id'=>$model->id, 'title'=>$model->title));
         $this->redirect(array('view','id'=>$model->id));
+      }
     }
 
     $this->render('update',array(
@@ -189,7 +195,8 @@ class ExerciseController extends Controller
 
     if(Yii::app()->request->getIsPostRequest())
     {
-      $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
+      $users = array_values(array_filter(array_map("trim", explode("\n", DELT::getValueFromArray($_POST, 'users', '')))));
+      
       $session = DELT::getValueFromArray($_POST, 'session', '');
 
       $method = $this->_computeMethod($_POST['Exercise']);
@@ -198,6 +205,7 @@ class ExerciseController extends Controller
       if($invited)
       {
         Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Users invited: {number}.', array('{number}'=>$invited)));
+        Event::model()->log($this->DEUser, null, Event::EXERCISE_USERS_INVITED, array('exercise_id'=>$model->id, 'session'=>$session, 'users'=>$users, 'method'=>$method));
       }
       else
       {
@@ -224,6 +232,8 @@ class ExerciseController extends Controller
     try {
       $exercise->delete();
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully deleted.'));
+      Event::model()->log($this->DEUser, null, Event::EXERCISE_DELETED, array('exercise_id'=>$model->id));
+
     }
     catch (Exception $e)
     {

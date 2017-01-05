@@ -67,7 +67,19 @@ class Event extends CActiveRecord
   const FIRM_JOURNALENTRIES_DELETED = 2062;
   const FIRM_JOURNAL_CLEARED        = 2064;
   const FIRM_COA_UPDATED            = 2071;
-  
+  const EXERCISE_CREATED            = 3001;
+  const EXERCISE_DELETED            = 3002;
+  const EXERCISE_EDITED             = 3031;
+  const EXERCISE_REPORT             = 3050;
+  const EXERCISE_EXPORTED           = 3041;
+  const EXERCISE_IMPORTED           = 3042;
+  const EXERCISE_USERS_INVITED      = 3060;
+  const CHALLENGE_ACCEPTED          = 4001;
+  const CHALLENGE_FIRM_CONNECTED    = 4005;
+  const CHALLENGE_SUSPENDED         = 4011;
+  const CHALLENGE_RESUMED           = 4012;
+  const CHALLENGE_COMPLETED         = 4020;
+  const CHALLENGE_CHECKED           = 4030;
   
   /**
    * Returns the static model of the specified AR class.
