@@ -34,6 +34,7 @@
 class Exercise extends CActiveRecord
 {
   public $method_items;
+  public $license_confirmation;
   
   /**
    * @return string the associated database table name
@@ -56,6 +57,7 @@ class Exercise extends CActiveRecord
       array('slug', 'SlugValidator', 'model'=>Exercise::model()),
       array('title, description', 'length', 'max'=>255),
       array('introduction', 'safe'),
+      array('license_confirmation', 'validateLicense'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, user_id, firm_id, slug, title, description, introduction', 'safe', 'on'=>'search'),
@@ -140,6 +142,17 @@ class Exercise extends CActiveRecord
   public function __toString()
   {
     return $this->title;
+  }
+
+  /**
+   * Validates the input by checking that the license has been accepted.
+   */
+  public function validateLicense()
+  {
+    if(!$this->id and !$this->license_confirmation)
+    {
+      $this->addError('license_confirmation', Yii::t('delt', 'You must confirm that you accept the license for the contents.'));
+    }
   }
   
   public function ofUser($user_id, $order='assigned_at ASC')
