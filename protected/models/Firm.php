@@ -390,7 +390,7 @@ class Firm extends CActiveRecord
     catch(Exception $e)
     {
       $transaction->rollBack();
-      die($e->getMessage());
+      //die($e->getMessage());
       return false;
     }
   }

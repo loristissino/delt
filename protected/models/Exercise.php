@@ -35,6 +35,7 @@ class Exercise extends CActiveRecord
 {
   public $method_items;
   public $license_confirmation;
+  public $yaml;
   
   /**
    * @return string the associated database table name
@@ -238,6 +239,95 @@ class Exercise extends CActiveRecord
   {
     $this->_loadMethodItems();
     return parent::afterFind();
+  }
+  
+  private function _addQuotes($value)
+  {
+    return '"' . str_replace('"', '\"', $value) . '"';
+  }
+
+  private function _addSpaces($lines, $number)
+  {
+    $array=array();
+    $spaces = str_repeat(' ', $number);
+    foreach($lines as $line)
+    {
+      $array[]=$spaces . $line;
+    }
+    return $array;
+  }
+  
+  private function _wordwrap($value)
+  {
+    return wordwrap($value, 60, "\r\n");
+  }
+  
+  private function _fixLongText($value, $indentation)
+  {
+    return $this->_addSpaces(explode("\r\n", implode("\r\n", array_map(array($this, '_wordwrap'), explode("\r\n", $value)))), $indentation);
+  }
+  
+  public function createYaml()
+  {
+    $yaml = array();
+    $yaml[] = "---";
+    $yaml[] = "slug: " . $this->slug;
+    $yaml[] = "title: " . $this->_addQuotes($this->title);
+    $yaml[] = "description: " . $this->_addQuotes($this->description);
+    $yaml[] = "method: " . $this->method;
+    $yaml[] = "introduction: |";
+    $yaml = array_merge($yaml, $this->_fixLongText($this->introduction, 2));
+    $yaml[] = "transactions:";
+    foreach($this->transactions as $transaction)
+    {
+      $yaml[] = '  -';
+      $yaml[] = '     date: ' . $transaction->event_date;
+      $yaml[] = '     rank: ' . $transaction->rank;
+      $yaml[] = '     description: |';
+      $yaml = array_merge($yaml, $this->_fixLongText($transaction->description, 7));
+      $yaml[] = '     hint: |';
+      $yaml = array_merge($yaml, $this->_fixLongText($transaction->hint, 7));
+      $yaml[] = '     points: ' . $transaction->points;
+      $yaml[] = '     penalties: ' . $transaction->penalties;
+    }
+    
+    $this->yaml = implode("\r\n", $yaml);
+    
+  }
+  
+  public function importFromYaml($string)
+  {
+    $values = Spyc::YAMLLoadString($string);
+    if (!is_array($values))
+    {
+      return false;
+    }
+    
+    $dbtransaction = $this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
+      DELT::array2object($values, $this, array('slug', 'title', 'description', 'method'));
+      $this->save(false);
+      foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
+      {
+        $newtransaction = new Transaction();
+        DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties'));
+        $newtransaction->event_date = DELT::getValueFromArray($transaction, 'date', date('Y-m-d'));
+        $newtransaction->exercise_id = $this->id;
+        $newtransaction->save(false);
+      }
+      $dbtransaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      die($e->getMessage());
+      $dbtransaction->rollBack();
+      return false;
+    }
+    
   }
   
   private function _loadMethodItems()

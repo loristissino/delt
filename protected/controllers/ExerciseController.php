@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'transactions'),
+        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'transactions', 'export', 'import'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,6 +66,20 @@ class ExerciseController extends Controller
   {
     $this->render('view',array(
       'model'=>$this->loadModel($id),
+    ));
+  }
+
+  /**
+   * Shows an exercise as a YAML file.
+   * @param integer $id the ID of the exercise
+   */
+  public function actionExport($id)
+  {
+    $model = $this->loadModel($id);
+    $model->createYaml();
+    Event::model()->log($this->DEUser, null, Event::EXERCISE_EXPORTED, array('exercise_id'=>$model->id));
+    $this->render('export',array(
+      'model'=>$model,
     ));
   }
 
@@ -151,6 +165,34 @@ class ExerciseController extends Controller
 
     $this->render('update',array(
       'model'=>$model,
+    ));
+  }
+
+  public function actionImport($id)
+  {
+    $model=$this->loadModel($id);
+    $string = DELT::getValueFromArray(DELT::getValueFromArray($_POST, 'ExerciseYamlForm', array()), 'content', '');
+    
+    $form = new ExerciseYamlForm;
+    
+    if(Yii::app()->request->getIsPostRequest())
+    {
+      if ($model->importFromYaml($string))
+      {
+        Yii::app()->user->setFlash('delt_success', 'Exercise correctly imported.');
+        Event::model()->log($this->DEUser, null, Event::EXERCISE_IMPORTED, array('exercise_id'=>$model->id, 'title'=>$model->title));
+        $this->redirect(array('view','id'=>$model->id));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure', 'The exercise could not be correctly imported.');
+        $form->content = $string;
+      }
+    }
+
+    $this->render('import',array(
+      'model'=>$model,
+      'exerciseform'=>$form,
     ));
   }
 

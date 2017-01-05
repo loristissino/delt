@@ -17,6 +17,8 @@ $this->menu=array(
   array('label'=>'View Transactions', 'url'=>array('transactions', 'id'=>$model->id)),
   array('label'=>'View Report', 'url'=>array('report', 'id'=>$model->id)),
   array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
+  array('label'=>'Import', 'url'=>array('import', 'id'=>$model->id)),
+  array('label'=>'Export', 'url'=>array('export', 'id'=>$model->id)),
   array('label'=>'Delete', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('delt', 'Are you sure you want to delete this exercise?'))),
   //array('label'=>'Manage Exercises', 'url'=>array('admin')),
 );
