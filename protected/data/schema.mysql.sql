@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.0.10deb1
--- http://www.phpmyadmin.net
+-- version 4.6.4deb1
+-- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: Apr 16, 2015 at 03:08 PM
--- Server version: 5.5.41-0ubuntu0.14.04.1
--- PHP Version: 5.5.9-1ubuntu4.7
+-- Host: localhost:3306
+-- Creato il: Gen 06, 2017 alle 23:49
+-- Versione del server: 5.7.16-0ubuntu0.16.10.1
+-- Versione PHP: 7.0.8-3ubuntu3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -17,11 +17,11 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_account`
+-- Struttura della tabella `tbl_account`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_account` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_account` (
+  `id` int(11) NOT NULL,
   `account_parent_id` int(11) DEFAULT NULL,
   `firm_id` int(11) NOT NULL,
   `type` tinyint(1) NOT NULL DEFAULT '0',
@@ -34,25 +34,22 @@ CREATE TABLE IF NOT EXISTS `tbl_account` (
   `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
   `currentname` varchar(100) CHARACTER SET utf8 NOT NULL DEFAULT '',
   `number_of_children` int(11) NOT NULL DEFAULT '0',
-  `comment` text CHARACTER SET utf8 NULL DEFAULT NULL,
-  `classes` varchar(255) COLLATE utf8_bin DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `firm_code` (`firm_id`,`code`),
-  KEY `account_parent_id` (`account_parent_id`),
-  KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=233904 ;
+  `comment` text CHARACTER SET utf8,
+  `classes` varchar(255) COLLATE utf8_bin DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_challenge`
+-- Struttura della tabella `tbl_challenge`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_challenge` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_challenge` (
+  `id` int(11) NOT NULL,
   `exercise_id` int(11) NOT NULL,
   `instructor_id` int(11) DEFAULT NULL,
   `user_id` int(11) NOT NULL,
+  `session` varchar(32) DEFAULT NULL,
   `firm_id` int(11) DEFAULT NULL,
   `assigned_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `started_at` timestamp NULL DEFAULT NULL,
@@ -63,66 +60,51 @@ CREATE TABLE IF NOT EXISTS `tbl_challenge` (
   `rate` int(3) NOT NULL DEFAULT '0',
   `transaction_id` int(11) DEFAULT NULL,
   `hints` varchar(255) DEFAULT NULL,
-  `shown` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `mark` (`rate`),
-  KEY `assigned_at` (`assigned_at`),
-  KEY `instructor_id` (`instructor_id`),
-  KEY `user_id` (`user_id`),
-  KEY `firm_id` (`firm_id`),
-  KEY `exercise_id` (`exercise_id`),
-  KEY `suspended_at` (`suspended_at`),
-  KEY `transaction_id` (`transaction_id`),
-  KEY `checked_at` (`checked_at`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `shown` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_event`
+-- Struttura della tabella `tbl_event`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_event` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_event` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `firm_id` int(11) DEFAULT NULL,
   `action` int(11) NOT NULL,
   `happened_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `content` text,
   `referer` varchar(255) DEFAULT NULL,
-  `address` varchar(15) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `firm_id` (`firm_id`),
-  KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=35811 ;
+  `address` varchar(15) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_exercise`
+-- Struttura della tabella `tbl_exercise`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_exercise` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_exercise` (
+  `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
   `firm_id` int(11) NOT NULL,
   `slug` varchar(32) NOT NULL,
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `introduction` text,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `user_id` (`user_id`),
-  KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+  `method` int(11) NOT NULL DEFAULT '61' COMMENT 'default value'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_firm`
+-- Struttura della tabella `tbl_firm`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_firm` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_firm` (
+  `id` int(11) NOT NULL,
   `name` varchar(128) CHARACTER SET utf8 NOT NULL,
   `slug` varchar(32) CHARACTER SET utf8 NOT NULL,
   `firmtype` tinyint(1) NOT NULL DEFAULT '1',
@@ -137,51 +119,40 @@ CREATE TABLE IF NOT EXISTS `tbl_firm` (
   `frozen_at` timestamp NULL DEFAULT NULL,
   `checked_positions` varchar(10) CHARACTER SET utf8 NOT NULL DEFAULT 'T',
   `shortcodes` tinyint(4) NOT NULL DEFAULT '0',
-  `css` text COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `slug` (`slug`),
-  KEY `language_id` (`language_id`),
-  KEY `parent_firm_id` (`firm_parent_id`,`create_date`),
-  KEY `shortcodes` (`shortcodes`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1327 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_firm_language`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_firm_language` (
-  `firm_id` int(11) NOT NULL,
-  `language_id` int(11) NOT NULL,
-  PRIMARY KEY (`firm_id`,`language_id`),
-  KEY `firm_id` (`firm_id`),
-  KEY `language_id` (`language_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_firm_user`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_firm_user` (
-  `firm_id` int(11) NOT NULL,
-  `user_id` int(11) NOT NULL,
-  `role` char(1) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`firm_id`,`user_id`),
-  KEY `user_id` (`user_id`),
-  KEY `firm_id` (`firm_id`)
+  `css` text COLLATE utf8_bin NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_journalentry`
+-- Struttura della tabella `tbl_firm_language`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_journalentry` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_firm_language` (
+  `firm_id` int(11) NOT NULL,
+  `language_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `tbl_firm_user`
+--
+
+CREATE TABLE `tbl_firm_user` (
+  `firm_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `role` char(1) COLLATE utf8_bin NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `tbl_journalentry`
+--
+
+CREATE TABLE `tbl_journalentry` (
+  `id` int(11) NOT NULL,
   `firm_id` int(11) NOT NULL,
   `date` date NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 NOT NULL,
@@ -190,74 +161,72 @@ CREATE TABLE IF NOT EXISTS `tbl_journalentry` (
   `is_adjustment` tinyint(1) NOT NULL DEFAULT '0',
   `is_included` tinyint(1) NOT NULL DEFAULT '1',
   `rank` int(11) NOT NULL,
-  `transaction_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `firm_rank` (`firm_id`,`rank`),
-  KEY `firm_id` (`firm_id`),
-  KEY `is_confirmed` (`is_confirmed`),
-  KEY `is_closing` (`is_closing`),
-  KEY `firm_is_confirmed` (`firm_id`,`is_confirmed`),
-  KEY `firm_is_closing` (`firm_id`,`is_closing`),
-  KEY `is_included` (`is_included`),
-  KEY `transaction_id` (`transaction_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+  `transaction_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_language`
+-- Struttura della tabella `tbl_language`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_language` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_language` (
+  `id` int(11) NOT NULL,
   `language_code` char(3) CHARACTER SET utf8 NOT NULL,
   `country_code` char(3) CHARACTER SET utf8 DEFAULT NULL,
   `english_name` varchar(64) CHARACTER SET utf8 NOT NULL,
   `native_name` varchar(64) CHARACTER SET utf8 NOT NULL,
-  `is_default` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`),
-  KEY `is_default` (`is_default`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=9 ;
+  `is_default` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+--
+-- Dump dei dati per la tabella `tbl_language`
+--
+
+INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name`, `native_name`, `is_default`) VALUES
+(1, 'en', 'US', 'US English', '', 2),
+(2, 'it', 'IT', 'Italian', 'Italiano', 1),
+(3, 'fr', 'FR', 'French', 'Français', 0),
+(4, 'de', 'DE', 'German', 'Deutsche', 0),
+(5, 'en', 'GB', 'UK English', '', 0),
+(6, 'en', 'CA', 'Canadian English', '', 0),
+(7, 'es', 'ES', 'Spanish', 'Español', 0),
+(8, 'pt', 'PT', 'Portuguese', 'Português', 0);
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_migration`
+-- Struttura della tabella `tbl_migration`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_migration` (
+CREATE TABLE `tbl_migration` (
   `version` varchar(255) NOT NULL,
-  `apply_time` int(11) DEFAULT NULL,
-  PRIMARY KEY (`version`)
+  `apply_time` int(11) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_posting`
+-- Struttura della tabella `tbl_posting`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_posting` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_posting` (
+  `id` int(11) NOT NULL,
   `account_id` int(11) NOT NULL,
   `journalentry_id` int(11) NOT NULL,
   `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
-  `comment` varchar(100) CHARACTER SET utf8 NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
-  KEY `account_id` (`account_id`),
-  KEY `journalentry_id` (`journalentry_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=70408 ;
+  `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_profiles`
+-- Struttura della tabella `tbl_profiles`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_profiles` (
-  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_profiles` (
+  `user_id` int(11) NOT NULL,
   `first_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `last_name` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
   `school` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
@@ -266,18 +235,17 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles` (
   `language` varchar(7) COLLATE utf8_bin NOT NULL DEFAULT '',
   `allowed_firms` int(11) NOT NULL DEFAULT '10',
   `email_notices` tinyint(1) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`user_id`),
-  KEY `email_notices` (`email_notices`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=433 ;
+  `is_blogger` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tbl_profiles_fields`
+-- Struttura della tabella `tbl_profiles_fields`
 --
 
-CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `tbl_profiles_fields` (
+  `id` int(11) NOT NULL,
   `varname` varchar(50) NOT NULL DEFAULT '',
   `title` varchar(255) NOT NULL DEFAULT '',
   `field_type` varchar(50) NOT NULL DEFAULT '',
@@ -292,163 +260,11 @@ CREATE TABLE IF NOT EXISTS `tbl_profiles_fields` (
   `widget` varchar(255) NOT NULL DEFAULT '',
   `widgetparams` text,
   `position` int(3) NOT NULL DEFAULT '0',
-  `visible` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_transaction`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_transaction` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `exercise_id` int(11) NOT NULL,
-  `event_date` date NOT NULL,
-  `description` text NOT NULL,
-  `hint` text,
-  `points` int(11) NOT NULL DEFAULT '10',
-  `penalties` int(11) NOT NULL DEFAULT '5',
-  PRIMARY KEY (`id`),
-  KEY `exercise_id` (`exercise_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_template`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_template` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `firm_id` int(11) NOT NULL,
-  `automatic` tinyint(1) NOT NULL DEFAULT '0',
-  `description` varchar(255) NOT NULL,
-  `info` text NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `firm_id` (`firm_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=269 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_users`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_users` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `password` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `email` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `activkey` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
-  `superuser` int(1) NOT NULL DEFAULT '0',
-  `status` int(1) NOT NULL DEFAULT '0',
-  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `lastvisit_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_username` (`username`),
-  UNIQUE KEY `user_email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=433 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `tbl_user_oauth`
---
-
-CREATE TABLE IF NOT EXISTS `tbl_user_oauth` (
-  `user_id` int(11) NOT NULL,
-  `provider` varchar(45) NOT NULL,
-  `identifier` varchar(64) NOT NULL,
-  `profile_cache` text,
-  `session_data` text,
-  PRIMARY KEY (`provider`,`identifier`),
-  UNIQUE KEY `unic_user_id_name` (`user_id`,`provider`),
-  KEY `oauth_user_id` (`user_id`)
+  `visible` int(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Constraints for dumped tables
---
-
---
--- Constraints for table `tbl_account`
---
-ALTER TABLE `tbl_account`
-  ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_challenge`
---
-ALTER TABLE `tbl_challenge`
-  ADD CONSTRAINT `tbl_challenge_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_challenge_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_challenge_ibfk_3` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_challenge_ibfk_5` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_challenge_ibfk_6` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_event`
---
-ALTER TABLE `tbl_event`
-  ADD CONSTRAINT `tbl_event_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_event_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_exercise`
---
-ALTER TABLE `tbl_exercise`
-  ADD CONSTRAINT `tbl_exercise_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_exercise_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`);
-
---
--- Constraints for table `tbl_firm_user`
---
-ALTER TABLE `tbl_firm_user`
-  ADD CONSTRAINT `tbl_firm_user_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_firm_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_journalentry`
---
-ALTER TABLE `tbl_journalentry`
-  ADD CONSTRAINT `tbl_journalentry_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_journalentry_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_posting`
---
-ALTER TABLE `tbl_posting`
-  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
-
---
--- Constraints for table `tbl_profiles`
---
-ALTER TABLE `tbl_profiles`
-  ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
-
---
--- Constraints for table `tbl_transaction`
---
-ALTER TABLE `tbl_transaction`
-  ADD CONSTRAINT `tbl_transaction_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE;
-  
---
--- Dumping data for table `tbl_language`
---
-
-INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name`, `native_name`, `is_default`) VALUES
-(1, 'en', 'US', 'English', 'English', 2),
-(2, 'it', 'IT', 'Italian', 'italiano', 1);
-  
-INSERT INTO `tbl_users` (`id`, `username`, `password`, `email`, `activkey`, `superuser`, `status`, `create_at`, `lastvisit_at`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'info@example.com', '5bc1a418ca19f1b3f694612375a1afc9', 1, 1, '2013-02-24 13:41:09', '2013-06-09 19:56:21');
-
---
--- Dumping data for table `tbl_profiles_fields`
+-- Dump dei dati per la tabella `tbl_profiles_fields`
 --
 
 INSERT INTO `tbl_profiles_fields` (`id`, `varname`, `title`, `field_type`, `field_size`, `field_size_min`, `required`, `match`, `range`, `error_message`, `other_validator`, `default`, `widget`, `widgetparams`, `position`, `visible`) VALUES
@@ -458,14 +274,359 @@ INSERT INTO `tbl_profiles_fields` (`id`, `varname`, `title`, `field_type`, `fiel
 (4, 'terms', 'Terms and conditions acceptance', 'TEXT', 0, 0, 0, '', '', '', '', '', '', '', 0, 0),
 (5, 'usercode', 'User code', 'VARCHAR', 255, 0, 0, '', '', '', '', '', '', '', 0, 0),
 (6, 'language', 'Language', 'VARCHAR', 7, 0, 0, '', '', '', '', '', '', '', 0, 0),
-(7, 'allowed_firms', 'Allowed firms', 'INTEGER', 10, 0, 0, '', '', '', '', '10', '', '', 0, 0);
+(7, 'allowed_firms', 'Allowed firms', 'INTEGER', 10, 0, 0, '', '', '', '', '10', '', '', 0, 0),
+(8, 'email_notices', 'Email notices', 'INTEGER', 1, 0, 0, '', '', '', '', '', '', '', 4, 0),
+(9, 'is_blogger', 'Is this user a blogger?', 'INTEGER', 1, 0, 0, '', '', '', NULL, '0', '', NULL, 0, 0);
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `tbl_profiles`
+-- Struttura della tabella `tbl_template`
 --
 
-INSERT INTO `tbl_profiles` (`user_id`, `first_name`, `last_name`, `school`, `terms`, `usercode`, `language`, `allowed_firms`) VALUES
-(1, 'Administrator', 'DELT', '', '', '', 'en', 10);
+CREATE TABLE `tbl_template` (
+  `id` int(11) NOT NULL,
+  `firm_id` int(11) NOT NULL,
+  `automatic` tinyint(1) NOT NULL DEFAULT '0',
+  `description` varchar(255) NOT NULL,
+  `info` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-  
-COMMIT;
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `tbl_transaction`
+--
+
+CREATE TABLE `tbl_transaction` (
+  `id` int(11) NOT NULL,
+  `exercise_id` int(11) NOT NULL,
+  `rank` int(11) NOT NULL DEFAULT '10',
+  `event_date` date NOT NULL,
+  `description` text NOT NULL,
+  `hint` text,
+  `points` int(11) NOT NULL DEFAULT '10',
+  `penalties` int(11) NOT NULL DEFAULT '5',
+  `entries` int(11) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `tbl_users`
+--
+
+CREATE TABLE `tbl_users` (
+  `id` int(11) NOT NULL,
+  `username` varchar(20) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `password` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `email` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `activkey` varchar(128) CHARACTER SET utf8 NOT NULL DEFAULT '',
+  `superuser` int(1) NOT NULL DEFAULT '0',
+  `status` int(1) NOT NULL DEFAULT '0',
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `lastvisit_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `tbl_user_oauth`
+--
+
+CREATE TABLE `tbl_user_oauth` (
+  `user_id` int(11) NOT NULL,
+  `provider` varchar(45) NOT NULL,
+  `identifier` varchar(64) NOT NULL,
+  `profile_cache` text,
+  `session_data` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Indici per le tabelle scaricate
+--
+
+--
+-- Indici per le tabelle `tbl_account`
+--
+ALTER TABLE `tbl_account`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `firm_code` (`firm_id`,`code`),
+  ADD KEY `account_parent_id` (`account_parent_id`),
+  ADD KEY `firm_id` (`firm_id`);
+
+--
+-- Indici per le tabelle `tbl_challenge`
+--
+ALTER TABLE `tbl_challenge`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_id_2` (`user_id`,`exercise_id`),
+  ADD KEY `mark` (`rate`),
+  ADD KEY `assigned_at` (`assigned_at`),
+  ADD KEY `instructor_id` (`instructor_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `firm_id` (`firm_id`),
+  ADD KEY `exercise_id` (`exercise_id`),
+  ADD KEY `suspended_at` (`suspended_at`),
+  ADD KEY `transaction_id` (`transaction_id`),
+  ADD KEY `checked_at` (`checked_at`),
+  ADD KEY `session` (`session`);
+
+--
+-- Indici per le tabelle `tbl_event`
+--
+ALTER TABLE `tbl_event`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `firm_id` (`firm_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Indici per le tabelle `tbl_exercise`
+--
+ALTER TABLE `tbl_exercise`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `firm_id` (`firm_id`);
+
+--
+-- Indici per le tabelle `tbl_firm`
+--
+ALTER TABLE `tbl_firm`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `slug` (`slug`),
+  ADD KEY `language_id` (`language_id`),
+  ADD KEY `parent_firm_id` (`firm_parent_id`,`create_date`),
+  ADD KEY `shortcodes` (`shortcodes`);
+
+--
+-- Indici per le tabelle `tbl_firm_language`
+--
+ALTER TABLE `tbl_firm_language`
+  ADD PRIMARY KEY (`firm_id`,`language_id`),
+  ADD KEY `firm_id` (`firm_id`),
+  ADD KEY `language_id` (`language_id`);
+
+--
+-- Indici per le tabelle `tbl_firm_user`
+--
+ALTER TABLE `tbl_firm_user`
+  ADD PRIMARY KEY (`firm_id`,`user_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `firm_id` (`firm_id`);
+
+--
+-- Indici per le tabelle `tbl_journalentry`
+--
+ALTER TABLE `tbl_journalentry`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `firm_rank` (`firm_id`,`rank`),
+  ADD KEY `firm_id` (`firm_id`),
+  ADD KEY `is_confirmed` (`is_confirmed`),
+  ADD KEY `is_closing` (`is_closing`),
+  ADD KEY `firm_is_confirmed` (`firm_id`,`is_confirmed`),
+  ADD KEY `firm_is_closing` (`firm_id`,`is_closing`),
+  ADD KEY `is_included` (`is_included`),
+  ADD KEY `transaction_id` (`transaction_id`);
+
+--
+-- Indici per le tabelle `tbl_language`
+--
+ALTER TABLE `tbl_language`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `is_default` (`is_default`);
+
+--
+-- Indici per le tabelle `tbl_migration`
+--
+ALTER TABLE `tbl_migration`
+  ADD PRIMARY KEY (`version`);
+
+--
+-- Indici per le tabelle `tbl_posting`
+--
+ALTER TABLE `tbl_posting`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
+  ADD KEY `account_id` (`account_id`),
+  ADD KEY `journalentry_id` (`journalentry_id`);
+
+--
+-- Indici per le tabelle `tbl_profiles`
+--
+ALTER TABLE `tbl_profiles`
+  ADD PRIMARY KEY (`user_id`),
+  ADD KEY `email_notices` (`email_notices`);
+
+--
+-- Indici per le tabelle `tbl_profiles_fields`
+--
+ALTER TABLE `tbl_profiles_fields`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `tbl_template`
+--
+ALTER TABLE `tbl_template`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `firm_id` (`firm_id`);
+
+--
+-- Indici per le tabelle `tbl_transaction`
+--
+ALTER TABLE `tbl_transaction`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `exercise_id` (`exercise_id`),
+  ADD KEY `event_date` (`event_date`,`rank`);
+
+--
+-- Indici per le tabelle `tbl_users`
+--
+ALTER TABLE `tbl_users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `user_username` (`username`),
+  ADD UNIQUE KEY `user_email` (`email`);
+
+--
+-- Indici per le tabelle `tbl_user_oauth`
+--
+ALTER TABLE `tbl_user_oauth`
+  ADD PRIMARY KEY (`provider`,`identifier`),
+  ADD UNIQUE KEY `unic_user_id_name` (`user_id`,`provider`),
+  ADD KEY `oauth_user_id` (`user_id`);
+
+--
+-- AUTO_INCREMENT per le tabelle scaricate
+--
+
+--
+-- AUTO_INCREMENT per la tabella `tbl_account`
+--
+ALTER TABLE `tbl_account`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=579927;
+--
+-- AUTO_INCREMENT per la tabella `tbl_challenge`
+--
+ALTER TABLE `tbl_challenge`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+--
+-- AUTO_INCREMENT per la tabella `tbl_event`
+--
+ALTER TABLE `tbl_event`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112417;
+--
+-- AUTO_INCREMENT per la tabella `tbl_exercise`
+--
+ALTER TABLE `tbl_exercise`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
+-- AUTO_INCREMENT per la tabella `tbl_firm`
+--
+ALTER TABLE `tbl_firm`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2837;
+--
+-- AUTO_INCREMENT per la tabella `tbl_journalentry`
+--
+ALTER TABLE `tbl_journalentry`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38636;
+--
+-- AUTO_INCREMENT per la tabella `tbl_language`
+--
+ALTER TABLE `tbl_language`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+--
+-- AUTO_INCREMENT per la tabella `tbl_posting`
+--
+ALTER TABLE `tbl_posting`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259201;
+--
+-- AUTO_INCREMENT per la tabella `tbl_profiles`
+--
+ALTER TABLE `tbl_profiles`
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=722;
+--
+-- AUTO_INCREMENT per la tabella `tbl_profiles_fields`
+--
+ALTER TABLE `tbl_profiles_fields`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+--
+-- AUTO_INCREMENT per la tabella `tbl_template`
+--
+ALTER TABLE `tbl_template`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=553;
+--
+-- AUTO_INCREMENT per la tabella `tbl_transaction`
+--
+ALTER TABLE `tbl_transaction`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+--
+-- AUTO_INCREMENT per la tabella `tbl_users`
+--
+ALTER TABLE `tbl_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=722;
+--
+-- Limiti per le tabelle scaricate
+--
+
+--
+-- Limiti per la tabella `tbl_account`
+--
+ALTER TABLE `tbl_account`
+  ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_challenge`
+--
+ALTER TABLE `tbl_challenge`
+  ADD CONSTRAINT `tbl_challenge_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_challenge_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_challenge_ibfk_3` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_challenge_ibfk_5` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_challenge_ibfk_6` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_event`
+--
+ALTER TABLE `tbl_event`
+  ADD CONSTRAINT `tbl_event_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_event_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_exercise`
+--
+ALTER TABLE `tbl_exercise`
+  ADD CONSTRAINT `tbl_exercise_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_exercise_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`);
+
+--
+-- Limiti per la tabella `tbl_firm_user`
+--
+ALTER TABLE `tbl_firm_user`
+  ADD CONSTRAINT `tbl_firm_user_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_firm_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_journalentry`
+--
+ALTER TABLE `tbl_journalentry`
+  ADD CONSTRAINT `tbl_journalentry_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_journalentry_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_posting`
+--
+ALTER TABLE `tbl_posting`
+  ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_profiles`
+--
+ALTER TABLE `tbl_profiles`
+  ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
+
+--
+-- Limiti per la tabella `tbl_transaction`
+--
+ALTER TABLE `tbl_transaction`
+  ADD CONSTRAINT `tbl_transaction_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE;
