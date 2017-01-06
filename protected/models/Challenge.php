@@ -597,7 +597,7 @@ class Challenge extends CActiveRecord
       $results['score'] = 0;
     }
     
-    $this->rate = round(1000*$results['score']/$results['possiblescore']);
+    $this->rate = $results['possiblescore'] ? round(1000*$results['score']/$results['possiblescore']) : 0;
     if($final)
     {
       $this->changeStatus('checked');

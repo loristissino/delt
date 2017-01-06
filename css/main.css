@@ -809,6 +809,12 @@ div.challenge.open
   background-repeat: repeat;
 }
 
+#exercise_copyrightnotice
+{
+  text-align: center;
+  font-size: 70%;
+}
+
 @media screen and (max-width: 600px) {
   body {
       
