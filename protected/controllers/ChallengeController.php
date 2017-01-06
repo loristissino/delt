@@ -271,9 +271,14 @@ class ChallengeController extends Controller
     
     $this->firm = $this->loadFirm($model->exercise->firm_id, false);
     
-    $postings = Posting::model()->ofFirm($model->exercise->firm_id)->with('journalentry')->with('account')->connectedTo($transaction)->findAll();
+    $postings = Posting::model()->getPostingsByFirmAndTransaction($model->exercise->firm_id, $transaction);
     
-    $this->renderPartial('_journalentries', array('postings'=>$postings, 'model'=>$this->firm));
+    $this->renderPartial('_journalentries', array(
+      'postings'=>$postings,
+      'model'=>$this->firm,
+      'title'=>Yii::t('delt', 'Help on transaction'),
+      'draggable'=>true,
+      ));
   }
 
   public function actionChecktransaction($id, $transaction)

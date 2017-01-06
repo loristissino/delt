@@ -14,6 +14,6 @@
       <em> (<?php echo $posting->comment ?>)</em>
     <?php endif ?>
   </td>
-  <?php echo $this->renderPartial('/firm/_td_debit_amount', array('amount'=>$posting->amount)) ?>
-  <?php echo $this->renderPartial('/firm/_td_credit_amount', array('amount'=>$posting->amount)) ?>
+  <?php echo $this->renderPartial('/firm/_td_debit_amount', array('amount'=>$posting->amount, 'firm'=>$firm)) ?>
+  <?php echo $this->renderPartial('/firm/_td_credit_amount', array('amount'=>$posting->amount, 'firm'=>$firm)) ?>
 </tr>

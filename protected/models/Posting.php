@@ -175,6 +175,16 @@ class Posting extends CActiveRecord
   public function getCredit()
   {
     return $this->amount<0 ? -$this->amount: null;
-  }  
+  } 
+
+  public function getPostingsByFirmAndTransaction($firm_id, $transaction_id)
+  {
+    return self::model()
+      ->ofFirm($firm_id)
+      ->with('journalentry')
+      ->with('account')
+      ->connectedTo($transaction_id)
+      ->findAll();
+  }
   
 }

@@ -799,10 +799,10 @@ div.challenge.open
    font-style: italic;
 }
 
-#journalentries_shown
+.journalentries_shown
 {
-  margin-left: 40px;
-  margin-right: 40px;
+  margin-left: 30px;
+  margin-right: 30px;
   border-radius: 2px;
   background-color: white;
   background-position: left top;

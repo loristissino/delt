@@ -111,7 +111,7 @@
   <?php endforeach ?>
   <br />
   
-  <div id="journalentries_shown"></div>
+  <div id="journalentries_shown" class="journalentries_shown"></div>
 
   <hr />
   <!-- transaction --></div>

@@ -83,6 +83,20 @@ $this->menu=array(
   <div class="hint">
     <?php echo $md->transform($transaction->hint) ?>
   </div>
+  <br />
+  <div class="journalentries_shown">
+  <?php 
+    
+    $this->renderPartial('//challenge/_journalentries', array('postings'=>
+      Posting::model()->getPostingsByFirmAndTransaction($model->firm_id, $transaction->id),
+      'model'=>$model->firm,
+      'title'=>false,
+      'draggable'=>false,
+      )
+    );
+  ?>
+  </div>
+  
   <hr />
   </div>
 <?php endforeach ?>

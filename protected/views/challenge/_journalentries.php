@@ -1,4 +1,4 @@
-<?php $this->beginWidget('zii.widgets.jui.CJuiDraggable', array(
+<?php if ($draggable) $this->beginWidget('zii.widgets.jui.CJuiDraggable', array(
     'options'=>array(
         'cursor'=>'move',
     ),
@@ -7,16 +7,19 @@
     ),
 ));
 ?>
-<p style="background-color: black; color: white; font-weight: bold; text-align: center"><?php echo Yii::t('delt', 'Help on transaction') ?></p>
-<hr />
-
-<table>
+<?php if (sizeof($postings)): ?>
+<table style="background-color: white; color: black; width:650px">
+  <?php if ($title): ?>
+    <tr>
+      <th colspan="5" style="border-bottom: 3px solid white; background-color: gray; color: white; font-weight: bold; text-align: center"><?php echo $title ?></th>
+    </tr>
+  <?php endif ?>
   <tr>
-    <th><?php echo Yii::t('delt', 'No.') ?></th>
-    <th><?php echo Yii::t('delt', 'Date') ?></th>
-    <th><?php echo Yii::t('delt', 'Description') ?></th>
-    <th><?php echo Yii::t('delt', 'Debit') ?></th>
-    <th><?php echo Yii::t('delt', 'Credit') ?></th>
+    <th style="width: 20px"><?php echo Yii::t('delt', 'No.') ?></th>
+    <th style="width: 80px"><?php echo Yii::t('delt', 'Date') ?></th>
+    <th style="width: 300px"><?php echo Yii::t('delt', 'Description') ?></th>
+    <th class="currency" style="width: 80px"><?php echo Yii::t('delt', 'Debit') ?></th>
+    <th class="currency" style="width: 80px"><?php echo Yii::t('delt', 'Credit') ?></th>
   </tr>
 <?php $n=0; $journalentryid=0; $td=0; $tc=0; foreach($postings as $posting): $excluded=!$posting->journalentry->is_included ?>
   <?php if($journalentryid!=$posting->journalentry_id): $journalentryid=$posting->journalentry_id ?>
@@ -37,4 +40,5 @@
   <?php endif ?>
 <?php endforeach ?>
 </table>
-<?php $this->endWidget(); ?>
+<?php endif ?>
+<?php if ($draggable) $this->endWidget(); ?>
