@@ -14,7 +14,6 @@ $this->layout = '//layouts/column2';
 $this->menu=array(
   array('label'=>'List Exercises', 'url'=>array('index')),
   array('label'=>'Edit Exercise', 'url'=>array('update', 'id'=>$model->id)),
-  array('label'=>'View Transactions', 'url'=>array('transactions', 'id'=>$model->id)),
   array('label'=>'View Report', 'url'=>array('report', 'id'=>$model->id)),
   array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
   array('label'=>'Import', 'url'=>array('import', 'id'=>$model->id)),
@@ -45,13 +44,6 @@ $this->menu=array(
         'value'=>$md->transform($model->introduction),
         ),
     array(
-        'label'=>'Transactions',
-        'type'=>'raw',
-        'value'=>CHtml::link(sizeof($model->transactions),
-           array('transactions','id'=>$model->id)
-          ),
-        ),
-    array(
         'label'=>'Challenges',
         'type'=>'raw',
         'value'=>CHtml::link(sizeof($model->challenges),
@@ -60,3 +52,24 @@ $this->menu=array(
         ),
   ),
 )); ?>
+
+<hr />
+<h2><?php echo Yii::t('delt', 'Transactions') ?></h2>
+<div id="challenge">
+<?php foreach($model->transactions as $transaction): ?>
+  <div class="transaction">
+  <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id)) ?></b>
+  <span class="score">
+    (<?php echo Yii::t('delt', 'points: {points}; penalties: {penalties}', array('{points}'=>$transaction->points, '{penalties}'=>$transaction->penalties)) ?>)
+  </span>
+  <div class="description">
+    <?php echo $md->transform($transaction->description) ?>
+  </div>
+  <div class="hint">
+    <?php echo $md->transform($transaction->hint) ?>
+  </div>
+  <hr />
+  </div>
+<?php endforeach ?>
+</div>
+<p><?php echo CHtml::link(Yii::t('delt', 'Add transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>

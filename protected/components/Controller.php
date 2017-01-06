@@ -235,6 +235,14 @@ class Controller extends CController
     $this->serveContent('text/plain; charset=utf-8', $text);
   }
 
+  /**
+   * Serves a multiline string as text/yaml content via HTTP.
+   * @param string $text the string to send
+   */  
+  public function serveYamlText($text)
+  {
+    $this->serveContent('text/yaml; charset=utf-8', $text);
+  }
 
   /**
    * Serves a content via HTTP.

@@ -435,12 +435,7 @@ class Firm extends CActiveRecord
       {
         foreach($profiles as $profile)
         {
-          $text=$profile->first_name . ' ' . $profile->last_name;
-          if($text==' ')
-          {
-            $text='[Incognito user]';
-          }
-          $lines[]=ltrim(rtrim($text));
+          $lines[]=$profile->getFullName();
         }
       }
            

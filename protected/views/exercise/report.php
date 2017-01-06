@@ -19,7 +19,6 @@ $this->menu=array(
 <h1><?php echo Yii::t('delt', 'Exercise «{name}»', array('{name}'=>$model->title)) ?></h1>
 
 <?php if($challenges): ?>
-
   <?php if(sizeof($challenges)): ?>
     <table>
       <tr>
@@ -71,4 +70,8 @@ $this->menu=array(
     <div><?php echo Yii::t('delt', 'No sessions.') ?></div>
   <?php endif ?>
 
+<?php endif ?>
+
+<?php if (!$sessions and !$challenges): ?>
+  <p><?php echo Yii::t('delt', 'No sessions.'); ?></p>
 <?php endif ?>

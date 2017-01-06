@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'transactions', 'export', 'import'),
+        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'export', 'import'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -73,11 +73,15 @@ class ExerciseController extends Controller
    * Shows an exercise as a YAML file.
    * @param integer $id the ID of the exercise
    */
-  public function actionExport($id)
+  public function actionExport($id, $format='web')
   {
     $model = $this->loadModel($id);
     $model->createYaml();
     Event::model()->log($this->DEUser, null, Event::EXERCISE_EXPORTED, array('exercise_id'=>$model->id));
+    if($format=='yaml')
+    {
+      $this->serveYamlText($model->yaml);
+    }
     $this->render('export',array(
       'model'=>$model,
     ));
@@ -195,37 +199,6 @@ class ExerciseController extends Controller
       'exerciseform'=>$form,
     ));
   }
-
-  /**
-   * Manages transactions belonging to this exercise.
-   * @param integer $id the ID of the exercise
-   */
-  public function actionTransactions($id)
-  {
-    $model=$this->loadModel($id);
-
-    if(Yii::app()->request->getIsPostRequest())
-    {
-      $users = explode("\n", DELT::getValueFromArray($_POST, 'users', ''));
-      $method = DELT::getValueFromArray($_POST, 'method', 61);
-      
-      $invited = $model->invite($users, $method);
-      if($invited)
-      {
-        Yii::app()->user->setFlash('delt_success', 'Invited: '. $invited);
-      }
-      else
-      {
-        Yii::app()->user->setFlash('delt_failure', 'No user invited');
-      }
-      $this->redirect(array('index'));
-    }
-
-    $this->render('transactions',array(
-      'model'=>$model,
-    ));
-  }
-
 
   /**
    * Invites users to start a challenge based on this exercise.

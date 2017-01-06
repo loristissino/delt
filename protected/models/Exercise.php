@@ -144,6 +144,11 @@ class Exercise extends CActiveRecord
   {
     return $this->title;
   }
+  
+  public function getOwner()
+  {
+    return DEUser::model()->getBy('id', $this->user_id);
+  }
 
   /**
    * Validates the input by checking that the license has been accepted.
@@ -274,10 +279,18 @@ class Exercise extends CActiveRecord
     $yaml[] = "---";
     $yaml[] = "slug: " . $this->slug;
     $yaml[] = "title: " . $this->_addQuotes($this->title);
+    $yaml[] = "instructor: " . $this->getOwner()->getProfile()->getFullName();
+    $yaml[] = "license: Creative Commons Attribution-ShareAlike 3.0";
     $yaml[] = "description: " . $this->_addQuotes($this->description);
     $yaml[] = "method: " . $this->method;
     $yaml[] = "introduction: |";
     $yaml = array_merge($yaml, $this->_fixLongText($this->introduction, 2));
+
+    $yaml[] = "";
+    $yaml[] = "exported: " . date('Y-m-d H:i:s');
+    $yaml[] = "url: " . Yii::app()->controller->createAbsoluteUrl('exercise/view', array('id'=>$this->id));
+    $yaml[] = "";
+
     $yaml[] = "transactions:";
     foreach($this->transactions as $transaction)
     {
@@ -291,7 +304,7 @@ class Exercise extends CActiveRecord
       $yaml[] = '     points: ' . $transaction->points;
       $yaml[] = '     penalties: ' . $transaction->penalties;
     }
-    
+
     $this->yaml = implode("\n", $yaml);
     
   }
@@ -318,7 +331,7 @@ class Exercise extends CActiveRecord
         DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties'));
         $newtransaction->event_date = DELT::getValueFromArray($transaction, 'date', date('Y-m-d'));
         $newtransaction->exercise_id = $this->id;
-        $newtransaction->save(false);
+        $newtransaction->save();
       }
       $dbtransaction->commit();
       return true;
@@ -340,6 +353,4 @@ class Exercise extends CActiveRecord
       $this->method_items[$key]['value']=$this->method & $key;
     }
   }
-
-  
 }

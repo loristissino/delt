@@ -31,6 +31,16 @@ class Profile extends UActiveRecord
 	{
 		return Yii::app()->getModule('user')->tableProfiles;
 	}
+  
+  public function getFullName()
+  {
+    $text=$this->first_name . ' ' . $this->last_name;
+    if($text==' ')
+    {
+      $text='[Incognito user]';
+    }
+    return trim($text);
+  }
 
 	/**
 	 * @return array validation rules for model attributes.

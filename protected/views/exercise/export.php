@@ -24,7 +24,8 @@ $this->menu=array(
   'enableAjaxValidation'=>false,
 )); ?>
 
-  <p class="note"><?php echo Yii::t('delt', 'The file is in YAML format.') ?></p>
+  <p class="note"><?php echo Yii::t('delt', 'The file is in YAML format.') ?>
+  <?php echo CHtml::link(Yii::t('delt', 'Download'), array('exercise/export', 'id'=>$model->id, 'format'=>'yaml'))?></p>
 
   <div class="row">
     <?php echo $form->textArea($model, 'yaml', array('rows' => 30, 'cols' => 70)); ?>
