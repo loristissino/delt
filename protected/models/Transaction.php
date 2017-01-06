@@ -19,6 +19,7 @@
  * @property string $hint
  * @property integer $points
  * @property integer $penalties
+ * @property integer $entries number of entries needed to record this transaction
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
@@ -49,7 +50,7 @@ class Transaction extends CActiveRecord
     // will receive user inputs.
     return array(
       array('exercise_id, event_date, description', 'required'),
-      array('exercise_id, rank, points, penalties', 'numerical', 'integerOnly'=>true),
+      array('exercise_id, rank, points, penalties, entries', 'numerical', 'integerOnly'=>true),
       array('hint', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
@@ -85,6 +86,7 @@ class Transaction extends CActiveRecord
       'hint' => 'Hint',
       'points' => 'Points',
       'penalties' => 'Penalties',
+      'entries' => 'Number of Journal Entries',
     );
   }
 
@@ -114,6 +116,7 @@ class Transaction extends CActiveRecord
     $criteria->compare('hint',$this->hint,true);
     $criteria->compare('points',$this->points,true);
     $criteria->compare('penalties',$this->penalties,true);
+    $criteria->compare('entries',$this->entries,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,

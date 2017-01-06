@@ -62,6 +62,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'entries'); ?>
+		<?php echo $form->numberField($model,'entries', array('min'=>0,'max'=>1000)); ?>
+		<?php echo $form->error($model,'entries'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'hint'); ?><span class="hint"><?php echo Yii::t('delt', 'You can use Markdown syntax in this field.') ?></span>
 		<?php echo $form->textArea($model,'hint',array('rows'=>6, 'cols'=>70)); ?>
 		<?php echo $form->error($model,'hint'); ?>

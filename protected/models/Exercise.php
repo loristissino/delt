@@ -299,6 +299,7 @@ class Exercise extends CActiveRecord
       $yaml[] = '     rank: ' . $transaction->rank;
       $yaml[] = '     description: |';
       $yaml = array_merge($yaml, $this->_fixLongText($transaction->description, 7));
+      $yaml[] = '     entries: ' . $transaction->entries;
       $yaml[] = '     hint: |';
       $yaml = array_merge($yaml, $this->_fixLongText($transaction->hint, 7));
       $yaml[] = '     points: ' . $transaction->points;
@@ -332,7 +333,7 @@ class Exercise extends CActiveRecord
         foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
         {
           $newtransaction = new Transaction();
-          DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties'));
+          DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties', 'entries'));
           $newtransaction->event_date = DELT::getValueFromArray($transaction, 'date', date('Y-m-d'));
           $newtransaction->exercise_id = $this->id;
           $newtransaction->save();

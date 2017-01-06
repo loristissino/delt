@@ -80,6 +80,7 @@ class ExerciseController extends Controller
     Event::model()->log($this->DEUser, null, Event::EXERCISE_EXPORTED, array('exercise_id'=>$model->id));
     if($format=='yaml')
     {
+      $this->sendDispositionHeader(sprintf('%s_%s.yml', $model->slug, date('Ymd-His')));
       $this->serveYamlText($model->yaml);
     }
     $this->render('export',array(

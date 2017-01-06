@@ -25,7 +25,9 @@ $this->menu=array(
 )); ?>
 
   <p class="note"><?php echo Yii::t('delt', 'Fields with <span class="required">*</span> are required.') ?><br />
-  <?php echo Yii::t('delt', 'The content must be in YAML format.') ?></p>
+  <?php echo Yii::t('delt', 'The content must be in YAML format.') ?><br />
+  <?php echo Yii::t('delt', 'The current slug will be kept, ignoring the one specified.') ?>
+  </p>
 
   <p class="note"><?php echo CHtml::image(Yii::app()->request->baseUrl.'/images/exclamation.png') ?> <?php echo Yii::t('delt', 'Importing data to an exercise will erase all current content.') ?></p>
 
