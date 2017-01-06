@@ -743,13 +743,12 @@ class Challenge extends CActiveRecord
 
   private function _findJournalEntriesOfWork(Transaction $transaction)
   {
-    return Journalentry::model()->ofFirm($this->work->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
+    return Journalentry::model()->getJournalEntriesByFirmAndTransaction($this->work->id, $transaction->id);
   }
 
   private function _findJournalEntriesOfBenchmark(Transaction $transaction)
   {
-    return Journalentry::model()->ofFirm($this->benchmark->id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction->id)->with('postings')->findAll();
-    
+    return Journalentry::model()->getJournalEntriesByFirmAndTransaction($this->benchmark->id, $transaction->id);
   }
 
   private function _expectedValues($expected, $found)

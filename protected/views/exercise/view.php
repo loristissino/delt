@@ -56,12 +56,23 @@ $this->menu=array(
 <hr />
 <h2><?php echo Yii::t('delt', 'Transactions') ?></h2>
 <div id="challenge">
-<?php foreach($model->transactions as $transaction): ?>
+<?php foreach($model->transactions as $transaction): $actual_entries = sizeof($transaction->getJournalEntriesFromFirm($model->firm_id)) ?>
   <div class="transaction">
+  <?php if($transaction->entries!=$actual_entries): ?>
+    <span class="warning">
+      <?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The number of journal entries in the benchmark firm do not match the number declared.'))) ?>
+    </span>
+  <?php endif ?>
   <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id), array('title'=>Yii::t('delt', 'Event Date'). ' (' . Yii::t('delt', 'click to edit the transaction') . ')')) ?></b><sup title="<?php echo Yii::t('delt', 'Rank') ?>"><?php echo $transaction->rank ?></sup>
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries needed to record this transaction') ?>">
-  [<?php echo $transaction->entries ?>]
+  [
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries in Benchmark Firm to record this transaction') ?>">
+  <?php echo $actual_entries ?>
   </span>
+  /
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries declared to record this transaction') ?>">
+  <?php echo $transaction->entries ?>
+  </span>
+  ]
   <span class="score">
     (<?php echo Yii::t('delt', 'Points: {points}. Penalties: {penalties}', array('{points}'=>$transaction->points, '{penalties}'=>$transaction->penalties)) ?>)
   </span>

@@ -158,4 +158,8 @@ class Transaction extends CActiveRecord
     }
   }
   
+  public function getJournalEntriesFromFirm($firm_id)
+  {
+    return Journalentry::model()->getJournalEntriesByFirmAndTransaction($firm_id, $this->id);
+  }
 }
