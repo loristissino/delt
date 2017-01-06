@@ -323,15 +323,20 @@ class Exercise extends CActiveRecord
     try
     {
       Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
+      
       DELT::array2object($values, $this, array('title', 'description', 'method'));
       $this->save(false);
-      foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
+      $transactions=DELT::getValueFromArray($values, 'transactions', array());
+      if (is_array($transactions))
       {
-        $newtransaction = new Transaction();
-        DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties'));
-        $newtransaction->event_date = DELT::getValueFromArray($transaction, 'date', date('Y-m-d'));
-        $newtransaction->exercise_id = $this->id;
-        $newtransaction->save();
+        foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
+        {
+          $newtransaction = new Transaction();
+          DELT::array2object($transaction, $newtransaction, array('rank', 'description', 'hint', 'points', 'penalties'));
+          $newtransaction->event_date = DELT::getValueFromArray($transaction, 'date', date('Y-m-d'));
+          $newtransaction->exercise_id = $this->id;
+          $newtransaction->save();
+        }
       }
       $dbtransaction->commit();
       return true;
