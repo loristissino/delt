@@ -51,3 +51,7 @@ $this->menu=array(
 <?php $this->endWidget(); ?>
 
 </div><!-- form -->
+<hr />
+<p><?php echo Yii::t('delt', 'You can also invite logged-in users by sharing this link:') ?><br />
+<?php echo CHtml::link($url=$this->createAbsoluteUrl('challenge/index', array('exercise'=>$model->slug)), $url) ?>
+</p>

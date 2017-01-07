@@ -145,9 +145,9 @@ class Exercise extends CActiveRecord
     return $this->title;
   }
   
-  public function getOwner()
+  public function getOwnerProfile()
   {
-    return DEUser::model()->getBy('id', $this->user_id);
+    return Profile::model()->findByPk($this->user_id);
   }
 
   /**
@@ -202,7 +202,7 @@ class Exercise extends CActiveRecord
            ->queryAll(); 
   }
 
-  public function invite($users=array(), $method=61, $session='')
+  public function invite($users=array(), $method=false, $session='')
   {
     if ($method===false)
     {
@@ -218,7 +218,7 @@ class Exercise extends CActiveRecord
           $challenge = new Challenge();
           $challenge->setInitialDefaults();
           $challenge->exercise_id = $this->id;
-          $challenge->instructor_id = Yii::app()->controller->DEUser->id;
+          $challenge->instructor_id = $this->user_id;
           $challenge->user_id =$DEUser->id;
           $challenge->method = $method;
           $challenge->session = $session;
@@ -283,6 +283,7 @@ class Exercise extends CActiveRecord
     $yaml[] = "license: Creative Commons Attribution-ShareAlike 3.0";
     $yaml[] = "description: " . $this->_addQuotes($this->description);
     $yaml[] = "method: " . $this->method;
+    $yaml[] = "benchmark: " . $this->firm->slug;
     $yaml[] = "introduction: |";
     $yaml = array_merge($yaml, $this->_fixLongText($this->introduction, 2));
 
@@ -326,6 +327,16 @@ class Exercise extends CActiveRecord
       Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
       
       DELT::array2object($values, $this, array('title', 'description', 'method'));
+      $benchmark = DELT::getValueFromArray($values, 'benchmark', false);
+      if ($benchmark)
+      {
+        $benchmark_firm = Firm::model()->findByAttributes(array('slug'=>$benchmark));
+        if ($benchmark_firm)
+        {
+          $this->firm_id = $benchmark_firm->id;
+        }
+      }
+      
       $this->save(false);
       $transactions=DELT::getValueFromArray($values, 'transactions', array());
       if (is_array($transactions))

@@ -49,7 +49,8 @@ class Challenge extends CActiveRecord
      SHOW_CHECKS_ON_TRANSACTION_CHANGE            =   4,
      SHOW_CHECKS_ON_CHALLENGE_COMPLETION          =   8,
      SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE   =  16,
-     SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION =  32
+     SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION =  32,
+     CHALLENGE_DELETION_ALLOWED                   =  64
      ;
 
   private $_hints = null;  // hints requested by the user and shown
@@ -286,6 +287,11 @@ class Challenge extends CActiveRecord
     }
     return ($this->firm->status > 0);
   }
+
+  public function isDeletable()
+  {
+    return $this->method & self::CHALLENGE_DELETION_ALLOWED;
+  }
   
   public function getStatus()
   {
@@ -477,6 +483,13 @@ class Challenge extends CActiveRecord
     $this->hints = implode(',', $this->_hints);
     $this->shown = implode(',', $this->_shown);
     return parent::beforeSave();
+  }
+  
+  protected function beforeDelete()
+  {
+    if (!($this->method & Challenge::CHALLENGE_DELETION_ALLOWED))
+      return false;
+    return parent::beforeDelete();
   }
   
   public function hasHint($transaction_id)
@@ -737,6 +750,7 @@ class Challenge extends CActiveRecord
       self::SHOW_CHECKS_ON_CHALLENGE_COMPLETION =>array('label'=>'Show checks on challenge completion'),
       self::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE =>array('label'=>'Show expected values on transaction change'),
       self::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION =>array('label'=>'Show expected values on challenge completion'),
+      self::CHALLENGE_DELETION_ALLOWED =>array('label'=>'Users are allowed to delete the challenge'),
     );
     return $items;
   }

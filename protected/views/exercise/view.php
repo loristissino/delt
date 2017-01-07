@@ -65,11 +65,11 @@ $this->menu=array(
   <?php endif ?>
   <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id), array('title'=>Yii::t('delt', 'Event Date'). ' (' . Yii::t('delt', 'click to edit the transaction') . ')')) ?></b><sup title="<?php echo Yii::t('delt', 'Rank') ?>"><?php echo $transaction->rank ?></sup>
   [
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries in Benchmark Firm to record this transaction') ?>">
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries in Benchmark Firm actually used to record this transaction') ?>">
   <?php echo $actual_entries ?>
   </span>
   /
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries declared to record this transaction') ?>">
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries declared to be needed to record this transaction') ?>">
   <?php echo $transaction->entries ?>
   </span>
   ]

@@ -9,8 +9,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'View', 'url'=>array('view', 'id'=>$model->id)),
-  array('label'=>'Edit', 'url'=>array('update', 'id'=>$model->id)),
+  array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>'Edit Exercise', 'url'=>array('update', 'id'=>$model->id)),
 );
 
 ?>

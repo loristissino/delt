@@ -30,7 +30,6 @@ class ChallengeController extends Controller
   {
     return array(
       'accessControl', // perform access control for CRUD operations
-      'postOnly + delete', // we only allow deletion via POST request,
       'postOnly + changestatus', // we only allow status change via POST request,
       // FIXME 'postOnly + connect', // we only allow connection change via POST request,
       //'postOnly + activatetransaction', // we only allow transaction activation via POST request,
@@ -50,11 +49,11 @@ class ChallengeController extends Controller
   {
     return array(
       array('allow', 
-        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint', 'requesthelp', 'results', 'getinvited'),
+        'actions'=>array('index','changestatus','connect', 'activatetransaction', 'requesthint', 'requesthelp', 'results', 'getinvited', 'delete'),
         'users'=>array('@'),
       ),
       array('allow', 
-        'actions'=>array('create','delete'),
+        'actions'=>array('create'),
         'users'=>array('admin'),
       ),
       array('deny',  // deny all users
@@ -128,11 +127,25 @@ class ChallengeController extends Controller
    */
   public function actionDelete($id)
   {
-    $this->loadModel($id)->delete();
+    $model=$this->loadModel($id);
 
-    // if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
-    if(!isset($_GET['ajax']))
-      $this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin'));
+    if(Yii::app()->request->getIsPostRequest())
+    {
+      if($model->delete())
+      {
+        Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'The challenge has been successfully deleted.'));
+        Event::model()->log($this->DEUser, null, Event::CHALLENGE_DELETED, array('challenge_id'=>$id));
+        $this->redirect(array('challenge/index'));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'The challenge could not be deleted.'));
+      }
+    }
+
+    $this->render('delete',array(
+      'model'=>$model,
+    ));
   }
 
   public function actionGetinvited()
@@ -151,11 +164,11 @@ class ChallengeController extends Controller
       {
         if ($exercise->invite(array($this->DEUser->username), false, Yii::t('delt', 'self').'-'.date('Ymd')))
         {
-          Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'You got invited!'));
+          Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'You have successfully been invited!'));
         }
         else
         {
-          Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'You already got invited to this.'));
+          Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'You have already been invited to this.'));
         }
       }
       

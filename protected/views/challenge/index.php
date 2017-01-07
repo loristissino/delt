@@ -53,7 +53,7 @@ $cs->registerScript(
 )); ?>
 </div>
 
-<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and get invited.') ?></p>
+<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and get automatically invited.') ?></p>
   <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'choseexerciseform',
     'enableAjaxValidation'=>false,

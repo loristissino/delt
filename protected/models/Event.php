@@ -80,6 +80,7 @@ class Event extends CActiveRecord
   const CHALLENGE_RESUMED           = 4012;
   const CHALLENGE_COMPLETED         = 4020;
   const CHALLENGE_CHECKED           = 4030;
+  const CHALLENGE_DELETED           = 4040;
   
   /**
    * Returns the static model of the specified AR class.

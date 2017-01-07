@@ -63,6 +63,10 @@
       <?php echo CHtml::link(Yii::t('delt', 'Begin'), array('bookkeeping/index'), array('title'=>Yii::t('delt', 'Start the challenge by forking a firm'))) ?>
     <?php endif ?>
   <?php endif ?>
+
+  <?php //if($data->isDeletable()): ?>
+    <?php echo CHtml::link(Yii::t('delt', 'Delete'), array('challenge/delete', 'id'=>$data->id), array('title'=>Yii::t('delt', 'Delete this challenge'))) ?>
+  <?php //endif ?>
 </div>
 
 <?php $this->endWidget(); ?>
