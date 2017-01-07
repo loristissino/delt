@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'List Exercises', 'url'=>array('index')),
+  array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('index')),
 );
 ?>
 

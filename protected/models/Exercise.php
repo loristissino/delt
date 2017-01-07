@@ -92,6 +92,7 @@ class Exercise extends CActiveRecord
       'slug' => Yii::t('delt', 'Slug'),
       'title' => Yii::t('delt', 'Title'),
       'description' => Yii::t('delt', 'Description'),
+      'license' => Yii::t('delt', 'License'),
       'introduction' => Yii::t('delt', 'Introduction'),
       'method' => Yii::t('delt', 'Default Options'),
     );
@@ -238,6 +239,17 @@ class Exercise extends CActiveRecord
   {
     $this->_loadMethodItems();
     return parent::afterConstruct();
+  }
+  
+  protected function beforeSave()
+  {
+    DELT::sanitizeProperties($this, array(
+      'title',
+      'description',
+      'introduction',
+      )
+    );
+    return parent::beforeSave();
   }
 
   protected function afterFind()

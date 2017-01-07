@@ -9,12 +9,12 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'List Exercises', 'url'=>array('index')),
-  array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('index')),
+  array('label'=>Yii::t('delt', 'View'), 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1>«<?php echo $model->title ?>»: <?php echo Yii::t('delt', 'invite users') ?></h1>
+<h1><?php echo Yii::t('delt', 'Invite Users') ?></h1>
 
 <div class="form" style="width: 700px">
 
@@ -27,7 +27,7 @@ $this->menu=array(
 
 
   <div class="row">
-    <?php echo CHtml::label(Yii::t('delt', 'List of usernames'), 'users') ?>
+    <?php echo CHtml::label(Yii::t('delt', 'List of usernames'), 'users') ?><span class="hint"><?php echo Yii::t('delt', 'One username per line.') ?></span><br />
     <?php echo CHtml::textArea('users', '', array('cols'=>30, 'rows'=>10)) ?>
   </div>
 
@@ -45,7 +45,7 @@ $this->menu=array(
   </div>
 
 <div class="actions buttons">
-  <?php echo CHtml::submitButton(Yii::t('delt', 'Invite'), array('name'=>'invite')) ?>
+  <?php echo CHtml::submitButton(Yii::t('delt', 'Invite Users'), array('name'=>'invite')) ?>
 </div>
 
 <?php $this->endWidget(); ?>

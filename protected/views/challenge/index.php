@@ -7,7 +7,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'Manage Exercises', 'url'=>array('exercise/index')),
+  array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('exercise/index')),
 );
 
 $ajax_loader_icon=addslashes($this->createIcon('ajax-loader', Yii::t('delt', 'Please wait...'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Please wait')), '.gif'));
@@ -53,7 +53,9 @@ $cs->registerScript(
 )); ?>
 </div>
 
-<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and get automatically invited.') ?></p>
+<hr />
+
+<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and ask for an invitation.') ?></p>
   <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'choseexerciseform',
     'enableAjaxValidation'=>false,

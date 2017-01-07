@@ -12,14 +12,13 @@ $this->breadcrumbs=array(
 $this->layout = '//layouts/column2';
 
 $this->menu=array(
-  array('label'=>'List Exercises', 'url'=>array('index')),
-  array('label'=>'Edit Exercise', 'url'=>array('update', 'id'=>$model->id)),
-  array('label'=>'View Report', 'url'=>array('report', 'id'=>$model->id)),
-  array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
-  array('label'=>'Import', 'url'=>array('import', 'id'=>$model->id)),
-  array('label'=>'Export', 'url'=>array('export', 'id'=>$model->id)),
-  array('label'=>'Delete', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('delt', 'Are you sure you want to delete this exercise?'))),
-  //array('label'=>'Manage Exercises', 'url'=>array('admin')),
+  array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('index')),
+  array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('update', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'View Report'), 'url'=>array('report', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Import'), 'url'=>array('import', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Export'), 'url'=>array('export', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Delete'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('delt', 'Are you sure you want to delete this exercise?'))),
 );
 ?>
 
@@ -29,22 +28,28 @@ $this->menu=array(
   'data'=>$model,
   'attributes'=>array(
     array(
-        'label'=>'Benchmark Firm',
+        'label'=>Yii::t('delt', 'Benchmark Firm'),
         'type'=>'raw',
         'value'=>CHtml::link(CHtml::encode($model->firm->name),
            array('bookkeeping/manage','slug'=>$model->firm->slug)
         ),
     ),
-    'slug',
-    'title',
+    array(
+        'label'=>Yii::t('delt', 'Slug'),
+        'value'=>$model->slug,
+        ),
+    array(
+        'label'=>Yii::t('delt', 'Title'),
+        'value'=>$model->title,
+        ),
     'description',
     array(
-        'label'=>'introduction',
+        'label'=>Yii::t('delt', 'Introduction'),
         'type'=>'raw',
         'value'=>$md->transform($model->introduction),
         ),
     array(
-        'label'=>'Challenges',
+        'label'=>Yii::t('delt', 'Challenges'),
         'type'=>'raw',
         'value'=>CHtml::link(sizeof($model->challenges),
            array('report','id'=>$model->id)
@@ -65,11 +70,11 @@ $this->menu=array(
   <?php endif ?>
   <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id), array('title'=>Yii::t('delt', 'Event Date'). ' (' . Yii::t('delt', 'click to edit the transaction') . ')')) ?></b><sup title="<?php echo Yii::t('delt', 'Rank') ?>"><?php echo $transaction->rank ?></sup>
   [
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries in Benchmark Firm actually used to record this transaction') ?>">
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries in Benchmark Firm actually used to record this transaction') ?>">
   <?php echo $actual_entries ?>
   </span>
   /
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal Entries declared to be needed to record this transaction') ?>">
+  <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries declared to be needed to record this transaction') ?>">
   <?php echo $transaction->entries ?>
   </span>
   ]
@@ -101,4 +106,4 @@ $this->menu=array(
   </div>
 <?php endforeach ?>
 </div>
-<p><?php echo CHtml::link(Yii::t('delt', 'New transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>
+<p><?php echo CHtml::link(Yii::t('delt', 'New Transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>

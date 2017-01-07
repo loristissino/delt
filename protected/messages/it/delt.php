@@ -1400,5 +1400,173 @@
   
   'Since this firm is stale, it will be deleted in 30 days.' =>
   'Visto che questa azienda è inutilizzata, verrà eliminata nei prossimi tra 30 giorni.',
+  
+  'Manage Exercises'=>
+  'Gestisci esercizi',
+  
+  'If you know the slug of an exercise, you can write it here and ask for an invitation.'=>
+  'Se conosci lo slug di un esercizio, puoi scriverlo qui e chiedere un invito.',
+  
+  'Invite me!'=>
+  'Invitami!',
+  
+  'Exercises'=>
+  'Esercizi',
 
+  'New Exercise'=>
+  'Nuovo esercizio',
+  
+  'Benchmark Firm'=>
+  'Azienda di riferimento',
+  
+  'View Report'=>
+  'Visualizza rapporto',
+  
+  'Invite Users'=>
+  'Invita utenti',
+  
+  'Are you sure you want to delete this exercise?'=>
+  'Sei sicuro di voler eliminare questo esercizio?',
+  
+  'Exercise «{name}»'=>
+  'Esercizio «{name}»',
+  
+  'Title'=>
+  'Titolo',
+  
+  'The number of journal entries in the benchmark firm do not match the number declared.'=>
+  'Il numero di registrazioni dell\'azienda di riferimento non corrisponde al numero dichiarato.',
+
+  'Event Date'=>
+  'Data dell\'evento',
+  
+  'click to edit the transaction'=>
+  'fai clic per modificare la transazione',
+  
+  'Rank'=>
+  'Rango',
+  
+  'Journal entries in Benchmark Firm actually used to record this transaction'=>
+  'Registrazioni dell\'azienda di riferimento effettivamente usate per questa transazione',
+  
+  'Journal entries declared to be needed to record this transaction'=>
+  'Registrazioni dichiarate necessarie per questa transazione',
+  
+  'New Transaction'=>
+  'Nuova transazione',
+  
+  'Edit Transaction'=>
+  'Modifica transazione',
+  
+  'View'=>
+  'Visualizza',
+
+  'Edit Exercise «{name}»'=>
+  'Modifica esercizio «{name}»',
+  
+  'Create Exercise'=>
+  'Crea esercizio',
+  
+  'You can use Markdown syntax in this field.'=>
+  'Puoi usare la sintassi Markdown in questo campo.',
+  
+  'I agree on the fact that the contents of the exercise I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.'=>
+  'Accetto il fatto che i contenuti dell\'esercizio che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
+  
+  'Default Options'=>
+  'Opzioni predefinite',
+  
+  'Show points during challenge'=>
+  'Mostra il punteggio durante la sfida',
+  
+  'Users are allowed to get help by being shown the correct entries'=>
+  'Gli utenti possono ottenere l\'aiuto con le registrazioni corrette',
+
+  'Show checks on transaction change'=>
+  'Mostra i controlli al cambio di transazione',
+
+  'Show checks on challenge completion'=>
+  'Mostra i controlli al completamento della sfida',
+
+  'Show expected values on transaction change'=>
+  'Mostra i valori attesi al cambio di transazione',
+
+  'Show expected values on challenge completion'=>
+  'Mostra i valori attesi al completamento della sfida',
+
+  'Users are allowed to delete the challenge'=>
+  'Agli utenti è permesso di eliminare la sfida',
+
+  'Event Date'=>
+  'Data dell\'evento',
+  
+  'Number of Journal Entries'=>
+  'Numero di registrazioni contabili',
+  
+  'Points'=>
+  'Punti',
+  
+  'Penalties'=>
+  'Penalità',
+  
+  'View Exercise'=>
+  'Visualizza esercizio',
+  
+  'Are you sure you want to delete this transaction?'=>
+  'Sei sicuro di voler eliminare questa transazione?',
+  
+  'The file is in YAML format.'=>
+  'Il file è in formato YAML.',
+  
+  'The content must be in YAML format.'=>
+  'Il contenuto deve essere in formato YAML',
+  
+  'Download'=>
+  'Scarica',
+
+  'The current slug will be kept, ignoring the one specified.'=>
+  'Lo slug corrente verrà mantenuto, ignorando quello specificato.',
+  
+  'Importing data to an exercise will erase all current content.'=>
+  'L\'importazione di dati per un esercizio comporta la cancellazione di tutti i contenuti correnti.',
+  
+  'List of usernames'=>
+  'Elenco di username',
+  
+  'One username per line.'=>
+  'Uno username per riga.',
+  
+  'Session'=>
+  'Sessione',
+  
+  'You can also invite logged-in users by sharing this link:'=>
+  'Puoi anche invitare gli utenti che hanno fatto il login condividendo il seguente link:',
+  
+  'Are you sure you want to delete this challenge?'=>
+  'Sei sicuro di voler eliminare questa sfida?',
+  
+  'The challenge has been successfully deleted.'=>
+  'La sfida è stata correttamente eliminata.',
+  
+  'No users have been invited.'=>
+  'Nessun utente è stato invitato.',
+  
+  'Users invited: {number}.'=>
+  'Utenti invitati: {number}.',
+  
+  'The exercise has been successfully created.'=>
+  'L\'esercizio è stato correttamente creato.',
+  
+  'The exercise has been successfully deleted.'=>
+  'L\'esercizio è stato correttamente eliminato.',
+  
+  'The exercise could not be deleted.'=>
+  'Non è stato possibile eliminare l\'esercizio.',
+  
+  'Exercises are prepared by teachers who want to challenge their students.'=>
+  'Gli esercizi vengono preparati dai docenti che voglio sfidare i propri studenti.',
+  
+  'If you are a student, you are probably looking for <a href="{url}">challenges</a>.'=>
+  'Se sei uno studente, ciò che stai cercando è probabilmente una <a href="{url}">sfida</a>.',
+    
   );

@@ -9,8 +9,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
-  array('label'=>'Edit Exercise', 'url'=>array('update', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'View'), 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('update', 'id'=>$model->id)),
 );
 
 ?>

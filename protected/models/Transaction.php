@@ -79,14 +79,14 @@ class Transaction extends CActiveRecord
   {
     return array(
       'id' => 'ID',
-      'exercise_id' => 'Exercise',
-      'rank' => 'Rank',
-      'event_date' => 'Event Date',
-      'description' => 'Description',
-      'hint' => 'Hint',
-      'points' => 'Points',
-      'penalties' => 'Penalties',
-      'entries' => 'Number of Journal Entries',
+      'exercise_id' => Yii::t('delt', 'Exercise'),
+      'rank' => Yii::t('delt', 'Rank'),
+      'event_date' => Yii::t('delt', 'Event Date'),
+      'description' => Yii::t('delt', 'Description'),
+      'hint' => Yii::t('delt', 'Hint'),
+      'points' => Yii::t('delt', 'Points'),
+      'penalties' => Yii::t('delt', 'Penalties'),
+      'entries' => Yii::t('delt', 'Number of Journal Entries'),
     );
   }
 
@@ -157,6 +157,18 @@ class Transaction extends CActiveRecord
       return false;
     }
   }
+  
+  protected function beforeSave()
+  {
+    DELT::sanitizeProperties($this, array(
+      'description',
+      'hint',
+      )
+    );
+    return parent::beforeSave();
+  }
+  
+  
   
   public function getJournalEntriesFromFirm($firm_id)
   {

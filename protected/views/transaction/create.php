@@ -9,7 +9,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'View Exercise', 'url'=>array('exercise/view', 'id'=>$this->exercise->id)),
+	array('label'=>Yii::t('delt', 'View Exercise'), 'url'=>array('exercise/view', 'id'=>$this->exercise->id)),
 );
 ?>
 

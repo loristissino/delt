@@ -248,8 +248,7 @@ class ExerciseController extends Controller
     try {
       $exercise->delete();
       Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully deleted.'));
-      Event::model()->log($this->DEUser, null, Event::EXERCISE_DELETED, array('exercise_id'=>$model->id));
-
+      Event::model()->log($this->DEUser, null, Event::EXERCISE_DELETED, array('exercise_id'=>$id));
     }
     catch (Exception $e)
     {

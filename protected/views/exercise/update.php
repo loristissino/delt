@@ -9,11 +9,11 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-  array('label'=>'List Exercises', 'url'=>array('index')),
-  array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('index')),
+  array('label'=>Yii::t('delt', 'View'), 'url'=>array('view', 'id'=>$model->id)),
 );
 ?>
 
-<h1><?php echo Yii::t('delt', 'Edit «{name}»', array('{name}'=>$model->title)); ?></h1>
+<h1><?php echo Yii::t('delt', 'Edit Exercise «{name}»', array('{name}'=>$model->title)); ?></h1>
 
 <?php $this->renderPartial('_form', array('model'=>$model)); ?>
