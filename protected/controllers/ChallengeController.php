@@ -275,23 +275,20 @@ class ChallengeController extends Controller
     $model=$this->loadModel($id);
     if ($model->addShown($transaction))
     {
-      //Yii::app()->user->setFlash('delt_success',Yii::t('delt', 'Change successfully applied.'));
+      $this->firm = $this->loadFirm($model->exercise->firm_id, false);
+      $postings = Posting::model()->getPostingsByFirmAndTransaction($model->exercise->firm_id, $transaction);
+      $this->renderPartial('_journalentries', array(
+        'postings'=>$postings,
+        'model'=>$this->firm,
+        'title'=>Yii::t('delt', 'Help on transaction'),
+        'draggable'=>true,
+        ));
     }
     else
     {
-      Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+      echo Yii::t('delt', 'Sorry, help is not allowed for this challenge.');
     }
     
-    $this->firm = $this->loadFirm($model->exercise->firm_id, false);
-    
-    $postings = Posting::model()->getPostingsByFirmAndTransaction($model->exercise->firm_id, $transaction);
-    
-    $this->renderPartial('_journalentries', array(
-      'postings'=>$postings,
-      'model'=>$this->firm,
-      'title'=>Yii::t('delt', 'Help on transaction'),
-      'draggable'=>true,
-      ));
   }
 
   public function actionChecktransaction($id, $transaction)

@@ -126,7 +126,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
   <?php $this->render('_transactions', array('md'=>$md, 'challenge'=>$challenge, 'challenge_visibility'=>$challenge_visibility, 'result'=>$this->result)) ?>
   
   <div id="exercise_copyrightnotice">
-    <?php echo Yii::t('delt', 'Exercise by {author}.', array('{author}'=>$challenge->exercise->getOwnerProfile()->getFullName())) ?>
+    <?php echo Yii::t('delt', 'Exercise prepared by {author}.', array('{author}'=>$challenge->exercise->getOwnerProfile()->getFullName())) ?>
     <?php echo Yii::t('delt', 'Some rights reserved.') ?><br />
     <?php echo Yii::t('delt', 'Released under <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
   

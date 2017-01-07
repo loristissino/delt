@@ -71,11 +71,11 @@
       <?php endif ?>
       
       <?php $been_shown = $challenge->beenShown($transaction->id) ?>
-      <?php if ($is_current): ?>
+      <?php if ($is_current && $challenge->isHelpAllowed()): ?>
       - 
       <?php endif ?>
       <?php echo CHtml::ajaxLink(
-        $is_current ? Yii::t('delt', 'Help') : '',
+        ($is_current && $challenge->isHelpAllowed()) ? Yii::t('delt', 'Help') : '',
         // we have to prepare ajax links even if we don't need them (because of ajax calls), so we provide empty ones
         $url=CHtml::normalizeUrl(array('challenge/requesthelp', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
         array(

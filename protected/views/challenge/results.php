@@ -20,11 +20,11 @@ $md = new CMarkdown();
 
   <h2><?php echo Yii::t('delt', 'Firm') ?></h2>
   <p><?php echo $model->firm ?></p>
-  <?php $this->renderPartial('_checks', array('source'=>$results['firm'], 'with_oks'=>true)) ?>
+  <?php $this->renderPartial('_checks', array('source'=>DELT::getValueFromArray($results, 'firm', array()), 'with_oks'=>true)) ?>
   <hr />
 
   <h2><?php echo Yii::t('delt', 'Transactions') ?></h2>
-  <?php foreach ($results['transactions'] as $transaction): ?>
+  <?php foreach (DELT::getValueFromArray($results, 'transactions', array()) as $transaction): ?>
     <div class="transaction">
       <?php echo $md->transform($transaction['description']) ?>
     </div>
@@ -37,7 +37,9 @@ $md = new CMarkdown();
     <hr />
   <?php endforeach // transactions?>
 
-  <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', $results['score']) . ' (' . 
-    Yii::app()->numberFormatter->formatDecimal(round(1000*$results['score']/$results['possiblescore'])/10) . '%)' ?></h2>
+  <?php if(false!==$score=DELT::getValueFromArray($results, 'score', false)): ?>
+  <h2><?php echo Yii::t('delt', 'Score') . ': '. Yii::t('delt', 'One point|{n} points', DELT::getValueFromArray($results, 'score', null)) . ' (' . 
+    Yii::app()->numberFormatter->formatDecimal(round(1000*$score/DELT::getValueFromArray($results, 'possiblescore', 1)/10)) . '%)' ?></h2>
+  <?php endif ?>
 
 </div>

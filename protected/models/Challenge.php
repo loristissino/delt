@@ -45,7 +45,7 @@ class Challenge extends CActiveRecord
   
   const
      SHOW_POINTS_DURING_CHALLENGE                 =   1,
-     SHOW_CORRECT_ENTRIES                         =   2,
+     HELP_ALLOWED                                 =   2,
      SHOW_CHECKS_ON_TRANSACTION_CHANGE            =   4,
      SHOW_CHECKS_ON_CHALLENGE_COMPLETION          =   8,
      SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE   =  16,
@@ -292,6 +292,11 @@ class Challenge extends CActiveRecord
   {
     return $this->method & self::CHALLENGE_DELETION_ALLOWED;
   }
+
+  public function isHelpAllowed()
+  {
+    return $this->method & self::HELP_ALLOWED;
+  }
   
   public function getStatus()
   {
@@ -518,6 +523,10 @@ class Challenge extends CActiveRecord
 
   public function addShown($transaction_id)
   {
+    if (!$this->isHelpAllowed())
+    {
+      return false;
+    }
     if ($transaction = Transaction::model()->findByPK($transaction_id))
     {
       if(!$this->beenShown($transaction_id))
@@ -745,7 +754,7 @@ class Challenge extends CActiveRecord
   {
     $items = array(
       self::SHOW_POINTS_DURING_CHALLENGE =>array('label'=>'Show points during challenge'),
-      self::SHOW_CORRECT_ENTRIES =>array('label'=>'Show correct entries'),
+      self::HELP_ALLOWED=>array('label'=>'Users are allowed to get help by being shown the correct entries'),
       self::SHOW_CHECKS_ON_TRANSACTION_CHANGE =>array('label'=>'Show checks on transaction change'),
       self::SHOW_CHECKS_ON_CHALLENGE_COMPLETION =>array('label'=>'Show checks on challenge completion'),
       self::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE =>array('label'=>'Show expected values on transaction change'),
