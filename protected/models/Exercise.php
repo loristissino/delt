@@ -279,7 +279,7 @@ class Exercise extends CActiveRecord
     $yaml[] = "---";
     $yaml[] = "slug: " . $this->slug;
     $yaml[] = "title: " . $this->_addQuotes($this->title);
-    $yaml[] = "instructor: " . $this->getOwner()->getProfile()->getFullName();
+    $yaml[] = "instructor: " . $this->getOwnerProfile()->getFullName();
     $yaml[] = "license: Creative Commons Attribution-ShareAlike 3.0";
     $yaml[] = "description: " . $this->_addQuotes($this->description);
     $yaml[] = "method: " . $this->method;
