@@ -1368,12 +1368,6 @@
   'Click on a template\'s description to start a journal entry from it.' => 
   'Fai clic sulla descrizione di una causale per utilizzarla come base di una registrazione contabile.',
 
-  'This is where our <a href="{url}">twitter feed</a> should be placed.' => 
-  'Questo è il luogo dove il nostro <a href="{url}">feed twitter</a> dovrebbe essere posto.',
-
-  'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
-  'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
-
   'Management' => 
   'Gestione',
 
