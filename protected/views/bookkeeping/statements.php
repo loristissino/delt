@@ -99,8 +99,8 @@ $last_date = $model->getLastDate();
     <tr>
       <td>&nbsp;&nbsp;&nbsp;</td>
       <td><div class="<?php echo $posting['amount']>0? 'jdebit': 'jcredit' ?>"><?php echo CHtml::encode($posting['account_name']) ?></div></td>
-      <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'])) ?>
-      <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'])) ?>
+      <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'], 'firm'=>$this->firm)) ?>
+      <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'], 'firm'=>$this->firm)) ?>
     </tr>
     <?php endforeach ?>
     <?php if(sizeof($je['postings'])==0): ?>
@@ -108,8 +108,8 @@ $last_date = $model->getLastDate();
       <tr>
         <td>&nbsp;&nbsp;&nbsp;</td>
         <td class="<?php echo $je['journalentry']['class'] ?>"><div class="<?php echo $posting['amount']>0? 'jdebit': 'jcredit' ?>"><?php echo $posting['account_name'] ? CHtml::encode($posting['account_name']): Yii::t('delt', 'Closing account not found') ?></div></td>
-        <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'], 'extraclasses'=>'excluded')) ?>
-        <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'], 'extraclasses'=>'excluded')) ?>
+        <?php echo $this->renderPartial('../firm/_td_debit_amount', array('amount'=>$posting['amount'], 'extraclasses'=>'excluded', 'firm'=>$this->firm)) ?>
+        <?php echo $this->renderPartial('../firm/_td_credit_amount', array('amount'=>$posting['amount'], 'extraclasses'=>'excluded', 'firm'=>$this->firm)) ?>
       </tr>
       <?php endforeach ?>
     <?php endif ?>
