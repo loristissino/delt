@@ -87,7 +87,7 @@ else
     $this->endWidget();
   ?>
   
-  <?php if(isset(Yii::app()->params['sideText'])) include_once(Yii::app()->params['sideText']) ?>
+  <?php if(!$this->firm && isset(Yii::app()->params['sideText'])) include_once(Yii::app()->params['sideText']) ?>
 
   <?php
   /*

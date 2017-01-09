@@ -1570,7 +1570,7 @@
   'Una transazione per cui preparare una registrazione contabile',
   
   'You are not currently working with the firm linked to this challenge.'=>
-  'Al momento non stai lavorando con l\'azienda collegata alla sfida. ',
+  'Al momento non stai lavorando con l\'azienda associata alla sfida. ',
   
   'Link current firm'=>
   'Associa questa azienda',
