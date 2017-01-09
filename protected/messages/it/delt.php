@@ -1209,8 +1209,8 @@
   'Do you want to receive a hint for this transaction?' => 
   'Vuoi ricevere un suggerimento per questa transazione?',
 
-  'Linked firm:' => 
-  'Azienda collegata:',
+  'Firm linked to the current challenge:' => 
+  'Azienda associata alla sfida corrente:',
 
   'Mark this transaction as current' => 
   'Contrassegna questa transazione come corrente',
@@ -1562,5 +1562,23 @@
   
   'If you are a student, you are probably looking for <a href="{url}">challenges</a>.'=>
   'Se sei uno studente, ciò che stai cercando è probabilmente una <a href="{url}">sfida</a>.',
+  
+  'The transaction you are working on'=>
+  'La transazione su cui stai lavorando',
+  
+  'A transaction to prepare the journal entry for'=>
+  'Una transazione per cui preparare una registrazione contabile',
+  
+  'You are not currently working with the firm linked to this challenge.'=>
+  'Al momento non stai lavorando con l\'azienda collegata alla sfida. ',
+  
+  'Link current firm'=>
+  'Associa questa azienda',
+  
+  'Link the firm «{name}» to this challenge'=>
+  'Associa l\'azienda «{name}» a questa sfida',
+  
+  'If you start working with another firm, you will have the possibility to link it to the current challenge.'=>
+  'Se inizi a lavorare con un\'altra azienda, avrai la possibilità di associarla alla sfida corrente.', 
     
   );

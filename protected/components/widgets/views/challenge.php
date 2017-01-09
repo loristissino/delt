@@ -74,8 +74,8 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <h3><?php echo Yii::t('delt', 'Firm') ?></h3>
   <p>
   <?php if($challenge_firm_set): ?>
-    <?php echo Yii::t('delt', 'Linked firm:') ?> <?php echo CHtml::link($challenge->firm, array('bookkeeping/manage', 'slug'=>$challenge->firm->slug), array('title'=>Yii::t('delt', 'Manage'))) ?>
-    <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?><br />
+    <?php echo Yii::t('delt', 'Firm linked to the current challenge:') ?> <?php echo CHtml::link($challenge->firm, array('bookkeeping/manage', 'slug'=>$challenge->firm->slug), array('title'=>Yii::t('delt', 'Management'))) ?><br />
+    <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?>
       <?php echo Yii::app()->controller->createIcon('bell', Yii::t('delt', 'Warning'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'We have a problem here.'))) ?>
       <?php echo Yii::t('delt', 'You are not currently working with the firm linked to this challenge.') ?>
       <?php echo CHtml::link(
@@ -83,15 +83,17 @@ $is_ajax = Yii::app()->controller->is_ajax;
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
         array(
           'submit'=>$url,
-          'title' => Yii::t('delt', 'Link the firm «%name%» to this challenge', array('%name%'=>Yii::app()->controller->firm)),
+          'title' => Yii::t('delt', 'Link the firm «{name}» to this challenge', array('{name}'=>Yii::app()->controller->firm)),
           )
         )
         ?>.
-      <?php endif ?>
+    <?php else: ?>
+      <?php echo Yii::t('delt', 'If you start working with another firm, you will have the possibility to link it to the current challenge.') ?>
+    <?php endif ?>
   <?php else: ?>
     <?php if(Yii::app()->controller->firm): ?>
       <?php echo CHtml::link(
-        Yii::t('delt', 'Link the firm «%name%» to this challenge', array('%name%'=>Yii::app()->controller->firm)),
+        Yii::t('delt', 'Link the firm «{name}» to this challenge', array('{name}'=>Yii::app()->controller->firm)),
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
         array(
           'submit'=>$url,
@@ -128,7 +130,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
   <div id="exercise_copyrightnotice">
     <?php echo Yii::t('delt', 'Exercise prepared by {author}.', array('{author}'=>$challenge->exercise->getOwnerProfile()->getFullName())) ?>
     <?php echo Yii::t('delt', 'Some rights reserved.') ?><br />
-    <?php echo Yii::t('delt', 'Released under <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
+    <?php echo Yii::t('delt', 'Released under a <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.', array('{locale}'=>Yii::app()->language)) ?>
   
   </div>
   <hr />
