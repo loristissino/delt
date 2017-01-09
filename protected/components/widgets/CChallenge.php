@@ -26,13 +26,16 @@ class CChallenge extends CWidget
     public function run()
     {
       $this->getChallenge();
+
       if($this->challenge)
       {
         $this->result = $this->challenge->getResults();
+        Yii::app()->user->setState('challenge', $this->challenge->id);
       }
       else
       {
         $this->result = array();
+        Yii::app()->user->setState('challenge', false);
       }
       $this->render('challenge', array('challenge'=>$this->challenge));
     }

@@ -111,10 +111,9 @@ echo CHtml::endForm(); ?>
         array('label'=>Yii::t('delt','swap positions'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'swap'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Swap the positions of the selected journal entries (choose only two entries for this to work)'))),
     );
     
-    if (Yii::app()->user->getState('transaction'))
+    if (Yii::app()->user->getState('challenge'))
     {
       $items[] = array('label'=>Yii::t('delt','connect to current transaction'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'connect'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Connect the selected journal entries to the current transaction (from a challenge)')));
-  
     }
 
     $this->widget('ext.widgets.bmenu.XBatchMenu', array(
