@@ -1569,8 +1569,8 @@
   'A transaction to prepare the journal entry for'=>
   'Una transazione per cui preparare una registrazione contabile',
   
-  'You are not currently working with the firm linked to this challenge.'=>
-  'Al momento non stai lavorando con l\'azienda associata alla sfida. ',
+  'You are not currently working with the firm linked to this challenge, but with «{name}».'=>
+  'Al momento non stai lavorando con l\'azienda associata alla sfida, ma con «{name}».',
   
   'Link current firm'=>
   'Associa questa azienda',
@@ -1580,5 +1580,14 @@
   
   'If you start working with another firm, you will have the possibility to link it to the current challenge.'=>
   'Se inizi a lavorare con un\'altra azienda, avrai la possibilità di associarla alla sfida corrente.', 
+  
+  'If you prefer, you can instead start working with another firm you own and link it to this challenge later (just make sure that the firm\'s parent is the one you see here above).'=>
+  'Se preferisci, puoi invece iniziare a lavorare con un\'altra azienda che gestisci e associarla successivamente a questa sfida (però assicurati che sia derivata da quella che vedi qui sopra).',
+  
+  'We have a problem here.'=>
+  'Qui abbiamo un problema.',
+  
+  'You are working with a firm that does not have the same parent of the benchmark.'=>
+  'Stai lavorando con un\'azienda che non ha lo stessa "madre" dell\'azienda di riferimento.',
     
   );

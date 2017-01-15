@@ -35,6 +35,13 @@ $this->menu=array(
         ),
     ),
     array(
+        'label'=>Yii::t('delt', 'Proposed Parent Firm'),
+        'type'=>'raw',
+        'value'=>CHtml::link(CHtml::encode($parent_firm->name),
+           array(Yii::app()->params['publicpages'][$parent_firm->firmtype].$parent_firm->slug)
+        ),
+    ),
+    array(
         'label'=>Yii::t('delt', 'Slug'),
         'value'=>$model->slug,
         ),

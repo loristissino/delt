@@ -74,10 +74,16 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <h3><?php echo Yii::t('delt', 'Firm') ?></h3>
   <p>
   <?php if($challenge_firm_set): ?>
-    <?php echo Yii::t('delt', 'Firm linked to the current challenge:') ?> <?php echo CHtml::link($challenge->firm, array('bookkeeping/manage', 'slug'=>$challenge->firm->slug), array('title'=>Yii::t('delt', 'Management'))) ?><br />
+    <?php echo Yii::t('delt', 'Firm linked to the current challenge:') ?> <?php echo CHtml::link($challenge->firm, array('bookkeeping/manage', 'slug'=>$challenge->firm->slug), array('title'=>Yii::t('delt', 'Management'))) ?>.
+    
+    <?php if($challenge->firm->firm_parent_id != $challenge->exercise->firm->firm_parent_id): ?>
+      <?php echo Yii::app()->controller->createIcon('bell', Yii::t('delt', 'Warning'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'You are working with a firm that does not have the same parent of the benchmark.'))) ?>
+    <?php endif ?>
+    
+    <br />
     <?php if(!$challenge_firm_current && Yii::app()->controller->firm): ?>
       <?php echo Yii::app()->controller->createIcon('bell', Yii::t('delt', 'Warning'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'We have a problem here.'))) ?>
-      <?php echo Yii::t('delt', 'You are not currently working with the firm linked to this challenge.') ?>
+      <?php echo Yii::t('delt', 'You are not currently working with the firm linked to this challenge, but with «{name}».', array('{name}'=>Yii::app()->controller->firm)) ?>
       <?php echo CHtml::link(
         Yii::t('delt', 'Link current firm'),
         $url=CHtml::normalizeUrl(array('challenge/connect', 'id'=>$challenge->id, 'slug'=>Yii::app()->controller->firm->slug)),
@@ -90,6 +96,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <?php else: ?>
       <?php echo Yii::t('delt', 'If you start working with another firm, you will have the possibility to link it to the current challenge.') ?>
     <?php endif ?>
+    
   <?php else: ?>
     <?php if(Yii::app()->controller->firm): ?>
       <?php echo CHtml::link(
@@ -100,11 +107,12 @@ $is_ajax = Yii::app()->controller->is_ajax;
           'title' => Yii::t('delt', 'Connect this firm with the active challenge'),
           )
         )
-        ?>
+        ?>.
 
     <?php else: ?>
       <?php if($challenge->exercise->firm->parent): ?>
-      <?php echo Yii::t('delt', 'Begin with forking this firm:') ?> <?php echo CHtml::link($challenge->exercise->firm->parent, array('firm/fork', 'slug'=>$challenge->exercise->firm->parent->slug)) ?>
+      <?php echo Yii::t('delt', 'Begin with forking this firm:') ?> <?php echo CHtml::link(CHtml::encode($challenge->exercise->firm->parent), array('firm/fork', 'slug'=>$challenge->exercise->firm->parent->slug)) ?>.<br />
+      <?php echo Yii::t('delt', 'If you prefer, you can instead start working with another firm you own and link it to this challenge later (just make sure that the firm\'s parent is the one you see here above).') ?>
       <?php endif ?>
     <?php endif ?>
   <?php endif ?>

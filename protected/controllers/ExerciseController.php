@@ -64,8 +64,11 @@ class ExerciseController extends Controller
    */
   public function actionView($id)
   {
+    $model = $this->loadModel($id);
+    $parent_firm = $model->firm->parent;
     $this->render('view',array(
-      'model'=>$this->loadModel($id),
+      'model'=>$model,
+      'parent_firm'=>$parent_firm,
     ));
   }
 
