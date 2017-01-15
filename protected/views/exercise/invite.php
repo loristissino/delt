@@ -33,7 +33,7 @@ $this->menu=array(
 
   <div class="row">
     <?php echo CHtml::label(Yii::t('delt', 'Session'), 'session') ?>
-    <?php echo CHtml::textField('session', date('Ymd')) ?>
+    <?php echo CHtml::textField('session', date($model->session_pattern)) ?>
   </div>
 
   <div class="row checkbox">

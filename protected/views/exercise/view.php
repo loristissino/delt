@@ -56,6 +56,11 @@ $this->menu=array(
         'value'=>$md->transform($model->introduction),
         ),
     array(
+        'label'=>Yii::t('delt', 'Session Pattern'),
+        'type'=>'raw',
+        'value'=>'<tt>' . $model->session_pattern . '</tt> 🡒 <em>' . date($model->session_pattern) . '</em>',
+        ),
+    array(
         'label'=>Yii::t('delt', 'Challenges'),
         'type'=>'raw',
         'value'=>CHtml::link(sizeof($model->challenges),

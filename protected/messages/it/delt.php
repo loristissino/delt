@@ -367,7 +367,7 @@
   'Dati da duplicare:',
 
   'Chart of Accounts' => 
-  'Piano dei konti',
+  'Piano dei conti',
 
   'Chart of Accounts and Templates' => 
   'Piano dei conti e causali contabili',
@@ -1589,5 +1589,8 @@
   
   'You are working with a firm that does not have the same parent of the benchmark.'=>
   'Stai lavorando con un\'azienda che non ha lo stessa "madre" dell\'azienda di riferimento.',
+  
+  'Session Pattern'=>
+  'Pattern per la sessione',
     
   );

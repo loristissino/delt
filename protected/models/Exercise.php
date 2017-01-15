@@ -19,6 +19,7 @@
  * @property string $description
  * @property string $introduction
  * @property integer $method  // the default method
+ * @property string $session_pattern // the default for session names
  *
  * The followings are the available model relations:
  * @property Challenge[] $challenges
@@ -57,11 +58,12 @@ class Exercise extends CActiveRecord
       array('user_id, firm_id, method', 'numerical', 'integerOnly'=>true),
       array('slug', 'SlugValidator', 'model'=>Exercise::model()),
       array('title, description', 'length', 'max'=>255),
+      array('session_pattern', 'length', 'max'=>32),
       array('introduction', 'safe'),
       array('license_confirmation', 'validateLicense'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, user_id, firm_id, slug, title, description, introduction', 'safe', 'on'=>'search'),
+      array('id, user_id, firm_id, slug, title, description, introduction, session_pattern', 'safe', 'on'=>'search'),
     );
   }
 
@@ -95,6 +97,7 @@ class Exercise extends CActiveRecord
       'license' => Yii::t('delt', 'License'),
       'introduction' => Yii::t('delt', 'Introduction'),
       'method' => Yii::t('delt', 'Default Options'),
+      'session_pattern' => Yii::t('delt', 'Session Pattern'),
     );
   }
 
@@ -124,6 +127,7 @@ class Exercise extends CActiveRecord
     $criteria->compare('description',$this->description,true);
     $criteria->compare('introduction',$this->introduction,true);
     $criteria->compare('method',$this->method,true);
+    $criteria->compare('session_pattern',$this->session_pattern,true);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
@@ -209,6 +213,12 @@ class Exercise extends CActiveRecord
     {
       $method = $this->method; // we use the default set in Exercise
     }
+    
+    if ($session=='')
+    {
+      $session = date($this->session_pattern);
+    }
+    
     $count = 0;
     foreach($users as $username)
     {

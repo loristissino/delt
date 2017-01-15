@@ -90,6 +90,12 @@ $cs->registerScript(
     <?php echo $form->textArea($model,'introduction',array('rows'=>6, 'cols'=>50)); ?>
     <?php echo $form->error($model,'introduction'); ?>
   </div>
+
+  <div class="row">
+    <?php echo $form->labelEx($model,'session_pattern'); ?>
+    <?php echo $form->textField($model,'session_pattern',array('size'=>32,'maxlength'=>32)); ?>
+    <?php echo $form->error($model,'session_pattern'); ?>
+  </div>
   
   <div class="row checkbox">
     <?php echo $form->label($model, 'method') ?>

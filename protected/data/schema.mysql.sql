@@ -94,7 +94,8 @@ CREATE TABLE `tbl_exercise` (
   `title` varchar(255) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
   `introduction` text,
-  `method` int(11) NOT NULL DEFAULT '61' COMMENT 'default value'
+  `method` int(11) NOT NULL DEFAULT '61' COMMENT 'default value',
+  `session_pattern` varchar(32) DEFAULT 'Ymd'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
