@@ -739,7 +739,10 @@ class Challenge extends CActiveRecord
       } 
     }
     
-    $result['penalties'] = $this->hasHint($transaction->id) ? $transaction->penalties : 0;
+    $result['penalties'] = max(
+      $this->hasHint($transaction->id) ? $transaction->penalties : 0,
+      $this->beenShown($transaction->id) ? $transaction->points : 0
+    );
     
     return $result;
   }
