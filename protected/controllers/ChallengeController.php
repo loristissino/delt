@@ -196,6 +196,10 @@ class ChallengeController extends Controller
     if ($model->changeStatus($action))
     {
       Event::model()->log($this->DEUser, null, $model->last_action, array('challenge_id'=>$model->id));
+      if ($model->last_action == Event::CHALLENGE_ACCEPTED)
+      {
+        Event::model()->log($this->DEUser, $model->exercise->firm_id, Event::FIRM_USED_AS_BENCHMARK, array('challenge_id'=>$model->id));
+      }
     }
     else
     {
