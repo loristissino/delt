@@ -305,6 +305,7 @@ class Exercise extends CActiveRecord
     $yaml[] = "license: Creative Commons Attribution-ShareAlike 3.0";
     $yaml[] = "description: " . $this->_addQuotes($this->description);
     $yaml[] = "method: " . $this->method;
+    $yaml[] = "session_pattern: " . $this->_addQuotes($this->session_pattern);
     $yaml[] = "benchmark: " . $this->firm->slug;
     $yaml[] = "introduction: |";
     $yaml = array_merge($yaml, $this->_fixLongText($this->introduction, 2));
@@ -348,7 +349,7 @@ class Exercise extends CActiveRecord
     {
       Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
       
-      DELT::array2object($values, $this, array('title', 'description', 'method'));
+      DELT::array2object($values, $this, array('title', 'description', 'method', 'session_pattern'));
       $benchmark = DELT::getValueFromArray($values, 'benchmark', false);
       if ($benchmark)
       {
