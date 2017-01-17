@@ -25,7 +25,7 @@ $this->menu=array(
 )); ?>
 
   <p class="note"><?php echo Yii::t('delt', 'The file is in YAML format.') ?>
-  <?php echo CHtml::link(Yii::t('delt', 'Download'), array('exercise/export', 'id'=>$model->id, 'format'=>'yaml'))?></p>
+  <?php echo CHtml::link(Yii::t('delt', 'Download'), array('exercise/export', 'id'=>$model->id, 'format'=>'yaml', 'wordwrap'=>$wordwrap))?></p>
 
   <div class="row">
     <?php echo $form->textArea($model, 'yaml', array('rows' => 30, 'cols' => 70)); ?>

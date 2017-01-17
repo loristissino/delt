@@ -17,7 +17,7 @@ $this->menu=array(
   array('label'=>Yii::t('delt', 'View Report'), 'url'=>array('report', 'id'=>$model->id)),
   array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'id'=>$model->id)),
   array('label'=>Yii::t('delt', 'Import'), 'url'=>array('import', 'id'=>$model->id)),
-  array('label'=>Yii::t('delt', 'Export'), 'url'=>array('export', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Export'), 'url'=>array('export', 'id'=>$model->id, 'wordwrap'=>60)),
   array('label'=>Yii::t('delt', 'Delete'), 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>Yii::t('delt', 'Are you sure you want to delete this exercise?'))),
 );
 ?>

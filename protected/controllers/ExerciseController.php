@@ -76,10 +76,15 @@ class ExerciseController extends Controller
    * Shows an exercise as a YAML file.
    * @param integer $id the ID of the exercise
    */
-  public function actionExport($id, $format='web')
+  public function actionExport($id, $wordwrap=60, $format='web')
   {
+    if (!is_numeric($wordwrap) || $wordwrap<20 || $wordwrap>200)
+    {
+      $wordwrap=60;
+    }
+    
     $model = $this->loadModel($id);
-    $model->createYaml();
+    $model->createYaml($wordwrap);
     Event::model()->log($this->DEUser, null, Event::EXERCISE_EXPORTED, array('exercise_id'=>$model->id));
     if($format=='yaml')
     {
@@ -88,6 +93,7 @@ class ExerciseController extends Controller
     }
     $this->render('export',array(
       'model'=>$model,
+      'wordwrap'=>$wordwrap,
     ));
   }
 

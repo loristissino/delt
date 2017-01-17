@@ -38,6 +38,8 @@ class Exercise extends CActiveRecord
   public $license_confirmation;
   public $yaml;
   
+  private $_wordwrap;
+  
   /**
    * @return string the associated database table name
    */
@@ -286,7 +288,7 @@ class Exercise extends CActiveRecord
   
   private function _wordwrap($value)
   {
-    return wordwrap($value, 60, "\n");
+    return wordwrap($value, $this->_wordwrap, "\n");
   }
   
   private function _fixLongText($value, $indentation)
@@ -295,8 +297,10 @@ class Exercise extends CActiveRecord
     return $this->_addSpaces(explode("\n", implode("\n", array_map(array($this, '_wordwrap'), explode("\n", $value)))), $indentation);
   }
   
-  public function createYaml()
+  public function createYaml($wordwrap)
   {
+    $this->_wordwrap = $wordwrap;
+    
     $yaml = array();
     $yaml[] = "---";
     $yaml[] = "slug: " . $this->slug;
