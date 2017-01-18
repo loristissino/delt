@@ -1592,5 +1592,26 @@
   
   'Session Pattern'=>
   'Pattern per la sessione',
-    
+  
+  'Regular Expressions'=>
+  'Espressioni regolari',
+  
+  'Regular expressions to match journal entries descriptions with.'=>
+  'Espressioni regolari con cui far combaciare le descrizioni delle registrazioni contabili.',
+  
+  'invalid regular expression: «{value}»'=>
+  'espressione regolare non valida',
+  
+  'invalid description'=>
+  'descrizione non valida',
+  
+  'a text matching the regular expression «{value}»'=>
+  'un testo che soddisfi l\'espressione regolare «{value}»',
+  
+  'expected: {expected}, found: «{found}»'=>
+  'atteso: {expected}, trovato: «{found}»',
+  
+  'it is the exercise that contains the error, not the firm linked to this challenge'=>
+  'è l\'esercizio che contiene l\'errore, non l\'azienda associata alla sfida corrente',
+  
   );

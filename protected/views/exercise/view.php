@@ -100,6 +100,12 @@ $this->menu=array(
   <div class="hint">
     <?php echo $md->transform($transaction->hint) ?>
   </div>
+  <?php if ($regexps=$transaction->getRegexps()): ?>
+    <div class="regexps">
+      <?php echo nl2br(implode("\n", $regexps)) ?>
+    </div>
+  <?php endif ?>
+  
   <br />
   <div class="journalentries_shown">
   <?php 

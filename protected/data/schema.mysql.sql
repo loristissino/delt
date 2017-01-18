@@ -306,6 +306,7 @@ CREATE TABLE `tbl_transaction` (
   `event_date` date NOT NULL,
   `description` text NOT NULL,
   `hint` text,
+  `regexps` text,
   `points` int(11) NOT NULL DEFAULT '10',
   `penalties` int(11) NOT NULL DEFAULT '5',
   `entries` int(11) NOT NULL DEFAULT '1'

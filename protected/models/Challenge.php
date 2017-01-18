@@ -674,6 +674,29 @@ class Challenge extends CActiveRecord
               Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null)
             );
         }
+        
+        $regexp = $transaction->getRegexp($i);
+        
+        if ($regexp)
+        {
+          $e = @preg_match($regexp, $wje[$i]->description);
+          if ($e===false)
+          {
+            $result['errors'][] = $jen
+             . Yii::t('delt', 'invalid regular expression: «{value}»', array('{value}'=>$regexp))
+             . ' — '
+             . Yii::t('delt', 'it is the exercise that contains the error, not the firm linked to this challenge')
+             ;
+          }
+          elseif ($e===0)
+          {
+            $result['warnings'][] = $jen . Yii::t('delt', 'invalid description') . $this->_expectedValues(
+              Yii::t('delt', 'a text matching the regular expression «{value}»', array('{value}'=>$regexp)),
+              $wje[$i]->description,
+              false
+            );
+          }
+        }
 
         $sizeOfWJEPostings = sizeof($wje[$i]->postings);
         $sizeOfBJEPostings = sizeof($bje[$i]->postings);
@@ -777,7 +800,7 @@ class Challenge extends CActiveRecord
     return Journalentry::model()->getJournalEntriesByFirmAndTransaction($this->benchmark->id, $transaction->id);
   }
 
-  private function _expectedValues($expected, $found)
+  private function _expectedValues($expected, $found, $guillemets=true)
   {
     if (
       ($this->isOpen() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_TRANSACTION_CHANGE)
@@ -785,7 +808,9 @@ class Challenge extends CActiveRecord
       ($this->isCompleted() && $this->method & Challenge::SHOW_EXPECTED_VALUES_ON_CHALLENGE_COMPLETION)
       )
     {
-      return ' (' . Yii::t('delt', 'expected: «{expected}», found: «{found}»', array(
+      $t = $guillemets ? 'expected: «{expected}», found: «{found}»' : 'expected: {expected}, found: «{found}»';
+      
+      return ' (' . Yii::t('delt', $t, array(
         '{expected}' => $expected,
         '{found}' => $found,
         )

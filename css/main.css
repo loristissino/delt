@@ -782,6 +782,15 @@ div.challenge.open
   color: #9F9FFF;
 }
 
+#challenge .regexps
+{
+  padding-left: 0x;
+  padding-right: 10px;
+  color: #3F3FEE;
+  font-family: monospace;
+  font-size: 0.8em;
+}
+
 #challenge .score
 {
    background-color: #FFFF77;

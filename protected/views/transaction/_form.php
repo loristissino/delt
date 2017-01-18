@@ -74,6 +74,12 @@
 	</div>
 
 	<div class="row">
+		<?php echo $form->labelEx($model,'regexps'); ?><span class="hint"><?php echo Yii::t('delt', 'Regular expressions to match journal entries descriptions with.') ?></span>
+		<?php echo $form->textArea($model,'regexps',array('rows'=>6, 'cols'=>70)); ?>
+		<?php echo $form->error($model,'regexps'); ?>
+	</div>
+
+	<div class="row">
 		<?php echo $form->labelEx($model,'points'); ?>
 		<?php echo $form->numberField($model,'points', array('min'=>1,'max'=>1000)); ?>
 		<?php echo $form->error($model,'points'); ?>

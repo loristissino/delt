@@ -17,6 +17,7 @@
  * @property string $event_date
  * @property string $description
  * @property string $hint
+ * @property string $regexps
  * @property integer $points
  * @property integer $penalties
  * @property integer $entries number of entries needed to record this transaction
@@ -32,6 +33,8 @@
 
 class Transaction extends CActiveRecord
 {
+  
+  private $_regexps;
   
   /**
    * @return string the associated database table name
@@ -51,10 +54,10 @@ class Transaction extends CActiveRecord
     return array(
       array('exercise_id, event_date, description', 'required'),
       array('exercise_id, rank, points, penalties, entries', 'numerical', 'integerOnly'=>true),
-      array('hint', 'safe'),
+      array('hint, regexps', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, event_date, description, hint', 'safe', 'on'=>'search'),
+      array('id, exercise_id, event_date, description, hint, regexps', 'safe', 'on'=>'search'),
     );
   }
 
@@ -84,6 +87,7 @@ class Transaction extends CActiveRecord
       'event_date' => Yii::t('delt', 'Event Date'),
       'description' => Yii::t('delt', 'Description'),
       'hint' => Yii::t('delt', 'Hint'),
+      'regexps' => Yii::t('delt', 'Regular Expressions'),
       'points' => Yii::t('delt', 'Points'),
       'penalties' => Yii::t('delt', 'Penalties'),
       'entries' => Yii::t('delt', 'Number of Journal Entries'),
@@ -114,6 +118,7 @@ class Transaction extends CActiveRecord
     $criteria->compare('event_date',$this->event_date,true);
     $criteria->compare('description',$this->description,true);
     $criteria->compare('hint',$this->hint,true);
+    $criteria->compare('regexps',$this->hint,true);
     $criteria->compare('points',$this->points,true);
     $criteria->compare('penalties',$this->penalties,true);
     $criteria->compare('entries',$this->entries,true);
@@ -163,12 +168,33 @@ class Transaction extends CActiveRecord
     DELT::sanitizeProperties($this, array(
       'description',
       'hint',
+      'regexps',
       )
     );
     return parent::beforeSave();
   }
   
+  public function getRegexps()
+  {
+    if (is_array($this->_regexps))
+    {
+      return $this->_regexps;
+    }
+    if ($this->regexps)
+    {
+      $this->_regexps = array_map('trim', explode("\n", str_replace("\r", "", $this->regexps)));
+    }
+    else
+    {
+     $this->_regexps = array();
+    }
+    return $this->_regexps;
+  }
   
+  public function getRegexp($position)
+  {
+    return DELT::getValueFromArray($this->getRegexps(), $position, '');
+  }
   
   public function getJournalEntriesFromFirm($firm_id)
   {
