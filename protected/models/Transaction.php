@@ -143,11 +143,35 @@ class Transaction extends CActiveRecord
   {
     return $this->description;
   }
-  
+
   public function safeSave()
   {
+    $regexps=$this->getRegexps();
+    if (sizeof($regexps)>$this->entries)
+    {
+      $this->addError('regexps', Yii::t('delt', 'There are more regular expressions than expected entries.'));
+    }
+    $count=0;
+    foreach($regexps as $regexp)
+    {
+      if($regexp)
+      {
+        if (@preg_match($regexp, 'mytesttext')===false)
+        {
+          $this->addError('regexps', Yii::t('delt', 'The regular expression at line {number} is invalid.', array('{number}'=>$count+1)));
+        }      
+      }
+      $count++;
+    }
+
+    if ($this->hasErrors())
+    {
+      return false;
+    }
+    
     $date=DateTime::createFromFormat(DELT::getConvertedJQueryUIDateFormat(), $this->event_date);
     $this->event_date = $date->format('Y-m-d');
+    
     try
     {
       $this->save();
@@ -171,6 +195,7 @@ class Transaction extends CActiveRecord
       'regexps',
       )
     );
+    
     return parent::beforeSave();
   }
   
