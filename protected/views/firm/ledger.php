@@ -27,8 +27,8 @@ $this->layout='//layouts/html5';
     <td class="journaldescription">
       <?php echo $posting->journalentry->description ?>
     </td>
-    <?php echo $this->renderPartial('_td_debit_amount', array('amount'=>$posting->amount)) ?>
-    <?php echo $this->renderPartial('_td_credit_amount', array('amount'=>$posting->amount)) ?>
+    <?php echo $this->renderPartial('_td_debit_amount', array('amount'=>$posting->amount, 'firm'=>$model)) ?>
+    <?php echo $this->renderPartial('_td_credit_amount', array('amount'=>$posting->amount, 'firm'=>$model)) ?>
     <?php if(!$excluded) {if($posting->amount>0) $td+=$posting->amount; else $tc-=$posting->amount;} ?>
   </tr>
   <?php endif ?>
