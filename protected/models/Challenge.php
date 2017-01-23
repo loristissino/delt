@@ -717,7 +717,7 @@ class Challenge extends CActiveRecord
             {
               $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting {number}', 
                 array(
-                  '{number}'=>1+$j,
+                  '{number}'=>$wje[$i]->postings[$j]->rank,
                   )
                 ) . $this->_expectedValues(
                     DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
@@ -729,7 +729,7 @@ class Challenge extends CActiveRecord
             {
               $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting {number}', 
                 array(
-                  '{number}'=>1+$j,
+                  '{number}'=>$wje[$i]->postings[$j]->rank,
                 )
               ) . $this->_expectedValues(
                     $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
@@ -742,7 +742,7 @@ class Challenge extends CActiveRecord
               {
                 $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting {number}', 
                   array(
-                    '{number}'=>1+$j,
+                    '{number}'=>$wje[$i]->postings[$j]->rank,
                     )
                 ) . $this->_expectedValues(
                       $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),

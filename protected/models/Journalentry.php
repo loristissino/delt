@@ -245,7 +245,12 @@ class Journalentry extends CActiveRecord
   
   public function getJournalEntriesByFirmAndTransaction($firm_id, $transaction_id)
   {
-    return self::model()->ofFirm($firm_id, 'date ASC, t.rank ASC, postings.amount ASC')->included()->connectedTo($transaction_id)->with('postings')->findAll();
+    return self::model()
+      ->ofFirm($firm_id, 'date ASC, t.rank ASC, postings.amount DESC')
+      ->included()
+      ->connectedTo($transaction_id)
+      ->with('postings')
+      ->findAll();
   }
   
 }
