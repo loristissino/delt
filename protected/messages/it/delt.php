@@ -1614,4 +1614,10 @@
   'it is the exercise that contains the error, not the firm linked to this challenge'=>
   'è l\'esercizio che contiene l\'errore, non l\'azienda associata alla sfida corrente',
   
+  'This journal entry is not linked to any transaction.'=>
+  'Questa registrazione contabile non è collegata ad alcuna transazione.',
+  
+  'This journal entry is linked to the current transaction.'=>
+  'Questa registrazione contabile è collegata alla transazione corrente.',
+  
   );

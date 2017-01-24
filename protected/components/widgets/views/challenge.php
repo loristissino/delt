@@ -11,6 +11,8 @@ if($challenge)
       'toggle_context'=>Yii::t('delt', 'Introduction'),
       'toggle_transactions'=>Yii::t('delt', 'Transactions'),
       'icon_title_toggles'=>Yii::t('delt', 'Toggle visibility of items...'),
+      'not_linked'=>Yii::t('delt', 'This journal entry is not linked to any transaction.'),
+      'linked_to_current'=>Yii::t('delt', 'This journal entry is linked to the current transaction.'),
       ),
     ));
 
