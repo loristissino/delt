@@ -60,7 +60,7 @@ $is_ajax = Yii::app()->controller->is_ajax;
     <?php echo Yii::app()->controller->createIcon('book_open', Yii::t('delt', 'Open Challenge'), array('id'=>'challenge_icon', 'width'=>16, 'height'=>16, 'style'=>'cursor: pointer', 'title'=>Yii::t('delt', 'The running challenge'))); ?>
     <span id="challenge_commands" class="challengeinfo"></span>
     <?php echo CHtml::encode($challenge->exercise->title) ?>
-    <?php if($challenge->method & Challenge::SHOW_POINTS_DURING_CHALLENGE): ?>
+    <?php if($challenge->shouldScoreBeShown()): ?>
     <span class="challengeinfo"> - 
       <span class="score">
         <?php echo Yii::t('delt', 'Current score: {percentage}%', array(

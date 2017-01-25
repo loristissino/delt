@@ -45,7 +45,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'create', 'update', 'delete', 'report', 'export', 'import'),
+        'actions'=>array('index', 'invite', 'view', 'solution', 'create', 'update', 'delete', 'report', 'export', 'import'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -69,8 +69,25 @@ class ExerciseController extends Controller
     $this->render('view',array(
       'model'=>$model,
       'parent_firm'=>$parent_firm,
+      'solution'=>false,
     ));
   }
+
+  /**
+   * Displays a particular model.
+   * @param integer $id the ID of the model to be displayed
+   */
+  public function actionSolution($id)
+  {
+    $model = $this->loadModel($id);
+    $parent_firm = $model->firm->parent;
+    $this->render('view',array(
+      'model'=>$model,
+      'parent_firm'=>$parent_firm,
+      'solution'=>true,
+    ));
+  }
+
 
   /**
    * Shows an exercise as a YAML file.

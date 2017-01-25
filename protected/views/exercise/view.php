@@ -13,6 +13,7 @@ $this->layout = '//layouts/column2';
 
 $this->menu=array(
   array('label'=>Yii::t('delt', 'Manage Exercises'), 'url'=>array('index')),
+  array('label'=>Yii::t('delt', $solution?'View':'View Solution'), 'url'=>array($solution?'view':'solution', 'id'=>$model->id)),
   array('label'=>Yii::t('delt', 'Edit'), 'url'=>array('update', 'id'=>$model->id)),
   array('label'=>Yii::t('delt', 'View Report'), 'url'=>array('report', 'id'=>$model->id)),
   array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'id'=>$model->id)),
@@ -81,15 +82,17 @@ $this->menu=array(
     </span>
   <?php endif ?>
   <b><?php echo CHtml::link(Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),  array('transaction/update', 'id'=>$transaction->id), array('title'=>Yii::t('delt', 'Event Date'). ' (' . Yii::t('delt', 'click to edit the transaction') . ')')) ?></b><sup title="<?php echo Yii::t('delt', 'Rank') ?>"><?php echo $transaction->rank ?></sup>
-  [
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries in Benchmark Firm actually used to record this transaction') ?>">
-  <?php echo $actual_entries ?>
-  </span>
-  /
-  <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries declared to be needed to record this transaction') ?>">
-  <?php echo $transaction->entries ?>
-  </span>
-  ]
+  <?php if($solution): ?>
+    [
+    <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries in Benchmark Firm actually used to record this transaction') ?>">
+    <?php echo $actual_entries ?>
+    </span>
+    /
+    <span class="entries" title="<?php echo Yii::t('delt', 'Journal entries declared to be needed to record this transaction') ?>">
+    <?php echo $transaction->entries ?>
+    </span>
+    ]
+  <?php endif ?>
   <span class="score">
     (<?php echo Yii::t('delt', 'Points: {points}. Penalties: {penalties}', array('{points}'=>$transaction->points, '{penalties}'=>$transaction->penalties)) ?>)
   </span>
@@ -97,31 +100,32 @@ $this->menu=array(
   <div class="description">
     <?php echo $md->transform($transaction->description) ?>
   </div>
-  <div class="hint">
-    <?php echo $md->transform($transaction->hint) ?>
-  </div>
-  <?php if ($regexps=$transaction->getRegexps()): ?>
-    <div class="regexps">
-      <?php echo nl2br(implode("\n", $regexps)) ?>
+  <?php if($solution): ?>
+    <div class="hint">
+      <?php echo $md->transform($transaction->hint) ?>
+    </div>
+    <?php if ($regexps=$transaction->getRegexps()): ?>
+      <div class="regexps">
+        <?php echo nl2br(implode("\n", $regexps)) ?>
+      </div>
+    <?php endif ?>
+    
+    <br />
+    <div class="journalentries_shown">
+    <?php 
+      
+      $this->renderPartial('//challenge/_journalentries', array('postings'=>
+        Posting::model()->getPostingsByFirmAndTransaction($model->firm_id, $transaction->id),
+        'model'=>$model->firm,
+        'title'=>false,
+        'draggable'=>false,
+        )
+      );
+    ?>
     </div>
   <?php endif ?>
-  
-  <br />
-  <div class="journalentries_shown">
-  <?php 
-    
-    $this->renderPartial('//challenge/_journalentries', array('postings'=>
-      Posting::model()->getPostingsByFirmAndTransaction($model->firm_id, $transaction->id),
-      'model'=>$model->firm,
-      'title'=>false,
-      'draggable'=>false,
-      )
-    );
-  ?>
-  </div>
-  
   <hr />
   </div>
 <?php endforeach ?>
 </div>
-<p><?php echo CHtml::link(Yii::t('delt', 'New Transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>
+<p class="notprinted"><?php echo CHtml::link(Yii::t('delt', 'New Transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>

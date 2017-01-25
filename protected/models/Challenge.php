@@ -298,6 +298,11 @@ class Challenge extends CActiveRecord
     return $this->method & self::HELP_ALLOWED;
   }
   
+  public function shouldScoreBeShown()
+  {
+    return ($this->method & self::SHOW_POINTS_DURING_CHALLENGE) or $this->isChecked();
+  }
+  
   public function getStatus()
   {
     if ($this->isOpen()) return 'open';

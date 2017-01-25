@@ -94,19 +94,16 @@ function updateConnections(id)
     {
       if (params.transaction && $(obj).data("transaction-id")==params.transaction)
       {
-        $(obj).addClass('connected');
         $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFFFCC':'#FFFF99');
         $(obj).attr('title', params.i18n.linked_to_current);
       }
       else if (!$(obj).data("transaction-id"))
       {
-        $(obj).addClass('connectedtoother');
-        $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFD588':'#FFA500');
+        $(obj).css('background-color',  $(obj).hasClass('even') ? '#FFDDDD':'#FFBBBB');
         $(obj).attr('title', params.i18n.not_linked);
       }
       else
       {
-        $(obj).removeClass('connected');
         $(obj).css('background-color', '');
       }
     }

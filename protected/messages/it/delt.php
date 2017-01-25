@@ -1620,4 +1620,7 @@
   'This journal entry is linked to the current transaction.'=>
   'Questa registrazione contabile è collegata alla transazione corrente.',
   
+  'View Solution'=>
+  'Visualizza soluzione',
+  
   );

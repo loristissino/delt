@@ -13,10 +13,12 @@
     <?php else: ?>
       <?php echo $this->createIcon('book', Yii::t('delt', 'Challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'A challenge'))); ?>
     <?php endif ?>
-    <?php echo CHtml::encode($data->exercise); ?> 
-    <span class="score">
-      <?php echo '('. Yii::app()->numberFormatter->formatDecimal($data->rate/10) . '%)' ?>
-    </span>
+    <?php echo CHtml::encode($data->exercise); ?>
+    <?php if ($data->shouldScoreBeShown()): ?>
+      <span class="score">
+        <?php echo '('. Yii::app()->numberFormatter->formatDecimal($data->rate/10) . '%)' ?>
+      </span>
+    <?php endif ?>
     <br />
     
   </div>

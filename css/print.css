@@ -43,3 +43,5 @@ a:link, a:visited {background:transparent;font-weight:700;text-decoration:underl
 #firm_info h1 {color: black; font-size: 1.4em; text-decoration:underline;}
 #firm_info p {color: gray; font-size: 1em; font-style: italic}
 #firm_info a:link:after, a:visited:after {content:" <br />(" attr(href) ")";font-size:50%;}
+
+.notprinted {display: none;}
