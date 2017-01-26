@@ -19,6 +19,7 @@ $toggle_description = addslashes(Yii::t('delt', 'firm\'s description'));
 $toggle_excluded = addslashes(Yii::t('delt', 'excluded journal entries'));
 $toggle_journal = addslashes(Yii::t('delt', 'journal'));
 $toggle_statements = addslashes(Yii::t('delt', 'statements'));
+$toggle_challenge = addslashes(Yii::t('delt', 'challenge'));
 
 $cs = Yii::app()->getClientScript();  
 $cs->registerScript(
@@ -29,6 +30,7 @@ var description_visible = true;
 var excluded_visible = true;
 var journal_visible = true;
 var statements_visible = true;
+var challenge_visible = true;
 
 $("#commands").html(
   "' . $toggle_text . '<br />" +
@@ -37,6 +39,7 @@ $("#commands").html(
   "<a href=\"#\" id=\"toggle_excluded\">' . $toggle_excluded . '</a>",
   "<a href=\"#\" id=\"toggle_journal\">' . $toggle_journal . '</a>",
   "<a href=\"#\" id=\"toggle_statements\">' . $toggle_statements . '</a>",
+  "<a href=\"#\" id=\"toggle_challenge\">' . $toggle_challenge . '</a>",
   ]
   .join(" - "));
 
@@ -60,13 +63,21 @@ $("#toggle_statements").click( function() {
   $("#statements").css("display", statements_visible ? "block" : "none");
 });
 
+$("#toggle_challenge").click( function() {
+  challenge_visible = !challenge_visible;
+  $("#challenge").css("display", challenge_visible ? "block" : "none");
+});
+
 '
   ,
   CClientScript::POS_READY
 );
 
 
-
+if (sizeof($results))
+{
+  $md = new CMarkdown();
+}
 
 ?>
 
@@ -132,7 +143,22 @@ $("#toggle_statements").click( function() {
     )) ?>
 <?php endforeach ?>
 <hr />
-</section>  
+</section>
+
+<?php if(sizeof($results)): ?>
+  <section id="challenge">
+    
+  <h2><?php echo Yii::t('delt', 'Challenge') ?></h2>
+    <?php foreach(DELT::getValueFromArray($results, 'transactions', array()) as $result): ?>
+      <?php echo Yii::app()->controller->renderPartial('/challenge/_info', array('source'=>$result, 'md'=>$md)) ?>
+      <?php if ($result['checked'] || sizeof($result['errors'])): ?>
+        <?php echo Yii::app()->controller->renderPartial('/challenge/_checks', array('source'=>$result, 'with_oks'=>true, 'with_points'=>true)) ?>
+      <?php endif ?>
+    <?php endforeach ?>
+    
+  </section>
+  <hr />
+<?php endif ?>
 
 <?php echo $this->renderPartial('_frostiness', array('model'=>$model, 'warning'=>false)) ?>
 <p id="commands"></p>

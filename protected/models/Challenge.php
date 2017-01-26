@@ -27,6 +27,7 @@
  * @property integer $transaction_id  (current transaction)
  * @property string $hints
  * @property string $shown
+ * @property string $results
  *
  * The followings are the available model relations:
  * @property Exercise $exercise
@@ -76,10 +77,10 @@ class Challenge extends CActiveRecord
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
       array('exercise_id, instructor_id, user_id, firm_id, method, rate', 'numerical', 'integerOnly'=>true),
-      array('started_at, suspended_at, completed_at, hints, shown, session', 'safe'),
+      array('started_at, suspended_at, completed_at, hints, shown, session, results', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
-      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, rate', 'safe', 'on'=>'search'),
+      array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, rate, results', 'safe', 'on'=>'search'),
     );
   }
 
@@ -119,6 +120,7 @@ class Challenge extends CActiveRecord
       'transaction' => 'Transaction',
       'hints' => 'Hints',
       'shown' => 'Shown',
+      'results' => 'Results',
     );
   }
 
@@ -558,14 +560,21 @@ class Challenge extends CActiveRecord
   
   public function getResults()
   {
+    if ($this->results!==null)
+    {
+      return unserialize($this->results);
+    }
+    
     if ($this->isOpen() && $this->method & Challenge::SHOW_CHECKS_ON_TRANSACTION_CHANGE)
     {
       return $this->check(false);
     }
+    
     if ($this->isCompleted() && $this->method & Challenge::SHOW_CHECKS_ON_CHALLENGE_COMPLETION)
     {
       return $this->check(true);
     }
+    
     return array();
   }
   
@@ -628,6 +637,7 @@ class Challenge extends CActiveRecord
     if($final)
     {
       $this->changeStatus('checked');
+      $this->results=serialize($results);
     }
     $this->save();
     return $results;

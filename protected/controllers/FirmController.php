@@ -57,7 +57,7 @@ class FirmController extends Controller
         'actions'=>array('admin','delete','log'),
         'users'=>array('admin'),
       ),
-      array('allow', // allow authenticated user to perform 'public' actions
+      array('allow', // allow not authenticated user to perform 'public' actions
         'actions'=>array('public','coa','index','ledger','banner','slideshow'),
         'users'=>array('*'),
         ),
@@ -78,9 +78,18 @@ class FirmController extends Controller
     ));
   }
 
-  public function actionPublic($slug, $level=0, $format='')
+  public function actionPublic($slug, $level=0, $format='', $challenge=null)
   {
     $this->firm=$this->loadFirmBySlug($slug, false);
+    
+    $results=array();
+    if ($challenge && $this->DEUser)
+    {
+      if ($challenge = Challenge::model()->findByAttributes(array('id'=>$challenge, 'instructor_id'=>$this->DEUser->id)))
+      {
+        $results=$challenge->getResults();
+      }
+    }
     
     switch($format)
     {
@@ -108,6 +117,7 @@ class FirmController extends Controller
             'postings'=>$postings,
             'level'=>$level,
             'maxlevel'=>$maxlevel,
+            'results'=>$results,
           ));
         }
         else

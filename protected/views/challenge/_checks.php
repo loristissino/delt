@@ -18,5 +18,8 @@
   <?php else: ?>
     <?php echo Yii::app()->controller->createIcon('accept', Yii::t('delt', 'OK'), array('width'=>16, 'height'=>16)) ?>
   <?php endif ?>
+  <?php if (isset($with_points) && $with_points): ?>
+    <strong><?php echo Yii::t('delt', 'One point|{n} points', $source['points']) ?></strong>
+  <?php endif ?>
 <?php endif ?>
 </div>

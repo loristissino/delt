@@ -5,14 +5,24 @@
 $this->breadcrumbs=array(
   'Exercises'=>array('index'),
   $model->title =>array('exercise/view', 'id'=>$model->id),
-  'Report'
 );
+
+if($challenges)
+{
+  $this->breadcrumbs['Report']=array('exercise/report', 'id'=>$model->id);
+  $this->breadcrumbs[]='Session';
+}
+else
+{
+  $this->breadcrumbs[]='Report';
+}
+
 
 $this->layout = '//layouts/column1_menu_below';
 
 $this->menu=array(
-  array('label'=>'View Exercise', 'url'=>array('view', 'id'=>$model->id)),
-  array('label'=>'Invite Users', 'url'=>array('invite', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'View Exercise'), 'url'=>array('view', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'id'=>$model->id)),
 );
 ?>
 
@@ -22,18 +32,18 @@ $this->menu=array(
   <?php if(sizeof($challenges)): ?>
     <table>
       <tr>
-        <th>Firm</th>
-        <th>Owner</th>
-        <th>Assigned</th>
-        <th>Completed</th>
-        <th>Checked</th>
-        <th>Rate</th>
+        <th><?php echo Yii::t('delt', 'Firm') ?></th>
+        <th><?php echo Yii::t('delt', 'Owner') ?></th>
+        <th><?php echo Yii::t('delt', 'Assigned') ?></th>
+        <th><?php echo Yii::t('delt', 'Completed') ?></th>
+        <th><?php echo Yii::t('delt', 'Checked') ?></th>
+        <th><?php echo Yii::t('delt', 'Rate') ?></th>
       </tr>
     <?php foreach($challenges as $challenge): ?>
       <tr>
         <td>
           <?php if($challenge->firm): ?>
-          <?php echo CHtml::link(CHtml::encode($challenge->firm->name), array('/firms/' . $challenge->firm->slug), array('title'=>$challenge->firm_id)) ?>
+          <?php echo CHtml::link(CHtml::encode($challenge->firm->name), array('/firms/' . $challenge->firm->slug, 'challenge'=>$challenge->id)) ?>
           <?php else: ?>
           <em><?php echo $challenge->user ?></em> 
           <?php endif ?>

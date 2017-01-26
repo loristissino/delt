@@ -1623,4 +1623,43 @@
   'View Solution'=>
   'Visualizza soluzione',
   
+  'Sessions'=>
+  'Sessioni',
+  
+  'Owner'=>
+  'Proprietario',
+  
+  'Assigned'=>
+  'Assegnata',
+  
+  'Completed'=>
+  'Completata',
+
+  'Checked'=>
+  'Controllata',
+
+  'Rate'=>
+  'Punteggio',
+  
+  'Challenge'=>
+  'Sfida',
+  
+  'Toggle the visibility of:'=>
+  'Commuta la visibilità di:',
+  
+  'firm\'s description'=>
+  'descrizione dell\'azienda',
+  
+  'excluded journal entries'=>
+  'registrazioni contabili escluse',
+  
+  'journal'=>
+  'libro giornale',
+  
+  'statements'=>
+  'bilancio',
+  
+  'challenge'=>
+  'sfida',
+  
   );

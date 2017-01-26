@@ -60,7 +60,8 @@ CREATE TABLE `tbl_challenge` (
   `rate` int(3) NOT NULL DEFAULT '0',
   `transaction_id` int(11) DEFAULT NULL,
   `hints` varchar(255) DEFAULT NULL,
-  `shown` varchar(255) DEFAULT NULL
+  `shown` varchar(255) DEFAULT NULL,
+  `results` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
