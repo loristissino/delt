@@ -86,6 +86,32 @@ class BookkeepingController extends Controller
     ));
   }
 
+  public function actionCoasearchreplace($slug)
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    if(isset($_POST['search']))
+    {
+      $changes = Account::model()->searchAndReplaceOnNames(
+        $this->firm->id,
+        DELT::getValueFromArray($_POST, 'search', ''),
+        DELT::getValueFromArray($_POST, 'replace', '')
+        );
+      if ($changes)
+      {
+        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Account names changed: {number}.', array('{number}'=>$changes)));
+      }
+      else
+      {
+        Yii::app()->getUser()->setFlash('delt_warning', Yii::t('delt', 'No account name has been changed.'));
+      }
+        $this->redirect(array('bookkeeping/coa', 'slug'=>$slug, 'changes'=>$changes));
+    }
+    else
+    {
+      throw new CHttpException(404,'The requested page does not exist.');
+    }
+  }
+
   public function actionConfigure($slug, $template='configure')
   {
     $this->firm=$this->loadModelBySlug($slug);

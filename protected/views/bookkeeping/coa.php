@@ -25,3 +25,23 @@ $this->menu[]=array('label'=>Yii::t('delt', 'Configure'), 'url'=>array('bookkeep
 <h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
 
 <?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderName', 'buttonsTemplate'=>'{view}{update}{new}')) ?>
+
+<h2><?php echo Yii::t('delt', 'Utilities') ?></h2>
+
+<div class="form">
+<?php $form=$this->beginWidget('CActiveForm', array(
+  'id'=>'coasearchreplace',
+  'enableAjaxValidation'=>false,
+  'method'=>'POST',
+  'action'=>$this->createUrl('bookkeeping/coasearchreplace', array('slug'=>$model->slug)),
+)); ?>
+
+<div class="row">
+  <span class="hint"><?php echo Yii::t('delt', 'Use regular expression to make a search and replace on text names.') ?></span><br />
+  <?php echo CHtml::textField('search', '', array('size'=>20, 'placeholder'=>'search expression')) ?>
+  <?php echo CHtml::textField('replace', '', array('size'=>20, 'placeholder'=>'replace expression')) ?>
+  <?php echo CHtml::submitButton(Yii::t('delt', 'Search and replace'), array('name'=>'searchreplace')) ?>
+</div>
+
+<?php $this->endWidget() ?>
+</div>

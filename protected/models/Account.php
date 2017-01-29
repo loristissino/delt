@@ -764,13 +764,42 @@ class Account extends CActiveRecord
     $values=array_flip(array_flip(explode(' ', trim(preg_replace('/\s+/', ' ', $text)))));
     // we remove double spaces and duplicates
     
-    $newclasses = implode(' ', $values);
+    $newclasses = implode(' ', $values);                                                                              
     
     if($parent && $inherit)
     {
       $newclasses = trim(implode(' ', array_merge($values, explode(' ', $parent->classes))));
     }
     $this->classes=$newclasses;
+  }
+  
+  public function searchAndReplaceOnNames($firm_id, $search, $replace)
+  {
+    $count = 0;
+    foreach(Account::model()->belongingTo($firm_id)->findAll() as $account)
+    {
+      $lines=array();
+      foreach(explode("\n", $account->textnames) as $line)
+      {
+        $newname = @preg_replace($search, $replace, $line);
+        if ($newname && $newname != $line)
+        {
+          $lines[]=$newname;
+        }
+        else
+        {
+          $lines[]=$line;
+        }
+      }
+      $text = implode("\n", $lines);
+      if ($text!=$account->textnames)
+      {
+        $account->textnames = $text;
+        $account->save(true);
+        $count++;
+      }
+    }
+    return $count;
   }
   
 }
