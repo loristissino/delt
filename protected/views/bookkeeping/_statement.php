@@ -148,7 +148,7 @@
           false,
           false,
           'span',
-          array('class'=>($value>0 ? 'positiveamount': 'negativeamount')))
+          array('class'=>($data['grandtotal']>0 ? 'positiveamount': 'negativeamount')))
         ?></th>
     </tr>
   </tfoot>
