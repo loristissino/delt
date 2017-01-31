@@ -15,6 +15,7 @@ class CChallenge extends CWidget
       {
         if ($this->challenge = Yii::app()->controller->DEUser->getOpenChallenge())
         {
+          Yii::app()->user->setState('challenge', $this->challenge->id);
           Yii::app()->user->setState('transaction', $this->challenge->transaction_id);
         }
       return $this->challenge;

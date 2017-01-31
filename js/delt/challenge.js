@@ -12,16 +12,20 @@ function execute(params)
   updateConnections();
   addLinks(params);
   
-  /*
   $(".transaction").each(function(i, obj)
   {
-    $(obj).hover(function() {
-      updateConnections($(obj).data('id'));
+    $(obj).mouseenter(function() {
+      console.log("entered");
+      $('#quicklinks' + $(obj).data('id')).show();
+      }
+    );
+    $(obj).mouseleave(function() {
+      $('#quicklinks' + $(obj).data('id')).hide();
       }
     );
   }
   );
-  */
+  
   
   $("#challenge .transaction.current").attr('style', 'width: 680px').pin();
   

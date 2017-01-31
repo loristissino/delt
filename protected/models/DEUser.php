@@ -73,8 +73,8 @@ class DEUser extends CActiveRecord
     // NOTE: you may need to adjust the relation name and the related
     // class name for the relations automatically generated below.
     return array(
-      'firms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0 AND role = "O"'),
-      'wfirms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0 AND role = "I"'),
+      'firms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0 AND role = "O"', 'order'=>'create_date DESC'),
+      'wfirms' => array(self::MANY_MANY, 'Firm', '{{firm_user}}(user_id, firm_id)', 'condition'=>'status > 0 AND role = "I"', 'order'=>'create_date DESC'),
       'profiles' => array(self::HAS_ONE, 'Profiles', 'user_id'),
       'id0' => array(self::BELONGS_TO, 'Profiles', 'id'),
       'challenges' => array(self::HAS_MANY, 'Challenge', 'user_id'),

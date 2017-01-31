@@ -1662,4 +1662,31 @@
   'challenge'=>
   'sfida',
   
+  'Name of the new firm'=>
+  'Nome della nuova azienda',
+  
+  'Older firms...'=>
+  'Aziende meno recenti...',
+  
+  'There is not such an exercise. Wrong slug?'=>
+  'Non c\'è un esercizio con questo slug. Lo hai scritto male?',
+  
+  'You have been successfully invited.'=>
+  'Sei stato correttamente invitato ad affrontare la sfida.',
+  
+  'The exercise «{title}» is already in your list.'=>
+  'L\'esercizio «{title}»  è già nel tuo elenco.',
+  
+  'Congratulations!'=>
+  'Congratulazioni!',
+  
+  'There is an active challenge, but no transaction has been marked current.'=>
+  'C\'è una sfida attiva, ma nessuna transazione è contrassegnata come corrente.',
+  
+  'No templates available for this firm.'=>
+  'Per questa azienda non sono disponibili causali contabili.',
+  
+  'This firm does not seem to have «{position}» accounts to close.'=>
+  'Questa azienda non sembra avere conti «{position}» da chiudere.',
+  
   );

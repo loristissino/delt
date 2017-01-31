@@ -311,7 +311,7 @@ class BookkeepingController extends Controller
   {
     $this->firm=$this->loadModelBySlug($slug);
     $this->checkFrostiness($this->firm);
-    
+      
     $journalentryform = new JournalentryForm();
     $journalentryform->firm_id = $this->firm->id;
     $journalentryform->firm = $this->firm;  // FIXME: if we set the firm, we don't need to set the other values... here for compatibility only

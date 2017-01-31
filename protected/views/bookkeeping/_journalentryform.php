@@ -662,6 +662,7 @@ if(Yii::app()->language!=='en')
     <?php echo Yii::t('delt', 'The lines in which the account field is empty are ignored.') ?>
   </p>
 
+
   <?php echo $form->errorSummary($journalentryform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
   <div class="row">
@@ -743,7 +744,13 @@ if(Yii::app()->language!=='en')
       <?php echo $form->checkBox($journalentryform, 'is_adjustment', array('checked'=>$journalentryform->is_adjustment)) ?>&nbsp;<?php echo Yii::t('delt', 'Mark this journal entry as adjustment, thus allowing exceptions in debit/credit checks') ?>
     </div>
     <?php endif ?>
+    
     <div class="row buttons">
+      
+      <?php if (Yii::app()->user->getState('challenge', false) && !(Yii::app()->user->getState('transaction', false))) :?>
+        <?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?> <?php echo Yii::t('delt', 'There is an active challenge, but no transaction has been marked current.') ?></p>
+      <?php endif ?>
+
       <?php echo CHtml::submitButton(Yii::t('delt', 'Add a line'), array('name'=>'addline', 'id'=>'addline_button')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save'), array('name'=>'save', 'id'=>'save_button')); ?>
       <?php echo CHtml::submitButton(Yii::t('delt', 'Save & Close'), array('name'=>'done', 'id'=>'done_button')); ?>

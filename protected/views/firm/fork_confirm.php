@@ -51,6 +51,12 @@ $cs->registerScript(
 
   <?php echo $form->errorSummary($forkfirmform, Yii::t('delt', 'Please fix the following errors:')); ?>
 
+    <div class="row">
+      <?php echo $form->labelEx($forkfirmform,'name'); ?>
+      <?php echo $form->textField($forkfirmform,'name',array('size'=>60,'maxlength'=>128)); ?>
+      <?php echo $form->error($forkfirmform,'name'); ?>
+    </div>
+
     <div class="row buttons">
       <?php echo $form->label($forkfirmform, 'type'); ?><?php echo $form->dropDownList($forkfirmform,
           'type',

@@ -286,7 +286,7 @@ class FirmController extends Controller
       if(!$firm->isForkableBy($this->DEUser))
         throw new CHttpException(403, 'You are not allowed to access the requested page.');
     }
-    
+
     $form = new ForkfirmForm;
     $form->change_language=true;
     
@@ -301,7 +301,7 @@ class FirmController extends Controller
           $newfirm = new Firm();
           try
           {
-            $newfirm->forkFrom($firm, $this->DEUser, $form->type);
+            $newfirm->forkFrom($firm, $this->DEUser, $form->type, $form->name);
             if($form->change_language)
             {
               $newfirm->setDefaultLanguageFromUserProfile($this->DEUser);
@@ -337,6 +337,18 @@ class FirmController extends Controller
 
     if($firm)
     {
+      if (!$form->name)
+      {
+        if ($challenge = $this->DEUser->getOpenChallenge())
+        {
+          $form->name = $challenge->exercise->title;
+        }
+        else
+        {
+          $form->name=$firm->getCopiedNameFrom($firm);
+        }
+      }
+      
       $this->render('fork_confirm',array(
         'firm'=>$firm, 'forkfirmform'=>$form,
       ));

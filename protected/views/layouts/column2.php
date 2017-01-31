@@ -19,6 +19,7 @@ else
   
   if($this->DEUser)
   {
+    $max_shown = 5;
     foreach($this->DEUser->firms as $firm)
     {
       $label = $firm;
@@ -28,8 +29,20 @@ else
         $linkOptions['style'] = 'color:red';
         $linkOptions['title'] = Yii::t('delt', 'This firm is stale');
       }
-      $this->firmmenu[]=array('label'=>$label, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug), 'linkOptions'=>$linkOptions);
+      if (sizeof($this->firmmenu)<$max_shown)
+      {
+        $this->firmmenu[]=array('label'=>$label, 'url'=>array('/bookkeeping/manage', 'slug'=>$firm->slug), 'linkOptions'=>$linkOptions);
+      }
+      else
+      {
+        break;
+      }
     }
+    if (sizeof($this->DEUser->firms)>$max_shown)
+    {
+      $this->firmmenu[]=array('label'=>Yii::t('delt', 'Older firms...'), 'url'=>array('/bookkeeping/index', 'list'=>'on'), 'linkOptions'=>array('style'=>'font-style:italic'));
+    }
+    
   }
 }
 

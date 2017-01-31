@@ -947,6 +947,11 @@ class Firm extends CActiveRecord
     return Firm::model()->findAllByAttributes(array('status'=>1));
   }
   
+  public function getCopiedNameFrom($source)
+  {
+    return Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
+  }
+
   /**
   * Forks a firm and sets a user as its owner.
   * @param Firm $source the firm to be forked from
@@ -954,9 +959,9 @@ class Firm extends CActiveRecord
   * @param integer $type the kind of forking required 
   * @return boolean whether the operation was successful
   */
-  public function forkFrom(Firm $source, DEUser $user, $type)
+  public function forkFrom(Firm $source, DEUser $user, $type, $name='')
   {
-    $this->name=Yii::t('delt', 'Copy of "{name}"', array('{name}'=>$source->name));
+    $this->name= $name ? $name : $this->getCopiedNameFrom($source);
     
     DELT::object2object($source, $this, array('language_id','currency','csymbol','description','firmtype', 'checked_positions', 'shortcodes', 'css'));
     

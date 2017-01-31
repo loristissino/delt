@@ -18,6 +18,7 @@
 
 class ForkfirmForm extends CFormModel
 {
+  public $name;
   public $type;
   public $change_language;
   public $license_confirmation;
@@ -25,6 +26,7 @@ class ForkfirmForm extends CFormModel
   public function rules()
   {
     return array(
+      array('name', 'length', 'max'=>128),
       array('type, license_confirmation', 'required'),
       array('type', 'checkType'),
       array('license_confirmation', 'checkLicense'),
@@ -38,6 +40,7 @@ class ForkfirmForm extends CFormModel
   public function attributeLabels()
   {
     return array(
+      'name' => Yii::t('delt', 'Name of the new firm'),
       'type' => Yii::t('delt', 'Data to duplicate:'),
       'license'=>Yii::t('delt', 'License'),
       'language'=>Yii::t('delt', 'Language'),

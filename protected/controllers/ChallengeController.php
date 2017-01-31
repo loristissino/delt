@@ -164,11 +164,11 @@ class ChallengeController extends Controller
       {
         if ($exercise->invite(array($this->DEUser->username), false, ''))
         {
-          Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'You have successfully been invited!'));
+          Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Congratulations!') . ' ' . Yii::t('delt', 'You have been successfully invited.'));
         }
         else
         {
-          Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'You have already been invited to this.'));
+          Yii::app()->user->setFlash('delt_failure', Yii::t('delt', 'The exercise «{title}» is already in your list.', array('{title}'=>$exercise->title)));
         }
       }
       
@@ -245,7 +245,7 @@ class ChallengeController extends Controller
     $this->redirect(array('bookkeeping/manage', 'slug'=>$firm->slug));
   }
   
-  public function actionActivatetransaction($id, $transaction)
+  public function actionActivatetransaction($id, $transaction, $redirect='')
   {
     $model=$this->loadModel($id);
     
@@ -256,6 +256,10 @@ class ChallengeController extends Controller
     else
     {
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
+    }
+    if ($redirect && $model->firm)
+    {
+      $this->redirect(array($redirect, 'slug'=>$model->firm->slug));
     }
     $this->renderPartial('_challenge', array('result'=>$model->getResults()));
   }

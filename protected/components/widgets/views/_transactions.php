@@ -91,6 +91,11 @@
       
       - <?php echo Yii::t('delt', 'One point|{n} points', $transaction->points) ?>
       
+      <span id="quicklinks<?php echo $transaction->id ?>" style="display:none">
+        <?php echo CHtml::link(Yii::app()->controller->createIcon('application_form', Yii::t('delt', 'New journal entry'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'bookkeeping/newjournalentry'), array('title'=>Yii::t('delt', 'New journal entry'))); ?>
+        <?php echo CHtml::link(Yii::app()->controller->createIcon('template', Yii::t('delt', 'Use template'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'template/admin'), array('title'=>Yii::t('delt', 'Use a template'))); ?>
+        <?php echo CHtml::link(Yii::app()->controller->createIcon('closingentry', Yii::t('delt', 'Closing entry'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'bookkeeping/closingjournalentry'), array('title'=>Yii::t('delt', 'Closing entry'))); ?>
+      </span>
       </div><!-- firstline -->
       
       <div class="description">
