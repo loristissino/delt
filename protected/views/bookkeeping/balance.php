@@ -1,7 +1,15 @@
 <?php
 /* @var $this BookkeepingController */
 
+$currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
+
 $cs = Yii::app()->getClientScript();  
+
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/accounting.min.js',
+  CClientScript::POS_HEAD
+);
+
 $cs->registerScript(
   'event-handler',
   '
@@ -12,6 +20,50 @@ $cs->registerScript(
       }
     );
     
+    var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
+    console.log("decimal separator: " + decimal_separator);
+    var thousand_separator = decimal_separator=="." ? ",":".";
+    var currency = "' . $currency_test_string . '".replace(/[\d\.,]/g, "");
+    
+    var dr_text = "' . Yii::t('delt', 'Dr.<!-- outstanding balance -->') . '";
+    var cr_text = "' . Yii::t('delt', 'Cr.<!-- outstanding balance -->') . '";
+
+    function computeTotalAmountOfSelectedAccounts() {
+      var amount = 0;
+      $(".select-on-check").each(function(i, obj)
+      {
+        console.log($(obj));
+        if($(obj).attr("checked"))
+        {
+          console.log("entro");
+          var account_id = $(obj).context.value;
+          var value = parseFloat($("#account_"+account_id).attr("data-rawvalue"));
+          console.log(value);
+          amount += value;
+        }
+      }
+      );
+      return amount;
+    }
+    
+    $(".select-on-check").click(function(obj) {
+      var amount = computeTotalAmountOfSelectedAccounts(0);
+      var text = "";
+      if (amount)
+      {
+        text = amount>0 ? dr_text : cr_text;
+        text += " " + accounting.formatMoney(amount>0?amount:-amount, currency, 2, thousand_separator, decimal_separator);
+      }
+      $("#selected_accounts_balance").html(text);
+      
+    }
+    );
+
+    $(".select-on-check-all").click(function(obj) {
+      $("#selected_accounts_balance").text("");
+    }
+    );
+
   '
   ,
   CClientScript::POS_READY
@@ -107,6 +159,8 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'currency'),
       'header'=>Yii::t('delt', 'Notes'),
+      'footer'=>DELT::currency_value(0, $this->firm->currency),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal', 'id'=>'selected_accounts_balance'),
       ),
     array(
       'class'=>'CCheckBoxColumn',

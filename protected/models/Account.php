@@ -111,6 +111,11 @@ class Account extends CActiveRecord
     );
   }
 
+  public function getBalance()
+  {
+    return $this->debitgrandtotal + $this->creditgrandtotal;
+  }
+
   /**
    * @return array customized attribute labels (name=>label)
    */

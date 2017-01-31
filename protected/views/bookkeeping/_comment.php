@@ -7,3 +7,4 @@
   <?php endif ?>
   </span>
 <?php endif ?>
+<span class="rawvalue" id="account_<?php echo $account->id ?>" data-rawvalue="<?php echo $value ?>" />
