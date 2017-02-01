@@ -1689,4 +1689,7 @@
   'This firm does not seem to have «{position}» accounts to close.'=>
   'Questa azienda non sembra avere conti «{position}» da chiudere.',
   
+  'Classes'=>
+  'Classi',
+  
   );

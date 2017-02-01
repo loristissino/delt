@@ -10,16 +10,41 @@ $cs->registerScriptFile(
   CClientScript::POS_HEAD
 );
 
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/delt/cookies.js',
+  CClientScript::POS_END
+);
+
 $cs->registerScript(
   'event-handler',
   '
-    $(".totalcolumn").hide();
+
+    var showtotalcolumns = getCookie("showtotalcolumns", "false")=="true";
+    if (!showtotalcolumns)
+    {
+      $(".totalcolumn").hide();
+    }
     
     $("#togglecolumns").click(function() {
       $(".totalcolumn").toggle();
+      showtotalcolumns = !showtotalcolumns;
+      setCookie("showtotalcolumns", showtotalcolumns, 10);
       }
     );
+
+    var showclasses = getCookie("showclasses", "false")=="true";
+    if (!showclasses)
+    {
+      $(".classes").hide();
+    }
     
+    $("#toggleclasses").click(function() {
+      $(".classes").toggle();
+      showclasses = !showclasses;
+      setCookie("showclasses", showclasses, 10);
+      }
+    );
+
     var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
     console.log("decimal separator: " + decimal_separator);
     var thousand_separator = decimal_separator=="." ? ",":".";
@@ -116,6 +141,14 @@ $this->widget('zii.widgets.grid.CGridView', array(
       ),
     array(
       'class'=>'CDataColumn',
+      'sortable'=>false,
+      'name'=>'classes',
+      'header'=>Yii::t('delt', 'Classes'),
+      'htmlOptions'=>array('class'=>'classes'),
+      'headerHtmlOptions'=>array('class'=>'classes'),
+      ),
+    array(
+      'class'=>'CDataColumn',
       'name'=>'account.debitgrandtotal',
       'value'=>array($this, 'RenderSingleDebit'),
       'type'=>'raw',
@@ -192,5 +225,8 @@ echo CHtml::endForm();
     'containerTag'=>'span',
 ));
 ?></p>
-<p><?php echo Yii::t('delt', 'For the columns of totals:') ?> <span id="togglecolumns"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span></p>
+<p>
+  <?php echo Yii::t('delt', 'For the columns of totals:') ?> <span id="togglecolumns"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span><br />
+  <?php echo Yii::t('delt', 'For the column of classes:') ?> <span id="toggleclasses"><?php echo CHtml::link(Yii::t('delt', 'toggle visibility'), "#") ?></span>
+</p>
 </div>

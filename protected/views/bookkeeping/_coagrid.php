@@ -155,6 +155,7 @@ $cs->registerScript(
   {
     $(".hiddenlink").unbind("click");
   }
+  
 
 
   '
@@ -162,13 +163,24 @@ $cs->registerScript(
   CClientScript::POS_READY
 );
 
+$cs->registerScriptFile(
+  Yii::app()->request->baseUrl.'/js/delt/cookies.js',
+  CClientScript::POS_END
+);
+
 $cs->registerScript(
   'event-handler',
   '
-    $(".classes").hide();
+    var showclasses = getCookie("showclasses", "false")=="true";
+    if (!showclasses)
+    {
+      $(".classes").hide();
+    }
     
     $("#toggleclasses").click(function() {
       $(".classes").toggle();
+      showclasses = !showclasses;
+      setCookie("showclasses", showclasses, 10);
       }
     );
     

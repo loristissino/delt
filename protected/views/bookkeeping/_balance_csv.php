@@ -33,7 +33,7 @@ switch($type)
     $headers[]=DELT::delimittext(Yii::t('delt', 'Credit'), $delimiter, $charset);
     break;
 }
-
+$headers[]=DELT::delimittext(Yii::t('delt', 'Classes'), $delimiter, $charset);
 
 ?>
 <?php echo implode($separator, $headers) . "\n" ?>
@@ -58,6 +58,7 @@ switch($type)
     $values[]=$account['total']<0 ? Yii::app()->numberFormatter->formatDecimal(abs($account['total'])) : '';
     break;
 }
+$values[]=$account['classes'];
 
 ?><?php echo implode($separator, $values). "\n" ?>
 <?php endforeach ?>

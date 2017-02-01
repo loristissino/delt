@@ -541,7 +541,7 @@ class Firm extends CActiveRecord
     $positions=array($position, strtolower($position));
     
     $accounts = Yii::app()->db->createCommand()
-      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id')
+      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id, a.classes as classes')
       ->from('{{posting}}')
       ->leftJoin('{{account}} a', 'account_id = a.id')
       ->leftJoin('{{journalentry}} p', 'journalentry_id = p.id')
