@@ -1692,4 +1692,7 @@
   'Classes'=>
   'Classi',
   
+  'Linked journal entries'=>
+  'Registrazioni contabili collegate',
+  
   );

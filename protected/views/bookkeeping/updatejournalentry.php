@@ -26,6 +26,6 @@ if(true) // TODO -- we might manage a 'is deletable' condition
 }
 
 ?>
-<h1><?php echo Yii::t('delt', 'Edit journal entry') ?></h1>
+<h1 id="editform"><?php echo Yii::t('delt', 'Edit journal entry') ?></h1>
 
 <?php echo $this->renderPartial('_journalentryform', array('journalentryform'=>$journalentryform, 'items'=>$items)) ?>
