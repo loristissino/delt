@@ -96,15 +96,17 @@
         <?php echo CHtml::link(Yii::app()->controller->createIcon('template', Yii::t('delt', 'Use template'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'template/admin'), array('title'=>Yii::t('delt', 'Use a template'))); ?>
         <?php echo CHtml::link(Yii::app()->controller->createIcon('closingentry', Yii::t('delt', 'Closing entry'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'bookkeeping/closingjournalentry'), array('title'=>Yii::t('delt', 'Closing entry'))); ?>
         
-        <?php $entries = $transaction->getJournalEntriesFromFirm(Yii::app()->controller->firm->id); ?>
-        <?php if (sizeof($entries)): ?>
-          <small><?php echo Yii::t('delt', 'Linked journal entries') ?>:
-          <span id="linkstoentries<?php echo $transaction->id ?>">
-            <?php $count=0; foreach ($transaction->getJournalEntriesFromFirm(Yii::app()->controller->firm->id) as $je):?>
-              <?php echo CHtml::link(++$count, array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'entry'=>$je->id), array('title'=>Yii::t('delt', 'Edit journal entry'), 'class'=>'noshownlink')) ?>
-            <?php endforeach ?>
-          </span>
-          </small>
+        <?php if(Yii::app()->controller->firm): ?>
+          <?php $entries = $transaction->getJournalEntriesFromFirm(Yii::app()->controller->firm->id); ?>
+          <?php if (sizeof($entries)): ?>
+            <small><?php echo Yii::t('delt', 'Linked journal entries') ?>:
+            <span id="linkstoentries<?php echo $transaction->id ?>">
+              <?php $count=0; foreach ($transaction->getJournalEntriesFromFirm(Yii::app()->controller->firm->id) as $je):?>
+                <?php echo CHtml::link(++$count, array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'entry'=>$je->id), array('title'=>Yii::t('delt', 'Edit journal entry'), 'class'=>'noshownlink')) ?>
+              <?php endforeach ?>
+            </span>
+            </small>
+          <?php endif ?>
         <?php endif ?>
         
       </span>
