@@ -20,12 +20,51 @@
 
 class UsersCommand extends CConsoleCommand
 {
+  
   public function actionIndex()
   {
     $users=DEUser::model()->findAll();
     foreach($users as $user)
     {
-      echo implode("\t", array($user->id, $user->username, $user->status, $user->create_at, $user->lastvisit_at)) . "\n";
+      echo implode("\t", array($user->id, $user->username, $user->status, $user->create_at, $user->lastvisit_at, $user->email)) . "\n";
+    }
+  }
+  
+  public function actionEmails()
+  {
+    $users=DEUser::model()->findAll();
+    foreach($users as $user)
+    {
+      if ($user->status>0)
+      {
+        $profile=Profile::model()->findByPK($user->id);
+        $name = $profile->getFullName();
+        if ($name=='[Incognito user]')
+        {
+          $name = $user->username;
+        }
+        $dear = $profile->first_name;
+        if (!$dear)
+        {
+          $dear = $user->username;
+        }
+        
+        echo implode("\t", array($user->id, $user->username, $name, $profile->language, $dear, $user->email)) . "\n";
+      }
+    }
+  }
+  
+
+  public function actionMarkBanned($username)
+  {
+    $user = DEUser::model()->findByAttributes(array('username'=>$username));
+    if ($user)
+    {
+      $user->status=User::STATUS_BANNED;
+      if ($user->lastvisit_at=='0000-00-00 00:00:00')
+        $user->lastvisit_at=$user->create_at;
+      $user->save();
+      echo $username . " banned\n";
     }
   }
 
