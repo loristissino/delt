@@ -32,6 +32,7 @@ class ExerciseController extends Controller
     return array(
       'accessControl', // perform access control for CRUD operations
       'postOnly + delete', // we only allow deletion via POST request
+      'postOnly + createtransactionsfrombenchmark', // we only allow creation of transactions from benchmark via POST request
     );
   }
 
@@ -45,7 +46,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'solution', 'create', 'update', 'delete', 'report', 'export', 'import'),
+        'actions'=>array('index', 'invite', 'view', 'solution', 'create', 'update', 'delete', 'report', 'export', 'import', 'createtransactionsfrombenchmark'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -66,6 +67,7 @@ class ExerciseController extends Controller
   {
     $model = $this->loadModel($id);
     $parent_firm = $model->firm->parent;
+    Yii::app()->getUser()->setState('exercise_view', 'exercise/view');
     $this->render('view',array(
       'model'=>$model,
       'parent_firm'=>$parent_firm,
@@ -81,6 +83,7 @@ class ExerciseController extends Controller
   {
     $model = $this->loadModel($id);
     $parent_firm = $model->firm->parent;
+    Yii::app()->getUser()->setState('exercise_view', 'exercise/solution');
     $this->render('view',array(
       'model'=>$model,
       'parent_firm'=>$parent_firm,
@@ -210,21 +213,36 @@ class ExerciseController extends Controller
     {
       if ($model->importFromYaml($string))
       {
-        Yii::app()->user->setFlash('delt_success', 'Exercise correctly imported.');
+        Yii::app()->user->setFlash('delt_success', 'The exercise has been successfully imported.');
         Event::model()->log($this->DEUser, null, Event::EXERCISE_IMPORTED, array('exercise_id'=>$model->id, 'title'=>$model->title));
         $this->redirect(array('view','id'=>$model->id));
       }
       else
       {
-        Yii::app()->user->setFlash('delt_failure', 'The exercise could not be correctly imported.');
-        $form->content = $string;
+        Yii::app()->user->setFlash('delt_failure', 'The exercise could not be imported.');
       }
     }
-
+    $form->content = $string;
     $this->render('import',array(
       'model'=>$model,
       'exerciseform'=>$form,
     ));
+  }
+  
+  public function actionCreatetransactionsfrombenchmark($id)
+  {
+    $model=$this->loadModel($id);
+    
+      if ($model->createTransactionsFromBenchmark())
+      {
+        Yii::app()->user->setFlash('delt_success', 'The transactions have been successfully created.');
+        Event::model()->log($this->DEUser, null, Event::EXERCISE_TRANSACTIONS, array('exercise_id'=>$model->id, 'benchmark'=>$model->firm_id));
+      }
+      else
+      {
+        Yii::app()->user->setFlash('delt_failure', 'The transactions could not be created.');
+      }
+      $this->redirect(array('view','id'=>$model->id));
   }
 
   /**

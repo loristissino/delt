@@ -128,4 +128,19 @@ $this->menu=array(
   </div>
 <?php endforeach ?>
 </div>
-<p class="notprinted"><?php echo CHtml::link(Yii::t('delt', 'New Transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?></p>
+<p class="notprinted">
+  <?php echo CHtml::link(Yii::t('delt', 'New Transaction'), array('transaction/create', 'exercise_id'=>$model->id)) ?>
+</p>
+
+<?php if (sizeof($model->transactions)==0): ?>
+  <?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'CreateTransactionsFromBenchmark',
+    'enableAjaxValidation'=>false,
+    'method'=>'POST',
+    'action'=>$this->createUrl('exercise/createtransactionsfrombenchmark', array('id'=>$model->id)),
+  )); ?>
+  <div class="row">
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Create Transactions from Benchmark Firms\'s Journal Entries'), array('name'=>'createtransactionsfrombenchmark')) ?>
+  </div>
+  <?php $this->endWidget() ?>
+<?php endif ?>

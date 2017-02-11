@@ -1697,5 +1697,24 @@
   
   'If you are a teacher or an instructor, you might be interested in preparing <a href="{url}">exercises</a>.'=>
   'Se sei un insegnante o un istruttore, potresti essere interessato a preparare <a href="{url}">esercizi</a>.',
+  
+  'The exercise has been successfully imported.'=>
+  'L\'esercizio è stato importato correttamente.',
+  
+  'The exercise could not be imported.'=>
+  'Non è stato possibile importare l\'esercizio.',
+  
+  'Create Transactions from Benchmark Firms\'s Journal Entries'=>
+  'Crea le transazioni dalle registrazioni contabili dell\'azienda di riferimento',
+
+  'The transaction has been successfully deleted.'=>
+  'La transazione è stata correttamente eliminata',
+  
+  'The challenge could not be deleted.'=>
+  'Non è stato possibile eliminare la sfida.',
+  
+  'The transactions have been successfully created.'=>
+  'Le transazioni sono state create correttamente.',
+
 
 );

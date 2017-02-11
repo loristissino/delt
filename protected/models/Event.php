@@ -74,6 +74,7 @@ class Event extends CActiveRecord
   const EXERCISE_REPORT             = 3050;
   const EXERCISE_EXPORTED           = 3041;
   const EXERCISE_IMPORTED           = 3042;
+  const EXERCISE_TRANSACTIONS       = 3043;
   const EXERCISE_USERS_INVITED      = 3060;
   const CHALLENGE_ACCEPTED          = 4001;
   const CHALLENGE_FIRM_CONNECTED    = 4005;

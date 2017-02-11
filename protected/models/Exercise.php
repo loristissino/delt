@@ -350,7 +350,7 @@ class Exercise extends CActiveRecord
   {
     $values = Spyc::YAMLLoadString(str_replace("\r", '', $string));
     
-    if (!is_array($values))
+    if (!is_array($values) || sizeof($values)==0)
     {
       return false;
     }
@@ -374,6 +374,11 @@ class Exercise extends CActiveRecord
       
       $this->save(false);
       $transactions=DELT::getValueFromArray($values, 'transactions', array());
+      if (sizeof($transactions)==0)
+      {
+        $dbtransaction->rollBack();
+        return false;
+      }
       if (is_array($transactions))
       {
         foreach(DELT::getValueFromArray($values, 'transactions', array()) as $transaction)
@@ -390,11 +395,51 @@ class Exercise extends CActiveRecord
     }
     catch(Exception $e)
     {
-      die($e->getMessage());
+      //die($e->getMessage());
       $dbtransaction->rollBack();
       return false;
     }
     
+  }
+  
+  public function createTransactionsFromBenchmark()
+  {
+    if (sizeof($this->transactions))
+    {
+      return false;
+    }
+    
+    $dbtransaction = $this->getDbConnection()->beginTransaction();
+
+    try
+    {
+      Transaction::model()->deleteAll('exercise_id = :id', array(':id' => $this->id));
+      
+      foreach ($this->firm->journalentries as $je)
+      {
+        $transaction = new Transaction();
+        $transaction->event_date= $je->date;
+        $transaction->description = $je->description;
+        $transaction->exercise_id = $this->id;
+        $transaction->entries = 1;
+        $transaction->save();
+        
+        if (!$je->transaction_id)
+        {
+          $je->transaction_id = $transaction->id;
+          $je->save();
+        }
+        
+      }
+      $dbtransaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      die($e->getMessage());
+      $dbtransaction->rollBack();
+      return false;
+    }
   }
   
   private function _loadMethodItems()

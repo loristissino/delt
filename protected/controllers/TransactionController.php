@@ -83,7 +83,7 @@ class TransactionController extends Controller
 			if($model->safeSave())
       {
         Yii::app()->getUser()->setState('lasttransactiondate', $model->event_date);
-				$this->redirect(array('exercise/view','id'=>$this->exercise->id));
+				$this->redirect(array(Yii::app()->getUser()->getState('exercise_view', 'exercise/view'),'id'=>$this->exercise->id));
       }
 		}
 
@@ -112,7 +112,7 @@ class TransactionController extends Controller
 			if($model->safeSave())
       {
         Yii::app()->getUser()->setState('lasttransactiondate', $model->event_date);
-				$this->redirect(array('exercise/view','id'=>$model->exercise_id));
+				$this->redirect(array(Yii::app()->getUser()->getState('exercise_view', 'exercise/view'),'id'=>$model->exercise_id));
       }
 		}
 
@@ -140,7 +140,7 @@ class TransactionController extends Controller
 
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('exercise/view', 'id'=>$this->exercise->id));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array(Yii::app()->getUser()->getState('exercise_view', 'exercise/view'), 'id'=>$this->exercise->id));
 	}
 
 	/**
