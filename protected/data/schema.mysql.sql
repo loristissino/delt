@@ -235,7 +235,7 @@ CREATE TABLE `tbl_profiles` (
   `terms` text COLLATE utf8_bin NOT NULL,
   `usercode` varchar(255) COLLATE utf8_bin NOT NULL DEFAULT '',
   `language` varchar(7) COLLATE utf8_bin NOT NULL DEFAULT '',
-  `allowed_firms` int(11) NOT NULL DEFAULT '10',
+  `allowed_firms` int(11) NOT NULL DEFAULT '20',
   `email_notices` tinyint(1) NOT NULL DEFAULT '1',
   `is_blogger` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;

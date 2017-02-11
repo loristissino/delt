@@ -1489,7 +1489,7 @@
   'Mostra i valori attesi al completamento della sfida',
 
   'Users are allowed to delete the challenge'=>
-  'Agli utenti è permesso di eliminare la sfida',
+  'Agli utenti è permessa l\eliminazione della sfida',
 
   'Event Date'=>
   'Data dell\'evento',
