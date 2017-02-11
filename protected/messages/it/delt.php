@@ -1695,4 +1695,7 @@
   'Linked journal entries'=>
   'Registrazioni contabili collegate',
   
-  );
+  'If you are a teacher or an instructor, you might be interested in preparing <a href="{url}">exercises</a>.'=>
+  'Se sei un insegnante o un istruttore, potresti essere interessato a preparare <a href="{url}">esercizi</a>.',
+
+);

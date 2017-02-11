@@ -71,4 +71,8 @@ $cs->registerScript(
 
 <?php $this->endWidget() ?>
 
+<hr /> 
+<p><?php echo Yii::t('delt', 'If you are a teacher or an instructor, you might be interested in preparing <a href="{url}">exercises</a>.', array('{url}'=>$this->createUrl('exercise/index'))) ?></p>
+
+
 
