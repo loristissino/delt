@@ -35,6 +35,7 @@ class LoginController extends Controller
   public function hoauthAfterLogin($user, $newUser)
   {
     Event::model()->log(DEUser::model()->getBy('username', $user->username), null, Event::USER_LOGGED_IN_SOCIAL);
+    $this->_updateLastVisit();
     Yii::app()->user->returnUrl = $this->createUrl('/bookkeeping/index');
     //Yii::app()->end();
   }
@@ -52,7 +53,7 @@ class LoginController extends Controller
 				$model->attributes=$_POST['UserLogin'];
 				// validate user input and redirect to previous page if valid
 				if($model->validate()) {
-          $this->lastViset();
+          $this->_updateLastVisit();
           
           Event::model()->log(DEUser::model()->getBy('username', $model->username), null, Event::USER_LOGGED_IN);
 					$this->redirect(array('/bookkeeping/index')); 
@@ -70,10 +71,10 @@ class LoginController extends Controller
 			$this->redirect(Yii::app()->controller->module->returnUrl);
 	}
 	
-	private function lastViset() {
-		$lastVisit = User::model()->notsafe()->findByPk(Yii::app()->user->id);
-		$lastVisit->lastvisit = time();
-		$lastVisit->save();
+	private function _updateLastVisit() {
+		$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
+		$user->lastvisit = time();
+		$user->save(false);
 	}
 
 }

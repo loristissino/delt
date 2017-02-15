@@ -24,6 +24,9 @@ class UsersCommand extends CConsoleCommand
   public function actionIndex()
   {
     $users=DEUser::model()->findAll();
+    
+    $commands=array();
+    
     foreach($users as $user)
     {
       echo implode("\t", array($user->id, $user->username, $user->status, $user->create_at, $user->lastvisit_at, $user->email)) . "\n";

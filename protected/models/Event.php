@@ -198,6 +198,22 @@ class Event extends CActiveRecord
     ));
     return $this;
   }
+
+  public function ofUser($user_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.user_id = ' . $user_id,
+    ));
+    return $this;
+  }
+  
+  public function ofActionIn($actions=array())
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.action IN (' . implode(', ', $actions) . ')',
+    ));
+    return $this;
+  }
   
   public function sorted($order='happened_at DESC')
   {
