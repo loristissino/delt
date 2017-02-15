@@ -18,6 +18,9 @@
  * see http://www.yiiframework.com/doc/guide/1.1/en/topics.console
 */
 
+// the following lines is required on tuxfamily because of the way files are organized there
+require_once('modules/user/models/User.php');
+
 class UsersCommand extends CConsoleCommand
 {
   
@@ -65,7 +68,7 @@ class UsersCommand extends CConsoleCommand
     {
       $user->status=User::STATUS_BANNED;
       $user->save();
-      Event::log($user->id, null, Event::USER_BANNED_BY_ADMINS);
+      Event::log($user, null, Event::USER_BANNED_BY_ADMINS);
       echo $username . " banned\n";
     }
   }
