@@ -5,7 +5,7 @@ class User extends CActiveRecord
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
-    const STATUS_WAITING=-2;
+  const STATUS_WAITING=-2;
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
