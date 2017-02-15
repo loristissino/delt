@@ -31,6 +31,34 @@ class FirmsCommand extends CConsoleCommand
     }
   }
 
+  public function actionDeleteFirmsNotOwned()
+  {
+    // this deletes firms owned only by banned users
+    $firms=Firm::model()->findAll();
+    foreach($firms as $firm)
+    {
+      if ($firm->status > 1)
+      {
+        $fu = $firm->owners;
+        $number=sizeof($fu);
+        $count = 0;
+        foreach ($fu as $u)
+        {
+          if (DEUser::model()->findByPk($u->user_id)->status<0)
+          {
+            $count++;
+          }
+        }
+        if ($count==$number && $number>0)
+        {
+          echo implode("\t", array($firm->id, $firm->slug, $number)) . ":";
+          $this->_deleteFirm($firm);
+          echo "\n";
+        }
+      }
+    }
+  }
+
   public function actionMarkStale()
   {
     $reference_date = date('Y-m-d', time() - 24*60*60*365);
@@ -68,15 +96,7 @@ class FirmsCommand extends CConsoleCommand
       $lastEvent = Event::model()->ofFirm($firm->id)->sorted()->find();
       if (!$lastEvent || $lastEvent->happened_at < $reference_date)
       {
-         if ($firm->softDelete())
-         {
-           Event::model()->log(null, $firm->id, Event::FIRM_DELETED);
-           echo "deleted";
-         }
-         else
-         {
-           echo "NOT deleted for unknown reason";
-         }
+         $this->_deleteFirm($firm);
       }
       else
       {
@@ -84,6 +104,19 @@ class FirmsCommand extends CConsoleCommand
       }
       echo "\n";
     }
+  }
+  
+  private function _deleteFirm($firm)
+  {
+     if ($firm->softDelete())
+     {
+       Event::model()->log(null, $firm->id, Event::FIRM_DELETED);
+       echo "deleted";
+     }
+     else
+     {
+       echo "NOT deleted for unknown reason";
+     }
   }
 
   public function actionInfo($id)
