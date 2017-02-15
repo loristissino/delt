@@ -64,9 +64,8 @@ class UsersCommand extends CConsoleCommand
     if ($user)
     {
       $user->status=User::STATUS_BANNED;
-      if ($user->lastvisit_at=='0000-00-00 00:00:00')
-        $user->lastvisit_at=$user->create_at;
       $user->save();
+      Event::log($user->id, null, Event::USER_BANNED_BY_ADMINS);
       echo $username . " banned\n";
     }
   }

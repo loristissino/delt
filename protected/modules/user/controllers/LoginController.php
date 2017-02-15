@@ -73,7 +73,7 @@ class LoginController extends Controller
 	
 	private function _updateLastVisit() {
 		$user = User::model()->notsafe()->findByPk(Yii::app()->user->id);
-		$user->lastvisit = time();
+		$user->lastvisit = new CDbExpression('NOW()');
 		$user->save(false);
 	}
 
