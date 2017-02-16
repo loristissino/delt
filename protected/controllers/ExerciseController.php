@@ -237,6 +237,15 @@ class ExerciseController extends Controller
       {
         Yii::app()->user->setFlash('delt_success', 'The transactions have been successfully created.');
         Event::model()->log($this->DEUser, null, Event::EXERCISE_TRANSACTIONS, array('exercise_id'=>$model->id, 'benchmark'=>$model->firm_id));
+        
+        $model->invite(array($this->DEUser->username), $model->method, '');
+        if ($challenge = Challenge::model()->forUser($this->DEUser->id)->ofExercise($model->id)->find())
+        {
+          $challenge->firm_id = $model->firm_id;
+          $challenge->changeStatus('start');
+          Event::model()->log($this->DEUser, $model->firm_id, $challenge->last_action);
+        }
+        
       }
       else
       {

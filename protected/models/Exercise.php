@@ -428,9 +428,9 @@ class Exercise extends CActiveRecord
         {
           $je->transaction_id = $transaction->id;
           $je->save();
-        }
-        
+        }        
       }
+      
       $dbtransaction->commit();
       return true;
     }
