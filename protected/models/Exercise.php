@@ -247,6 +247,35 @@ class Exercise extends CActiveRecord
     return $count;
   }
   
+  public function setChallengeForInstructor($status)
+  {
+    $challenge = Challenge::model()->forUser($this->user_id)->ofExercise($this->id)->find();
+    if ($challenge)
+    {
+      if ($challenge->firm_id == $this->firm_id)
+      {
+        return false;
+      }
+      else
+      {
+        $challenge->firm_id = $this->firm_id;
+        $challenge->last_action = Event::CHALLENGE_FIRM_CONNECTED;
+        $challenge->save();
+        return $challenge->last_action;
+      }
+    }
+    $challenge = new Challenge();
+    $challenge->setInitialDefaults();
+    $challenge->exercise_id = $this->id;
+    $challenge->instructor_id = $this->user_id;
+    $challenge->user_id =$this->user_id;
+    $challenge->method = $this->method;
+    $challenge->session = date($this->session_pattern);
+    $challenge->firm_id = $this->firm_id;
+    $challenge->changeStatus($status);
+    return $challenge->last_action;
+  }
+  
   protected function afterConstruct()
   {
     $this->_loadMethodItems();

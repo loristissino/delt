@@ -163,8 +163,13 @@ class ExerciseController extends Controller
       
       if($model->save())
       {
-        Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The exercise has been successfully created.'));
+        $message = Yii::t('delt', 'The exercise has been successfully created.');
         Event::model()->log($this->DEUser, null, Event::EXERCISE_CREATED, array('exercise_id'=>$model->id, 'title'=>$model->title));
+
+        $message .= $this->_manageChallenge($model, 'start', ' ');
+
+        Yii::app()->getUser()->setFlash('delt_success', $message);
+
         $this->redirect(array('view','id'=>$model->id));
       }
     }
@@ -173,6 +178,7 @@ class ExerciseController extends Controller
       'model'=>$model,
     ));
   }
+
 
   /**
    * Updates a particular model.
@@ -193,6 +199,12 @@ class ExerciseController extends Controller
       if($model->save())
       {
         Event::model()->log($this->DEUser, null, Event::EXERCISE_EDITED, array('exercise_id'=>$model->id, 'title'=>$model->title));
+
+        if ($message = $this->_manageChallenge($model, 'resume', ''))
+        {
+          Yii::app()->getUser()->setFlash('delt_success', $message);
+        }
+
         $this->redirect(array('view','id'=>$model->id));
       }
     }
@@ -200,6 +212,19 @@ class ExerciseController extends Controller
     $this->render('update',array(
       'model'=>$model,
     ));
+  }
+
+  private function _manageChallenge(Exercise $model, $status, $initial_string='')
+  {
+    switch ($event = $model->setChallengeForInstructor('start'))
+    {
+      case Event::CHALLENGE_ACCEPTED:
+        Event::model()->log($this->DEUser, $model->firm_id, $event);
+        return $initial_string . Yii::t('delt', 'A new challenge has been created.');
+      case Event::CHALLENGE_FIRM_CONNECTED:
+        Event::model()->log($this->DEUser, $model->firm_id, $event);
+        return $initial_string . Yii::t('delt', 'A different firm has been connected to an existing challenge.');
+    }
   }
 
   public function actionImport($id)
@@ -237,15 +262,6 @@ class ExerciseController extends Controller
       {
         Yii::app()->user->setFlash('delt_success', 'The transactions have been successfully created.');
         Event::model()->log($this->DEUser, null, Event::EXERCISE_TRANSACTIONS, array('exercise_id'=>$model->id, 'benchmark'=>$model->firm_id));
-        
-        $model->invite(array($this->DEUser->username), $model->method, '');
-        if ($challenge = Challenge::model()->forUser($this->DEUser->id)->ofExercise($model->id)->find())
-        {
-          $challenge->firm_id = $model->firm_id;
-          $challenge->changeStatus('start');
-          Event::model()->log($this->DEUser, $model->firm_id, $challenge->last_action);
-        }
-        
       }
       else
       {
