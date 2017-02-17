@@ -824,8 +824,14 @@ div.challenge.open
   font-size: 70%;
 }
 
+span.accountname_normal
+{
+}
 
-
+span.accountname_indented
+{
+  padding-left: 20px;
+}
 
 @media screen and (max-width: 600px) {
   body {
