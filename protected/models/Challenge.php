@@ -27,6 +27,7 @@
  * @property integer $transaction_id  (current transaction)
  * @property string $hints
  * @property string $shown
+ * @property string $declarednoteconomic
  * @property string $results
  *
  * The followings are the available model relations:
@@ -56,6 +57,7 @@ class Challenge extends CActiveRecord
 
   private $_hints = null;  // hints requested by the user and shown
   private $_shown = null;  // transactions shown to user
+  private $_declarednoteconomic = null;  // transactions declared not economic by the user
   private $work;           // just an alias
   private $benchmark;       // just an alias
   
@@ -77,7 +79,7 @@ class Challenge extends CActiveRecord
     return array(
       array('exercise_id, user_id, assigned_at, method', 'required'),
       array('exercise_id, instructor_id, user_id, firm_id, method, rate', 'numerical', 'integerOnly'=>true),
-      array('started_at, suspended_at, completed_at, hints, shown, session, results', 'safe'),
+      array('started_at, suspended_at, completed_at, hints, shown, declarednoteconomic, session, results', 'safe'),
       // The following rule is used by search().
       // @todo Please remove those attributes that should not be searched.
       array('id, exercise_id, instructor_id, user_id, firm_id, assigned_at, started_at, suspended_at, completed_at, checked_at, method, rate, results', 'safe', 'on'=>'search'),
@@ -120,6 +122,7 @@ class Challenge extends CActiveRecord
       'transaction' => 'Transaction',
       'hints' => 'Hints',
       'shown' => 'Shown',
+      'declarednoteconomic' => 'Declared as Not Economic',
       'results' => 'Results',
     );
   }
@@ -183,6 +186,7 @@ class Challenge extends CActiveRecord
     $this->rate = 0;
     $this->_hints = array();
     $this->_shown = array();
+    $this->_declarednoteconomic = array();
     $this->transaction_id = null;
   }
   
@@ -474,6 +478,7 @@ class Challenge extends CActiveRecord
   {
     $this->_hints = $this->hints ? explode(',', $this->hints) : array();
     $this->_shown = $this->shown ? explode(',', $this->shown) : array();
+    $this->_declarednoteconomic = $this->declarednoteconomic ? explode(',', $this->declarednoteconomic) : array();
     $this->work = $this->firm;
     if ($this->exercise)
     {
@@ -494,6 +499,7 @@ class Challenge extends CActiveRecord
   {
     $this->hints = implode(',', $this->_hints);
     $this->shown = implode(',', $this->_shown);
+    $this->declarednoteconomic = implode(',', $this->_declarednoteconomic);
     return parent::beforeSave();
   }
   
@@ -512,6 +518,11 @@ class Challenge extends CActiveRecord
   public function beenShown($transaction_id)
   {
     return in_array($transaction_id, $this->_shown);
+  }
+
+  public function wasDeclaredNotEconomic($transaction_id)
+  {
+    return in_array($transaction_id, $this->_declarednoteconomic);
   }
 
   public function addHint($transaction_id)
@@ -546,6 +557,20 @@ class Challenge extends CActiveRecord
     return false;
   }
 
+  public function declareNotEconomic($transaction_id)
+  {
+    if ($transaction = Transaction::model()->findByPK($transaction_id))
+    {
+      if(!$this->wasDeclaredNotEconomic($transaction_id))
+      {
+        $this->_declarednoteconomic[] = $transaction_id;
+        $this->save();
+      }
+      return true;
+    }
+    return false;
+  }
+
   public function removeHint($transaction_id)
   {
     $this->_hints = array_diff($this->_hints, array($transaction_id));
@@ -558,6 +583,12 @@ class Challenge extends CActiveRecord
     $this->save();
   }
   
+  public function undeclareNotEconomic($transaction_id)
+  {
+    $this->_declarednoteconomic = array_diff($this->_declarednoteconomic, array($transaction_id));
+    $this->save();
+  }
+
   public function getResults()
   {
     if ($this->results!==null)
@@ -657,125 +688,141 @@ class Challenge extends CActiveRecord
     $result['description'] = $transaction->description;
     $result['errors'] = array();
     $result['checked'] = true;
-    
-    if($sizeOfWJE==0)
+    /*
+    if ($transaction->entries == 0)
     {
-      $result['checked'] = false;
-    }
-    
-    if ( $sizeOfWJE != $sizeOfBJE )
-    {
-      $result['points'] = 0;
-      if (!(($sizeOfWJE==0 && !$final)))
+      if ($sizeOfWJE>0)
       {
-      $result['errors'] = array(Yii::t('delt', 'Wrong number of journal entries')
-         .$this->_expectedValues(
-          $sizeOfBJE,
-          $sizeOfWJE
-        ));
+        $result['errors'][] = Yii::t('delt', 'This transaction is not an economic fact and should not be recorded');
       }
     }
     else
-    {
-      for ($i=0; $i< $sizeOfBJE; $i++)   // they are sorted the same way, so we just go in parallel
+    
+    {*/
+      if($sizeOfWJE==0)
       {
-        
-        $jen = Yii::t('delt', 'Journal entry {number}: ', array('{number}'=>$i+1));
-        
-        if($wje[$i]->date != $bje[$i]->date)
+        $result['checked'] = false;
+      }
+      
+      if ( $sizeOfWJE != $sizeOfBJE )
+      {
+        $result['points'] = 0;
+        if (!(($sizeOfWJE==0 && !$final)))
         {
-          $result['errors'][] = $jen . Yii::t('delt', 'wrong date') . $this->_expectedValues(
-              Yii::app()->dateFormatter->formatDateTime($bje[$i]->date, 'short', null),
-              Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null)
-            );
+        $result['errors'] = array(Yii::t('delt', 'Wrong number of journal entries')
+           .$this->_expectedValues(
+            $sizeOfBJE,
+            $sizeOfWJE
+          ));
         }
-        
-        $regexp = $transaction->getRegexp($i);
-        
-        if ($regexp)
+      }
+      else
+      {
+        for ($i=0; $i< $sizeOfBJE; $i++)   // they are sorted the same way, so we just go in parallel
         {
-          $e = @preg_match($regexp, $wje[$i]->description);
-          if ($e===false)
+          
+          $jen = Yii::t('delt', 'Journal entry {number}: ', array('{number}'=>$i+1));
+          
+          if($wje[$i]->date != $bje[$i]->date)
           {
-            $result['errors'][] = $jen
-             . Yii::t('delt', 'invalid regular expression: «{value}»', array('{value}'=>$regexp))
-             . ' — '
-             . Yii::t('delt', 'it is the exercise that contains the error, not the firm linked to this challenge')
-             ;
+            $result['errors'][] = $jen . Yii::t('delt', 'wrong date') . $this->_expectedValues(
+                Yii::app()->dateFormatter->formatDateTime($bje[$i]->date, 'short', null),
+                Yii::app()->dateFormatter->formatDateTime($wje[$i]->date, 'short', null)
+              );
           }
-          elseif ($e===0)
+          
+          $regexp = $transaction->getRegexp($i);
+          
+          if ($regexp)
           {
-            $result['warnings'][] = $jen . Yii::t('delt', 'invalid description') . $this->_expectedValues(
-              Yii::t('delt', 'a text matching the regular expression «{value}»', array('{value}'=>$regexp)),
-              $wje[$i]->description,
-              false
-            );
-          }
-        }
-
-        $sizeOfWJEPostings = sizeof($wje[$i]->postings);
-        $sizeOfBJEPostings = sizeof($bje[$i]->postings);
-        
-        if($sizeOfWJEPostings != $sizeOfBJEPostings)
-        {
-          $result['errors'][] = $jen . Yii::t('delt', 'wrong number of postings') . $this->_expectedValues(
-              $sizeOfBJEPostings,
-              $sizeOfWJEPostings
-            );
-        }
-        else
-        {
-          for ($j=0; $j< $sizeOfBJEPostings; $j++)
-          {
-            
-            if (!DELT::nearlyZero($wje[$i]->postings[$j]->amount - $bje[$i]->postings[$j]->amount))
+            $e = @preg_match($regexp, $wje[$i]->description);
+            if ($e===false)
             {
-              $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting {number}', 
-                array(
-                  '{number}'=>$wje[$i]->postings[$j]->rank,
-                  )
-                ) . $this->_expectedValues(
-                    DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
-                    DELT::currency_value($wje[$i]->postings[$j]->amount, $this->benchmark->currency, true)
-                  );
+              $result['errors'][] = $jen
+               . Yii::t('delt', 'invalid regular expression: «{value}»', array('{value}'=>$regexp))
+               . ' — '
+               . Yii::t('delt', 'it is the exercise that contains the error, not the firm linked to this challenge')
+               ;
             }
-            
-            if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
+            elseif ($e===0)
             {
-              $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting {number}', 
-                array(
-                  '{number}'=>$wje[$i]->postings[$j]->rank,
-                )
-              ) . $this->_expectedValues(
-                    $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
-                    $wje[$i]->postings[$j]->account->getCodeAndName($this->work)
+              $result['warnings'][] = $jen . Yii::t('delt', 'invalid description') . $this->_expectedValues(
+                Yii::t('delt', 'a text matching the regular expression «{value}»', array('{value}'=>$regexp)),
+                $wje[$i]->description,
+                false
               );
             }
-            else
+          }
+
+          $sizeOfWJEPostings = sizeof($wje[$i]->postings);
+          $sizeOfBJEPostings = sizeof($bje[$i]->postings);
+          
+          if($sizeOfWJEPostings != $sizeOfBJEPostings)
+          {
+            $result['errors'][] = $jen . Yii::t('delt', 'wrong number of postings') . $this->_expectedValues(
+                $sizeOfBJEPostings,
+                $sizeOfWJEPostings
+              );
+          }
+          else
+          {
+            for ($j=0; $j< $sizeOfBJEPostings; $j++)
             {
-              if ($wje[$i]->postings[$j]->account->getCodeAndName($this->work) != $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark))
+              
+              if (!DELT::nearlyZero($wje[$i]->postings[$j]->amount - $bje[$i]->postings[$j]->amount))
               {
-                $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting {number}', 
+                $result['errors'][] = $jen . Yii::t('delt', 'wrong amount for posting {number}', 
                   array(
                     '{number}'=>$wje[$i]->postings[$j]->rank,
                     )
+                  ) . $this->_expectedValues(
+                      DELT::currency_value($bje[$i]->postings[$j]->amount, $this->benchmark->currency, true),
+                      DELT::currency_value($wje[$i]->postings[$j]->amount, $this->benchmark->currency, true)
+                    );
+              }
+              
+              if ($wje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->work) != $bje[$i]->postings[$j]->account->getCodeAndNameForComparison($this->benchmark))
+              {
+                $result['errors'][] = $jen . Yii::t('delt', 'wrong account for posting {number}', 
+                  array(
+                    '{number}'=>$wje[$i]->postings[$j]->rank,
+                  )
                 ) . $this->_expectedValues(
                       $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
                       $wje[$i]->postings[$j]->account->getCodeAndName($this->work)
-                      );
+                );
+              }
+              else
+              {
+                if ($wje[$i]->postings[$j]->account->getCodeAndName($this->work) != $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark))
+                {
+                  $result['warnings'][] = $jen . Yii::t('delt', 'wrong account name for posting {number}', 
+                    array(
+                      '{number}'=>$wje[$i]->postings[$j]->rank,
+                      )
+                  ) . $this->_expectedValues(
+                        $bje[$i]->postings[$j]->account->getCodeAndName($this->benchmark),
+                        $wje[$i]->postings[$j]->account->getCodeAndName($this->work)
+                        );
+                }
+                
               }
               
             }
-            
           }
+          
         }
-        
       }
-      if (sizeof($result['errors'])==0)
-      {
-        $result['points'] = $transaction->points; // good!
-      } 
+     //}
+     
+    if ($transaction->entries == 0 && $this->wasDeclaredNotEconomic($transaction->id))
+    {
+      $result['checked']=true;
     }
+    if (sizeof($result['errors'])==0  || ($transaction->entries == 0 && $this->wasDeclaredNotEconomic($transaction->id)))
+    {
+      $result['points'] = $transaction->points; // good!
+    } 
     
     $result['penalties'] = max(
       $this->hasHint($transaction->id) ? $transaction->penalties : 0,

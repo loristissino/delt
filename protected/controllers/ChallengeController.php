@@ -245,7 +245,7 @@ class ChallengeController extends Controller
     $this->redirect(array('bookkeeping/manage', 'slug'=>$firm->slug));
   }
   
-  public function actionActivatetransaction($id, $transaction, $redirect='', $entry='')
+  public function actionActivatetransaction($id, $transaction, $redirect='', $entry='', $declaration='')
   {
     $model=$this->loadModel($id);
     
@@ -265,6 +265,11 @@ class ChallengeController extends Controller
     {
       $this->redirect(array('bookkeeping/updatejournalentry', 'id'=>$entry, '#'=>'editform'));
     }
+    if ($declaration=='not_economic')
+    {
+      $model->declareNotEconomic($transaction);
+    }
+    
     $this->renderPartial('_challenge', array('result'=>$model->getResults()));
   }
   

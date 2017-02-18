@@ -106,6 +106,24 @@
               <?php endforeach ?>
             </span>
             </small>
+          <?php else: ?>
+            <?php if ($challenge->wasDeclaredNotEconomic($transaction->id)): ?>
+              not economic
+            <?php else: ?>
+              <?php echo CHtml::ajaxLink(
+                Yii::app()->controller->createIcon('not_economic', Yii::t('delt', 'No journal entry needed'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'No journal entry needed'))),
+                $url=CHtml::normalizeUrl(array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'declaration'=>'not_economic')),
+                array(
+                  'update' => '#challenge',
+                  'type' => 'POST',
+                  ),
+                array(
+                  'title' => Yii::t('delt', 'Declare that this transaction does not need a journal entry'),
+                  'class' => 'noshownlink',
+                  )
+                )
+              ?>
+            <?php endif ?>
           <?php endif ?>
         <?php endif ?>
         
@@ -134,3 +152,4 @@
 
   <hr />
   <!-- transaction --></div>
+

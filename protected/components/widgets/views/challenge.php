@@ -147,3 +147,5 @@ $is_ajax = Yii::app()->controller->is_ajax;
   
   <!-- challenge --></div>
 <?php endif ?>
+
+
