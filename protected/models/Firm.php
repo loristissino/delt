@@ -1509,14 +1509,14 @@ class Firm extends CActiveRecord
    * @param integer $transaction_id the id of the transaction to connect the entries to
    * @return integer the number of journal entries toggled
    */
-  public function connectSelectedJournalentriesToTransaction($ids=array(), $transaction_id)
+  public function connectSelectedJournalentriesToTransaction($ids=array(), $transaction_id, Challenge $challenge)
   {
     $journalentries=$this->_findJournalentries($ids);
     $number=sizeof($journalentries);
     // FIXME This should be done with a common update query
     foreach($journalentries as $journalentry)
     {
-      $journalentry->connectToTransaction($transaction_id);
+      $journalentry->connectToTransaction($challenge, $transaction_id);
     }
     return $number;
   }

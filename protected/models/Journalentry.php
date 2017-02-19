@@ -213,10 +213,15 @@ class Journalentry extends CActiveRecord
     $this->save(false );
   }
 
-  public function connectToTransaction($transaction_id)
+  public function connectToTransaction(Challenge $challenge, $transaction_id)
   {
+    if (!$challenge)
+    {
+      return false;
+    }
     $this->transaction_id = $transaction_id;
-    $this->save(false );
+    $this->save(false);
+    $challenge->undeclareNotEconomic($transaction_id);
   }
   
   public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing, $date)

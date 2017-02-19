@@ -133,7 +133,7 @@ class JournalentryForm extends CFormModel
     }
   }
   
-  public function save()
+  public function save(Challenge $challenge=null)
   {
     $this->is_new = !isset($this->journalentry);
     $this->journalentry = $this->is_new ? new Journalentry() : $this->journalentry;
@@ -157,6 +157,10 @@ class JournalentryForm extends CFormModel
       $this->journalentry->transaction_id = Yii::app()->user->getState('transaction');
       
       $this->journalentry->save(true);
+      if ($challenge)
+      {
+        $challenge->undeclareNotEconomic($this->journalentry->transaction_id);
+      }
       
       $this->journalentry->deletePostings();
       

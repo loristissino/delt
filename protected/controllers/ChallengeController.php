@@ -259,17 +259,16 @@ class ChallengeController extends Controller
     }
     if ($redirect && $model->firm)
     {
+      if ($declaration=='not_economic')
+      {
+        $model->declareNotEconomic($transaction);
+      }
       $this->redirect(array($redirect, 'slug'=>$model->firm->slug));
     }
     if ($entry && $model->firm)
     {
       $this->redirect(array('bookkeeping/updatejournalentry', 'id'=>$entry, '#'=>'editform'));
     }
-    if ($declaration=='not_economic')
-    {
-      $model->declareNotEconomic($transaction);
-    }
-    
     $this->renderPartial('_challenge', array('result'=>$model->getResults()));
   }
   

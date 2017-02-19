@@ -57,7 +57,7 @@ class Challenge extends CActiveRecord
 
   private $_hints = null;  // hints requested by the user and shown
   private $_shown = null;  // transactions shown to user
-  private $_declarednoteconomic = null;  // transactions declared not economic by the user
+  public $_declarednoteconomic = null;  // transactions declared not economic by the user
   private $work;           // just an alias
   private $benchmark;       // just an alias
   
@@ -819,6 +819,12 @@ class Challenge extends CActiveRecord
     {
       $result['checked']=true;
     }
+    if ($transaction->entries > 0 && $this->wasDeclaredNotEconomic($transaction->id))
+    {
+      $result['checked']=true;
+      $result['errors'][] = Yii::t('delt', 'This transaction has been misdeclared not economic.');
+    }
+
     if (sizeof($result['errors'])==0  || ($transaction->entries == 0 && $this->wasDeclaredNotEconomic($transaction->id)))
     {
       $result['points'] = $transaction->points; // good!

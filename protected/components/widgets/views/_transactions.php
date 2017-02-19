@@ -14,8 +14,10 @@
           <?php echo Yii::app()->controller->createIcon('exclamation', Yii::t('delt', 'Errors'), array('width'=>16, 'height'=>16)) ?>
         <?php endif ?>
         <?php endif ?>
+        
       <?php if($is_current): ?>
-        <?php echo Yii::app()->controller->createIcon('page_edit', Yii::t('delt', 'Current transaction'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The transaction you are working on'))); ?>
+        <?php $icon = 'page_edit' . ($challenge->wasDeclaredNotEconomic($transaction->id)?'_declared_not_economic': ''); ?>
+        <?php echo Yii::app()->controller->createIcon($icon, Yii::t('delt', 'Current transaction'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'The transaction you are working on'))); ?>
         <?php echo CHtml::ajaxLink(
           ' ',
           $url=CHtml::normalizeUrl(array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
@@ -32,9 +34,11 @@
         <?php echo Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null) ?>
         
       <?php else: ?>
-        
+
+      <?php $icon = 'page' . ($challenge->wasDeclaredNotEconomic($transaction->id)?'_declared_not_economic': ''); ?>
+
       <?php echo CHtml::ajaxLink(
-        Yii::app()->controller->createIcon('page', Yii::t('delt', 'A transaction to prepare the journal entry for'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'A transaction to prepare the journal entry for')))
+        Yii::app()->controller->createIcon($icon, Yii::t('delt', 'A transaction to prepare the journal entry for'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'A transaction to prepare the journal entry for')))
         . ' '
         . Yii::app()->dateFormatter->formatDateTime($transaction->event_date, 'short', null),
         $url=CHtml::normalizeUrl(array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id)),
@@ -98,6 +102,9 @@
         
         <?php if(Yii::app()->controller->firm): ?>
           <?php $entries = $transaction->getJournalEntriesFromFirm(Yii::app()->controller->firm->id); ?>
+          
+
+          
           <?php if (sizeof($entries)): ?>
             <small><?php echo Yii::t('delt', 'Linked journal entries') ?>:
             <span id="linkstoentries<?php echo $transaction->id ?>">
@@ -107,22 +114,10 @@
             </span>
             </small>
           <?php else: ?>
-            <?php if ($challenge->wasDeclaredNotEconomic($transaction->id)): ?>
-              not economic
-            <?php else: ?>
-              <?php echo CHtml::ajaxLink(
-                Yii::app()->controller->createIcon('not_economic', Yii::t('delt', 'No journal entry needed'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'No journal entry needed'))),
-                $url=CHtml::normalizeUrl(array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'declaration'=>'not_economic')),
-                array(
-                  'update' => '#challenge',
-                  'type' => 'POST',
-                  ),
-                array(
-                  'title' => Yii::t('delt', 'Declare that this transaction does not need a journal entry'),
-                  'class' => 'noshownlink',
-                  )
-                )
-              ?>
+            <?php if (!$challenge->wasDeclaredNotEconomic($transaction->id)): ?>
+
+              <?php echo CHtml::link(Yii::app()->controller->createIcon('not_economic', Yii::t('delt', 'No journal entry needed'), array('width'=>16, 'height'=>16)), array('challenge/activatetransaction', 'id'=>$challenge->id, 'transaction'=>$transaction->id, 'redirect'=>'bookkeeping/journal', 'declaration'=>'not_economic'), array('title'=>Yii::t('delt', 'Declare that this transaction does not need a journal entry'))); ?>
+
             <?php endif ?>
           <?php endif ?>
         <?php endif ?>

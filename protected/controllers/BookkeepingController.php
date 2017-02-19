@@ -364,7 +364,7 @@ class BookkeepingController extends Controller
       {
         if($journalentryform->validate())
         {
-          if($journalentryform->save())
+          if($journalentryform->save($this->DEUser->getOpenChallenge()))
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_CREATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
@@ -470,7 +470,7 @@ class BookkeepingController extends Controller
       {
         if($journalentryform->validate())
         {
-          if($journalentryform->save())
+          if($journalentryform->save($this->DEUser->getOpenChallenge()))
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_UPDATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
@@ -615,7 +615,7 @@ class BookkeepingController extends Controller
 
       if($op=='connect')
       {
-        if($this->firm->connectSelectedJournalentriesToTransaction($_POST['id'], Yii::app()->user->getState('transaction')))
+        if($this->firm->connectSelectedJournalentriesToTransaction($_POST['id'], Yii::app()->user->getState('transaction'), $this->DEUser->getOpenChallenge()))
         {
           //Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been connected.'));
         }
