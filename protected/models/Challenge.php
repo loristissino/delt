@@ -825,7 +825,7 @@ class Challenge extends CActiveRecord
       $result['errors'][] = Yii::t('delt', 'This transaction has been misdeclared not economic.');
     }
 
-    if (sizeof($result['errors'])==0  || ($transaction->entries == 0 && $this->wasDeclaredNotEconomic($transaction->id)))
+    if ($result['checked'] && (sizeof($result['errors'])==0 || ($transaction->entries == 0 && $this->wasDeclaredNotEconomic($transaction->id))))
     {
       $result['points'] = $transaction->points; // good!
     } 

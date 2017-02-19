@@ -61,6 +61,7 @@ CREATE TABLE `tbl_challenge` (
   `transaction_id` int(11) DEFAULT NULL,
   `hints` varchar(255) DEFAULT NULL,
   `shown` varchar(255) DEFAULT NULL,
+  `declarednoteconomic` varchar(255) DEFAULT NULL,
   `results` text
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

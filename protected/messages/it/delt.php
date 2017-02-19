@@ -1428,7 +1428,7 @@
   'Title'=>
   'Titolo',
   
-  'The number of journal entries in the benchmark firm do not match the number declared.'=>
+  'The number of journal entries in the benchmark firm does not match the number declared.'=>
   'Il numero di registrazioni dell\'azienda di riferimento non corrisponde al numero dichiarato.',
 
   'Event Date'=>
