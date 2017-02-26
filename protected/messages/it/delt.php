@@ -1716,5 +1716,13 @@
   'The transactions have been successfully created.'=>
   'Le transazioni sono state create correttamente.',
 
+  'change year'=>
+  'cambia anno',
+
+  'Change the dates of the selected entries'=>
+  'Cambia le date delle registrazioni selezionate',
+
+  'Connect the selected journal entries to the current transaction (from the open challenge)'=>
+  'Associa le registrazioni selezionate alla transazione corrente (della sfida in corso)',
 
 );

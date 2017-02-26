@@ -560,13 +560,15 @@ class BookkeepingController extends Controller
     
     if(Yii::app()->getRequest()->isPostRequest)
     {
+      $ids = DELT::getValueFromArray($_POST, 'id', array());
+      
       if($op=='include' or $op=='exclude')
       {
         $affected_rows = Yii::app()->db->createCommand()
         ->update('{{journalentry}}', array('is_included'=>$op=='include'?1:0),
           array('and',
             array('firm_id=:firm_id' , array(':firm_id'=>$this->firm->id)),
-            array('in', 'id', $_POST['id'])
+            array('in', 'id', $ids)
             )
           );
         if($affected_rows==0)
@@ -586,7 +588,7 @@ class BookkeepingController extends Controller
         }
        }
 
-      if($op=='tisv')
+      elseif($op=='tisv')
       {
         $affected_rows = $this->firm->toggleStatementVisibilityOfSelectedJournalentries($_POST['id']);
         // FIXME This could be done in one UPDATE statement (but it's not so easy as it might seem
@@ -596,14 +598,14 @@ class BookkeepingController extends Controller
         }
         else
         {
-          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$_POST['id']));
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$ids));
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been toggled. | {n} journal entries have been toggled.', $affected_rows));
         }
       }  
 
-      if($op=='swap')
+      elseif($op=='swap')
       {
-        if($this->firm->swapSelectedJournalentries($_POST['id']))
+        if($this->firm->swapSelectedJournalentries($ids))
         {
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been swapped.'));
         }
@@ -613,9 +615,9 @@ class BookkeepingController extends Controller
         }
       }  
 
-      if($op=='connect')
+      elseif($op=='connect')
       {
-        if($this->firm->connectSelectedJournalentriesToTransaction($_POST['id'], Yii::app()->user->getState('transaction'), $this->DEUser->getOpenChallenge()))
+        if($this->firm->connectSelectedJournalentriesToTransaction($ids, Yii::app()->user->getState('transaction'), $this->DEUser->getOpenChallenge()))
         {
           //Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The entries have been connected.'));
         }
@@ -626,19 +628,34 @@ class BookkeepingController extends Controller
       }  
 
 
-      if($op=='delete')
+      elseif($op=='delete')
       {
-        $affected_rows = $this->firm->deleteSelectedJournalentries($_POST['id']);
+        $affected_rows = $this->firm->deleteSelectedJournalentries($ids);
         if($affected_rows==0)
         {
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been deleted.'));
         }
         else
         {
-          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$_POST['id']));
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRIES_DELETED, array('ids'=>$ids));
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been deleted. | {n} journal entries have been deleted.', $affected_rows));
         }
-      }  
+      }
+
+      elseif($op=='changeyear')
+      {
+        $affected_rows = $this->firm->changeYearForSelectedJournalentries($ids, DELT::getValueFromArray($_POST, 'years', 0));
+        if($affected_rows==0)
+        {
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been updated.'));
+        }
+        else
+        {
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRY_UPDATED, array('ids'=>$ids));
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been updated. | {n} journal entries have been updated.', $affected_rows));
+        }
+      }
+
 
       $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
     }
@@ -646,8 +663,6 @@ class BookkeepingController extends Controller
     throw new CHttpException(404, 'The requested page does not exist.');
 
   }
-
-
 
   public function actionJournalentryfromtemplate($id)
   {

@@ -99,11 +99,10 @@ $this->widget('zii.widgets.grid.CGridView', array(
 
   ),
 )); 
-echo CHtml::endForm(); ?>
+?>
 
 <p><?php echo Yii::t('delt', 'Apply to the selected journal entries:') ?><br />
 <?php 
-
     $items = array(
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
         array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
@@ -113,13 +112,12 @@ echo CHtml::endForm(); ?>
     
     if (Yii::app()->user->getState('challenge'))
     {
-      $items[] = array('label'=>Yii::t('delt','connect to current transaction'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'connect'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Connect the selected journal entries to the current transaction (from a challenge)')));
+      $items[] = array('label'=>Yii::t('delt','connect to current transaction'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'connect'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Connect the selected journal entries to the current transaction (from the open challenge)')));
     }
 
     $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
-//    'ajaxUpdate'=>'person-grid', // if you want to update grid by ajax
     'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
 //    'confirm'=>Yii::t('ui','Are you sure to perform this action on checked items?'),
     'items'=> $items,
@@ -127,6 +125,24 @@ echo CHtml::endForm(); ?>
     'containerTag'=>'span',
 ));
 ?> | 
+<?php 
+  $select = '1';
+  echo CHtml::dropDownList('years', $select, 
+    array('-3' => '-3', '-2' => '-2', '-1' => '-1', '1' => '+1', '2' => '+2', '3' => '+3'),
+    array('class'=>'xbatchdropdown')
+  );
+
+  $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+    'formId'=>'journal-form',
+    'checkBoxId'=>'id',
+    'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
+    'items'=>array(
+        array('label'=>Yii::t('delt','change year'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'changeyear'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Change the dates of the selected entries'))),
+    ),
+    'htmlOptions'=>array('class'=>'actionBar'),
+    'containerTag'=>'span',
+));
+?> |
 <?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',
@@ -140,6 +156,7 @@ echo CHtml::endForm(); ?>
     'containerTag'=>'span',
 ));
 ?>
+<?php echo CHtml::endForm(); ?>
 
 </p>
 <?php else: ?>

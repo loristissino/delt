@@ -248,6 +248,38 @@ class Journalentry extends CActiveRecord
     return array('account_id'=>$account_id, 'amount'=>$amount);
   }
   
+  public function changeYear($years)
+  {
+    if (!is_numeric($years))
+    {
+      return false;
+    }
+    $years=floor($years);
+    
+    $d = new DateTime($this->date);
+    $changed = false;
+    
+    if ($years > 0 && $years < 4)
+    {
+      $d->add(new DateInterval('P' . $years . 'Y'));
+      $changed = true;
+    }
+    elseif ($years < 0 && $years > -4)
+    {
+      $d->sub(new DateInterval('P' . (-$years) . 'Y'));
+      $changed = true;
+    }
+    
+    if ($changed)
+    {
+      $this->date = $d->format('Y-m-d');
+      $this->save();
+      return true;
+    }
+    
+    return false;
+  }
+  
   public function getJournalEntriesByFirmAndTransaction($firm_id, $transaction_id)
   {
     return self::model()

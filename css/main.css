@@ -833,6 +833,16 @@ span.accountname_indented
   padding-left: 20px;
 }
 
+select.xbatchdropdown
+{
+  font-size: 0.8em;
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   background-color: #EEE;
+   color: #06c;
+}
+
 @media screen and (max-width: 600px) {
   body {
       

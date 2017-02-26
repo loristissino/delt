@@ -1505,9 +1505,9 @@ class Firm extends CActiveRecord
 
   /**
    * Connects the specified journal entries to a transaction from a challenge.
-   * @param array $ids the ids of the journal entries to toggle visibility for
+   * @param array $ids the ids of the journal entries to connect to the transaction
    * @param integer $transaction_id the id of the transaction to connect the entries to
-   * @return integer the number of journal entries toggled
+   * @return integer the number of journal entries connected
    */
   public function connectSelectedJournalentriesToTransaction($ids=array(), $transaction_id, Challenge $challenge)
   {
@@ -1520,6 +1520,25 @@ class Firm extends CActiveRecord
     }
     return $number;
   }
+
+  /**
+   * Changes, for the specified journal entries, the date, increasing or decreasing the year.
+   * @param array $ids the ids of the journal entries to toggle visibility for
+   * @param integer $years the number of years
+   * @return integer the number of journal entries changed
+   */
+  public function changeYearForSelectedJournalentries($ids=array(), $years)
+  {
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    // FIXME This should be done with a common update query
+    foreach($journalentries as $journalentry)
+    {
+      $journalentry->changeYear($years);
+    }
+    return $number;
+  }
+
   
   /**
    * Returns the specified journal entries.
