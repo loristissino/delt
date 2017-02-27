@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.9.38';
+    return '1.9.39';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -105,18 +105,18 @@ class DELT
     
   }
 
-  public static function getConvertedJQueryUIDateFormat()
+  public static function getConvertedJQueryUIDateFormat($with_year=true)
   {
     $locale=strtolower(str_replace('_', '-', Yii::app()->language));
     
-    if($format = self::_getConvertedJQueryUIDateFormat($locale))
+    if($format = self::_getConvertedJQueryUIDateFormat($locale, $with_year))
     {
       return $format;
     }
     
     $locale = substr($locale, 0, strpos($locale, '-'));
 
-    if($format = self::_getConvertedJQueryUIDateFormat($locale))
+    if($format = self::_getConvertedJQueryUIDateFormat($locale, $with_year))
     {
       return $format;
     }
@@ -125,81 +125,81 @@ class DELT
   }
 
 
-  private static function _getConvertedJQueryUIDateFormat($locale)
+  private static function _getConvertedJQueryUIDateFormat($locale, $with_year)
   {
     switch($locale)
     {
         // the following are extracted from jquery.ui.i18n (version 1.9.2)
-        case '' : return 'm/d/Y'; 
-        case 'af' : return 'd/m/Y'; 
-        case 'ar-dz' : return 'd/m/Y'; 
-        case 'ar' : return 'd/m/Y'; 
-        case 'az' : return 'd.m.Y'; 
-        case 'bg' : return 'd.m.Y'; 
-        case 'bs' : return 'd.m.Y'; 
-        case 'ca' : return 'd/m/Y'; 
-        case 'cs' : return 'd.m.Y'; 
-        case 'cy-gb' : return 'd/m/Y'; 
-        case 'da' : return 'd-m-Y'; 
-        case 'de' : return 'd.m.Y'; 
-        case 'el' : return 'd/m/Y';
-        case 'en-us': return 'm/d/Y';
-        case 'en-au' : return 'd/m/Y'; 
-        case 'en-gb' : return 'd/m/Y'; 
-        case 'en-nz' : return 'd/m/Y'; 
-        case 'eo' : return 'd/m/Y'; 
-        case 'es' : return 'd/m/Y'; 
-        case 'et' : return 'd.m.Y'; 
-        case 'eu' : return 'Y-m-d'; 
-        case 'fa' : return 'Y/m/d'; 
-        case 'fi' : return 'd.m.Y'; 
-        case 'fo' : return 'd-m-Y'; 
-        case 'fr-ch' : return 'd.m.Y'; 
-        case 'fr' : return 'd/m/Y'; 
-        case 'gl' : return 'd/m/Y'; 
-        case 'he' : return 'd/m/Y'; 
-        case 'hi' : return 'd/m/Y'; 
-        case 'hr' : return 'd.m.Y.'; 
-        case 'hu' : return 'Y.m.d.'; 
-        case 'hy' : return 'd.m.Y'; 
-        case 'id' : return 'd/m/Y'; 
-        case 'is' : return 'd/m/Y'; 
-        case 'it' : return 'd/m/Y'; 
-        case 'ja' : return 'Y/m/d'; 
-        case 'ka' : return 'd-m-Y'; 
-        case 'kk' : return 'd.m.Y'; 
-        case 'km' : return 'd-m-Y'; 
-        case 'ko' : return 'Y-m-d'; 
-        case 'lb' : return 'd.m.Y'; 
-        case 'lt' : return 'Y-m-d'; 
-        case 'lv' : return 'd-m-Y'; 
-        case 'mk' : return 'd.m.Y'; 
-        case 'ml' : return 'd/m/Y'; 
-        case 'ms' : return 'd/m/Y'; 
-        case 'nl-be' : return 'd/m/Y'; 
-        case 'nl' : return 'd-m-Y'; 
-        case 'no' : return 'd.m.Y'; 
-        case 'pl' : return 'd.m.Y'; 
-        case 'pt-br' : return 'd/m/Y'; 
-        case 'pt' : return 'd/m/Y'; 
-        case 'rm' : return 'd/m/Y'; 
-        case 'ro' : return 'd.m.Y'; 
-        case 'ru' : return 'd.m.Y'; 
-        case 'sk' : return 'd.m.Y'; 
-        case 'sl' : return 'd.m.Y'; 
-        case 'sq' : return 'd.m.Y'; 
-        case 'sr-sr' : return 'd/m/Y'; 
-        case 'sr' : return 'd/m/Y'; 
-        case 'sv' : return 'Y-m-d'; 
-        case 'ta' : return 'd/m/Y'; 
-        case 'th' : return 'd/m/Y'; 
-        case 'tj' : return 'd.m.Y'; 
-        case 'tr' : return 'd.m.Y'; 
-        case 'uk' : return 'd/m/Y'; 
-        case 'vi' : return 'd/m/Y'; 
-        case 'zh-cn' : return 'Y-m-d'; 
-        case 'zh-hk' : return 'd-m-Y'; 
-        case 'zh-tw' : return 'Y/m/d'; 
+        case '' :      return $with_year? 'm/d/Y' : 'm/d/Y'; 
+        case 'af' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'ar-dz' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'ar' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'az' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'bg' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'bs' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'ca' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'cs' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'cy-gb' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'da' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'de' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'el' :    return $with_year? 'd/m/Y': 'd/m';
+        case 'en-us' : return $with_year? 'm/d/Y': 'm/d';
+        case 'en-au' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'en-gb' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'en-nz' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'eo' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'es' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'et' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'eu' :    return $with_year? 'Y-m-d': 'm-d'; 
+        case 'fa' :    return $with_year? 'Y/m/d': 'm/d'; 
+        case 'fi' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'fo' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'fr-ch' : return $with_year? 'd.m.Y': 'd.m'; 
+        case 'fr' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'gl' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'he' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'hi' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'hr' :    return $with_year? 'd.m.Y.': 'd.m.'; 
+        case 'hu' :    return $with_year? 'Y.m.d.': 'm.d.'; 
+        case 'hy' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'id' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'is' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'it' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'ja' :    return $with_year? 'Y/m/d': 'm/d'; 
+        case 'ka' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'kk' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'km' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'ko' :    return $with_year? 'Y-m-d': 'm-d'; 
+        case 'lb' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'lt' :    return $with_year? 'Y-m-d': 'm-d'; 
+        case 'lv' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'mk' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'ml' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'ms' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'nl-be' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'nl' :    return $with_year? 'd-m-Y': 'd-m'; 
+        case 'no' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'pl' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'pt-br' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'pt' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'rm' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'ro' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'ru' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'sk' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'sl' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'sq' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'sr-sr' : return $with_year? 'd/m/Y': 'd/m'; 
+        case 'sr' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'sv' :    return $with_year? 'Y-m-d': 'm-d'; 
+        case 'ta' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'th' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'tj' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'tr' :    return $with_year? 'd.m.Y': 'd.m'; 
+        case 'uk' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'vi' :    return $with_year? 'd/m/Y': 'd/m'; 
+        case 'zh-cn' : return $with_year? 'Y-m-d': 'm-d'; 
+        case 'zh-hk' : return $with_year? 'd-m-Y': 'd-m'; 
+        case 'zh-tw' : return $with_year? 'Y/m/d': 'm/d'; 
         default: return false; 
     }
   }
@@ -282,10 +282,10 @@ class DELT
     return false;
   }
 
-  public static function getDateForFormWidget($date)
+  public static function getDateForFormWidget($date, $with_year=true)
   {
     $date=DateTime::createFromFormat('Y-m-d', $date);
-    $format = DELT::getConvertedJQueryUIDateFormat();
+    $format = DELT::getConvertedJQueryUIDateFormat($with_year);
     return $date->format($format);
   }
   
@@ -293,7 +293,7 @@ class DELT
   {
     return date('Y-m-d', strtotime($date))==$date ? $date: $default;
   }
-  
+    
   public static function delimittext($text, $delimiter, $charset='')
   {
     if($charset)

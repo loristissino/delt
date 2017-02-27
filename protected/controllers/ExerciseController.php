@@ -139,6 +139,7 @@ class ExerciseController extends Controller
     $this->render('report',array(
       'model'=>$model,
       'challenges'=>$challenges,
+      'session'=>$session,
       'sessions'=>$sessions,
     ));
   }

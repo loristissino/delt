@@ -155,6 +155,7 @@ class Challenge extends CActiveRecord
     $criteria->compare('started_at',$this->started_at,true);
     $criteria->compare('suspended_at',$this->suspended_at,true);
     $criteria->compare('completed_at',$this->completed_at,true);
+    $criteria->compare('checked_at',$this->checked_at,true);
     $criteria->compare('method',$this->method);
     $criteria->compare('rate',$this->rate);
     $criteria->compare('transaction_id',$this->transaction_id);
@@ -285,6 +286,20 @@ class Challenge extends CActiveRecord
     return $this->isStarted() && !$this->isSuspended() && !$this->isCompleted();
   }
   
+  public function getLastAction()
+  {
+    if ($this->isChecked())
+      return array('action'=>'Checked', 'at'=>$this->checked_at, 'nullable'=>true);
+    if ($this->isCompleted())
+      return array('action'=>'Completed', 'at'=>$this->completed_at, 'nullable'=>true);
+    if ($this->isSuspended())
+      return array('action'=>'Suspended', 'at'=>$this->suspended_at, 'nullable'=>false);
+    if ($this->isStarted())
+      return array('action'=>'Started', 'at'=>$this->started_at, 'nullable'=>false);
+    if ($this->isAssigned())
+      return array('action'=>'Assigned', 'at'=>$this->assigned_at, 'nullable'=>false);
+  }
+  
   public function hasFirm()
   {
     if (!$this->firm_id)
@@ -340,11 +355,9 @@ class Challenge extends CActiveRecord
   
   public function changeStatus($action)
   {
-    
     $transaction = $this->getDbConnection()->beginTransaction();
     $done = false;
     $now = new CDbExpression('NOW()');
-    
     try
     {
       switch($action)
@@ -361,8 +374,8 @@ class Challenge extends CActiveRecord
             $this->save();
             $this->last_action = Event::CHALLENGE_ACCEPTED;
             $done = true;
-            break;
           }
+          break;
 
         case 'suspend':
           if (!$this->isSuspended() && !$this->isCompleted())
@@ -385,8 +398,8 @@ class Challenge extends CActiveRecord
             Yii::app()->user->setState('transaction', $this->transaction_id);
             $this->last_action = Event::CHALLENGE_RESUMED;
             $done = true;
-            break;
           }
+          break;
           
         case 'completed':
           if ($this->isStarted() && !$this->isSuspended() && !$this->isCompleted() && $this->hasFirm())
@@ -397,8 +410,29 @@ class Challenge extends CActiveRecord
             $this->save();
             $this->last_action = Event::CHALLENGE_COMPLETED;
             $done = true;
-            break;
           }
+          break;
+          
+        case 'deletelast':
+          $last=$this->getLastAction();
+          if (!$last['nullable'])
+          {
+            $done=false;
+          }
+          elseif($last['action']=='Completed')
+          {
+            $this->completed_at = null;
+            $this->save();
+            $done=true;
+          }
+          elseif($last['action']=='Checked')
+          {
+            $this->checked_at = null;
+            //$this->results = null;
+            $this->save();
+            $done=true;
+          }
+          break;
           
         case 'checked':
           if ($this->isCompleted())
@@ -407,8 +441,8 @@ class Challenge extends CActiveRecord
             $this->save();
             $this->last_action = Event::CHALLENGE_CHECKED;
             $done = true;
-            break;
           }
+          break;
       }  // end switch
       
       if($done)

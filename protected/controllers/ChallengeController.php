@@ -182,7 +182,7 @@ class ChallengeController extends Controller
    * If update is successful, the browser will be redirected to the 'view' page.
    * @param integer $id the ID of the model to be updated
    */
-  public function actionChangestatus($id)
+  public function actionChangestatus($id, $redirect='challenge', $session='')
   {
     $model=$this->loadModel($id);
     
@@ -206,6 +206,10 @@ class ChallengeController extends Controller
       Yii::app()->user->setFlash('delt_failure',Yii::t('delt', 'Something went wrong with the requested change.'));
     }
     
+    if ($redirect=='report')
+    {
+      $this->redirect(array('exercise/report', 'id'=>$model->exercise_id, 'session'=>$session));
+    }
     $this->redirect(array('challenge/index'));
   }
   
@@ -363,7 +367,7 @@ class ChallengeController extends Controller
     $model=Challenge::model()->findByPk($id);
     if($model===null)
       throw new CHttpException(404,'The requested page does not exist.');
-    if($model->user_id!=$this->DEUser->id)
+    if($model->user_id!=$this->DEUser->id && $model->instructor_id!=$this->DEUser->id)
       throw new CHttpException(403, 'You are not allowed to access the requested page.');
     return $model;
   }
