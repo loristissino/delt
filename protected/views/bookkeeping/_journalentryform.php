@@ -618,6 +618,10 @@ $cs->registerScript(
   {
     $("#name" + row_number).val(name);
     $("#chooseaccountdialog").dialog("close");
+    $("#debit" + row_number).focus();
+    var top = $("#journalentryform").offset().top;
+    $("html, body").animate({ scrollTop: top + "px" });
+    return false;
   }
 
   ',
