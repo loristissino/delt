@@ -69,6 +69,11 @@
   <?php //if($data->isDeletable()): ?>
     <?php echo CHtml::link(Yii::t('delt', 'Delete'), array('challenge/delete', 'id'=>$data->id), array('title'=>Yii::t('delt', 'Delete this challenge'))) ?>
   <?php //endif ?>
+  
+  <?php if($data->exercise->user_id == $this->DEUser->id): ?>
+    <?php echo CHtml::link(Yii::t('delt', 'Exercise'), array('exercise/view', 'id'=>$data->exercise_id), array('title'=>Yii::t('delt', 'Go to the page of this exercise'))) ?>
+  <?php endif ?>
+  
 </div>
 
 <?php $this->endWidget(); ?>

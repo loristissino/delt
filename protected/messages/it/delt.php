@@ -1724,5 +1724,11 @@
 
   'Connect the selected journal entries to the current transaction (from the open challenge)'=>
   'Associa le registrazioni selezionate alla transazione corrente (della sfida in corso)',
+  
+  'Exercise'=>
+  'Esercizio',
+  
+  'Go to the page of this exercise'=>
+  'Vai alla pagina di questo esercizio',
 
 );
