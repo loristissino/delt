@@ -55,7 +55,10 @@ $cs->registerScript(
 
 <hr />
 
-<p><?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and ask for an invitation.') ?></p>
+<p>
+  <?php echo Yii::t('delt', 'If you know the slug of an exercise, you can write it here and ask for an invitation.') ?>
+  <?php echo CHtml::link(Yii::t('delt', 'There is a list of public exercises you can try.'), $this->createUrl('site/en/challenges')) ?>
+</p>
   <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'choseexerciseform',
     'enableAjaxValidation'=>false,
