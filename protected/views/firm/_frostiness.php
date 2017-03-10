@@ -4,7 +4,7 @@
 <?php if($warning): ?>
 <br />
 <?php echo $this->createIcon('bell', Yii::t('delt', 'Linked to completed challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Linked to completed challenge'))) ?>
- <?php echo Yii::t('delt', 'The firm is linked to a challenge that has been marked completed, and this would be invalidated if you unfreeze it.') ?>
+ <?php echo Yii::t('delt', 'The firm is linked to a challenge that has been marked completed, and the challenge would be invalidated if you unfreeze it.') ?>
 <?php endif ?>
  </p>
 <?php else: ?>

@@ -541,17 +541,17 @@ class Firm extends CActiveRecord
     $positions=array($position, strtolower($position));
     
     $accounts = Yii::app()->db->createCommand()
-      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id, a.classes as classes')
-      ->from('{{posting}}')
+      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id, a.classes as classes, p.comment as comment')
+      ->from('{{posting}} p')
       ->leftJoin('{{account}} a', 'account_id = a.id')
-      ->leftJoin('{{journalentry}} p', 'journalentry_id = p.id')
-      ->where('p.firm_id=:id', array(':id'=>$this->id))
+      ->leftJoin('{{journalentry}} j', 'journalentry_id = j.id')
+      ->where('j.firm_id=:id', array(':id'=>$this->id))
       ->andWhere($position==''? true : array('in', 'position', $positions))
-      ->andWhere('p.is_included = 1')
+      ->andWhere('j.is_included = 1')
       ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
-      ->andWhere($closing_entries_included ? ' TRUE': 'p.is_closing = FALSE')
+      ->andWhere($closing_entries_included ? ' TRUE': 'j.is_closing = FALSE')
       ->order('a.code')
-      ->group('a.code, a.currentname, a.id')
+      ->group('a.code, a.currentname, a.id, p.comment')
       ->having('total <> 0')
       ->queryAll();
       //->text;
@@ -2301,9 +2301,30 @@ class Firm extends CActiveRecord
       {
         $attributes['is_selectable']=true;
       }
+
       return Account::model()->findByAttributes($attributes);
     }
   }
+
+  public function findSubchoices($term)
+  {
+      $result = Yii::app()->db->createCommand()
+      ->select('subchoice')
+      ->from('{{posting}}')
+      ->leftJoin('{{journalentry}} j', 'journalentry_id = j.id')
+      ->where('j.firm_id=:id', array(':id'=>$this->id))
+      ->andWhere(array('like', 'subchoice', '%' . $term . '%'))
+      ->queryAll();
+      
+      $values = array();
+      foreach($result as $item)
+      {
+        $values[]=$item['subchoice'];
+      }
+      return $values;
+  }
+
+
   
   public function getLastDate($type='long')
   {

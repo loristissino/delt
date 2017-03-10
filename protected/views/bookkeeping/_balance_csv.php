@@ -18,6 +18,7 @@ if($charset=='utf-8' and !$inline)
 $headers=array(
   DELT::delimittext(Yii::t('delt', 'Code'), $delimiter, $charset),
   DELT::delimittext(Yii::t('delt', 'Name'), $delimiter, $charset),
+  DELT::delimittext(Yii::t('delt', 'Comment'), $delimiter, $charset),
 );
 switch($type)
 {
@@ -42,6 +43,7 @@ $headers[]=DELT::delimittext(Yii::t('delt', 'Classes'), $delimiter, $charset);
 $values = array(
   DELT::delimittext($model->renderAccountCode($account['code']), $delimiter, $charset),
   DELT::delimittext($account['name'], $delimiter, $charset),
+  DELT::delimittext($account['comment'], $delimiter, $charset),
 );
 
 switch($type)

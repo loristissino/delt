@@ -261,6 +261,10 @@ td.centered
   text-align: center;
 }
 
+td.values
+{
+  vertical-align: top;
+}
 
 .currency
 {

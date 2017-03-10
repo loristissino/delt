@@ -32,6 +32,7 @@ class PostingForm extends CFormModel
   public $creditfromtemplate=false;
   public $analysis = 'none';
   public $comment = '';
+  public $subchoice = '';
   
   public function rules()
   {

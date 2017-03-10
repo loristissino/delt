@@ -783,8 +783,42 @@ class BookkeepingController extends Controller
   public function actionSuggestaccount($term='', $slug='')
   {
     $firm=$this->loadFirmBySlug($_GET['slug']);
-    $this->checkFrostiness($firm);
+    //$this->checkFrostiness($firm);
     $this->serveJson($firm->findAccounts($term));
+  }
+
+  /**
+   * Serves a list of suggestions matching the term $term, in form of
+   * a json-encoded object.
+   * @param string $term the string to match
+   * @param string $slug the slug of the firm
+   */
+  public function actionSuggestsubchoices($term='', $slug='')
+  {
+    $firm=$this->loadFirmBySlug($_GET['slug']);
+    //$this->checkFrostiness($firm);
+    $this->serveJson($firm->findSubchoices($term));
+  }
+
+  /**
+   * Serves a list of subchoices matching the account $account, in form of
+   * a json-encoded object.
+   * @param string $account the string to match
+   * @param string $slug the slug of the firm
+   */
+  public function actionListsubchoices($code='', $slug='')
+  {
+    $firm=$this->loadFirmBySlug($slug);
+    //$this->checkFrostiness($firm);
+    if ($account=$firm->findAccount($code, true))
+    {
+      $choices = $account->getSubChoices();
+    }
+    else
+    {
+      $choices = null;
+    }
+    $this->serveJson($choices);
   }
 
   /**

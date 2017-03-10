@@ -38,6 +38,8 @@ $calculator_icon = addslashes(Yii::app()->request->baseUrl.'/images/calculator.p
 
 $json_url_sa = addslashes($this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)));
 $json_url_aca = addslashes($this->createUrl('bookkeeping/accountclosingamount', array('slug'=>$this->firm->slug)));
+$json_url_lsc = addslashes($this->createUrl('bookkeeping/listsubchoices', array('slug'=>$this->firm->slug)));
+$json_url_ssc = addslashes($this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)));
 
 $currency_test_string=DELT::currency_value(3.14, $this->firm->currency); // this will be something like "$3.14" or "US$ 3,14", depending on the locale;
 
@@ -595,6 +597,45 @@ $cs->registerScript(
   $("#done_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = true; })
   $("#new_button").click(function(e) {check_dirty=false; clear_local_storage_on_exit = true; })
     
+  
+  $(".subchoice").hide();
+  $(".autocomplete").hide();
+  
+  $(".accountname").blur(function (obj) {
+    var field = $(obj.target);
+    console.log(field.attr("data-id"));
+    var name = field.attr("value");
+    var code = name.substring(0, name.indexOf(" "));
+    var select_item = $("#subchoice"+field.attr("data-id"));
+    var subchoice_container = $("#subchoice_container"+field.attr("data-id"));
+    var autocomplete_container = $("#autocomplete_container"+field.attr("data-id"));
+    var jsonUrl = "' . $json_url_lsc . '?code=" + code;
+    console.log(jsonUrl);
+    $.getJSON(
+      jsonUrl,
+      {},
+      function (json)
+        {
+          subchoice_container.hide();
+          autocomplete_container.hide();
+          if (json) {
+            if (json.type=="select") {
+            
+              select_item.empty();
+              if (json.items.length>0) {
+                $.each(json.items, function (key, value) {
+                  select_item.append($("<option>").text(value));
+                });
+                subchoice_container.show();
+              }
+            }
+            else if (json.type=="autocomplete") {
+              autocomplete_container.show();
+            }
+          }
+        }
+      );
+  });
   '
 /*
     $(".form").bind("keyup", "ctrl-u", function()
@@ -723,17 +764,43 @@ if(Yii::app()->language!=='en')
         'source'=>$this->createUrl('bookkeeping/suggestaccount', array('slug'=>$this->firm->slug)),
          'options'=>array(
           'delay'=>200,
-          'minLength'=>2,
+          'minLength'=>3,
           ),
         'htmlOptions'=>array(
            'size'=>'50',
-           'class'=>$item->name_errors ? 'error': 'valid',
+           'class'=>($item->name_errors ? 'error': 'valid') . ' accountname',
+           'data-id'=>$row,
            ),
         ))
       ?><span id="deleteicon<?php echo $row ?>"></span>
-</td>
-      <td <?php printWidth('debit') ?>><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'debitfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
-      <td <?php printWidth('credit') ?>><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'creditfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
+      <span id="subchoice_container<?php echo $row ?>" class="subchoice">
+      <br />
+      <?php echo CHtml::dropDownList("PostingForm[$i][subchoice]", '', array("ab", "cd"), array('id'=>'subchoice'.$row)) ?>
+      </span>
+      <span id="autocomplete_container<?php echo $row ?>" class="autocomplete">
+      <br />
+      
+      <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+        'id'=>'autocomplete'.$row,
+        'name'=>"PostingForm[$i][subchoice]",
+        'value'=>$item->subchoice,
+        'source'=>$this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)),
+         'options'=>array(
+          'delay'=>200,
+          'minLength'=>0,
+          ),
+        'htmlOptions'=>array(
+           'size'=>'30',
+           'data-id'=>$row,
+           ),
+        ))
+      ?>
+      
+      </span>
+      
+      </td>
+      <td class="values" <?php printWidth('debit') ?>><?php echo CHtml::activeTextField($item,"[$i]debit", array('size'=> 10, 'id'=>'debit'.$row, 'class'=>'currency ' . ($item->debit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'debitfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
+      <td class="values" <?php printWidth('credit') ?>><?php echo CHtml::activeTextField($item,"[$i]credit", array('size'=> 10, 'id'=>'credit'.$row, 'class'=>'currency ' . ($item->credit_errors ? 'error': 'valid') . ($item->guessed ? ' guessed': '') . ( DELT::getValueFromArray(DELT::getValueFromArray($this->accounts, $i, array()), 'creditfromtemplate', false) ? ' fromtemplate': ''))) ?></td>
       </tr>
       <?php endforeach; ?>
       

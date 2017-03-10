@@ -755,6 +755,23 @@ class Account extends CActiveRecord
     return isset($values[$with_locale]) ? $values[$with_locale] : (isset($values[$keyword]) ? $values[$keyword] : $default);
   }
   
+  public function getSubChoices()
+  {
+    $kw = $this->getValueFromCommentByKeyword('@subchoices', '');
+    
+    if ($kw=='')
+    {
+      return array('type'=>'none');
+    }
+    
+    if ($kw=='*')
+    {
+      return array('type'=>'autocomplete');
+    }
+    
+    return array('type'=>'select', 'items'=>array_filter(array_map('trim', explode(',', $this->getValueFromCommentByKeyword('@subchoices', '')))));
+  }
+  
   public function setClassesFromComment(Account $parent = null)
   {
     //FIXME This should be definitely done in a better way
