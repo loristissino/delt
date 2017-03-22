@@ -94,12 +94,10 @@
   'Kontoüberarbeitung «{name}»',
 
   'Public firms' => 
-  'Öffentliche Firma
-',
+  'Öffentliche Firma',
 
   'Your firms' => 
-  'Deine Firma
-',
+  'Deine Firma',
 
   'Create firm' => 
   'Firma herstellen',
