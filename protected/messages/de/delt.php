@@ -283,13 +283,13 @@
   'Willkommen in «{name}»',
 
   'You are creating an account as a child of «{account}»,' => 
-  'Sie erstellen ein Konto als Kind von «{Konto}»,',
+  'Sie erstellen ein Konto als Kind von «{account}»,',
 
   'You are making the account a child of «{account}»,' => 
-  'Sie machen das Konto ein Kind von «{Konto}»,',
+  'Sie machen das Konto ein Kind von «{account}»,',
 
   'The account you are updating is a child of «{account}»,' => 
-  'Das Konto, das Sie aktualisieren, ist ein Kind von «{Konto}»,',
+  'Das Konto, das Sie aktualisieren, ist ein Kind von «{account}»,',
 
   'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").' => 
   'der Konto "{code}" ist nicht verfügbar (Sie können es auf der Fliege zum Diagramm der Konten hinzufügen, indem Sie ein Ausrufezeichen am Ende des Namens einfügen, wie in "{code}!").',
