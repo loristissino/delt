@@ -95,7 +95,7 @@ $cs->registerScript(
         </td>
         <td style="text-align: right"><?php echo Yii::app()->numberFormatter->formatDecimal(round($challenge->rate/10)). '%' ?></td>
         
-        <?php foreach($challenge->getResults()['transactions'] as $t): ?>
+        <?php foreach(DELT::getValueFromArray($challenge->getResults(), 'transactions', array()) as $t): ?>
           <td style="text-align: right" title="<?php echo implode("\n", $t['errors']) ?>">
             <?php echo $t['points'] ?>
           </td>
