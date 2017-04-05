@@ -884,7 +884,7 @@ class Firm extends CActiveRecord
   public function findAccounts($term)
   {
     $accounts = Yii::app()->db->createCommand()
-      ->select('code, outstanding_balance, currentname')
+      ->select('code, outstanding_balance, currentname, subchoices')
       ->from('{{account}}')
       ->where('firm_id=:id', array(':id'=>$this->id))
       ->andWhere(array('or', 
@@ -899,7 +899,14 @@ class Firm extends CActiveRecord
     $result=array();
     foreach($accounts as $account)
     {
-      $result[]=$this->renderAccountCode($account['code']). ' - ' . $account['currentname'];
+      switch ($account['subchoices'])
+      {
+        case 1: $postfix = ' @'; break;
+        case 2: $postfix = ' §'; break;
+        default: $postfix = '';
+      }
+      
+      $result[]=$this->renderAccountCode($account['code']). ' - ' . $account['currentname'] . $postfix;
     }
     return $result;
   }

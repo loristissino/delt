@@ -33,6 +33,8 @@ class PostingForm extends CFormModel
   public $analysis = 'none';
   public $comment = '';
   public $subchoice = '';
+  public $subchoice_list = '';
+  public $subchoice_text = '';
   
   public function rules()
   {
@@ -50,6 +52,8 @@ class PostingForm extends CFormModel
       'name' => Yii::t('delt', 'Account'),
       'debit' => Yii::t('delt', 'Debit'),
       'credit' => Yii::t('delt', 'Credit'),
+      'comment' => Yii::t('delt', 'Comment'),
+      'subchoice' => Yii::t('delt', 'Subchoice'),
     );
   }
   

@@ -354,6 +354,54 @@ $cs->registerScript(
             return false;
           }
         })(i));
+        
+      $("#name" +i).blur((function(index)
+        {
+          return function(obj)
+          {
+            row_number = index;
+            console.log("blurred" + row_number);
+            var field = $(obj.target);
+            console.log(field);
+            var name = field.attr("value");
+            console.log(name);
+            var code = name.substring(0, name.indexOf(" "));
+            console.log(code);
+            var select_item = $("#subchoice"+row_number);
+            var subchoice_container = $("#subchoice_container"+row_number);
+            var autocomplete_container = $("#autocomplete_container"+row_number);
+            
+            if (name.indexOf("@")>-1)
+            {
+              autocomplete_container.show();
+            }
+            else if (name.indexOf("§")>-1)
+            {
+
+              var jsonUrl = "' . $json_url_lsc . '?code=" + code;
+              console.log(jsonUrl);
+              $.getJSON(
+                jsonUrl,
+                {},
+                function (json)
+                  {
+                    if (json) {
+                      select_item.empty();
+                      if (json.length>0) {
+                        $.each(json, function (key, value) {
+                          select_item.append($("<option>").attr("value", value).text(value));
+                        });
+                        subchoice_container.show();
+                      }
+                    }
+                  }
+                );
+            }
+            
+          }
+        })(i));
+        
+        
 
       $("#name" +i).mouseover((function(index)
         {
@@ -601,41 +649,6 @@ $cs->registerScript(
   $(".subchoice").hide();
   $(".autocomplete").hide();
   
-  $(".accountname").blur(function (obj) {
-    var field = $(obj.target);
-    console.log(field.attr("data-id"));
-    var name = field.attr("value");
-    var code = name.substring(0, name.indexOf(" "));
-    var select_item = $("#subchoice"+field.attr("data-id"));
-    var subchoice_container = $("#subchoice_container"+field.attr("data-id"));
-    var autocomplete_container = $("#autocomplete_container"+field.attr("data-id"));
-    var jsonUrl = "' . $json_url_lsc . '?code=" + code;
-    console.log(jsonUrl);
-    $.getJSON(
-      jsonUrl,
-      {},
-      function (json)
-        {
-          subchoice_container.hide();
-          autocomplete_container.hide();
-          if (json) {
-            if (json.type=="select") {
-            
-              select_item.empty();
-              if (json.items.length>0) {
-                $.each(json.items, function (key, value) {
-                  select_item.append($("<option>").text(value));
-                });
-                subchoice_container.show();
-              }
-            }
-            else if (json.type=="autocomplete") {
-              autocomplete_container.show();
-            }
-          }
-        }
-      );
-  });
   '
 /*
     $(".form").bind("keyup", "ctrl-u", function()
@@ -775,14 +788,14 @@ if(Yii::app()->language!=='en')
       ?><span id="deleteicon<?php echo $row ?>"></span>
       <span id="subchoice_container<?php echo $row ?>" class="subchoice">
       <br />
-      <?php echo CHtml::dropDownList("PostingForm[$i][subchoice]", '', array("ab", "cd"), array('id'=>'subchoice'.$row)) ?>
+      <?php echo CHtml::dropDownList("PostingForm[$i][subchoice_list]", '', array(), array('id'=>'subchoice'.$row)) ?>
       </span>
       <span id="autocomplete_container<?php echo $row ?>" class="autocomplete">
       <br />
       
       <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
         'id'=>'autocomplete'.$row,
-        'name'=>"PostingForm[$i][subchoice]",
+        'name'=>"PostingForm[$i][subchoice_text]",
         'value'=>$item->subchoice,
         'source'=>$this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)),
          'options'=>array(

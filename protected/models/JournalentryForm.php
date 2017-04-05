@@ -75,11 +75,11 @@ class JournalentryForm extends CFormModel
       {
         if(sizeof($fields=explode("\t", $line))>=3)
         {
-          list($name, $debit, $credit) = $fields;
+          list($name, $debit, $credit, $subchoice) = $fields;
           if(is_numeric(DELT::currency2decimal($debit, $this->currency)) or is_numeric(DELT::currency2decimal($credit, $this->currency)))
           {
             $this->postings[$count] = new PostingForm();
-            foreach(array('name', 'debit', 'credit') as $index=>$property)
+            foreach(array('name', 'debit', 'credit', 'subchoice') as $index=>$property)
             {
               $this->postings[$count]->$property = $$property;
             }
@@ -103,7 +103,7 @@ class JournalentryForm extends CFormModel
         $value['debit'] = DELT::currency_value(DELT::getValueFromArray($value, 'debit', 0), $this->firm->currency);
         $value['credit'] = DELT::currency_value(DELT::getValueFromArray($value, 'credit', 0), $this->firm->currency);
       }
-      DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit'));
+      DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit', 'subchoice_text', 'subchoice_list'));
       $this->total_debit += DELT::currency2decimal($this->postings[$key]->debit, $this->firm->currency);
       $this->total_credit += DELT::currency2decimal($this->postings[$key]->credit, $this->firm->currency);
     }
@@ -191,6 +191,7 @@ class JournalentryForm extends CFormModel
           $posting->account_id = $postingform->account_id;
           $posting->amount = $postingform->debit - $postingform->credit;
           $posting->comment = $postingform->comment;
+          $posting->subchoice = $postingform->subchoice_text . $postingform->subchoice_list;
           $posting->rank = $rank++;
           
           if($posting->save(true))

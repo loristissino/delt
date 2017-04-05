@@ -18,6 +18,7 @@
  * @property string $code
  * @property string $rcode
  * @property integer $is_selectable
+ * @property integer $subchoices
  * @property string $position
  * @property string $outstanding_balance
  * @property string $l10n_names
@@ -70,7 +71,7 @@ class Account extends CActiveRecord
     // will receive user inputs.
     return array(
       array('firm_id, code', 'required'),
-      array('account_parent_id, firm_id, level, is_selectable', 'numerical', 'integerOnly'=>true),
+      array('account_parent_id, firm_id, level, is_selectable, subchoices', 'numerical', 'integerOnly'=>true),
       array('code', 'length', 'max'=>16),
       array('comment', 'length', 'max'=>500),
       array('code', 'checkCode'),
@@ -128,6 +129,7 @@ class Account extends CActiveRecord
       'level' => 'Level',
       'code' => Yii::t('delt', 'Code'),
       'is_selectable' => 'Is Selectable',
+      'subchoices' => Yii::t('delt', 'Admits subchoices'),
       'type' => Yii::t('delt', 'Format'),
       'position' => Yii::t('delt', 'Position'),
       'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
@@ -179,6 +181,7 @@ class Account extends CActiveRecord
     $criteria->compare('level',$this->level);
     $criteria->compare('code',$this->code,true);
     $criteria->compare('is_selectable',$this->is_selectable);
+    $criteria->compare('subchoices',$this->subchoices);
     $criteria->compare('type',$this->type);
     $criteria->compare('position',$this->position);
     $criteria->compare('outstanding_balance',$this->outstanding_balance,true);
@@ -656,7 +659,7 @@ class Account extends CActiveRecord
       
       $language = DELT::LocaleToLanguage($locale);
       
-      $name=strip_tags(trim($info[1]));
+      $name=str_replace(array('#', '@', '§'), '', strip_tags(trim($info[1])));
       $result[$locale]=$name;
       DELT::array_add_if_unset($temp, $language, $name);
     }
@@ -758,18 +761,7 @@ class Account extends CActiveRecord
   public function getSubChoices()
   {
     $kw = $this->getValueFromCommentByKeyword('@subchoices', '');
-    
-    if ($kw=='')
-    {
-      return array('type'=>'none');
-    }
-    
-    if ($kw=='*')
-    {
-      return array('type'=>'autocomplete');
-    }
-    
-    return array('type'=>'select', 'items'=>array_filter(array_map('trim', explode(',', $this->getValueFromCommentByKeyword('@subchoices', '')))));
+    return array_filter(array_map('trim', explode(',', $kw)));
   }
   
   public function setClassesFromComment(Account $parent = null)
