@@ -4,7 +4,7 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$model->slug),
+  'Chart of Accounts' => array('/bookkeeping/coa', 'slug'=>$model->slug),
   'Fix',
 );
 

@@ -5,7 +5,7 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
-  'Chart of accounts' => array('/bookkeeping/coa', 'slug'=>$firm->slug),
+  'Chart of Accounts' => array('/bookkeeping/coa', 'slug'=>$firm->slug),
   'Synchronize',
 );
 

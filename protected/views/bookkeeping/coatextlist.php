@@ -4,13 +4,13 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'Chart of accounts',
+  'Chart of Accounts',
 );
 
 $accounts = $model->getAccountsAsDataProvider()->data;
 
 ?>
-<h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
+<h1><?php echo Yii::t('delt', 'Chart of Accounts') ?></h1>
 
 <?php if(sizeof($accounts)): ?>
 <?php foreach($accounts as $account): ?>

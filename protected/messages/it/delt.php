@@ -30,9 +30,6 @@
   'Journal' => 
   'Libro giornale',
 
-  'Chart of accounts' => 
-  'Piano dei conti',
-
   'General Ledger' => 
   'Libro mastro',
 

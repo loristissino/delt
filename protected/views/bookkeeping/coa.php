@@ -4,7 +4,7 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $model->name => array('/bookkeeping/manage', 'slug'=>$model->slug),
-  'Chart of accounts',
+  'Chart of Accounts',
 );
 
 $this->menu=array(
@@ -22,7 +22,7 @@ if($model->firm_parent_id)
 $this->menu[]=array('label'=>Yii::t('delt', 'Configure'), 'url'=>array('bookkeeping/configure', 'slug'=>$model->slug), 'linkOptions'=>array('title'=>Yii::t('delt', 'Configure Financial Statement components')));
 
 ?>
-<h1><?php echo Yii::t('delt', 'Chart of accounts') ?></h1>
+<h1><?php echo Yii::t('delt', 'Chart of Accounts') ?></h1>
 
 <?php echo $this->renderPartial('_coagrid', array('model'=>$model, 'dataProvider'=>$dataProvider, 'renderNameCallable'=>'RenderName', 'buttonsTemplate'=>'{view}{update}{new}')) ?>
 

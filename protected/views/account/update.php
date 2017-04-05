@@ -6,7 +6,7 @@
 $this->breadcrumbs=array(
   'Bookkeeping/Accounting'=>array('/bookkeeping'),
   $firm->name => array('/bookkeeping/manage', 'slug'=>$firm->slug),
-  $account->isHidden()?'Statements configuration':'Chart of accounts' => array($account->isHidden()?'/bookkeeping/configure':'/bookkeeping/coa', 'slug'=>$firm->slug),
+  $account->isHidden()?'Statements configuration':'Chart of Accounts' => array($account->isHidden()?'/bookkeeping/configure':'/bookkeeping/coa', 'slug'=>$firm->slug),
   $account->name,
 );
 
