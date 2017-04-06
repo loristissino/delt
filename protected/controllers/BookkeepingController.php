@@ -982,7 +982,13 @@ class BookkeepingController extends Controller
   
   public function renderAccount(Posting $posting, $row)
   {
-    return $this->renderPartial('_account',array('account'=>$posting->account, 'journalentry'=>$posting->journalentry, 'amount'=>$posting->amount, 'comment'=>$posting->comment),true);
+    return $this->renderPartial('_account', array(
+      'account'=>$posting->account,
+      'journalentry'=>$posting->journalentry,
+      'amount'=>$posting->amount,
+      'comment'=>$posting->comment,
+      'subchoice'=>$posting->subchoice,
+      ),true);
   }
   
   public function renderSingleAccount(Account $account, $row)

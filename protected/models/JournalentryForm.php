@@ -119,6 +119,11 @@ class JournalentryForm extends CFormModel
     {
       $this->postings[$posting->id] = new PostingForm();
       $this->postings[$posting->id]->name = $posting->account->getCodeAndName($this->firm);
+      if($posting->subchoice)
+      {
+        $this->postings[$posting->id]->subchoice = $posting->subchoice;
+        $this->postings[$posting->id]->name .= ($posting->account->hasSubchoices()? ' §': ' @');
+      }
       if($posting->comment)
       {
         $this->postings[$posting->id]->name .= ' # ' . $posting->comment;
@@ -191,7 +196,7 @@ class JournalentryForm extends CFormModel
           $posting->account_id = $postingform->account_id;
           $posting->amount = $postingform->debit - $postingform->credit;
           $posting->comment = $postingform->comment;
-          $posting->subchoice = $postingform->subchoice_text . $postingform->subchoice_list;
+          $posting->subchoice = $postingform->subchoice_list ? $postingform->subchoice_list : $postingform->subchoice_text;
           $posting->rank = $rank++;
           
           if($posting->save(true))

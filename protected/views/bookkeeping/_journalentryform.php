@@ -367,19 +367,23 @@ $cs->registerScript(
             console.log(name);
             var code = name.substring(0, name.indexOf(" "));
             console.log(code);
-            var select_item = $("#subchoice"+row_number);
-            var subchoice_container = $("#subchoice_container"+row_number);
-            var autocomplete_container = $("#autocomplete_container"+row_number);
+            var select_item = $("#subchoice_list"+row_number);
+            var subchoice_list_container = $("#subchoice_list_container"+row_number);
+            var subchoice_text_container = $("#subchoice_text_container"+row_number);
             
             if (name.indexOf("@")>-1)
             {
-              autocomplete_container.show();
+              subchoice_text_container.show();
+              $("#subchoice_text"+row_number).focus();
             }
             else if (name.indexOf("§")>-1)
             {
 
               var jsonUrl = "' . $json_url_lsc . '?code=" + code;
               console.log(jsonUrl);
+              var current_value = $("#subchoice_text"+row_number).val();
+              console.log("current value: " + current_value);
+              
               $.getJSON(
                 jsonUrl,
                 {},
@@ -389,9 +393,13 @@ $cs->registerScript(
                       select_item.empty();
                       if (json.length>0) {
                         $.each(json, function (key, value) {
-                          select_item.append($("<option>").attr("value", value).text(value));
+                          var option = $("<option>").text(value);
+                          if (value==current_value) {
+                            option.attr("selected", "selected");
+                          }
+                          select_item.append(option);
                         });
-                        subchoice_container.show();
+                        subchoice_list_container.show();
                       }
                     }
                   }
@@ -647,7 +655,6 @@ $cs->registerScript(
     
   
   $(".subchoice").hide();
-  $(".autocomplete").hide();
   
   '
 /*
@@ -786,29 +793,27 @@ if(Yii::app()->language!=='en')
            ),
         ))
       ?><span id="deleteicon<?php echo $row ?>"></span>
-      <span id="subchoice_container<?php echo $row ?>" class="subchoice">
-      <br />
-      <?php echo CHtml::dropDownList("PostingForm[$i][subchoice_list]", '', array(), array('id'=>'subchoice'.$row)) ?>
+      <span id="subchoice_list_container<?php echo $row ?>" class="subchoice">
+        <br />
+        <?php echo CHtml::dropDownList("PostingForm[$i][subchoice_list]", '', array(), array('id'=>'subchoice_list'.$row)) ?>
       </span>
-      <span id="autocomplete_container<?php echo $row ?>" class="autocomplete">
-      <br />
-      
-      <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
-        'id'=>'autocomplete'.$row,
-        'name'=>"PostingForm[$i][subchoice_text]",
-        'value'=>$item->subchoice,
-        'source'=>$this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)),
-         'options'=>array(
-          'delay'=>200,
-          'minLength'=>0,
-          ),
-        'htmlOptions'=>array(
-           'size'=>'30',
-           'data-id'=>$row,
-           ),
-        ))
-      ?>
-      
+      <span id="subchoice_text_container<?php echo $row ?>" class="subchoice">
+        <br />
+        <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
+          'id'=>'subchoice_text'.$row,
+          'name'=>"PostingForm[$i][subchoice_text]",
+          'value'=>$item->subchoice,
+          'source'=>$this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)),
+           'options'=>array(
+            'delay'=>200,
+            'minLength'=>0,
+            ),
+          'htmlOptions'=>array(
+             'size'=>'30',
+             'data-id'=>$row,
+             ),
+          ))
+        ?>
       </span>
       
       </td>

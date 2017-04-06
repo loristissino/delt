@@ -2,6 +2,9 @@
 <?php if($comment): ?>
 <em> (<?php echo $comment ?>)</em>
 <?php endif ?>
+<?php if($subchoice): ?>
+<em> @<?php echo $subchoice ?></em>
+<?php endif ?>
 <?php if(!$account->is_selectable): ?>
   <span class="warning" title="<?php echo Yii::t('delt', 'This account now has children, so it should not be used directly anymore.') ?>">
   <?php echo $this->createIcon('bell', Yii::t('delt', 'warning'), array('width'=>16, 'height'=>16)) ?>

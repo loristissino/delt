@@ -129,7 +129,7 @@ class Account extends CActiveRecord
       'level' => 'Level',
       'code' => Yii::t('delt', 'Code'),
       'is_selectable' => 'Is Selectable',
-      'subchoices' => Yii::t('delt', 'Admits subchoices'),
+      'subchoices' => Yii::t('delt', 'Subchoices'),
       'type' => Yii::t('delt', 'Format'),
       'position' => Yii::t('delt', 'Position'),
       'outstanding_balance' => Yii::t('delt', 'Ordinary outstanding balance'),
@@ -758,10 +758,15 @@ class Account extends CActiveRecord
     return isset($values[$with_locale]) ? $values[$with_locale] : (isset($values[$keyword]) ? $values[$keyword] : $default);
   }
   
-  public function getSubChoices()
+  public function getSubchoices()
   {
     $kw = $this->getValueFromCommentByKeyword('@subchoices', '');
     return array_filter(array_map('trim', explode(',', $kw)));
+  }
+
+  public function hasSubchoices()
+  {
+    return $this->getValueFromCommentByKeyword('@subchoices', '')!='';
   }
   
   public function setClassesFromComment(Account $parent = null)
