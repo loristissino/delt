@@ -203,6 +203,13 @@ class JournalentryForm extends CFormModel
           $posting->amount = $postingform->debit - $postingform->credit;
           $posting->comment = $postingform->comment;
           $posting->subchoice = $postingform->subchoice_list ? $postingform->subchoice_list : $postingform->subchoice_text;
+          
+          if ($postingform->subchoice_text && !$posting->account->subchoices)
+          {
+            $posting->account->subchoices = 1;
+            $posting->account->save();
+          }
+          
           $posting->rank = $rank++;
           
           if($posting->save(true))
