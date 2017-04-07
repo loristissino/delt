@@ -103,7 +103,13 @@ class JournalentryForm extends CFormModel
         $value['debit'] = DELT::currency_value(DELT::getValueFromArray($value, 'debit', 0), $this->firm->currency);
         $value['credit'] = DELT::currency_value(DELT::getValueFromArray($value, 'credit', 0), $this->firm->currency);
       }
-      DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit', 'subchoice_text', 'subchoice_list'));
+      DELT::array2object($value, $this->postings[$key], array('name', 'debit', 'credit', 'subchoice_text', 'subchoice_list', 'subchoice'));
+      if ($v=DELT::getValueFromArray($value, 'subchoice_list', ''))
+      {
+        $this->postings[$key]->subchoice=$v;
+        // needed for the case 'addline'
+      }
+      
       $this->total_debit += DELT::currency2decimal($this->postings[$key]->debit, $this->firm->currency);
       $this->total_credit += DELT::currency2decimal($this->postings[$key]->credit, $this->firm->currency);
     }

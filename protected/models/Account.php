@@ -399,7 +399,19 @@ class Account extends CActiveRecord
       $this->outstanding_balance = null;
     }
     
+    if ($this->hasSubchoices())
+    {
+      $this->subchoices = 2;
+    }
+    
     return parent::beforeSave();
+  }
+
+  protected function afterFind()
+  {
+    $this->subchoices = $this->subchoices!=0;
+    // this is needed because otherwise the checkbox is not properly set in the form
+    return parent::afterFind();
   }
   
   public function save($runValidation=true,$attributes=null)

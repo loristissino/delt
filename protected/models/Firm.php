@@ -541,7 +541,7 @@ class Firm extends CActiveRecord
     $positions=array($position, strtolower($position));
     
     $accounts = Yii::app()->db->createCommand()
-      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id, a.classes as classes, p.comment as comment')
+      ->select('SUM(amount) as total, a.code as code, a.currentname as name, a.id as id, a.classes as classes, p.subchoice as subchoice')
       ->from('{{posting}} p')
       ->leftJoin('{{account}} a', 'account_id = a.id')
       ->leftJoin('{{journalentry}} j', 'journalentry_id = j.id')
@@ -551,7 +551,7 @@ class Firm extends CActiveRecord
       ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
       ->andWhere($closing_entries_included ? ' TRUE': 'j.is_closing = FALSE')
       ->order('a.code')
-      ->group('a.code, a.currentname, a.id, p.comment')
+      ->group('a.code, a.currentname, a.id, p.subchoice')
       ->having('total <> 0')
       ->queryAll();
       //->text;

@@ -400,6 +400,7 @@ $cs->registerScript(
                           select_item.append(option);
                         });
                         subchoice_list_container.show();
+                        $("#subchoice_list"+row_number).focus();
                       }
                     }
                   }
@@ -802,7 +803,7 @@ if(Yii::app()->language!=='en')
         <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
           'id'=>'subchoice_text'.$row,
           'name'=>"PostingForm[$i][subchoice_text]",
-          'value'=>$item->subchoice,
+          'value'=>$item->subchoice? $item->subchoice : $item->subchoice_text,
           'source'=>$this->createUrl('bookkeeping/suggestsubchoices', array('slug'=>$this->firm->slug)),
            'options'=>array(
             'delay'=>200,

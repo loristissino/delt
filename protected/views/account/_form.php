@@ -95,6 +95,12 @@ $cs->registerScript(
     <?php echo $form->error($model,'outstanding_balance'); ?>
   </div>
 
+  <div class="row checkbox">
+    <?php echo $form->label($model, 'subchoices') ?>
+    <?php echo $form->checkBox($model, 'subchoices') ?>&nbsp;
+    <?php echo Yii::t('delt', 'This account admits subchoices.') ?>
+  </div>
+
   <?php if($model->isHidden()): ?>
     <div class="row" id="typerow">
       <?php echo $form->labelEx($model,'type'); ?>
