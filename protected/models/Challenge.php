@@ -194,7 +194,8 @@ class Challenge extends CActiveRecord
   public function forUser($user_id, $order='assigned_at ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.user_id = ' . $user_id,
+        'condition'=>'t.user_id = :user_id',
+        'params'=>array(':user_id'=>$user_id),
         'order'=>$order,
     ));
     return $this;
@@ -212,18 +213,18 @@ class Challenge extends CActiveRecord
   
   public function ofExercise($id)
   {
-    $p = new CdbCriteria();
-    $p->addCondition('t.exercise_id = :id');
-    $p->params = array(':id' => $id);
-    
-    $this->getDbCriteria()->mergeWith($p);
+    $this->getDbCriteria()->mergeWith(array(
+      'condition'=>'t.exercise_id = :id',
+      'params'=>array(':id' => $id),
+    ));
     return $this;
   }  
 
   public function linkedToFirm($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.firm_id = ' . $firm_id,
+      'condition'=>'t.firm_id = :firm_id',
+      'params'=>array(':firm_id'=>$firm_id),
     ));
     return $this;
   }  

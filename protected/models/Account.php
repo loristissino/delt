@@ -275,7 +275,8 @@ class Account extends CActiveRecord
   public function belongingTo($firm_id, $order='code ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.firm_id = ' . $firm_id,
+        'condition'=>'t.firm_id = :firm_id',
+        'params'=>array(':firm_id'=>$firm_id),
         'order'=>$order,
     ));
     return $this;
@@ -306,18 +307,18 @@ class Account extends CActiveRecord
   public function ofLevel($level, $comparison='=')
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.level '. $comparison . $level,
+        'condition'=>'t.level '. $comparison . ':level',
+        'params'=>array(':level'=>$level),
     ));
     return $this;
   }
 
   public function withPosition($position)
   {
-    $p = new CdbCriteria();
-    $p->addCondition('t.position = :position');
-    $p->params = array(':position' => $position);
-    
-    $this->getDbCriteria()->mergeWith($p);
+    $this->getDbCriteria()->mergeWith(array(
+      'condition'=>'t.position = :position',
+      'params'=>array(':position' => $position),
+    ));
     return $this;
   }
   
@@ -342,7 +343,8 @@ class Account extends CActiveRecord
   public function childrenOf($id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.account_parent_id = ' . $id,
+        'condition'=>'t.account_parent_id = :id',
+        'params'=>array(':id'=>$id),
     ));
     return $this;
   }

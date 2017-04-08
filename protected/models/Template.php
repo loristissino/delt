@@ -124,7 +124,8 @@ class Template extends CActiveRecord
   public function belongingTo($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.firm_id = ' . $firm_id,
+        'condition'=>'t.firm_id = :firm_id',
+        'params'=>array(':firm_id'=>$firm_id),
     ));
     return $this;
   }

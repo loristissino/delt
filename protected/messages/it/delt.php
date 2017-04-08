@@ -1730,5 +1730,14 @@
   
   'The firm is linked to a challenge that has been marked completed, and the challenge would be invalidated if you unfreeze it.'=>
   'L\'azienda è collegata ad una sfida contrassegnata come completata e la sfida verrebbe invalidata se viene scongelata.',
+  
+  'Subchoices'=>
+  'Sottovoci',
+  
+  'Subchoice'=>
+  'Sottovoce',
+  
+  'This account admits subchoices.'=>
+  'Questo conto ammette sottovoci.',
 
 );

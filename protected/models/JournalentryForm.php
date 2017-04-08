@@ -202,7 +202,7 @@ class JournalentryForm extends CFormModel
           $posting->account_id = $postingform->account_id;
           $posting->amount = $postingform->debit - $postingform->credit;
           $posting->comment = $postingform->comment;
-          $posting->subchoice = $postingform->subchoice_list ? $postingform->subchoice_list : $postingform->subchoice_text;
+          $posting->subchoice = strip_tags($postingform->subchoice_list ? $postingform->subchoice_list : $postingform->subchoice_text);
           
           if ($postingform->subchoice_text && !$posting->account->subchoices)
           {

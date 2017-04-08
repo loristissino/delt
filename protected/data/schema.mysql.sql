@@ -29,6 +29,7 @@ CREATE TABLE `tbl_account` (
   `code` varchar(16) CHARACTER SET utf8 NOT NULL COMMENT 'the code to be used in searching and sorting',
   `rcode` varchar(16) CHARACTER SET utf8 NOT NULL,
   `is_selectable` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'if true, it will be possibile to post amounts in this account',
+  `subchoices` tinyint(1) NOT NULL DEFAULT '0',
   `position` char(1) COLLATE utf8_bin NOT NULL DEFAULT 'P' COMMENT 'P=Asset/Liability/Equity; E=Profit/Loss; M=Memorandum',
   `outstanding_balance` char(1) COLLATE utf8_bin DEFAULT NULL COMMENT 'C=Credit, D=Debit, null=either',
   `textnames` text COLLATE utf8_bin NOT NULL COMMENT 'a place to store localized names',
@@ -219,7 +220,8 @@ CREATE TABLE `tbl_posting` (
   `journalentry_id` int(11) NOT NULL,
   `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
-  `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL
+  `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
+  `subchoice` varchar(32) COLLATE utf8_bin DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
@@ -453,7 +455,8 @@ ALTER TABLE `tbl_posting`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `journalentryrank` (`journalentry_id`,`rank`),
   ADD KEY `account_id` (`account_id`),
-  ADD KEY `journalentry_id` (`journalentry_id`);
+  ADD KEY `journalentry_id` (`journalentry_id`),
+  ADD KEY `subchoice` (`subchoice`);
 
 --
 -- Indici per le tabelle `tbl_profiles`

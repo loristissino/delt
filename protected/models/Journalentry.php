@@ -136,7 +136,8 @@ class Journalentry extends CActiveRecord
   public function belongingTo($journalentry_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'{{posting}}.journalentry_id = ' . $journalentry_id,
+        'condition'=>'{{posting}}.journalentry_id = :journalentry_id',
+        'params'=>array(':journalentry_id'=> $journalentry_id),
         'order'=>'code ASC',
     ));
     return $this;
@@ -153,7 +154,8 @@ class Journalentry extends CActiveRecord
   public function ofFirm($firm_id, $order='date ASC, t.id ASC, postings.rank ASC')
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'firm_id = ' . $firm_id,
+        'condition'=>'firm_id = :firm_id',
+        'params'=>array(':firm_id'=>$firm_id),
         'order'=>$order,
     ));
     return $this;
@@ -162,7 +164,8 @@ class Journalentry extends CActiveRecord
   public function connectedTo($transaction_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'transaction_id = ' . $transaction_id,
+        'condition'=>'transaction_id = :transaction_id',
+        'params'=>array(':transaction_id'=>$transaction_id),
     ));
     return $this;
   }
