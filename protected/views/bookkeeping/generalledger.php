@@ -27,6 +27,7 @@ $this->show_link_on_description = true;
     'debitgrandtotal'=>$debitgrandototal,
     'creditgrandtotal'=>$creditgrandtotal,
     'grandtotal'=>$grandtotal,
+    'with_subchoices'=>true,
     ), true) ?>
 
 

@@ -3,7 +3,7 @@
 <em> (<?php echo $comment ?>)</em>
 <?php endif ?>
 <?php if($subchoice): ?>
-<em> @<?php echo $subchoice ?></em>
+  <?php $this->renderPartial('_subchoice', array('subchoice'=>$subchoice)) ?>
 <?php endif ?>
 <?php if(!$account->is_selectable): ?>
   <span class="warning" title="<?php echo Yii::t('delt', 'This account now has children, so it should not be used directly anymore.') ?>">

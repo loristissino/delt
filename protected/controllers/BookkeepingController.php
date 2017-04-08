@@ -220,6 +220,15 @@ class BookkeepingController extends Controller
     ));
   }
 
+  public function actionSubchoice($slug, $subchoice)
+  {
+    $this->firm=$this->loadModelBySlug($slug);
+    $this->render('subchoice', array(
+      'model'=>$this->firm,
+      'subchoice'=>$subchoice
+    ));
+  }
+
   public function actionStatements($slug, $level=1, $start="1900-01-01", $end="2999-12-31")
   {
     $startDate = DELT::getValidatedDate($start, '1900-01-01');
@@ -967,6 +976,11 @@ class BookkeepingController extends Controller
     }
     $this->line_shown = false;
     return '';
+  }
+
+  public function renderSubchoice(Posting $posting, $row)
+  {
+    return $this->renderPartial('_subchoice', array('subchoice'=>$posting->subchoice), true);
   }
 
   public function renderDescriptionForLedger(Posting $posting, $row)

@@ -65,6 +65,7 @@ if($deletable)
     'debitgrandtotal'=>$debitgrandtotal,
     'creditgrandtotal'=>$creditgrandtotal,
     'grandtotal'=>$grandtotal,
+    'with_subchoices'=>$account->subchoices,
     ), true) ?>
     
 <?php else: ?>

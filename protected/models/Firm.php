@@ -685,6 +685,22 @@ class Firm extends CActiveRecord
       )
     );
   }
+
+  /**
+   * Returns a data provider for the journal entries of the firm, for a specific subchoice.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the postings related to the journal entries of the firm
+   */
+  public function getJournalentriesAsDataProviderForSubchoice($subchoice, $pagesize=1000)
+  {
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id, '')->withSubchoice($subchoice), array(
+      'pagination'=>array(
+          'pageSize'=>$pagesize,
+          ),
+      )
+    );
+  }
+
   
   
   public function getJournalentriesData()
