@@ -19,7 +19,7 @@ class RegistrationController extends Controller
 	/**
 	 * Registration user
 	 */
-	public function actionRegistration() {
+	public function actionRegistration($username="", $password="", $email="") {
             $model = new RegistrationForm;
             $profile=new Profile;
             $profile->regMode = true;
@@ -98,6 +98,11 @@ class RegistrationController extends Controller
 						}
 					} else $profile->validate();
 				}
+        
+          $model->username=$username;
+          $model->password=$password;
+          $model->verifyPassword=$password;
+          $model->email=$email;
 			    $this->render('/user/registration',array('model'=>$model,'profile'=>$profile));
 		    }
 	}
