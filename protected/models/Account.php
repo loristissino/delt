@@ -82,6 +82,7 @@ class Account extends CActiveRecord
       array('currentname', 'safe'),
       array('classes', 'safe'),
       array('type', 'safe'),
+      array('subchoices', 'safe'),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
       array('id, account_parent_id, firm_id, level, code, is_selectable, position, outstanding_balance', 'safe', 'on'=>'search'),
@@ -409,13 +410,6 @@ class Account extends CActiveRecord
     return parent::beforeSave();
   }
 
-  protected function afterFind()
-  {
-    $this->subchoices = $this->subchoices!=0;
-    // this is needed because otherwise the checkbox is not properly set in the form
-    return parent::afterFind();
-  }
-  
   public function save($runValidation=true,$attributes=null)
   {
     $this->_computeRcode();

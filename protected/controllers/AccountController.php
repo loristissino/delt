@@ -117,6 +117,10 @@ class AccountController extends Controller
     $this->checkFrostiness($this->firm);
     $account->fixDefaultForNames();
     $oldPosition = $account->position;
+    
+    $account->subchoices = $account->subchoices!=0;
+    // this is needed because otherwise the checkbox is not properly set in the form
+    
     if($targetcode)
     {
       $parent = $this->firm->findAccount($targetcode, false, true);
