@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.9.47';
+    return '1.9.48';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -429,6 +429,5 @@ class DELT
   {
     return in_array(strtolower($value), array('true', 'yes', '1'));
   }
-  
   
 }

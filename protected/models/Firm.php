@@ -915,14 +915,7 @@ class Firm extends CActiveRecord
     $result=array();
     foreach($accounts as $account)
     {
-      switch ($account['subchoices'])
-      {
-        case 1: $postfix = ' @'; break;
-        case 2: $postfix = ' §'; break;
-        default: $postfix = '';
-      }
-      
-      $result[]=$this->renderAccountCode($account['code']). ' - ' . $account['currentname'] . $postfix;
+      $result[]=$this->renderAccountCode($account['code']). ' - ' . $account['currentname'] . Account::getPostfix($account['subchoices']);
     }
     return $result;
   }
@@ -2014,7 +2007,8 @@ class Firm extends CActiveRecord
       
       if($account->number_of_children==0)
       {
-        $text = '<a href="#" onclick="chooseAccount(\'' . str_replace('"', '&quot;', addslashes($account->getCodeAndName($this))) . '\');">'. $account->currentname . '</a>';
+        $postfix = Account::getPostfix($account->subchoices);
+        $text = '<a href="#" onclick="chooseAccount(\'' . str_replace('"', '&quot;', addslashes($account->getCodeAndName($this) . $postfix)) . '\');">'. $account->currentname . $postfix. '</a>';
       }
       else
       {
@@ -2377,12 +2371,12 @@ class Firm extends CActiveRecord
       return $result;
   }
   
-  public function getClosingAmountInfo($code, $posting=0)
+  public function getClosingAmountInfo($code, $subchoice='', $posting=0)
   {
     // the closing amount does not take into consideration the posting $posting, if given, by subtracting its value
     if($account = $this->findAccount($code))
     {
-      $amount = $account->consolidatedBalance;
+      $amount = $account->getConsolidatedBalance(false, $subchoice);
       
       if($p=Posting::model()->findByPK($posting))
       {

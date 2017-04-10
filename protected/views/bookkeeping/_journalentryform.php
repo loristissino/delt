@@ -392,6 +392,7 @@ $cs->registerScript(
                     if (json) {
                       select_item.empty();
                       if (json.length>0) {
+                        select_item.append($("<option>").text(""));
                         $.each(json, function (key, value) {
                           var option = $("<option>").text(value);
                           if (value==current_value) {
@@ -469,7 +470,15 @@ $cs->registerScript(
       $("#debit"+row).attr("placeholder", "⌛").addClass("updating");
       $("#credit"+row).attr("placeholder", "⌛").addClass("updating");
       var posting_id = $("#row"+row).attr("data-posting-id");
-      var jsonUrl = "' . $json_url_aca . '?code=" + code + "&posting=" + posting_id;
+      
+      var subchoice = $("#subchoice_list"+row_number).val();
+      if (!subchoice)
+      {
+        subchoice = $("#subchoice_text"+row_number).val()
+      }
+      var sc = subchoice ? "&subchoice=" + subchoice : "";
+      var jsonUrl = "' . $json_url_aca . '?code=" + code + sc + "&posting=" + posting_id;
+      console.log(jsonUrl);
       $.getJSON(
         jsonUrl,
         {},
@@ -680,7 +689,24 @@ $cs->registerScript(
   {
     $("#name" + row_number).val(name);
     $("#chooseaccountdialog").dialog("close");
-    $("#debit" + row_number).focus();
+
+    if (name.indexOf("@")>-1)
+    {
+      $("#subchoice_text_container"+row_number).show();
+      $("#subchoice_text"+row_number).focus();
+      console.log("focustext");
+    }
+    else if (name.indexOf("§")>-1)
+    {
+      $("#name" + row_number).focus();
+      console.log("focusfield");
+    }
+    else
+    {
+      $("#debit" + row_number).focus();
+      console.log("focusdebit");
+    }
+    
     var top = $("#journalentryform").offset().top;
     $("html, body").animate({ scrollTop: top + "px" });
     return false;

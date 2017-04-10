@@ -635,7 +635,7 @@ class Account extends CActiveRecord
     }
   }
   
-  public function getConsolidatedBalance($without_closing=false)
+  public function getConsolidatedBalance($without_closing=false, $subchoice='')
   {
     $amount = Yii::app()->db->createCommand()
       ->select('SUM(amount) as total')
@@ -643,6 +643,7 @@ class Account extends CActiveRecord
       ->leftJoin('{{account}} a', 'dc.account_id = a.id')
       ->leftJoin('{{journalentry}} p', 'dc.journalentry_id = p.id')
       ->where('a.code REGEXP "^' . $this->code .'"')
+      ->andWhere($subchoice ? 'dc.subchoice = :subchoice': 'LENGTH(:subchoice)=0', array(':subchoice'=>$subchoice))
       ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
       ->andWhere($without_closing ? 'p.is_closing = 0': 'true')
       ->andWhere('p.is_included = 1')
@@ -828,5 +829,16 @@ class Account extends CActiveRecord
     }
     return $count;
   }
+  
+  public static function getPostfix($subchoices)
+  {
+    switch ($subchoices)
+    {
+      case 1: return ' @';
+      case 2: return ' §';
+      default: return '';
+    }
+  }
+  
   
 }

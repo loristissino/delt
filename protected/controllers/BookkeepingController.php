@@ -836,11 +836,11 @@ class BookkeepingController extends Controller
    * @param string $account the string to match
    * @param string $slug the slug of the firm
    */
-  public function actionAccountclosingamount($slug='', $code='', $posting=0)
+  public function actionAccountclosingamount($slug='', $code='', $subchoice='', $posting=0)
   {
     $firm=$this->loadFirmBySlug($slug);
     $this->checkFrostiness($firm);
-    $info=$firm->getClosingAmountInfo($code, $posting);
+    $info=$firm->getClosingAmountInfo($code, $subchoice, $posting);
     if($info['account_id'])
     {
       Yii::app()->getUser()->setState('last_account_closed_interactively', $info['account_id']);
