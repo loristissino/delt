@@ -46,7 +46,6 @@ $cs->registerScript(
     );
 
     var decimal_separator = "' . $currency_test_string . '".replace(/[^d\.,]/g, "");
-    console.log("decimal separator: " + decimal_separator);
     var thousand_separator = decimal_separator=="." ? ",":".";
     var currency = "' . $currency_test_string . '".replace(/[\d\.,]/g, "");
     
@@ -60,7 +59,6 @@ $cs->registerScript(
         console.log($(obj));
         if($(obj).attr("checked"))
         {
-          console.log("entro");
           var account_id = $(obj).context.value;
           var value = parseFloat($("#account_"+account_id).attr("data-rawvalue"));
           console.log(value);
@@ -192,13 +190,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'type'=>'raw',
       'htmlOptions'=>array('class'=>'currency'),
       'header'=>Yii::t('delt', 'Notes'),
-      'footer'=>DELT::currency_value(0, $this->firm->currency),
-      'footerHtmlOptions'=>array('class'=>'currency grandtotal', 'id'=>'selected_accounts_balance'),
       ),
     array(
       'class'=>'CCheckBoxColumn',
       'id'=>'id',
       'value'=>'$data->id',
+      'footer'=>DELT::currency_value(0, $this->firm->currency),
+      'footerHtmlOptions'=>array('class'=>'currency grandtotal', 'id'=>'selected_accounts_balance'),
       ),
   ),
 )); 

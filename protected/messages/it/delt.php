@@ -1739,5 +1739,8 @@
   
   'This account admits subchoices.'=>
   'Questo conto ammette sottovoci.',
+  
+  'Report for «{subchoice}»'=>
+  'Report per «{subchoice}»',
 
 );

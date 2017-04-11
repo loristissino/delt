@@ -374,15 +374,14 @@ $cs->registerScript(
             if (name.indexOf("@")>-1)
             {
               subchoice_text_container.show();
+              subchoice_list_container.hide();
               $("#subchoice_text"+row_number).focus();
             }
             else if (name.indexOf("§")>-1)
             {
 
               var jsonUrl = "' . $json_url_lsc . '?code=" + code;
-              console.log(jsonUrl);
               var current_value = $("#subchoice_text"+row_number).val();
-              console.log("current value: " + current_value);
               
               $.getJSON(
                 jsonUrl,
@@ -401,6 +400,7 @@ $cs->registerScript(
                           select_item.append(option);
                         });
                         subchoice_list_container.show();
+                        subchoice_text_container.hide();
                         $("#subchoice_list"+row_number).focus();
                       }
                     }
