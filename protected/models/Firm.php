@@ -554,7 +554,7 @@ class Firm extends CActiveRecord
       ->group('a.code, a.currentname, a.id, p.subchoice')
       ->having('total <> 0')
       ->queryAll();
-      //->text;
+      
     return $accounts;
 
   }

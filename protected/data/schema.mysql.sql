@@ -221,7 +221,7 @@ CREATE TABLE `tbl_posting` (
   `amount` decimal(16,2) NOT NULL COMMENT 'positive if Debit, negative if Credit',
   `rank` int(11) NOT NULL,
   `comment` varchar(100) CHARACTER SET utf8 DEFAULT NULL,
-  `subchoice` varchar(32) COLLATE utf8_bin DEFAULT NULL
+  `subchoice` varchar(32) COLLATE utf8_bin NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
