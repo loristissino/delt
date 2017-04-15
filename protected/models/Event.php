@@ -195,7 +195,16 @@ class Event extends CActiveRecord
   public function ofFirm($firm_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.firm_id = ' . $firm_id,
+        'condition'=>'t.firm_id = :firm_id',
+        'params'=>array(':firm_id' => $firm_id),
+    ));
+    return $this;
+  }
+
+  public function withoutFirm()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.firm_id IS NULL',
     ));
     return $this;
   }
@@ -203,7 +212,8 @@ class Event extends CActiveRecord
   public function ofUser($user_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'t.user_id = ' . $user_id,
+        'condition'=>'t.user_id = :user_id',
+        'params'=>array(':user_id'=>$user_id),
     ));
     return $this;
   }
@@ -215,6 +225,34 @@ class Event extends CActiveRecord
     ));
     return $this;
   }
+  
+  public function happenedBefore($date)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.happened_at < :date',
+        'params'=>array(':date'=>$date),
+    ));
+    return $this;
+  }
+
+  public function happenedAfter($date)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.happened_at > :date',
+        'params'=>array(':date'=>$date),
+    ));
+    return $this;
+  }
+  
+  public function happenedBetween($begin, $end)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.happened_at BETWEEN :begin AND :end',
+        'params'=>array(':begin'=>$begin, ':end'=>$end),
+    ));
+    return $this;
+  }
+  
   
   public function sorted($order='happened_at DESC')
   {
@@ -247,5 +285,9 @@ class Event extends CActiveRecord
 	 return $this->content ? json_decode($this->content) : '';
   }
   
+  public function __toString()
+  {
+    return sprintf("%6d: %s - %04d (%s) {%s}", $this->id, $this->happened_at, $this->action, $this->user_id, $this->firm_id);
+  }
   
 }
