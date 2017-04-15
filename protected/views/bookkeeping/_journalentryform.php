@@ -822,10 +822,11 @@ if(Yii::app()->language!=='en')
       ?><span id="deleteicon<?php echo $row ?>"></span>
       <span id="subchoice_list_container<?php echo $row ?>" class="subchoice">
         <br />
-        <?php echo CHtml::dropDownList("PostingForm[$i][subchoice_list]", '', array(), array('id'=>'subchoice_list'.$row)) ?>
+        <?php echo Yii::t('delt', 'Subchoice') ?>: <?php echo CHtml::dropDownList("PostingForm[$i][subchoice_list]", '', array(), array('id'=>'subchoice_list'.$row, 'class'=>'subchoice_list')) ?>
       </span>
       <span id="subchoice_text_container<?php echo $row ?>" class="subchoice">
         <br />
+        <?php echo Yii::t('delt', 'Subchoice') ?>: 
         <?php $this->widget('zii.widgets.jui.CJuiAutoComplete', array(
           'id'=>'subchoice_text'.$row,
           'name'=>"PostingForm[$i][subchoice_text]",
@@ -838,6 +839,7 @@ if(Yii::app()->language!=='en')
           'htmlOptions'=>array(
              'size'=>'30',
              'data-id'=>$row,
+             'class'=>'subchoice_text',
              ),
           ))
         ?>

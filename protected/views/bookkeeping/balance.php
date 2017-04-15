@@ -144,6 +144,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
       'header'=>Yii::t('delt', 'Classes'),
       'htmlOptions'=>array('class'=>'classes'),
       'headerHtmlOptions'=>array('class'=>'classes'),
+      'footerHtmlOptions'=>array('class'=>'classes'),
       ),
     array(
       'class'=>'CDataColumn',

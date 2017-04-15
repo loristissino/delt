@@ -2326,7 +2326,7 @@ class Firm extends CActiveRecord
   public function findSubchoices($term)
   {
       $result = Yii::app()->db->createCommand()
-      ->select('subchoice')
+      ->selectDistinct('subchoice')
       ->from('{{posting}}')
       ->leftJoin('{{journalentry}} j', 'journalentry_id = j.id')
       ->where('j.firm_id=:id', array(':id'=>$this->id))

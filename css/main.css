@@ -837,6 +837,22 @@ span.accountname_indented
   padding-left: 20px;
 }
 
+input.subchoice_text
+{
+  color: #0066A4;
+  font-style: italic;
+}
+
+select.subchoice_list
+{
+   -webkit-border-radius: 5px;
+   -moz-border-radius: 5px;
+   border-radius: 5px;
+   background-color: #EEE;
+   color: #0066A4;
+
+}
+
 select.xbatchdropdown
 {
   font-size: 0.8em;
