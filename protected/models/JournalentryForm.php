@@ -75,11 +75,11 @@ class JournalentryForm extends CFormModel
       {
         if(sizeof($fields=explode("\t", $line))>=3)
         {
-          list($name, $debit, $credit, $subchoice) = $fields;
+          list($name, $debit, $credit) = $fields;
           if(is_numeric(DELT::currency2decimal($debit, $this->currency)) or is_numeric(DELT::currency2decimal($credit, $this->currency)))
           {
             $this->postings[$count] = new PostingForm();
-            foreach(array('name', 'debit', 'credit', 'subchoice') as $index=>$property)
+            foreach(array('name', 'debit', 'credit') as $index=>$property)
             {
               $this->postings[$count]->$property = $$property;
             }
