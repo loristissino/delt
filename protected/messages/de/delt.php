@@ -226,7 +226,7 @@
   'Firma herstellen',
 
   'A firm you know the slug of' => 
-  'Eine Firma derer slug du kennst',
+  'Eine Firma, derer Slug du kennst',
 
   'Fork' => 
   'Duplizieren',
@@ -271,13 +271,19 @@
   'Dupliziere die Firma «{firm}»',
 
   'Yes, please, fork this firm' => 
-  'Ja, bitte, dupliziere dieser Firma*',
+  'Ja, dupliziere dieser Firma',
 
   'Edit Firm «{name}»' => 
   'Firma «{name}» verändern',
 
+  'Slug' => 
+  'Slug',
+
   'Language' => 
   'Sprache',
+
+  'Save' => 
+  'Speichert',
 
   'Show' => 
   'Vorzeigen',
@@ -553,7 +559,7 @@
   'Sie können Ihre Firmenplan mit dem von einer der folgenden Vorfahren zu den vorigen synchronisieren:',
 
   'Edit firm\'s settings' => 
-  'Der Ansatz von die Firma verändern ',
+  'Der Ansatz von der Firma verändern',
 
   'Management' => 
   'Unternehmensführung ',
