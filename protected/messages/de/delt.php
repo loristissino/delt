@@ -10,13 +10,13 @@
   'Man hat keine Firma, mit der man sich üben kann.',
 
   'Create one.' => 
-  'Erschaffen ein.*',
+  'Eine Neue erstellen.',
 
   'Or, even better,' => 
   'Oder, noch besser,',
 
   'fork an existing one.' => 
-  'Eine existierende dupliziere ',
+  'eine existierende Firma duplizieren.',
 
   'Bookkeeping/Accounting' => 
   'Buchhaltung/Abrechnung',
@@ -40,7 +40,7 @@
   'Hauptbuch',
 
   'Public View' => 
-  'Öffentliche Überblick',
+  'Freier Überblick',
 
   'Ledger for account «{name}»' => 
   'Kontohauptbuch «{name}»',
@@ -49,19 +49,20 @@
   'Buchhandlung',
 
   'Account' => 
-  'Konto',
+  'Konto
+',
 
   'Parent account' => 
-  'Geordnete Konto',
+  'Abgeordnetes Konto',
 
   'The parent account does not exist.' => 
-  'Es gibt kein Geordnete Konto',
+  'Es gibt kein abgeordnetes Konto.',
 
   'The code contains illegal characters.' => 
-  'Der Code hat die illegal Buchstaben',
+  'Der Kode hat keine gültigen Zeichen.',
 
   'Code' => 
-  'Code',
+  'Kode',
 
   'Name' => 
   'Name',
@@ -76,13 +77,13 @@
   'Erläuterung',
 
   'Save & Close' => 
-  'Speichert und Schliesst',
+  'Speichern und Schliessen',
 
   'Save & New' => 
-  'Speichert und Neu',
+  'Speichern und Neues',
 
   'There might be some unsaved changes in the form.' => 
-  'Darstellung',
+  'Einige Veränderungen könnten nicht gespeichert sein.',
 
   'Description / Explanation' => 
   'Beschreibung / Erklärung',
@@ -97,16 +98,16 @@
   'Unbekannt',
 
   'This account has not been correctly positioned.' => 
-  'Das Konto ist nicht korekt gelegt',
+  'Das Konto ist nicht korrekt erstellt worden.',
 
   'Ordinary outstanding balance' => 
-  'Normal Kontostand',
+  'Normaler Kontostand',
 
   'Outstanding balance' => 
   'Kontostand',
 
   'Ending balance / Balance brought down' => 
-  'Endkontostand*',
+  'Endkontostand',
 
   'Dr.<!-- outstanding balance -->' => 
   'S',
@@ -124,43 +125,40 @@
   'Haben',
 
   'According to its definition, the account should not have this kind of outstanding balance.' => 
-  'Nach seiner Definition sollte das Konto nicht über diese Art von ausstehender Saldo verfügen. ***',
+  'Nach seiner Definition sollte das Konto nicht über diese Art von ausstehendem Saldo verfügen.',
 
   'No.' => 
   'Nein.',
 
   'Total Debit' => 
-  'Gesamt Soll',
+  'Gesamtsoll',
 
   'Total Credit' => 
-  'Gesamt Haben',
+  'Gesamtes Haben',
 
   'Sum' => 
   'Summe',
 
   'You can now prepare a new one.' => 
-  'Du kannst jetzt eine andere machen',
+  'Man kann nun ein Neues machen.',
 
   'Localized names' => 
-  'Lokalisierter Namen',
+  'Lokalisierte Namen',
 
   'Operations' => 
-  'Operationen',
+  'Bewegungen',
 
   'Create new account' => 
-  'Ein neuer Konto erstellen',
-
-  'Fix chart' => 
-  'Reparieren Kontenplan*',
+  'Ein neues Konto erstellen',
 
   'Create a new account as child of this one' => 
-  'Ein neuer Konto Als Kind von diesem erstellen',
+  'Ein neues Konto als Tochterfirma aus Diesem erstellen',
 
   'Delete this account' => 
-  'Ausschalten dieses Konto',
+  'Dieses Konto schliessen',
 
   'which has no children at the moment.' => 
-  'es hat nicht Kinder in dieser Moment.*',
+  'Im Moment gibt es keine Tochterfirma.',
 
   'included' => 
   'inbegriffen',
@@ -175,46 +173,49 @@
   'Bearbeiten',
 
   'Check the debits and the credits.' => 
-  'Überprüfen die Soll* und die Haben.*',
+  'Das Soll und das Haben überprüfen.',
 
   'New journal entry' => 
-  'Neue Vorlage',
+  'Neuer Eintrag in die Zeitschrift',
 
   'Save journal entry' => 
-  'Vorlage rettet',
+  'Eintrag in der Zeitschrift speichern',
 
   'Add a line' => 
-  'Zulegen eine Zeile',
+  'Eine Zeile einfügen',
 
   'This firm does not have any journal entry yet.' => 
-  'Diese Firma hat noch keinen Tagebucheintrag.',
+  'Diese Firma hat noch keinen Eintrag in der Zeitschrift.',
 
   'Create a new one now.' => 
-  'Erschaffen ein jetzt.*',
+  'Einen Neuen jetzt erstellen.',
 
   'Row {row}: ' => 
-  'Zeile {Zeile}: ',
+  'Reihe {row}: ',
 
   'Delete row # {n}' => 
-  'Ausschalten eine Zeile # {n}',
+  'Eine Reihe löschen # {n}',
 
   'you cannot have both a debit and a credit.' => 
-  'Es ist nicht  Möglich, dass Soll* und Haben haben.*',
+  'Man kann Soll und Haben nicht gleichzeitig haben.',
+
+  'you must have a debit or a credit.' => 
+  'Man muss entweder Soll oder Haben haben.',
 
   'No amounts specified.' => 
-  'Kein Betrag bestimmt.*',
+  'Kein Betrag bestimmt.',
 
   'Edit account «{name}»' => 
-  'Kontoüberarbeitung «{name}»',
+  'Kontoberarbeitung «{name}»',
 
   'Edit journal entry' => 
-  'Buchungen bearbeiten ',
+  'Eintrag in der Zeitschrift bearbeiten',
 
   'Delete' => 
-  'Ausschalten',
+  'Löschen',
 
   'Fork an existing firm' => 
-  'Eine existierende Firma dupliziere',
+  'Eine existierende Firma duplizieren',
 
   'Public firms' => 
   'Öffentliche Firma',
@@ -223,55 +224,55 @@
   'Deine Firma',
 
   'Create firm' => 
-  'Firma herstellen',
+  'Firma erstellen',
 
   'A firm you know the slug of' => 
-  'Eine Firma, derer Slug du kennst',
+  'Eine Firma, derer Slug bekannt ist',
 
   'Fork' => 
   'Duplizieren',
 
   'Firm not found' => 
-  'Firma nicht gefunden',
+  'Keine Firma gefunden',
 
   'Closing journal entry' => 
-  'Buchungen zu machen **',
+  'Einträge in der Zeitschrift schliessen',
 
   'Templates' => 
-  'Mustern',
+  'Muster',
 
   'Create Template' => 
-  'Muster herstellen',
+  'Muster erstellen',
 
   'Create a Template based on this entry' => 
-  'Nach dieser Buchung Muster herstellen',
+  'Nach diesem Eintrag Muster erstellen',
 
   'Delete this entry' => 
-  'Ausschalten diese Vorlage',
+  'Diesen Eintrag löschen',
 
   'You are going to create a new template with the following accounts:' => 
-  'Man wird ein neues Muster mit dem volgem Konto herstellen',
+  'Man erstellt gerade ein neues Muster mit den folgenden Konten:',
 
   'Template creation' => 
-  'Musterherstellung',
+  'Mustererstellung',
 
   'The template has been correctly saved.' => 
-  'Das Muster ist korrect abgespeichert.',
+  'Das Muster ist korrekt abgespeichert worden.',
 
   'The template could not be saved.' => 
-  'Das Muster konnte nicht abgespeichert sein.',
+  'Das Muster konnte nicht abgespeichert werden.',
 
   'A template needs at least two postings.' => 
-  'Eine Muster braucht wenigstens zwei Posten.*',
+  'Eine Muster braucht wenigstens zwei Posten.',
 
   'Create' => 
-  'Erschaffen',
+  'Erstellen',
 
   'Fork the firm «{firm}»' => 
-  'Dupliziere die Firma «{firm}»',
+  'Firma «{firm}» duplizieren',
 
   'Yes, please, fork this firm' => 
-  'Ja, dupliziere dieser Firma',
+  'Ja, dupliziere diese Firma',
 
   'Edit Firm «{name}»' => 
   'Firma «{name}» verändern',
@@ -283,7 +284,7 @@
   'Sprache',
 
   'Save' => 
-  'Speichert',
+  'Speichern',
 
   'Show' => 
   'Vorzeigen',
@@ -292,28 +293,37 @@
   'Kontenplan',
 
   'Chart of Accounts and Templates' => 
-  'Kontenplanen und Mustern.*',
+  'Kontenpläne und Muster',
 
   'Chart of Accounts, Templates, and Journal Entries' => 
-  'Kontenplanen, Mustern und Buchungen*',
+  'Kontenpläne, Muster, und Einträge',
 
   'Select date from calendar' => 
-  'Ein Datum vom Kalender wählen',
+  'Ein Datum aus dem Kalender wählen',
 
   'The code cannot end with a dot.' => 
-  'Der Code soll nicht mit Punkt enden',
+  'Der Kode soll nicht mit einem Punkt enden.',
+
+  'Total:' => 
+  'Gesamtsumme:',
 
   'Delete this firm' => 
-  'Diese Firma ausschalten',
+  'Diese Firma löschen',
 
   'Create a Firm' => 
-  'Eine Firma herstellen',
+  'Eine Firma erstellen',
 
   'Move Up' => 
-  'vorankommen',
+  'Nach oben',
 
   'Move Down' => 
-  'umkehren',
+  'Nach unten',
+
+  'Up' => 
+  'Oben',
+
+  'Down' => 
+  'Unten',
 
   'Select account of profit destination' => 
   'Das Gewinnansatzkonto wählen',
@@ -322,28 +332,31 @@
   'Das Verlustansatzkonto wählen',
 
   'Load accounts' => 
-  'Konten Laden',
+  'Konten aufladen',
 
   'Load all accounts' => 
-  'Laden Sie alle Konten',
+  'Alle Konten aufladen',
 
   'Sort postings' => 
-  'Konten sortieren',
+  'Posten sortieren',
 
   'Sort postings, debits first' => 
-  'Konten sortieren, die Soll* zum ersten',
+  'Posten sortieren, Soll erst',
 
   'About' => 
   'Über',
 
   'you cannot do a debit to this kind of account' => 
-  'Man kann nichts auf folgendes Konto aufladen',
+  'Man kann kein Soll auf folgendes Konto aufladen',
 
   'you cannot do a credit to this kind of account' => 
-  'Man kann nichts auf folgendes Konto beglaubigen',
+  'Man kann kein Haben auf folgendes Konto aufladen',
+
+  'Synchronize' => 
+  'Synchronisieren',
 
   'Synchronize accounts' => 
-  'Konten  Synchronisieren',
+  'Konten synchronisieren',
 
   'New accounts found' => 
   'Neue Konten gefunden',
@@ -358,37 +371,37 @@
   'Es sind keine Konten zu synchronisieren.',
 
   'You can select other languages to have a multilingual chart of accounts.' => 
-  'Sie können andere Sprachen auswählen, um einen mehrsprachigen Kontenplan zu haben',
+  'Sie können andere Sprachen auswählen, um einen mehrsprachigen Kontenplan zu haben.',
 
   'Clear' => 
-  'Auswischen',
+  'Löschen',
 
   'Delete all journal entries' => 
-  'Alle Buchungen absetzen',
+  'Alle Einträge löschen',
 
   'Contact Us' => 
-  'kontaktieren uns',
+  'Uns kontaktieren',
 
   'Verification Code' => 
-  'Prüfcode ',
+  'Prüfkode',
 
   'Login with social network account' => 
-  'Anmeldung mit Social Network account',
+  'Anmeldung mit Social Network Account',
 
   'The firm is being forked.' => 
-  'Die Firma war dupliziert ***',
+  'Die Firma ist gerade dupliziert worden.',
 
   'Share the Firm «{name}»' => 
   'Die Firma «{name}» vertreten',
 
   'This firm does not seem to have accounts of «{position}» position to close.' => 
-  'Diese Firma scheint keine Konten von «{position}» Position zu schließen.',
+  'Diese Firma könnte keine Konten von «{position}» Position zu schließen haben.',
 
   'accept' => 
-  'Annehmen',
+  'annehmen',
 
   'decline' => 
-  'Ablehnen',
+  'ablehnen',
 
   'There must be at least one name for the account.' => 
   'Es muss mindestens einen Namen für das Konto geben.',
@@ -397,31 +410,31 @@
   'oder',
 
   'Manage one of your firms' => 
-  'Ein von deiner Firma betreiben',
+  'Eine von deinen Firmen verwalten',
 
   'Create a new, empty firm' => 
-  'Eine neue leere Firma herstellen  ',
+  'Eine neue leere Firma erstellen',
 
   'View and edit the Chart of Accounts' => 
-  'Anzeigen und Bearbeiten des Kontenplanes',
+  'Die Kontenpläne anzeigen und bearbeiten',
 
   'View the Statements' => 
-  'Die Buchhandlung sieht*',
+  'Die Buchhandlungen anzeigen',
 
   'Frozen firm' => 
-  'Firma einfrieren',
+  'Eingefrorene Firma',
 
   'Delete this template' => 
-  'Diese Muster abwischen*',
+  'Dieses Muster löschen',
 
   'Are you sure you want to delete this template?' => 
-  'Bist du sicher diese Muster abzuwischen?*',
+  'Sind Sie sicher, dieses Muster zu löschen?',
 
   'The template has been correctly deleted.' => 
-  'Das Muster ist korrect abgewischt worden',
+  'Das Muster ist korrekt gelöscht worden.',
 
   'The template could not be deleted.' => 
-  'Das Muster konnte nicht abgewischt sein',
+  'Das Muster konnte nicht gelöscht werden.',
 
   'Disown firm' => 
   'Firma nicht anerkennen',
@@ -430,52 +443,52 @@
   'Die Firma «{name}» nicht anerkennen',
 
   'Statements configuration' => 
-  'Die Buchhandlung darstellt',
+  'Konfiguration der Buchhandlungen',
 
   'Choose an account' => 
   'Wählen Sie ein Konto',
 
   'The Chart of Accounts is empty.' => 
-  'Der Kontenplan ist leer',
+  'Der Kontenplan ist leer.',
 
   'Please note that the transaction analysis is experimental and depends on a consistent chart of accounts.' => 
-  'Bitte beachten Sie, dass die Transaktionsanalyse experimentell ist und von einem konsistenten Kontenplan abhängt',
+  'Bitte beachten Sie, dass die Transaktionsanalyse experimentell ist und von einem konsistenten Kontenplan abhängt.',
 
   'Please note that when you create a firm from scratch, it will have an empty chart of accounts, and no configuration at all.' => 
-  'Bitte beachten Sie, dass  wenn Sie eine Firma von Grund auf neu erstellen, wird es einen leeren Kontenplan und keine Konfiguration haben wird.',
+  'Bitte beachten Sie, dass wenn eine Firma von Grund auf neu erstellt wird, wird es einen leeren Kontenplan und keine Konfiguration geben.',
 
   'forking (duplicating)' => 
-  'Beim duplizieren',
+  'duplizieren (verdoppeln)',
 
   'Apply to the selected journal entries:' => 
-  'Für gewählte Buchungen anwenden',
+  'Auf die gewählten Einträge anwenden:',
 
   'Please select the entries you would like to perform this action on!' => 
-  'Bitte Buchungen für die gefragten Aktionen markieren!',
+  'Bitte die Einträge auswählen, die man durch diese Aktion bearbeiten will!',
 
   'delete' => 
-  'ausschalten',
+  'löschen',
 
   'Toggle the visibility of the selected journal entries in the preparation of the statements' => 
-  'Die Abrechnungs Effekt an die Buchhandlung sichtbar machen,wenn das nicht sind nicht oder umgekehrt',
+  'Die ausgewählten Einträge beim Vorbereiten der Buchhandlungen sichtbar machen',
 
   'With the selected accounts:' => 
   'Mit den ausgewählten Konten:',
 
   'Prepare a journal entry that will close the selected accounts' => 
-  'Bereiten Sie einen Journaleintrag vor, der die ausgewählten Konten schließt',
+  'Bereiten Sie einen Eintrag vor, der die ausgewählten Konten auflöst',
 
   'Notes' => 
-  'Anm.',
+  'Anmerkungen',
 
   'Balance (Dr.)' => 
-  'Überschuss (Soll)',
+  'Kontostand (Soll)',
 
   'Balance (Cr.)' => 
-  'Überschuss (Haben)',
+  'Kontostand (Haben)',
 
   'Template update' => 
-  'Muster aktualizieren**',
+  'Muster aktualisieren',
 
   'Import accounts' => 
   'Konten importieren',
@@ -487,46 +500,43 @@
   'Inhalt',
 
   'Place the account here?' => 
-  'Legen Sie das Konto hier?',
+  'Stellen Sie das Konto hier?',
 
   'Yes' => 
   'Ja',
 
   'Use a template' => 
-  'Eine Muster benutzen*',
+  'Ein Muster benutzen',
 
   'Automatic' => 
-  'Automatisch',
+  'Direkt',
 
   'This template is automatically applied when preparing the statements' => 
-  'Das Muster wird beim Buchhandlung Erschaffung automatisch benutzt*',
+  'Das Muster wird beim Vorbereiten der Buchhandlungen direkt angewendet',
 
   'This template is not used when preparing the statements' => 
-  'Das Muster wird nicht beim Buchhandlung Erschaffung automatisch benutzt*',
+  'Das Muster wird beim Vorbereiten der Buchhandlungen nicht direkt benutzt',
 
   'Apply this template automatically.' => 
-  'Diese Muster selbsttätig auftragen*',
+  'Dieses Muster direkt anwenden.',
 
   'Select when you wish this template to be automatically and virtually used each time a financial statement is prepared (without actually seeing the journal entry).' => 
-  'Wenn man jedes mal dieses Muster automatisch und virtuell benutzt (ohne das Tagebuch sichtbar zu lassen).',
+  'Wählen, wenn man dieses Muster je vorbereitete finanzielle Buchhandlung direkt und virtuell benutzt (ohne das Tagebuch sichtbar zu lassen).',
 
   'Ask' => 
-  'Fragt',
+  'Fragen',
 
   'Slideshow' => 
   'Vorstellung',
 
   'Thank you.' => 
-  'Danke sch.',
+  'Danke.',
 
   'Here you may configure how the Financial Statement is prepared and the types of accounts available.' => 
-  'Hier können Sie konfigurieren, wie der Jahresabschluss erstellt wird und welche Kontenarten verfügbar sind',
-
-  'COA' => 
-  'Kp',
+  'Hier kann man konfigurieren, wie die finanzielle Buchhandlung erstellt wird und welche Kontenarten verfügbar sind.',
 
   'Show Chart of Accounts' => 
-  'Zeigen Sie Kontenplan*',
+  'Kontenpläne zeigen',
 
   'Help' => 
   'Hilfe',
@@ -538,43 +548,43 @@
   'Willkommen in «{name}»',
 
   'You are creating an account as a child of «{account}»,' => 
-  'Sie erstellen ein Konto als Kind von «{account}»,',
+  'Sie erstellen gerade ein Konto als Tochterkonto von «{account}»,',
 
   'You are making the account a child of «{account}»,' => 
-  'Sie machen das Konto ein Kind von «{account}»,',
+  'Sie setzen gerade das Konto in ein Tochterkonto von «{account}» um,',
 
   'The account you are updating is a child of «{account}»,' => 
-  'Das Konto, das Sie aktualisieren, ist ein Kind von «{account}»,',
+  'Das Konto, das Sie aktualisieren, ist ein Tochterkonto von «{account}»,',
 
   'Template «{description}»' => 
-  'Muster «{description}» ',
+  'Muster «{description}»',
 
   'the account with code "{code}" is not available (you can add it on the fly to the Chart of Accounts by inserting an exclamation mark at the end of the name, like in "{code}!").' => 
-  'der Konto "{code}" ist nicht verfügbar (Sie können es auf der Fliege zum Diagramm der Konten hinzufügen, indem Sie ein Ausrufezeichen am Ende des Namens einfügen, wie in "{code}!").',
+  'Das Konto mit dem Kode "{code}" ist nicht verfügbar (man kann es auf der Fliege zum Diagramm der Konten hinzufügen, indem man ein Ausrufezeichen am Ende des Namens einfügt, wie in "{code}!").',
 
   'Fields with <span class="required">*</span> are required.' => 
   'Felder mit <span class="required">*</span> sind erforderlich.',
 
   'You can synchronize your firm\'s chart of accounts with the one of one of the following ancestors:' => 
-  'Sie können Ihre Firmenplan mit dem von einer der folgenden Vorfahren zu den vorigen synchronisieren:',
+  'Man kann den Firmenkontenplan mit einem der folgenden Vorfahren synchronisieren:',
 
   'Edit firm\'s settings' => 
-  'Der Ansatz von der Firma verändern',
+  'Die Gestaltung der Firma bearbeiten',
 
   'Management' => 
-  'Unternehmensführung ',
+  'Unternehmensführung',
 
   'Settings' => 
   'Gestaltung',
 
   'This firm is stale' => 
-  'Diese Firma ist ungebraucht',
+  'Diese Firma ist ungenutzt',
 
   'Benchmark Firm' => 
   'Benchmark Firma',
 
   'The content must be in YAML format.' => 
-  'Inhalt muss in YAMLformat sein',
+  'Inhalt muss in YAML-Format sein.',
 
   'Download' => 
   'Herunterladen',
@@ -586,18 +596,18 @@
   'Überprüft',
 
   'Challenge' => 
-  'Forderung',
+  'Herausforderung',
 
   'firm\'s description' => 
-  'Beschreibung von der Firma',
+  'Beschreibung der Firma',
 
   'journal' => 
   'Zeitschrift',
 
   'statements' => 
-  'Buchhandlung',
+  'Buchhandlungen',
 
   'challenge' => 
-  'Forderung',
+  'Herausorderung',
 
   );
