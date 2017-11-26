@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.9.52';
+    return '1.9.53';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -430,4 +430,31 @@ class DELT
     return in_array(strtolower($value), array('true', 'yes', '1'));
   }
   
+  public static function data2Sqlite($db, $table, $iterable, $fields=array())
+  {
+    $f1=$fields; //copy
+    array_walk($f1, function(&$v, $k) { $v = $k . ' ' . $v; });
+    $sqlc = 'CREATE TABLE "' . $table . '" (' . join($f1, ', ') . ');'; 
+    
+    $sqlp = 'INSERT INTO "' . $table . '" (' . join(array_keys($fields), ', ') . ') VALUES (' . 
+    join(array_map(function($v) { return ':'.$v; }, array_keys($fields)), ', ')     . ');';
+    
+	$db->exec($sqlc);
+
+    $stmt = $db->prepare($sqlp);
+    
+    foreach ($fields as $field=>$type)
+    {
+        $placeholder = ':' . $field;
+        $stmt->bindParam($placeholder, $values[$field]);
+    }
+    foreach($iterable as $record)
+    {
+        foreach($fields as $field=>$type)
+        {
+            $values[$field] = $record->$field;
+        }
+        $stmt->execute();
+    }
+  }
 }

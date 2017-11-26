@@ -62,6 +62,8 @@ class Firm extends CActiveRecord
   
   private $_cache = array();
   
+  private $_tempfile; 
+  
   /**
    * Returns the static model of the specified AR class.
    * @param string $className active record class name.
@@ -1270,6 +1272,61 @@ class Firm extends CActiveRecord
     $data['md5sum']=$this->_md5($data);
 
     return $data;
+  }
+  
+  public function getSQLiteTempFile()
+  {
+	$this->_tempfile = tempnam("/tmp", "delt");
+	$db = new PDO("sqlite:" . $this->_tempfile);
+    
+    DELT::data2Sqlite($db, 'account', $this->accounts, array(
+        'id'=>'INTEGER PRIMARY KEY NOT NULL',
+        'account_parent_id'=>'INTEGER',
+        'type'=>'INTEGER',
+        'level'=>'INTEGER',
+        'code'=>'TEXT',
+        'is_selectable'=>'INTEGER',
+        'position'=>'TEXT',
+        'outstanding_balance'=>'TEXT',
+        'currentname'=>'TEXT',
+        'number_of_children'=>'INTEGER',
+        'classes'=>'TEXT'
+    ));
+ 
+    DELT::data2Sqlite($db, 'journalentry', $this->journalentries, array(
+        'id'=>'INTEGER PRIMARY KEY NOT NULL',
+        'date'=>'TEXT',
+        'description'=>'TEXT',
+        'is_confirmed'=>'INTEGER',
+        'is_closing'=>'INTEGER',
+        'is_adjustment'=>'INTEGER',
+        'is_included'=>'INTEGER',
+        'rank'=>'INTEGER',
+    ));
+
+    DELT::data2Sqlite($db, 'posting', Posting::model()->ofFirm($this->id)->with('journalentry')->findAll(), array(
+        'id'=>'INTEGER PRIMARY KEY NOT NULL',
+        'account_id'=>'INTEGER',
+        'journalentry_id'=>'INTEGER',
+        'amount'=>'REAL',
+        'rank'=>'INTEGER',
+        'comment'=>'TEXT',
+        'subchoice'=>'TEXT',
+    ));
+
+    return $this->_tempfile;
+  }
+
+  public function deleteSQLiteTempFile()
+  {
+    try
+    {
+       unlink($this->_tempfile);
+    }
+    catch(Exception $e)
+    {
+       // nothing special to do... 
+    }
   }
   
   /**

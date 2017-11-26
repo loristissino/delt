@@ -265,7 +265,6 @@ class BookkeepingController extends Controller
     {
       case 'delt':
         $data=$this->firm->getExportData('111');
-        
         $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.delt';
         Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED);
         $this->sendDispositionHeader($filename);
@@ -278,6 +277,15 @@ class BookkeepingController extends Controller
         Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED_LEDGER);
         $this->sendDispositionHeader($filename);
         $this->servePlainText($data);
+        break;
+
+      case 'sqlite':
+        $file=$this->firm->getSQLiteTempFile();
+        $filename = $this->firm->slug . '-' . date('Y-m-d-His') . '.sqlite';
+        Event::log($this->DEUser, $this->firm->id, Event::FIRM_EXPORTED_SQLITE);
+        $this->sendDispositionHeader($filename);
+        $this->serveSQLite($file);
+        $this->firm->deleteSQLiteTempFile();
         break;
         
       default:

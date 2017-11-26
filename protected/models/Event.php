@@ -61,6 +61,7 @@ class Event extends CActiveRecord
   const FIRM_EXPORTED               = 2041;
   const FIRM_IMPORTED               = 2042;
   const FIRM_EXPORTED_LEDGER        = 2043;
+  const FIRM_EXPORTED_SQLITE        = 2044;
   const FIRM_SEEN                   = 2051;
   const FIRM_USED_AS_BENCHMARK      = 2052;
   const FIRM_JOURNALENTRY_CREATED   = 2061;

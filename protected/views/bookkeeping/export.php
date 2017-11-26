@@ -18,4 +18,5 @@ $this->menu=array(
 <ul>
   <li><?php echo CHtml::link('DELT', array('bookkeeping/export', 'slug'=>$model->slug, 'format'=>'delt')) ?> (<?php echo Yii::t('delt', 'standard JSON-based format used by DELT') ?>)</li>
   <li><?php echo CHtml::link('ledger-cli', array('bookkeeping/export', 'slug'=>$model->slug, 'format'=>'ledger')) ?> (<?php echo Yii::t('delt', 'text-based ledger-cli\'s format for transactions') ?>)</li>
+  <li><?php echo CHtml::link('SQLite', array('bookkeeping/export', 'slug'=>$model->slug, 'format'=>'sqlite')) ?> (<?php echo Yii::t('delt', 'a single-file database format useful for offline exercises') ?>)</li>
 </ul>

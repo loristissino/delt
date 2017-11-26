@@ -218,6 +218,15 @@ class Controller extends CController
   }
 
   /**
+   * Serves an object as a SQLite file via HTTP.
+   * @param string $object the object to send
+   */  
+  public function serveSQLite($file)
+  {
+    $this->serveFile('application/x-sqlite3', $file);
+  }
+
+  /**
    * Serves an object as a json-encoded string via HTTP.
    * @param string $object the object to send
    */  
