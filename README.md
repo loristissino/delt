@@ -49,6 +49,22 @@ Here's a list:
 * [jQuery.pin](https://github.com/webpop/jquery.pin)
 * [CookieMonster](https://github.com/bizley-code/Yii-CookieMonster) (https://github.com/bizley-code/Yii-CookieMonster/blob/master/LICENSE)
 
+### Localization
+
+#### German
+
+Most of the German L10N work has been done in 2017 by some students of ITSSE "Mattiussi" of Pordenone, Italy, coordinated by prof. Francesca Benetazzo:
+
+* Sharon Copat
+* Dario Deplano
+* Giulio Felici
+* Eleonora Felletti
+* Bianca Jugaru
+* Marco Santarossa
+* Martina Qyshka
+* Giada Tesan
+* Giovanni Zanardo
+* Chiara Zoia
 
 ## Online version
 
