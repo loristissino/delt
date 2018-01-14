@@ -83,12 +83,11 @@ class UsersCommand extends CConsoleCommand
       if ($user->create_at < $date)
       {
         echo $user->username;
-        if ($user->delete())
-        {
+        try {
+            $user->delete();
             echo " deleted\n";
         }
-        else
-        {
+        catch (Exception $e) {
             echo " NOT deleted\n";
         }
       }
