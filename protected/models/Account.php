@@ -103,12 +103,12 @@ class Account extends CActiveRecord
       'debitgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
         'join'=> 'INNER JOIN {{journalentry}} ON t.journalentry_id = {{journalentry}}.id',
-        'condition'=>'{{journalentry}}.is_included = 1 and amount > 0',
+        'condition'=>'{{journalentry}}.is_included = 1 and {{journalentry}}.is_visible = 1 and amount > 0',
         ),
       'creditgrandtotal' => array(self::STAT, 'Posting', 'account_id', 
         'select'=>'SUM(amount)',
         'join'=> 'INNER JOIN {{journalentry}} ON t.journalentry_id = {{journalentry}}.id',
-        'condition'=>'{{journalentry}}.is_included = 1 and amount < 0',
+        'condition'=>'{{journalentry}}.is_included = 1 and {{journalentry}}.is_visible = 1 and amount < 0',
         ),
     );
   }
@@ -545,7 +545,7 @@ class Account extends CActiveRecord
 
   public function getPostingsAsDataProvider()
   {
-    return new CActiveDataProvider(Posting::model()->with('journalentry')->belongingTo($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->visible()->belongingTo($this->id), array(
       'pagination'=>array(
           'pageSize'=>30,
           ),

@@ -11,6 +11,7 @@ $this->menu=array(
   array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
   array('label'=>Yii::t('delt', 'Use a template'), 'url'=>array('template/admin', 'slug'=>$model->slug)),
   array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Layers'), 'url'=>array('layer/admin', 'slug'=>$model->slug)),
   );
 
 if(sizeof($model->journalentries))

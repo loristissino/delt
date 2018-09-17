@@ -147,6 +147,14 @@ class Posting extends CActiveRecord
     return $this;
   }
 
+  public function visible()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'journalentry.is_visible = 1',
+    ));
+    return $this;
+  }
+
   public function ofFirm($firm_id, $order='journalentry.date ASC, journalentry.rank ASC')
   {
     $this->getDbCriteria()->mergeWith(array(

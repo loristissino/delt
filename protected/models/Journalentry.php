@@ -19,9 +19,11 @@
  * @property integer $is_closing
  * @property integer $is_adjustment
  * @property integer $is_included
+ * @property integer $is_visible
  * @property integer $rank
  * @property integer $maxrank
  * @property integer $transaction_id
+ * @property integer $layer_id
  * 
  *
  * The followings are the available model relations:
@@ -64,11 +66,11 @@ class Journalentry extends CActiveRecord
     return array(
       array('firm_id, date, description', 'required'),
       array('firm_id, is_confirmed, is_closing, rank, transaction_id', 'numerical', 'integerOnly'=>true),
-      array('is_adjustment, is_included', 'safe'),
+      array('is_adjustment, is_included, is_visible', 'safe'),
       array('description', 'length', 'max'=>255),
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
-      array('id, firm_id, date, description, is_confirmed, is_closing, is_included, rank, transaction_id', 'safe', 'on'=>'search'),
+      array('id, firm_id, date, description, is_confirmed, is_closing, is_included, is_visible, rank, transaction_id', 'safe', 'on'=>'search'),
     );
   }
 
@@ -101,8 +103,10 @@ class Journalentry extends CActiveRecord
       'is_closing' => 'Is Closing',
       'is_adjustment' => 'Are Exceptions Allowed',
       'is_included' => 'Is Included',
+      'is_visible' => 'Is Visible',
       'rank' => 'Rank',
       'transaction_id' => 'Transaction',
+      'layer_id' => 'Layer',
     );
   }
 
@@ -125,8 +129,10 @@ class Journalentry extends CActiveRecord
     $criteria->compare('is_closing',$this->is_closing);
     $criteria->compare('is_adjustment',$this->is_adjustment);
     $criteria->compare('is_included',$this->is_included);
+    $criteria->compare('is_visible',$this->is_visible);
     $criteria->compare('rank',$this->rank);
     $criteria->compare('transaction_id',$this->transaction_id);
+    $criteria->compare('layer_id',$this->layer_id);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
@@ -147,6 +153,14 @@ class Journalentry extends CActiveRecord
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'is_included = 1',
+    ));
+    return $this;
+  }
+
+  public function visible()
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'is_visible = 1',
     ));
     return $this;
   }
@@ -236,6 +250,7 @@ class Journalentry extends CActiveRecord
     $this->is_closing = $is_closing;
     $this->is_adjustment = 1;
     $this->is_included = 1; 
+    $this->is_visible = 1;
     $this->rank = $rank;
   }
   
@@ -288,6 +303,7 @@ class Journalentry extends CActiveRecord
     return self::model()
       ->ofFirm($firm_id, 'date ASC, t.rank ASC, postings.amount DESC')
       ->included()
+      ->visible()
       ->connectedTo($transaction_id)
       ->with('postings')
       ->findAll();

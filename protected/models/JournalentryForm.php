@@ -27,6 +27,7 @@ class JournalentryForm extends CFormModel
   public $currency;
   public $is_closing = false;
   public $is_adjustment = false;
+  public $layer_id;
   public $adjustment_checkbox_needed = false;
   public $show_analysis = true;
   
@@ -57,6 +58,7 @@ class JournalentryForm extends CFormModel
     return array(
       'date' => Yii::t('delt', 'Date'),
       'description' => Yii::t('delt', 'Description / Explanation'),
+      'layer' => Yii::t('delt', 'Layer'),
       'raw_input' => Yii::t('delt', 'Raw input'),
       'options' => Yii::t('delt', 'Options')
       );
@@ -119,7 +121,7 @@ class JournalentryForm extends CFormModel
   {
     $this->postings = array();
     $this->journalentry = $journalentry;
-    DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment'));
+    DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment', 'layer_id'));
     $this->date = $journalentry->getDateForFormWidget();
     foreach($journalentry->postings as $posting)
     {
@@ -152,7 +154,7 @@ class JournalentryForm extends CFormModel
     $transaction = $this->journalentry->getDbConnection()->beginTransaction();
     try
     {
-      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment'));
+      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment', 'layer_id'));
       
       // we must convert the date from the user input
       // since we use jquery.ui.datepicker and its i18n features, we

@@ -249,4 +249,34 @@ class FirmsCommand extends CConsoleCommand
     $firm->status = Firm::STATUS_STALE;
     return $firm->save(false);
   }
+  
+  public function actionCreateLayers()
+  {
+    $firms=Firm::model()->findAll();
+    foreach($firms as $firm)
+    {
+      echo $firm->id;
+      
+      $entries = $firm->journalentries;
+      if (sizeof($entries)) {
+        echo " creating...";
+        $layer = new Layer();
+        $layer->firm_id = $firm->id;
+        $layer->name = "Default";
+        $layer->is_visible = true;
+        $layer->rank = 1;
+        $layer->save(false);
+        echo $layer->id . "\n";
+        
+        foreach ($entries as $je) {
+          $je->layer_id = $layer->id;
+          $je->save(false);
+          echo $je->id . ", ";
+        }
+        echo "\n";
+      }
+      echo "\n";
+    }
+  }
+  
 }

@@ -508,6 +508,30 @@ class Firm extends CActiveRecord
   }
   
   /**
+   * Returns a data provider for the layers of the firm.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the layers of the firm
+   */
+  public function getLayersAsDataProvider($pagesize=5000)
+  {
+    $sort = new CSort;
+    $sort->defaultOrder = 'rank ASC';
+    
+    return new CActiveDataProvider(Layer::model()->belongingTo($this->id), array(
+      'pagination'=>array(
+          'pageSize'=>$pagesize,
+          ),
+      'sort'=>$sort,
+      )
+    );
+  }
+  
+  public function getLayers()
+  {
+    return Layer::model()->belongingTo($this->id)->findAll();
+  }
+  
+  /**
    * Returns a data provider for the account balances of the firm.
    * @param integer $pagesize the pagesize desired
    * @return CActiveDataProvider the account balances of the firm
@@ -516,7 +540,7 @@ class Firm extends CActiveRecord
   {
     return new CActiveDataProvider(Account::model()->with('firm')->belongingTo($this->id), array(
       'criteria'=>array(
-          'condition'=>'is_selectable = 1 and journalentries.is_included = 1',
+          'condition'=>'is_selectable = 1 and journalentries.is_included = 1 and journalentries.is_visible = 1',
           'order' => 'code ASC',
           'with'=>array(
             'postings'=>array(
@@ -528,7 +552,7 @@ class Firm extends CActiveRecord
               'on'=>'postings.journalentry_id = journalentries.id',
               'together'=>true,
               'joinType' => 'INNER JOIN',
-              )
+              ),
             ),
         ),
       'pagination'=>array(
@@ -550,6 +574,7 @@ class Firm extends CActiveRecord
       ->where('j.firm_id=:id', array(':id'=>$this->id))
       ->andWhere($position==''? true : array('in', 'position', $positions))
       ->andWhere('j.is_included = 1')
+      ->andWhere('j.is_visible = 1')
       ->andWhere(sizeof($ids)? array('in', 'a.id', $ids) : ' TRUE')
       ->andWhere($closing_entries_included ? ' TRUE': 'j.is_closing = FALSE')
       ->order('a.code')
@@ -680,7 +705,7 @@ class Firm extends CActiveRecord
    */
   public function getJournalentriesAsDataProvider($pagesize=1000)
   {
-    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofFirm($this->id), array(
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->visible()->ofFirm($this->id), array(
       'pagination'=>array(
           'pageSize'=>$pagesize,
           ),
@@ -715,7 +740,7 @@ class Firm extends CActiveRecord
    */
   public function cacheGeneralLedgerData()
   {
-    $postings = Posting::model()->with('journalentry')->with('account')->included()->ofFirm($this->id, 'account.code ASC, journalentry.date ASC, journalentry.rank ASC')->findAll();
+    $postings = Posting::model()->with('journalentry')->with('account')->included()->visible()->ofFirm($this->id, 'account.code ASC, journalentry.date ASC, journalentry.rank ASC')->findAll();
     
     $code = '';
     foreach($postings as $posting)
@@ -936,6 +961,7 @@ class Firm extends CActiveRecord
       ->where('p.firm_id=:id', array(':id'=>$this->id))
       ->andWhere('amount ' . $type='D'? '>0' : '<0')
       ->andWhere('p.is_included = 1')
+      ->andWhere('p.is_visible = 1')
       ->queryScalar();
             
     return $type='D' ? $amount : -$amount;
@@ -1061,7 +1087,7 @@ class Firm extends CActiveRecord
         {
           $newjournalentry = new Journalentry;
           $newjournalentry->firm_id = $this->id;
-          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank') as $property)
+          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank') as $property)
           {
             $newjournalentry->$property = $journalentry->$property;
           }
@@ -1245,7 +1271,7 @@ class Firm extends CActiveRecord
       foreach($this->journalentries as $journalentry)
       {
         $values = array();
-        DELT::object2array($journalentry, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
+        DELT::object2array($journalentry, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank'));
         
         foreach($journalentry->postings as $posting)
         {
@@ -1301,6 +1327,7 @@ class Firm extends CActiveRecord
         'is_closing'=>'INTEGER',
         'is_adjustment'=>'INTEGER',
         'is_included'=>'INTEGER',
+        'is_visible'=>'INTEGER',
         'rank'=>'INTEGER',
     ));
 
@@ -1481,7 +1508,7 @@ class Firm extends CActiveRecord
       {
         $newjournalentry = new Journalentry;
         $newjournalentry->firm_id = $this->id;
-        DELT::array2object($values, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
+        DELT::array2object($values, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank'));
         
         $newjournalentry->save(false);
         
@@ -2406,6 +2433,7 @@ class Firm extends CActiveRecord
       ->select('date')
       ->from('{{journalentry}}')
       ->where('is_included =1')
+      ->where('is_visible = 1')
       ->andWhere('firm_id=:id', array(':id'=>$this->id))
       ->order('date DESC')
       ->queryScalar();
