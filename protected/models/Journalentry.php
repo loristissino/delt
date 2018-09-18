@@ -183,6 +183,15 @@ class Journalentry extends CActiveRecord
     ));
     return $this;
   }
+
+  public function onLayer($layer_id)
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'layer_id = :layer_id',
+        'params'=>array(':layer_id'=>$layer_id),
+    ));
+    return $this;
+  }
     
   public function getDateForFormWidget()
   {

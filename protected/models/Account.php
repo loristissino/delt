@@ -647,6 +647,7 @@ class Account extends CActiveRecord
       ->andWhere('p.firm_id = :id', array(':id'=>$this->firm_id))
       ->andWhere($without_closing ? 'p.is_closing = 0': 'true')
       ->andWhere('p.is_included = 1')
+      ->andWhere('p.is_visible = 1')
       ->queryScalar();
             
     return $amount;

@@ -104,6 +104,18 @@ class Layer extends CActiveRecord
     ));
     return $this;
   }  
+  
+  public function afterSave()
+  {
+    $r = parent::afterSave();
+    
+    $criteria = new CDbCriteria();
+    $criteria->condition = 'layer_id = :layer_id';
+    $criteria->params = array(':layer_id'=>$this->id);
+    
+    Journalentry::model()->updateAll(array('is_visible'=>$this->is_visible), $criteria);
+    return $r;    
+  }
 
 	/**
 	 * Returns the static model of the specified AR class.
@@ -116,7 +128,7 @@ class Layer extends CActiveRecord
 		return parent::model($className);
 	}
   
-  public function toString()
+  public function __toString()
   {
     return $this->name;
   }

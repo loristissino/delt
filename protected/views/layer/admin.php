@@ -18,10 +18,8 @@ $this->menu=array(
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'layer-grid',
 	'dataProvider'=>$dataProvider,
-	'filter'=>$model,
+	//'filter'=>$model,
 	'columns'=>array(
-		'id',
-		'firm_id',
 		'name',
 		'is_visible',
 		'rank',

@@ -45,7 +45,7 @@ class JournalentryForm extends CFormModel
   {
     return array(
       array('date, description, is_closing', 'required'),
-      array('raw_input, is_adjustment', 'safe'),
+      array('raw_input, is_adjustment. layer_id', 'safe'),
       array('postings', 'checkPostings'),
     );
   }
@@ -172,7 +172,10 @@ class JournalentryForm extends CFormModel
         $this->journalentry->transaction_id = Yii::app()->user->getState('transaction');
       }
       
+      $layer = Layer::model()->findByPK($this->layer_id);
+      $this->journalentry->is_visible = $layer->is_visible;
       $this->journalentry->save(true);
+      
       if ($challenge)
       {
         $challenge->undeclareNotEconomic($this->journalentry->transaction_id);

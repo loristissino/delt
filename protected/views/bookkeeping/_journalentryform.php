@@ -789,9 +789,9 @@ if(Yii::app()->language!=='en')
 
   <div class="row">
     <?php echo $form->labelEx($journalentryform,'layer_id'); ?>
-    <?php echo $form->textField($journalentryform,'layer_id', array('size'=>3)); ?>
+    <?php // echo $form->textField($journalentryform,'layer_id', array('size'=>3)); ?>
+    <?php echo $form->dropDownList($journalentryform,'layer_id', CHtml::listData($this->firm->getLayers(), 'id', 'name')); ?>
     <?php echo $form->error($journalentryform,'layer_id'); ?>
-    <?php /*echo $form->dropDownList($journalentryform,'layer', $this->firm->getLayers()); */?>
   </div>
 
   <div id="commands"></div>
