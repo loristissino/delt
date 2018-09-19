@@ -9,6 +9,7 @@
  * @property string $name
  * @property integer $is_visible
  * @property integer $rank
+ * @property string $color
  *
  * The followings are the available model relations:
  * @property Firm $firm
@@ -34,9 +35,10 @@ class Layer extends CActiveRecord
 			array('firm_id, rank', 'required'),
 			array('firm_id, is_visible, rank', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
+			array('color', 'length', 'max'=>6),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
-			array('id, firm_id, name, is_visible, rank', 'safe', 'on'=>'search'),
+			array('id, firm_id, name, is_visible, rank, color', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -63,6 +65,7 @@ class Layer extends CActiveRecord
 			'name' => 'Name',
 			'is_visible' => 'Is Visible',
 			'rank' => 'Rank',
+      'color' => 'Color',
 		);
 	}
 
@@ -89,6 +92,7 @@ class Layer extends CActiveRecord
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('is_visible',$this->is_visible);
 		$criteria->compare('rank',$this->rank);
+		$criteria->compare('color',$this->color);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,

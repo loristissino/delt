@@ -986,6 +986,14 @@ class BookkeepingController extends Controller
     return '';
   }
 
+  public function renderLayer(Posting $posting, $row)
+  {
+    if($posting->journalentry_id != $this->last_journalentry_id)
+      return '<span style="font-size: 1.5em; color: #' . $posting->journalentry->getColor() . '">■</span>';
+    else
+      return '';
+  }
+
   public function renderSubchoice(Posting $posting, $row)
   {
     return $this->renderPartial('_subchoice', array('subchoice'=>$posting->subchoice), true);

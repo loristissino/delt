@@ -4,6 +4,6 @@
     $this->createUrl('bookkeeping/journal', array('slug'=>$this->firm->slug, 'journalentry'=>$posting->journalentry_id)),
     array('class'=>'hiddenlink')
   ) ?>
-<?php else: ?>
+<?php else: ?> 
   <?php echo $posting->journalentry->description ?>
 <?php endif ?>

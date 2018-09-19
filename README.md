@@ -48,6 +48,7 @@ Here's a list:
 * [Slugifier](https://gist.github.com/demoive/4249710)
 * [jQuery.pin](https://github.com/webpop/jquery.pin)
 * [CookieMonster](https://github.com/bizley-code/Yii-CookieMonster) (https://github.com/bizley-code/Yii-CookieMonster/blob/master/LICENSE)
+* [ColorPicker](https://www.yiiframework.com/extension/colorpicker)
 
 ### Localization
 

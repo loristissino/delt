@@ -41,6 +41,13 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'rowHtmlOptionsExpression' => 'array("data-transaction-id"=>$data->journalentry->transaction_id)',
   'columns'=>array(
     array(
+      'name'=>'journalentry.layer',
+      'header'=>Yii::t('delt', 'L'),
+      'headerHtmlOptions'=>array('title'=>Yii::t('delt', 'Layer')),
+      'type'=>'raw',
+      'value'=>array($this, 'RenderLayer'),
+      ),
+    array(
       'class'=>'CDataColumn',
       'name'=>'journalentry.date',
       'value'=>array($this, 'RenderDate'),

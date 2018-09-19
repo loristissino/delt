@@ -58,7 +58,7 @@ class JournalentryForm extends CFormModel
     return array(
       'date' => Yii::t('delt', 'Date'),
       'description' => Yii::t('delt', 'Description / Explanation'),
-      'layer' => Yii::t('delt', 'Layer'),
+      'layer_id' => Yii::t('delt', 'Layer'),
       'raw_input' => Yii::t('delt', 'Raw input'),
       'options' => Yii::t('delt', 'Options')
       );

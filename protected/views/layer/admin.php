@@ -23,6 +23,16 @@ $this->menu=array(
 		'name',
 		'is_visible',
 		'rank',
+    array(
+      'class'=>'DataColumn',
+      'sortable'=>false,
+      'name'=>'color',
+      'header'=>Yii::t('delt', 'Color'),
+      'value'=>' ',
+      'type'=>'raw',
+      'evaluateHtmlOptions'=>true,
+      'htmlOptions'=>array('style'=>'"background-color: #{$data->color}"'),
+      ),
 		array(
 			'class'=>'CButtonColumn',
 		),

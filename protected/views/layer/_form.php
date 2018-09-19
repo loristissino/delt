@@ -43,6 +43,29 @@
 		<?php echo $form->error($model,'rank'); ?>
 	</div>
 
+	<div class="row">
+		<?php echo $form->labelEx($model,'rank'); ?>
+		<?php echo $form->textField($model,'rank'); ?>
+		<?php echo $form->error($model,'rank'); ?>
+	</div>
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'color'); ?>
+    <?php
+    $this->widget('application.extensions.colorpicker.EColorPicker', 
+                array(
+                      'name'=>'Layer[color]',
+                      'mode'=>'textfield',
+                      'fade' => false,
+                      'slide' => false,
+                      'curtain' => false,
+                      'value' => $model->color,
+                     )
+               );
+    ?>
+		<?php echo $form->error($model,'color'); ?>
+	</div>
+
 	<div class="row buttons">
 		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
 	</div>

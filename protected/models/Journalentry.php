@@ -318,4 +318,10 @@ class Journalentry extends CActiveRecord
       ->findAll();
   }
   
+  public function getColor()
+  {
+    $layer = Layer::model()->findByPK($this->layer_id);
+    return $layer->color;
+  }
+  
 }
