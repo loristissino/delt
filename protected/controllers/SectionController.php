@@ -42,7 +42,7 @@ class SectionController extends Controller
 	{
 		return array(
       array('allow', 
-        'actions'=>array('view','create','update','delete','admin','index'),
+        'actions'=>array('view','create','update','delete','admin','index','togglevisibility'),
         'users'=>array('@'),
       ),
 			array('deny',  // deny all users
@@ -58,10 +58,10 @@ class SectionController extends Controller
 	public function actionView($id)
 	{
     $model = $this->loadModel($id);
-    $firm = $this->loadFirm($model->firm_id);
+    $this->firm = $this->loadFirm($model->firm_id);
 		$this->render('view',array(
 			'model'=>$model,
-      'firm'=>$firm,
+      'firm'=>$this->firm,
 		));
 	}
 
@@ -69,8 +69,9 @@ class SectionController extends Controller
 	 * Creates a new model.
 	 * If creation is successful, the browser will be redirected to the 'view' page.
 	 */
-	public function actionCreate()
+	public function actionCreate($slug)
 	{
+    $this->firm=$this->loadFirmBySlug($slug);
 		$model=new Section;
 
 		// Uncomment the following line if AJAX validation is needed
@@ -79,9 +80,12 @@ class SectionController extends Controller
 		if(isset($_POST['Section']))
 		{
 			$model->attributes=$_POST['Section'];
+      $model->firm_id = $this->firm->id;
 			if($model->save())
 				$this->redirect(array('view','id'=>$model->id));
 		}
+    
+    $model->rank = Section::model()->maxRank($this->firm->id) + 1;
 
 		$this->render('create',array(
 			'model'=>$model,
@@ -96,7 +100,7 @@ class SectionController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
-    $firm = $this->loadFirm($model->firm_id);
+    $this->firm = $this->loadFirm($model->firm_id);
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -105,7 +109,7 @@ class SectionController extends Controller
 		{
 			$model->attributes=$_POST['Section'];
 			if($model->save())
-				$this->redirect(array('section/admin','slug'=>$firm->slug));
+				$this->redirect(array('section/admin','slug'=>$this->firm->slug));
 		}
 
 		$this->render('update',array(
@@ -122,8 +126,17 @@ class SectionController extends Controller
 	{
     $model = $this->loadModel($id);
     $firm = $this->loadFirm($model->firm_id);
-		$model->delete();
-
+    
+    try
+    {
+      $model->delete();
+      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The section has been successfully deleted.'));
+    }
+    catch (Exception $e)
+    {
+      Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The section could not be successfully deleted.'));
+    }
+    
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
 			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin', 'slug'=>$firm->slug));
@@ -154,6 +167,19 @@ class SectionController extends Controller
     ));
 	}
 
+  public function actionTogglevisibility($id)
+  {
+    $section=Section::model()->findByPK($id);
+    $this->firm=$section->firm;
+    $this->checkManageability($this->firm);
+    $this->checkFrostiness($this->firm);
+
+    $section->is_visible = !$section->is_visible;
+    $section->save(false);
+
+    $this->redirect(array('section/admin', 'slug'=>$this->firm->slug));
+  }
+
 	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
@@ -168,6 +194,11 @@ class SectionController extends Controller
 			throw new CHttpException(404,'The requested page does not exist.');
 		return $model;
 	}
+
+  public function renderIsVisible(Section $section, $row)
+  {
+    return $this->renderPartial('_is_visible',array('section'=>$section),true);
+  }
 
 	/**
 	 * Performs the AJAX validation.

@@ -32,10 +32,10 @@ class Section extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('firm_id, rank', 'required'),
+			array('firm_id, rank, color', 'required'),
 			array('firm_id, is_visible, rank', 'numerical', 'integerOnly'=>true),
 			array('name', 'length', 'max'=>128),
-			array('color', 'length', 'max'=>6),
+			array('color', 'match', 'pattern'=>'/^[0-9a-f]{6}$/'),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('id, firm_id, name, is_visible, rank, color', 'safe', 'on'=>'search'),
@@ -119,6 +119,17 @@ class Section extends CActiveRecord
     
     Journalentry::model()->updateAll(array('is_visible'=>$this->is_visible), $criteria);
     return $r;    
+  }
+  
+  public static function maxRank($firm_id)
+  {
+    $maxRank = Yii::app()->db->createCommand()
+      ->select('MAX(rank) as rank')
+      ->from('{{section}} sect')
+      ->where('sect.firm_id = :firm_id', array(':firm_id'=>$firm_id))
+      ->queryScalar();
+            
+    return $maxRank;
   }
 
 	/**

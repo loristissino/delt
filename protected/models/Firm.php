@@ -1033,7 +1033,17 @@ class Firm extends CActiveRecord
          $fl->language_id = $language->id;
          $fl->save();
       }
+
+      $section_references = array();
       
+      foreach($source->sections as $section)
+      {
+         $s=new Section();
+         $s->firm_id = $this->id;
+         DELT::object2object($section, $s, array('name', 'is_visible', 'rank', 'color'));
+         $s->save();
+         $section_references[$section->id] = $s->id;
+      }
 
       $references = array();  // this will keep references between the old and the new codes of accounts
 
@@ -1087,10 +1097,10 @@ class Firm extends CActiveRecord
         {
           $newjournalentry = new Journalentry;
           $newjournalentry->firm_id = $this->id;
-          foreach(array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank') as $property)
-          {
-            $newjournalentry->$property = $journalentry->$property;
-          }
+          DELT::object2object($journalentry, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank'));
+            
+          $newjournalentry->section_id = $section_references[$journalentry->section_id];
+          
           $newjournalentry->save(false);
           foreach($journalentry->postings as $posting)
           {
@@ -1623,7 +1633,7 @@ class Firm extends CActiveRecord
 
   /**
    * Changes, for the specified journal entries, the date, increasing or decreasing the year.
-   * @param array $ids the ids of the journal entries to toggle visibility for
+   * @param array $ids the ids of the journal entries to work on
    * @param integer $years the number of years
    * @return integer the number of journal entries changed
    */
@@ -1638,6 +1648,25 @@ class Firm extends CActiveRecord
     }
     return $number;
   }
+
+  /**
+   * Changes, for the specified journal entries, the associated section.
+   * @param array $ids the ids of the journal entries to work on
+   * @param integer $sections the section id to apply
+   * @return integer the number of journal entries changed
+   */
+  public function changeSectionForSelectedJournalentries($ids=array(), $section_id)
+  {
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    // FIXME This should be done with a common update query
+    foreach($journalentries as $journalentry)
+    {
+      $journalentry->changeSection($section_id);
+    }
+    return $number;
+  }
+
 
   
   /**

@@ -307,6 +307,19 @@ class Journalentry extends CActiveRecord
     
     return false;
   }
+
+  public function changeSection($section_id)
+  {
+    if ($this->section_id != $section_id)
+    {
+      $section = Section::model()->findByPK($this->section_id);
+      $this->section_id = $section_id;
+      $this->is_visible = $section->is_visible;
+      $this->save(false);
+      return true;
+    }
+    return false;
+  }
   
   public function getJournalEntriesByFirmAndTransaction($firm_id, $transaction_id)
   {

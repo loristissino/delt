@@ -8,7 +8,7 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'Create Section', 'url'=>array('create')),
+	array('label'=>'Create Section', 'url'=>array('create', 'slug'=>$this->firm->slug)),
 );
 
 ?>
@@ -21,8 +21,14 @@ $this->menu=array(
 	//'filter'=>$model,
 	'columns'=>array(
 		'name',
-		'is_visible',
-		'rank',
+      array(
+        'class'=>'CDataColumn',
+        'name'=>'automatic',
+        'value'=>array($this, 'RenderIsVisible'),
+        'htmlOptions'=>array('style'=>'text-align: center; width: 60px'),
+        'type'=>'raw',
+        'header'=>Yii::t('delt', 'Visible') . '?',
+        ),
     array(
       'class'=>'DataColumn',
       'sortable'=>false,

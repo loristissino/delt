@@ -69,7 +69,7 @@ $dataProvider = $model->search();
             'options'=>array('title'=>Yii::t('delt', 'Edit')),
           ),
           'toggle'=>array(
-            // FIXM is there a way to use POST with buttons? apparently not...
+            // FIXME is there a way to use POST with buttons? apparently not...
             'label'=>'Toggle Automatic Status',
             'url'=>'Yii::app()->controller->createUrl("bookkeeping/toggleautomaticstatus",array("id"=>"$data->primaryKey"))',
             'options'=>array('title'=>Yii::t('delt', 'Toggle Automatic Status')),

@@ -151,6 +151,24 @@ $this->widget('zii.widgets.grid.CGridView', array(
     'containerTag'=>'span',
 ));
 ?> |
+<?php 
+  $select = '1';
+  echo CHtml::dropDownList('section', $select, 
+    CHtml::listData($this->firm->getSections(), 'id', 'name'),
+    array('class'=>'xbatchdropdown')
+  );
+
+  $this->widget('ext.widgets.bmenu.XBatchMenu', array(
+    'formId'=>'journal-form',
+    'checkBoxId'=>'id',
+    'emptyText'=>addslashes(Yii::t('delt','Please select the entries you would like to perform this action on!')),
+    'items'=>array(
+        array('label'=>Yii::t('delt','change section'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'changesection'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Change the sections the selected entries are associated to'))),
+    ),
+    'htmlOptions'=>array('class'=>'actionBar'),
+    'containerTag'=>'span',
+));
+?> |
 <?php $this->widget('ext.widgets.bmenu.XBatchMenu', array(
     'formId'=>'journal-form',
     'checkBoxId'=>'id',

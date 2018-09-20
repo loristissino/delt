@@ -8,8 +8,8 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Section', 'url'=>array('section/admin', 'slug'=>$firm->slug)),
-	array('label'=>'Create Section', 'url'=>array('create')),
+	array('label'=>'Manage Sections', 'url'=>array('section/admin', 'slug'=>$firm->slug)),
+	array('label'=>'Create Section', 'url'=>array('create', 'slug'=>$this->firm->slug)),
 	array('label'=>'Delete Section', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
 );
 ?>
