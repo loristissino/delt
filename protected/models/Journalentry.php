@@ -23,7 +23,7 @@
  * @property integer $rank
  * @property integer $maxrank
  * @property integer $transaction_id
- * @property integer $layer_id
+ * @property integer $section_id
  * 
  *
  * The followings are the available model relations:
@@ -106,7 +106,7 @@ class Journalentry extends CActiveRecord
       'is_visible' => 'Is Visible',
       'rank' => 'Rank',
       'transaction_id' => 'Transaction',
-      'layer_id' => 'Layer',
+      'section_id' => 'Section',
     );
   }
 
@@ -132,7 +132,7 @@ class Journalentry extends CActiveRecord
     $criteria->compare('is_visible',$this->is_visible);
     $criteria->compare('rank',$this->rank);
     $criteria->compare('transaction_id',$this->transaction_id);
-    $criteria->compare('layer_id',$this->layer_id);
+    $criteria->compare('section_id',$this->section_id);
 
     return new CActiveDataProvider($this, array(
       'criteria'=>$criteria,
@@ -184,11 +184,11 @@ class Journalentry extends CActiveRecord
     return $this;
   }
 
-  public function onLayer($layer_id)
+  public function inSection($section_id)
   {
     $this->getDbCriteria()->mergeWith(array(
-        'condition'=>'layer_id = :layer_id',
-        'params'=>array(':layer_id'=>$layer_id),
+        'condition'=>'section_id = :section_id',
+        'params'=>array(':section_id'=>$section_id),
     ));
     return $this;
   }
@@ -250,7 +250,7 @@ class Journalentry extends CActiveRecord
     $challenge->undeclareNotEconomic($transaction_id);
   }
   
-  public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing, $date)
+  public function setDefaultsForAutomaticEntry($firm, $description, $rank, $is_closing, $date, $section_id)
   {
     $this->firm_id = $firm->id;
     $this->date = $date;
@@ -260,6 +260,7 @@ class Journalentry extends CActiveRecord
     $this->is_adjustment = 1;
     $this->is_included = 1; 
     $this->is_visible = 1;
+    $this->section_id = $section_id;
     $this->rank = $rank;
   }
   
@@ -318,10 +319,10 @@ class Journalentry extends CActiveRecord
       ->findAll();
   }
   
-  public function getColor()
+  public function getSection()
   {
-    $layer = Layer::model()->findByPK($this->layer_id);
-    return $layer->color;
+    $section = Section::model()->findByPK($this->section_id);
+    return $section;
   }
   
 }

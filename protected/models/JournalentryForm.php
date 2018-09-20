@@ -27,7 +27,7 @@ class JournalentryForm extends CFormModel
   public $currency;
   public $is_closing = false;
   public $is_adjustment = false;
-  public $layer_id;
+  public $section_id;
   public $adjustment_checkbox_needed = false;
   public $show_analysis = true;
   
@@ -45,7 +45,7 @@ class JournalentryForm extends CFormModel
   {
     return array(
       array('date, description, is_closing', 'required'),
-      array('raw_input, is_adjustment. layer_id', 'safe'),
+      array('raw_input, is_adjustment. section_id', 'safe'),
       array('postings', 'checkPostings'),
     );
   }
@@ -58,7 +58,7 @@ class JournalentryForm extends CFormModel
     return array(
       'date' => Yii::t('delt', 'Date'),
       'description' => Yii::t('delt', 'Description / Explanation'),
-      'layer_id' => Yii::t('delt', 'Layer'),
+      'section_id' => Yii::t('delt', 'Section'),
       'raw_input' => Yii::t('delt', 'Raw input'),
       'options' => Yii::t('delt', 'Options')
       );
@@ -121,7 +121,7 @@ class JournalentryForm extends CFormModel
   {
     $this->postings = array();
     $this->journalentry = $journalentry;
-    DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment', 'layer_id'));
+    DELT::object2object($journalentry, $this, array('description', 'is_closing', 'is_adjustment', 'section_id'));
     $this->date = $journalentry->getDateForFormWidget();
     foreach($journalentry->postings as $posting)
     {
@@ -154,7 +154,7 @@ class JournalentryForm extends CFormModel
     $transaction = $this->journalentry->getDbConnection()->beginTransaction();
     try
     {
-      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment', 'layer_id'));
+      DELT::object2object($this, $this->journalentry, array('firm_id', 'description', 'is_closing', 'is_adjustment', 'section_id'));
       
       // we must convert the date from the user input
       // since we use jquery.ui.datepicker and its i18n features, we
@@ -172,8 +172,8 @@ class JournalentryForm extends CFormModel
         $this->journalentry->transaction_id = Yii::app()->user->getState('transaction');
       }
       
-      $layer = Layer::model()->findByPK($this->layer_id);
-      $this->journalentry->is_visible = $layer->is_visible;
+      $section = Section::model()->findByPK($this->section_id);
+      $this->journalentry->is_visible = $section->is_visible;
       $this->journalentry->save(true);
       
       if ($challenge)

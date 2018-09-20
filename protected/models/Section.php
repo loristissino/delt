@@ -1,9 +1,9 @@
 <?php
 
 /**
- * This is the model class for table "{{layer}}".
+ * This is the model class for table "{{section}}".
  *
- * The followings are the available columns in table '{{layer}}':
+ * The followings are the available columns in table '{{section}}':
  * @property integer $id
  * @property integer $firm_id
  * @property string $name
@@ -14,14 +14,14 @@
  * The followings are the available model relations:
  * @property Firm $firm
  */
-class Layer extends CActiveRecord
+class Section extends CActiveRecord
 {
 	/**
 	 * @return string the associated database table name
 	 */
 	public function tableName()
 	{
-		return '{{layer}}';
+		return '{{section}}';
 	}
 
 	/**
@@ -114,8 +114,8 @@ class Layer extends CActiveRecord
     $r = parent::afterSave();
     
     $criteria = new CDbCriteria();
-    $criteria->condition = 'layer_id = :layer_id';
-    $criteria->params = array(':layer_id'=>$this->id);
+    $criteria->condition = 'section_id = :section_id';
+    $criteria->params = array(':section_id'=>$this->id);
     
     Journalentry::model()->updateAll(array('is_visible'=>$this->is_visible), $criteria);
     return $r;    

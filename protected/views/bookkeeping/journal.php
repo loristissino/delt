@@ -11,7 +11,7 @@ $this->menu=array(
   array('label'=>Yii::t('delt', 'New journal entry'), 'url'=>array('bookkeeping/newjournalentry', 'slug'=>$model->slug)),
   array('label'=>Yii::t('delt', 'Use a template'), 'url'=>array('template/admin', 'slug'=>$model->slug)),
   array('label'=>Yii::t('delt', 'Closing entry'), 'url'=>array('bookkeeping/closingjournalentry', 'slug'=>$model->slug)),
-  array('label'=>Yii::t('delt', 'Layers'), 'url'=>array('layer/admin', 'slug'=>$model->slug)),
+  array('label'=>Yii::t('delt', 'Sections'), 'url'=>array('section/admin', 'slug'=>$model->slug)),
   );
 
 if(sizeof($model->journalentries))
@@ -41,11 +41,11 @@ $this->widget('zii.widgets.grid.CGridView', array(
   'rowHtmlOptionsExpression' => 'array("data-transaction-id"=>$data->journalentry->transaction_id)',
   'columns'=>array(
     array(
-      'name'=>'journalentry.layer',
-      'header'=>Yii::t('delt', 'L'),
-      'headerHtmlOptions'=>array('title'=>Yii::t('delt', 'Layer')),
+      'name'=>'journalentry.section',
+      'header'=>Yii::t('delt', 'S'),
+      'headerHtmlOptions'=>array('title'=>Yii::t('delt', 'Section')),
       'type'=>'raw',
-      'value'=>array($this, 'RenderLayer'),
+      'value'=>array($this, 'RenderSection'),
       ),
     array(
       'class'=>'CDataColumn',

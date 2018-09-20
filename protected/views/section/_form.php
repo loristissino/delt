@@ -1,13 +1,13 @@
 <?php
-/* @var $this LayerController */
-/* @var $model Layer */
+/* @var $this SectionController */
+/* @var $model Section */
 /* @var $form CActiveForm */
 ?>
 
 <div class="form">
 
 <?php $form=$this->beginWidget('CActiveForm', array(
-	'id'=>'layer-form',
+	'id'=>'section-form',
 	// Please note: When you enable ajax validation, make sure the corresponding
 	// controller action is handling ajax validation correctly.
 	// There is a call to performAjaxValidation() commented in generated controller code.
@@ -54,7 +54,7 @@
     <?php
     $this->widget('application.extensions.colorpicker.EColorPicker', 
                 array(
-                      'name'=>'Layer[color]',
+                      'name'=>'Section[color]',
                       'mode'=>'textfield',
                       'fade' => false,
                       'slide' => false,

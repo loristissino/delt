@@ -1,18 +1,18 @@
 <?php
-/* @var $this LayerController */
+/* @var $this SectionController */
 /* @var $dataProvider CActiveDataProvider */
 
 $this->breadcrumbs=array(
-	'Layers',
+	'Sections',
 );
 
 $this->menu=array(
-	array('label'=>'Create Layer', 'url'=>array('create')),
-	array('label'=>'Manage Layer', 'url'=>array('admin')),
+	array('label'=>'Create Section', 'url'=>array('create')),
+	array('label'=>'Manage Section', 'url'=>array('admin')),
 );
 ?>
 
-<h1>Layers</h1>
+<h1>Sections</h1>
 
 <?php $this->widget('zii.widgets.CListView', array(
 	'dataProvider'=>$dataProvider,

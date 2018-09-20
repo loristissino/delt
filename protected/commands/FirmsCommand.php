@@ -250,7 +250,7 @@ class FirmsCommand extends CConsoleCommand
     return $firm->save(false);
   }
   
-  public function actionCreateLayers()
+  public function actionCreateSections()
   {
     $firms=Firm::model()->findAll();
     foreach($firms as $firm)
@@ -260,16 +260,17 @@ class FirmsCommand extends CConsoleCommand
       $entries = $firm->journalentries;
       if (sizeof($entries)) {
         echo " creating...";
-        $layer = new Layer();
-        $layer->firm_id = $firm->id;
-        $layer->name = "Default";
-        $layer->is_visible = true;
-        $layer->rank = 1;
-        $layer->save(false);
-        echo $layer->id . "\n";
+        $section = new Section();
+        $section->firm_id = $firm->id;
+        $section->name = "Default";
+        $section->is_visible = true;
+        $section->rank = 1;
+        $section->color = 'ffffff';
+        $section->save(false);
+        echo $section->id . "\n";
         
         foreach ($entries as $je) {
-          $je->layer_id = $layer->id;
+          $je->section_id = $section->id;
           $je->save(false);
           echo $je->id . ", ";
         }

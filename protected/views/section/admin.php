@@ -1,22 +1,22 @@
 <?php
-/* @var $this LayerController */
-/* @var $model Layer */
+/* @var $this SectionController */
+/* @var $model Section */
 
 $this->breadcrumbs=array(
-	'Layers'=>array('index'),
+	'Sections'=>array('index'),
 	'Manage',
 );
 
 $this->menu=array(
-	array('label'=>'Create Layer', 'url'=>array('create')),
+	array('label'=>'Create Section', 'url'=>array('create')),
 );
 
 ?>
 
-<h1>Manage Layers</h1>
+<h1>Manage Sections</h1>
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
-	'id'=>'layer-grid',
+	'id'=>'section-grid',
 	'dataProvider'=>$dataProvider,
 	//'filter'=>$model,
 	'columns'=>array(

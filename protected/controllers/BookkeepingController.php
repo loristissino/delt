@@ -986,10 +986,16 @@ class BookkeepingController extends Controller
     return '';
   }
 
-  public function renderLayer(Posting $posting, $row)
+  public function renderSection(Posting $posting, $row)
   {
     if($posting->journalentry_id != $this->last_journalentry_id)
-      return '<span style="font-size: 1.5em; color: #' . $posting->journalentry->getColor() . '">■</span>';
+    {
+      $section = $posting->journalentry->getSection();
+      return Chtml::tag('span', array(
+        'style'=>'font-size: 1.5em; color: #' . $section->color,
+        'title'=>$section->name,
+      ), '■', false);
+    }
     else
       return '';
   }

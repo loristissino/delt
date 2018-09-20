@@ -788,10 +788,10 @@ if(Yii::app()->language!=='en')
   </div>
 
   <div class="row">
-    <?php echo $form->labelEx($journalentryform,'layer_id'); ?>
-    <?php // echo $form->textField($journalentryform,'layer_id', array('size'=>3)); ?>
-    <?php echo $form->dropDownList($journalentryform,'layer_id', CHtml::listData($this->firm->getLayers(), 'id', 'name')); ?>
-    <?php echo $form->error($journalentryform,'layer_id'); ?>
+    <?php echo $form->labelEx($journalentryform,'section_id'); ?>
+    <?php // echo $form->textField($journalentryform,'section_id', array('size'=>3)); ?>
+    <?php echo $form->dropDownList($journalentryform,'section_id', CHtml::listData($this->firm->getSections(), 'id', 'name')); ?>
+    <?php echo $form->error($journalentryform,'section_id'); ?>
   </div>
 
   <div id="commands"></div>

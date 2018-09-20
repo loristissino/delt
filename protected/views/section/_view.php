@@ -1,6 +1,6 @@
 <?php
-/* @var $this LayerController */
-/* @var $data Layer */
+/* @var $this SectionController */
+/* @var $data Section */
 ?>
 
 <div class="view">
