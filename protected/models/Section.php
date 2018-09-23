@@ -62,10 +62,10 @@ class Section extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'firm_id' => 'Firm',
-			'name' => 'Name',
-			'is_visible' => 'Is Visible',
-			'rank' => 'Rank',
-      'color' => 'Color',
+			'name' => Yii::t('delt', 'Name'),
+			'is_visible' => Yii::t('delt', 'Is Visible'),
+			'rank' => Yii::t('delt', 'Rank'),
+      'color' => Yii::t('delt', 'Color'),
 		);
 	}
 

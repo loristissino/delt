@@ -63,7 +63,6 @@ class JournalentryForm extends CFormModel
       'options' => Yii::t('delt', 'Options')
       );
   }
-
   
   public function acquireItems($values, $cleaning=false)
   {

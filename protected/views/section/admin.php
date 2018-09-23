@@ -3,17 +3,19 @@
 /* @var $model Section */
 
 $this->breadcrumbs=array(
-	'Sections'=>array('index'),
-	'Manage',
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $this->firm->name => array('/bookkeeping/manage', 'slug'=>$this->firm->slug),
+  'Sections',
 );
 
 $this->menu=array(
-	array('label'=>'Create Section', 'url'=>array('create', 'slug'=>$this->firm->slug)),
+	array('label'=>Yii::t('delt', 'Create Section'), 'url'=>array('create', 'slug'=>$this->firm->slug)),
 );
 
 ?>
 
-<h1>Manage Sections</h1>
+<h1><?php echo Yii::t('delt', 'Sections') ?></h1>
+
 
 <?php $this->widget('zii.widgets.grid.CGridView', array(
 	'id'=>'section-grid',

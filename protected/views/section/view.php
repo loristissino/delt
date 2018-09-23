@@ -3,8 +3,10 @@
 /* @var $model Section */
 
 $this->breadcrumbs=array(
-	'Sections'=>array('index'),
-	$model->name,
+  'Bookkeeping/Accounting'=>array('/bookkeeping'),
+  $this->firm->name => array('/bookkeeping/manage', 'slug'=>$this->firm->slug),
+  'Sections' => array('/section/admin', 'slug'=>$this->firm->slug),
+  $model->name
 );
 
 $this->menu=array(

@@ -1365,6 +1365,12 @@
   'Click on a template\'s description to start a journal entry from it.' => 
   'Fai clic sulla descrizione di una causale per utilizzarla come base di una registrazione contabile.',
 
+  'This is where our <a href="{url}">twitter feed</a> should be placed.' => 
+  'Questo è il luogo dove il nostro <a href="{url}">feed twitter</a> dovrebbe essere posto.',
+
+  'Until we find out how to be sure to respect the cookie law, you won\'t see it directly.' => 
+  'Fino a che non troviamo un modo di essere sicuri di rispettare la normativa sui cookie, non lo vedrai direttamente.',
+
   'Management' => 
   'Gestione',
 
@@ -1385,362 +1391,317 @@
 
   'Show usage help' => 
   'Mostra guida per l\'uso',
-  
-  'This firm is stale'=>
+
+  'This firm is stale' => 
   'Questa azienda risulta inutilizzata',
-  
-  'Since this firm is stale, it will be deleted in 30 days.' =>
+
+  'Since this firm is stale, it will be deleted in 30 days.' => 
   'Visto che questa azienda è inutilizzata, verrà eliminata nei prossimi tra 30 giorni.',
-  
-  'Manage Exercises'=>
+
+  'Manage Exercises' => 
   'Gestisci esercizi',
-  
-  'If you know the slug of an exercise, you can write it here and ask for an invitation.'=>
+
+  'If you know the slug of an exercise, you can write it here and ask for an invitation.' => 
   'Se conosci lo slug di un esercizio, puoi scriverlo qui e chiedere un invito.',
-  
-  'Invite me!'=>
+
+  'Invite me!' => 
   'Invitami!',
-  
-  'Exercises'=>
+
+  'Exercises' => 
   'Esercizi',
 
-  'New Exercise'=>
+  'New Exercise' => 
   'Nuovo esercizio',
-  
-  'Benchmark Firm'=>
+
+  'Benchmark Firm' => 
   'Azienda di riferimento',
-  
-  'View Report'=>
+
+  'View Report' => 
   'Visualizza rapporto',
-  
-  'Invite Users'=>
+
+  'Invite Users' => 
   'Invita utenti',
-  
-  'Are you sure you want to delete this exercise?'=>
+
+  'Are you sure you want to delete this exercise?' => 
   'Sei sicuro di voler eliminare questo esercizio?',
-  
-  'Exercise «{name}»'=>
+
+  'Exercise «{name}»' => 
   'Esercizio «{name}»',
-  
-  'Title'=>
+
+  'Title' => 
   'Titolo',
-  
-  'The number of journal entries in the benchmark firm does not match the number declared.'=>
+
+  'The number of journal entries in the benchmark firm does not match the number declared.' => 
   'Il numero di registrazioni dell\'azienda di riferimento non corrisponde al numero dichiarato.',
 
-  'Event Date'=>
+  'Event Date' => 
   'Data dell\'evento',
-  
-  'click to edit the transaction'=>
+
+  'click to edit the transaction' => 
   'fai clic per modificare la transazione',
-  
-  'Rank'=>
+
+  'Rank' => 
   'Rango',
-  
-  'Journal entries in Benchmark Firm actually used to record this transaction'=>
+
+  'Journal entries in Benchmark Firm actually used to record this transaction' => 
   'Registrazioni dell\'azienda di riferimento effettivamente usate per questa transazione',
-  
-  'Journal entries declared to be needed to record this transaction'=>
+
+  'Journal entries declared to be needed to record this transaction' => 
   'Registrazioni dichiarate necessarie per questa transazione',
-  
-  'New Transaction'=>
+
+  'New Transaction' => 
   'Nuova transazione',
-  
-  'Edit Transaction'=>
+
+  'Edit Transaction' => 
   'Modifica transazione',
-  
-  'View'=>
+
+  'View' => 
   'Visualizza',
 
-  'Edit Exercise «{name}»'=>
+  'Edit Exercise «{name}»' => 
   'Modifica esercizio «{name}»',
-  
-  'Create Exercise'=>
+
+  'Create Exercise' => 
   'Crea esercizio',
-  
-  'You can use Markdown syntax in this field.'=>
+
+  'You can use Markdown syntax in this field.' => 
   'Puoi usare la sintassi Markdown in questo campo.',
-  
-  'I agree on the fact that the contents of the exercise I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.'=>
+
+  'I agree on the fact that the contents of the exercise I\'m creating will be available under the <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribution-ShareAlike 3.0 Unported</a> License.' => 
   'Accetto il fatto che i contenuti dell\'esercizio che sto creando saranno disponibili con licenza <a href="http://creativecommons.org/licenses/by-sa/3.0/deed.{locale}" target="_blank">Creative Commons Attribuzione - Condividi allo stesso modo 3.0 Unported</a>.',
-  
-  'Default Options'=>
+
+  'Default Options' => 
   'Opzioni predefinite',
-  
-  'Show points during challenge'=>
+
+  'Show points during challenge' => 
   'Mostra il punteggio durante la sfida',
-  
-  'Users are allowed to get help by being shown the correct entries'=>
+
+  'Users are allowed to get help by being shown the correct entries' => 
   'Gli utenti possono ottenere l\'aiuto con le registrazioni corrette',
 
-  'Show checks on transaction change'=>
+  'Show checks on transaction change' => 
   'Mostra i controlli al cambio di transazione',
 
-  'Show checks on challenge completion'=>
+  'Show checks on challenge completion' => 
   'Mostra i controlli al completamento della sfida',
 
-  'Show expected values on transaction change'=>
+  'Show expected values on transaction change' => 
   'Mostra i valori attesi al cambio di transazione',
 
-  'Show expected values on challenge completion'=>
+  'Show expected values on challenge completion' => 
   'Mostra i valori attesi al completamento della sfida',
 
-  'Users are allowed to delete the challenge'=>
-  'Agli utenti è permessa l\'eliminazione della sfida',
+  'Users are allowed to delete the challenge' => 
+  'Agli utenti è permessa l\'eliminazione di una sfida',
 
-  'Event Date'=>
-  'Data dell\'evento',
-  
-  'Number of Journal Entries'=>
+  'Number of Journal Entries' => 
   'Numero di registrazioni contabili',
-  
-  'Points'=>
+
+  'Points' => 
   'Punti',
-  
-  'Penalties'=>
+
+  'Penalties' => 
   'Penalità',
-  
-  'View Exercise'=>
+
+  'View Exercise' => 
   'Visualizza esercizio',
-  
-  'Are you sure you want to delete this transaction?'=>
+
+  'Are you sure you want to delete this transaction?' => 
   'Sei sicuro di voler eliminare questa transazione?',
-  
-  'The file is in YAML format.'=>
+
+  'The file is in YAML format.' => 
   'Il file è in formato YAML.',
-  
-  'The content must be in YAML format.'=>
+
+  'The content must be in YAML format.' => 
   'Il contenuto deve essere in formato YAML',
-  
-  'Download'=>
+
+  'Download' => 
   'Scarica',
 
-  'The current slug will be kept, ignoring the one specified.'=>
+  'The current slug will be kept, ignoring the one specified.' => 
   'Lo slug corrente verrà mantenuto, ignorando quello specificato.',
-  
-  'Importing data to an exercise will erase all current content.'=>
+
+  'Importing data to an exercise will erase all current content.' => 
   'L\'importazione di dati per un esercizio comporta la cancellazione di tutti i contenuti correnti.',
-  
-  'List of usernames'=>
+
+  'List of usernames' => 
   'Elenco di username',
-  
-  'One username per line.'=>
+
+  'One username per line.' => 
   'Uno username per riga.',
-  
-  'Session'=>
+
+  'Session' => 
   'Sessione',
-  
-  'You can also invite logged-in users by sharing this link:'=>
+
+  'You can also invite logged-in users by sharing this link:' => 
   'Puoi anche invitare gli utenti che hanno fatto il login condividendo il seguente link:',
-  
-  'Are you sure you want to delete this challenge?'=>
+
+  'Are you sure you want to delete this challenge?' => 
   'Sei sicuro di voler eliminare questa sfida?',
-  
-  'The challenge has been successfully deleted.'=>
+
+  'The challenge has been successfully deleted.' => 
   'La sfida è stata correttamente eliminata.',
-  
-  'No users have been invited.'=>
+
+  'No users have been invited.' => 
   'Nessun utente è stato invitato.',
-  
-  'Users invited: {number}.'=>
+
+  'Users invited: {number}.' => 
   'Utenti invitati: {number}.',
-  
-  'The exercise has been successfully created.'=>
+
+  'The exercise has been successfully created.' => 
   'L\'esercizio è stato correttamente creato.',
-  
-  'The exercise has been successfully deleted.'=>
+
+  'The exercise has been successfully deleted.' => 
   'L\'esercizio è stato correttamente eliminato.',
-  
-  'The exercise could not be deleted.'=>
+
+  'The exercise could not be deleted.' => 
   'Non è stato possibile eliminare l\'esercizio.',
-  
-  'Exercises are prepared by teachers who want to challenge their students.'=>
+
+  'Exercises are prepared by teachers who want to challenge their students.' => 
   'Gli esercizi vengono preparati dai docenti che voglio sfidare i propri studenti.',
-  
-  'If you are a student, you are probably looking for <a href="{url}">challenges</a>.'=>
+
+  'If you are a student, you are probably looking for <a href="{url}">challenges</a>.' => 
   'Se sei uno studente, ciò che stai cercando è probabilmente una <a href="{url}">sfida</a>.',
-  
-  'The transaction you are working on'=>
+
+  'The transaction you are working on' => 
   'La transazione su cui stai lavorando',
-  
-  'A transaction to prepare the journal entry for'=>
+
+  'A transaction to prepare the journal entry for' => 
   'Una transazione per cui preparare una registrazione contabile',
-  
-  'You are not currently working with the firm linked to this challenge, but with «{name}».'=>
-  'Al momento non stai lavorando con l\'azienda associata alla sfida, ma con «{name}».',
-  
-  'Link current firm'=>
+
+  'You are not currently working with the firm linked to this challenge, but with «{name}».' => 
+  'Al momento non stai lavorando con l\'azienda associata alla sfida, bensì con «{name}».',
+
+  'Link current firm' => 
   'Associa questa azienda',
-  
-  'Link the firm «{name}» to this challenge'=>
+
+  'Link the firm «{name}» to this challenge' => 
   'Associa l\'azienda «{name}» a questa sfida',
-  
-  'If you start working with another firm, you will have the possibility to link it to the current challenge.'=>
-  'Se inizi a lavorare con un\'altra azienda, avrai la possibilità di associarla alla sfida corrente.', 
-  
-  'If you prefer, you can instead start working with another firm you own and link it to this challenge later (just make sure that the firm\'s parent is the one you see here above).'=>
+
+  'If you start working with another firm, you will have the possibility to link it to the current challenge.' => 
+  'Se inizi a lavorare con un\'altra azienda, avrai la possibilità di associarla alla sfida corrente.',
+
+  'If you prefer, you can instead start working with another firm you own and link it to this challenge later (just make sure that the firm\'s parent is the one you see here above).' => 
   'Se preferisci, puoi invece iniziare a lavorare con un\'altra azienda che gestisci e associarla successivamente a questa sfida (però assicurati che sia derivata da quella che vedi qui sopra).',
-  
-  'We have a problem here.'=>
+
+  'We have a problem here.' => 
   'Qui abbiamo un problema.',
-  
-  'You are working with a firm that does not have the same parent of the benchmark.'=>
+
+  'You are working with a firm that does not have the same parent of the benchmark.' => 
   'Stai lavorando con un\'azienda che non ha lo stessa "madre" dell\'azienda di riferimento.',
-  
-  'Session Pattern'=>
+
+  'Session Pattern' => 
   'Pattern per la sessione',
-  
-  'Regular Expressions'=>
+
+  'Regular Expressions' => 
   'Espressioni regolari',
-  
-  'Regular expressions to match journal entries descriptions with.'=>
+
+  'Regular expressions to match journal entries descriptions with.' => 
   'Espressioni regolari con cui far combaciare le descrizioni delle registrazioni contabili.',
-  
-  'invalid regular expression: «{value}»'=>
+
+  'invalid regular expression: «{value}»' => 
   'espressione regolare non valida',
-  
-  'invalid description'=>
+
+  'invalid description' => 
   'descrizione non valida',
-  
-  'a text matching the regular expression «{value}»'=>
+
+  'a text matching the regular expression «{value}»' => 
   'un testo che soddisfi l\'espressione regolare «{value}»',
-  
-  'expected: {expected}, found: «{found}»'=>
+
+  'expected: {expected}, found: «{found}»' => 
   'atteso: {expected}, trovato: «{found}»',
-  
-  'it is the exercise that contains the error, not the firm linked to this challenge'=>
+
+  'it is the exercise that contains the error, not the firm linked to this challenge' => 
   'è l\'esercizio che contiene l\'errore, non l\'azienda associata alla sfida corrente',
-  
-  'This journal entry is not linked to any transaction.'=>
+
+  'This journal entry is not linked to any transaction.' => 
   'Questa registrazione contabile non è collegata ad alcuna transazione.',
-  
-  'This journal entry is linked to the current transaction.'=>
+
+  'This journal entry is linked to the current transaction.' => 
   'Questa registrazione contabile è collegata alla transazione corrente.',
-  
-  'View Solution'=>
+
+  'View Solution' => 
   'Visualizza soluzione',
-  
-  'Sessions'=>
+
+  'Sessions' => 
   'Sessioni',
-  
-  'Owner'=>
+
+  'Owner' => 
   'Proprietario',
-  
-  'Assigned'=>
+
+  'Assigned' => 
   'Assegnata',
-  
-  'Completed'=>
+
+  'Completed' => 
   'Completata',
 
-  'Checked'=>
+  'Checked' => 
   'Controllata',
 
-  'Rate'=>
+  'Rate' => 
   'Punteggio',
-  
-  'Challenge'=>
+
+  'Challenge' => 
   'Sfida',
-  
-  'Toggle the visibility of:'=>
+
+  'Toggle the visibility of:' => 
   'Commuta la visibilità di:',
-  
-  'firm\'s description'=>
+
+  'firm\'s description' => 
   'descrizione dell\'azienda',
-  
-  'excluded journal entries'=>
+
+  'excluded journal entries' => 
   'registrazioni contabili escluse',
-  
-  'journal'=>
+
+  'journal' => 
   'libro giornale',
-  
-  'statements'=>
+
+  'statements' => 
   'bilancio',
-  
-  'challenge'=>
+
+  'challenge' => 
   'sfida',
-  
-  'Name of the new firm'=>
-  'Nome della nuova azienda',
-  
-  'Older firms...'=>
-  'Aziende meno recenti...',
-  
-  'There is not such an exercise. Wrong slug?'=>
-  'Non c\'è un esercizio con questo slug. Lo hai scritto male?',
-  
-  'You have been successfully invited.'=>
-  'Sei stato correttamente invitato ad affrontare la sfida.',
-  
-  'The exercise «{title}» is already in your list.'=>
-  'L\'esercizio «{title}»  è già nel tuo elenco.',
-  
-  'Congratulations!'=>
-  'Congratulazioni!',
-  
-  'There is an active challenge, but no transaction has been marked current.'=>
-  'C\'è una sfida attiva, ma nessuna transazione è contrassegnata come corrente.',
-  
-  'No templates available for this firm.'=>
-  'Per questa azienda non sono disponibili causali contabili.',
-  
-  'This firm does not seem to have «{position}» accounts to close.'=>
-  'Questa azienda non sembra avere conti «{position}» da chiudere.',
-  
-  'Classes'=>
-  'Classi',
-  
-  'Linked journal entries'=>
-  'Registrazioni contabili collegate',
-  
-  'If you are a teacher or an instructor, you might be interested in preparing <a href="{url}">exercises</a>.'=>
-  'Se sei un insegnante o un istruttore, potresti essere interessato a preparare <a href="{url}">esercizi</a>.',
-  
-  'The exercise has been successfully imported.'=>
-  'L\'esercizio è stato importato correttamente.',
-  
-  'The exercise could not be imported.'=>
-  'Non è stato possibile importare l\'esercizio.',
-  
-  'Create Transactions from Benchmark Firms\'s Journal Entries'=>
-  'Crea le transazioni dalle registrazioni contabili dell\'azienda di riferimento',
 
-  'The transaction has been successfully deleted.'=>
-  'La transazione è stata correttamente eliminata',
-  
-  'The challenge could not be deleted.'=>
-  'Non è stato possibile eliminare la sfida.',
-  
-  'The transactions have been successfully created.'=>
-  'Le transazioni sono state create correttamente.',
+  'Sections' => 
+  'Sezioni',
 
-  'change year'=>
+  'Visible' => 
+  'Visibile',
+
+  'Create Section' => 
+  'Crea sezione',
+
+  'This section is currently visible' => 
+  'Questa sezione è correntemente visibile',
+
+  'This section is not currently visible' => 
+  'Questa sezione non è correntemente visibile',
+
+  'Manage Sections' => 
+  'Gestisci sezioni',
+
+  'View Section' => 
+  'Vedi sezione',
+
+  'Color' => 
+  'Colore',
+
+  'Edit section «{section}»' => 
+  'Modifica sezione «{section}»',
+
+  'Change the sections the selected entries are associated to' => 
+  'Cambia la sezione di appartenenza delle registrazioni selezionate',
+
+  'change section' => 
+  'cambia sezione',
+
+  'change year' => 
   'cambia anno',
 
-  'Change the dates of the selected entries'=>
+  'Change the dates of the selected entries' => 
   'Cambia le date delle registrazioni selezionate',
 
-  'Connect the selected journal entries to the current transaction (from the open challenge)'=>
-  'Associa le registrazioni selezionate alla transazione corrente (della sfida in corso)',
-  
-  'Exercise'=>
-  'Esercizio',
-  
-  'Go to the page of this exercise'=>
-  'Vai alla pagina di questo esercizio',
-  
-  'The firm is linked to a challenge that has been marked completed, and the challenge would be invalidated if you unfreeze it.'=>
-  'L\'azienda è collegata ad una sfida contrassegnata come completata e la sfida verrebbe invalidata se viene scongelata.',
-  
-  'Subchoices'=>
-  'Sottovoci',
-  
-  'Subchoice'=>
-  'Sottovoce',
-  
-  'This account admits subchoices.'=>
-  'Questo conto ammette sottovoci.',
-  
-  'Report for «{subchoice}»'=>
-  'Report per «{subchoice}»',
-  
-);
+  'Section' => 
+  'Sezione',
+
+  );
