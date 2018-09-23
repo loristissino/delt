@@ -133,6 +133,7 @@ class Firm extends CActiveRecord
       'journalentries' => array(self::HAS_MANY, 'Journalentry', 'firm_id', 'order'=>'journalentries.date ASC'),
       'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
+      'sections' => array(self::HAS_MANY, 'Section', 'firm_id', 'order'=>'sections.rank ASC'),
     );
   }
 
@@ -1278,10 +1279,18 @@ class Firm extends CActiveRecord
     if(substr($type, 2, 1)=='1')
     {
       // we must export journalentries...
+      
+      $values = array();
+      foreach($this->sections as $section)
+      {
+        DELT::object2array($section, $values, array('id', 'name', 'rank', 'is_visible', 'color'));
+        $data['sections'][]=$values;
+      }
+      
       foreach($this->journalentries as $journalentry)
       {
         $values = array();
-        DELT::object2array($journalentry, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank'));
+        DELT::object2array($journalentry, $values, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank', 'section_id'));
         
         foreach($journalentry->postings as $posting)
         {
@@ -1328,6 +1337,14 @@ class Firm extends CActiveRecord
         'number_of_children'=>'INTEGER',
         'classes'=>'TEXT'
     ));
+
+    DELT::data2Sqlite($db, 'section', $this->sections, array(
+        'id'=>'INTEGER PRIMARY KEY NOT NULL',
+        'name'=>'TEXT',
+        'is_visible'=>'INTEGER',
+        'rank'=>'INTEGER',
+        'color'=>'TEXT',
+    ));
  
     DELT::data2Sqlite($db, 'journalentry', $this->journalentries, array(
         'id'=>'INTEGER PRIMARY KEY NOT NULL',
@@ -1337,8 +1354,8 @@ class Firm extends CActiveRecord
         'is_closing'=>'INTEGER',
         'is_adjustment'=>'INTEGER',
         'is_included'=>'INTEGER',
-        'is_visible'=>'INTEGER',
         'rank'=>'INTEGER',
+        'section_id'=>'INTEGER',
     ));
 
     DELT::data2Sqlite($db, 'posting', Posting::model()->ofFirm($this->id)->with('journalentry')->findAll(), array(
@@ -1383,6 +1400,11 @@ class Firm extends CActiveRecord
     
     foreach($this->journalentries as $journalentry)
     {
+      if (!$journalentry->is_visible)
+      {
+        continue;
+      }
+      
       $beginwith = $journalentry->is_included ? '' : '; ';
       $data[] .= $beginwith . '; ' . $journalentry->description;
       $line = $beginwith . $journalentry->date . ' ';
@@ -1513,12 +1535,25 @@ class Firm extends CActiveRecord
         $newtemplate->info=serialize($info);
         $newtemplate->save(false);
       }
+      
+      $section_references = array();
+      
+      foreach($data['sections'] as $values)
+      {
+        $newsection = new Section;
+        $newsection->firm_id = $this->id;
+        DELT::array2object($values, $newsection, array('name', 'rank', 'is_visible', 'rank', 'color'));
+        $newsection->save(false);
+        $section_references[$values['id']] = $newsection;
+      }
 
       foreach($data['journalentries'] as $values)
       {
         $newjournalentry = new Journalentry;
         $newjournalentry->firm_id = $this->id;
-        DELT::array2object($values, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'rank'));
+        DELT::array2object($values, $newjournalentry, array('date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'rank'));
+        $newjournalentry->section_id = $section_references[$values['section_id']]->id;
+        $newjournalentry->is_visible = $section_references[$values['section_id']]->is_visible;
         
         $newjournalentry->save(false);
         
