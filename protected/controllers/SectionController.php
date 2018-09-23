@@ -136,7 +136,6 @@ class SectionController extends Controller
     catch (Exception $e)
     {
       Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The section could not be successfully deleted.'));
-      die('flash set');
     }
     
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

@@ -250,6 +250,7 @@ class FirmsCommand extends CConsoleCommand
     return $firm->save(false);
   }
   
+  /*
   public function actionCreateSections()
   {
     $firms=Firm::model()->findAll();
@@ -279,5 +280,5 @@ class FirmsCommand extends CConsoleCommand
       echo "\n";
     }
   }
-  
+  */
 }
