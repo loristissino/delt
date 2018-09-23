@@ -312,10 +312,13 @@ class Journalentry extends CActiveRecord
   {
     if ($this->section_id != $section_id)
     {
-      $section = Section::model()->findByPK($this->section_id);
-      $this->section_id = $section_id;
-      $this->is_visible = $section->is_visible;
-      $this->save(false);
+      $section = Section::model()->findByPK($section_id);
+      if ($section && $section->firm_id == $this->firm_id)
+      {
+        $this->section_id = $section_id;
+        $this->is_visible = $section->is_visible;
+        $this->save(false);
+      }
       return true;
     }
     return false;

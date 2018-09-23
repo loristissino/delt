@@ -676,6 +676,7 @@ class BookkeepingController extends Controller
       elseif($op=='changesection')
       {
         $affected_rows = $this->firm->changeSectionForSelectedJournalentries($ids, DELT::getValueFromArray($_POST, 'section', 0));
+        
         if($affected_rows==0)
         {
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been updated.'));

@@ -1742,5 +1742,5 @@
   
   'Report for «{subchoice}»'=>
   'Report per «{subchoice}»',
-
+  
 );

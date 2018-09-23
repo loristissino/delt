@@ -62,6 +62,7 @@ class SectionController extends Controller
 		$this->render('view',array(
 			'model'=>$model,
       'firm'=>$this->firm,
+      'postings'=>$model->getJournalentriesAsDataProvider(100000)->data,
 		));
 	}
 
@@ -82,7 +83,7 @@ class SectionController extends Controller
 			$model->attributes=$_POST['Section'];
       $model->firm_id = $this->firm->id;
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin','slug'=>$this->firm->slug));
 		}
     
     $model->rank = Section::model()->maxRank($this->firm->id) + 1;
@@ -135,6 +136,7 @@ class SectionController extends Controller
     catch (Exception $e)
     {
       Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The section could not be successfully deleted.'));
+      die('flash set');
     }
     
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser

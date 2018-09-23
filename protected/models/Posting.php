@@ -165,6 +165,16 @@ class Posting extends CActiveRecord
     return $this;
   }
 
+  public function ofSection($section_id, $order='journalentry.date ASC, journalentry.rank ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'journalentry.section_id = :section_id',
+        'params'=>array(':section_id'=>$section_id),
+        'order'=>$order,
+    ));
+    return $this;
+  }
+
   public function withSubchoice($subchoice, $order='account.code ASC, journalentry.date ASC, journalentry.rank ASC')
   {
     $this->getDbCriteria()->mergeWith(array(

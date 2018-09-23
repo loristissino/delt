@@ -14,15 +14,25 @@ $this->menu=array(
 );
 ?>
 
-<h1>View Section #<?php echo $model->id; ?></h1>
+<h1><?php echo Yii::t('delt', 'Section') ?> «<?php echo $model->name; ?>»</h1>
 
 <?php $this->widget('zii.widgets.CDetailView', array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
-		'firm_id',
-		'name',
-		'is_visible',
+    array(
+      'label'=>Yii::t('delt', 'Visible?'),
+      'type'=>'raw',
+      'value'=>$model->is_visible ? Yii::t('delt', 'yes'): Yii::t('delt', 'No'),
+        ),
 		'rank',
 	),
 )); ?>
+
+<br />
+
+
+<?php
+  echo $this->renderPartial('//firm/_journal', array('postings'=>$postings, 'model'=>$this->firm, 'title'=>Yii::t('delt', 'Journal entries'), 'linked'=>false, 'editjournalentry'=>true));
+?>
+
+

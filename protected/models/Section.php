@@ -121,6 +121,21 @@ class Section extends CActiveRecord
     return $r;    
   }
   
+  /**
+   * Returns a data provider for the journal entries belonging to the section.
+   * @param integer $pagesize the pagesize desired
+   * @return CActiveDataProvider the postings belonging to the section
+   */
+  public function getJournalentriesAsDataProvider($pagesize=1000)
+  {
+    return new CActiveDataProvider(Posting::model()->with('journalentry')->with('account')->ofSection($this->id), array(
+      'pagination'=>array(
+          'pageSize'=>$pagesize,
+          ),
+      )
+    );
+  }
+  
   public static function maxRank($firm_id)
   {
     $maxRank = Yii::app()->db->createCommand()
