@@ -257,10 +257,20 @@ class FirmsCommand extends CConsoleCommand
     foreach($firms as $firm)
     {
       echo $firm->id;
+
+      if ($firm->status<0)
+      {
+        echo "skipped\n";
+        continue;
+      }
       
       $entries = $firm->journalentries;
-      if (sizeof($entries)) {
-        echo " creating...";
+
+      $sections = $firm->sections;
+
+      if (sizeof($sections)==0)
+      {
+        echo " creating section...";
         $section = new Section();
         $section->firm_id = $firm->id;
         $section->name = "Default";
@@ -268,14 +278,25 @@ class FirmsCommand extends CConsoleCommand
         $section->rank = 1;
         $section->color = 'ffffff';
         $section->save(false);
-        echo $section->id . "\n";
-        
-        foreach ($entries as $je) {
-          $je->section_id = $section->id;
-          $je->save(false);
-          echo $je->id . ", ";
-        }
-        echo "\n";
+
+        if (sizeof($entries)) {
+          echo " creating section... ";
+          $section = new Section();
+          $section->firm_id = $firm->id;
+          $section->name = "Default";
+          $section->is_visible = true;
+          $section->rank = 1;
+          $section->color = 'ffffff';
+          $section->save(false);
+          echo $section->id . " -- ";
+          
+          foreach ($entries as $je) {
+            $je->section_id = $section->id;
+            $je->save(false);
+            echo $je->id . ", ";
+          }
+      }
+
       }
       echo "\n";
     }

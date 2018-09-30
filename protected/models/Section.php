@@ -145,7 +145,24 @@ class Section extends CActiveRecord
       ->queryScalar();
             
     return $maxRank;
+	}
+	
+	public function safeDelete()
+  {
+    $transaction=$this->getDbConnection()->beginTransaction();
+    try
+    {
+      $this->delete();
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
   }
+
 
 	/**
 	 * Returns the static model of the specified AR class.

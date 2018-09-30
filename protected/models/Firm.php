@@ -1614,7 +1614,18 @@ class Firm extends CActiveRecord
       $journalentry->safeDelete();
     }
   }
-  
+
+  /**
+   * Deletes all sections.
+   */
+  private function _deleteSections()
+  {
+    foreach($this->sections as $section)
+    {
+      $section->safeDelete();
+    }
+  }
+
   /**
    * Deletes the specified journal entries.
    * @param array $ids the ids of the journal entries to delete
@@ -2006,6 +2017,7 @@ class Firm extends CActiveRecord
   public function safeDelete()
   {
     $this->_deleteJournalentries();
+    $this->_deleteSections();
     $this->_deleteTemplates();
     $this->_deleteAccounts();
     $this->_deleteUsers();
