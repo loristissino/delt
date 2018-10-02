@@ -341,7 +341,16 @@ class BookkeepingController extends Controller
     {
       $journalentryform->date = Yii::app()->getUser()->getState('lastjournalentrydate', DELT::getDateForFormWidget(date('Y-m-d')));
     }
-    
+
+    if(!$journalentryform->section_id)
+    {
+      $last_section_id = Yii::app()->getUser()->getState('lastsection', false);
+      if ($last_section_id)
+      {
+        $journalentryform->section_id = $last_section_id;
+      }
+    }
+
     if(isset($this->journalentrydescription))
     {
       $journalentryform->description = $this->journalentrydescription;
@@ -385,6 +394,7 @@ class BookkeepingController extends Controller
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_CREATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
+            Yii::app()->getUser()->setState('lastsection', $journalentryform->section_id);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
@@ -491,6 +501,7 @@ class BookkeepingController extends Controller
           {
             Event::log($this->DEUser, $journalentryform->firm_id, Event::FIRM_JOURNALENTRY_UPDATED, array('description'=>$journalentryform->description, 'date'=>$journalentryform->date));
             Yii::app()->getUser()->setState('lastjournalentrydate', $journalentryform->date);
+            Yii::app()->getUser()->setState('lastsection', $journalentryform->section_id);
             if(isset($_POST['done']))
             {
               $this->redirect(array('bookkeeping/journal','slug'=>$this->firm->slug));
@@ -675,8 +686,10 @@ class BookkeepingController extends Controller
 
       elseif($op=='changesection')
       {
-        $affected_rows = $this->firm->changeSectionForSelectedJournalentries($ids, DELT::getValueFromArray($_POST, 'section', 0));
-        
+        $section_id = DELT::getValueFromArray($_POST, 'section', 0);
+        $affected_rows = $this->firm->changeSectionForSelectedJournalentries($ids, $section_id);
+        Yii::app()->getUser()->setState('lastsection', $section_id);
+
         if($affected_rows==0)
         {
           Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'No journal entry has been updated.'));

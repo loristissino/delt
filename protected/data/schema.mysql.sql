@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.4deb1
+-- version 4.6.6deb4
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Creato il: Gen 06, 2017 alle 23:49
--- Versione del server: 5.7.16-0ubuntu0.16.10.1
--- Versione PHP: 7.0.8-3ubuntu3
+-- Generation Time: Oct 02, 2018 at 05:34 PM
+-- Server version: 10.1.26-MariaDB-0+deb9u1
+-- PHP Version: 7.0.30-0+deb9u1
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `delt`
@@ -17,7 +23,7 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_account`
+-- Table structure for table `tbl_account`
 --
 
 CREATE TABLE `tbl_account` (
@@ -42,7 +48,7 @@ CREATE TABLE `tbl_account` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_challenge`
+-- Table structure for table `tbl_challenge`
 --
 
 CREATE TABLE `tbl_challenge` (
@@ -69,7 +75,7 @@ CREATE TABLE `tbl_challenge` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_event`
+-- Table structure for table `tbl_event`
 --
 
 CREATE TABLE `tbl_event` (
@@ -86,7 +92,7 @@ CREATE TABLE `tbl_event` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_exercise`
+-- Table structure for table `tbl_exercise`
 --
 
 CREATE TABLE `tbl_exercise` (
@@ -104,7 +110,7 @@ CREATE TABLE `tbl_exercise` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_firm`
+-- Table structure for table `tbl_firm`
 --
 
 CREATE TABLE `tbl_firm` (
@@ -129,7 +135,7 @@ CREATE TABLE `tbl_firm` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_firm_language`
+-- Table structure for table `tbl_firm_language`
 --
 
 CREATE TABLE `tbl_firm_language` (
@@ -140,7 +146,7 @@ CREATE TABLE `tbl_firm_language` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_firm_user`
+-- Table structure for table `tbl_firm_user`
 --
 
 CREATE TABLE `tbl_firm_user` (
@@ -152,7 +158,7 @@ CREATE TABLE `tbl_firm_user` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_journalentry`
+-- Table structure for table `tbl_journalentry`
 --
 
 CREATE TABLE `tbl_journalentry` (
@@ -164,14 +170,16 @@ CREATE TABLE `tbl_journalentry` (
   `is_closing` tinyint(1) NOT NULL DEFAULT '0',
   `is_adjustment` tinyint(1) NOT NULL DEFAULT '0',
   `is_included` tinyint(1) NOT NULL DEFAULT '1',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
   `rank` int(11) NOT NULL,
-  `transaction_id` int(11) DEFAULT NULL
+  `transaction_id` int(11) DEFAULT NULL,
+  `section_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_language`
+-- Table structure for table `tbl_language`
 --
 
 CREATE TABLE `tbl_language` (
@@ -184,7 +192,7 @@ CREATE TABLE `tbl_language` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
 --
--- Dump dei dati per la tabella `tbl_language`
+-- Dumping data for table `tbl_language`
 --
 
 INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name`, `native_name`, `is_default`) VALUES
@@ -200,7 +208,7 @@ INSERT INTO `tbl_language` (`id`, `language_code`, `country_code`, `english_name
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_migration`
+-- Table structure for table `tbl_migration`
 --
 
 CREATE TABLE `tbl_migration` (
@@ -211,7 +219,7 @@ CREATE TABLE `tbl_migration` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_posting`
+-- Table structure for table `tbl_posting`
 --
 
 CREATE TABLE `tbl_posting` (
@@ -227,7 +235,7 @@ CREATE TABLE `tbl_posting` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_profiles`
+-- Table structure for table `tbl_profiles`
 --
 
 CREATE TABLE `tbl_profiles` (
@@ -246,7 +254,7 @@ CREATE TABLE `tbl_profiles` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_profiles_fields`
+-- Table structure for table `tbl_profiles_fields`
 --
 
 CREATE TABLE `tbl_profiles_fields` (
@@ -269,7 +277,7 @@ CREATE TABLE `tbl_profiles_fields` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dump dei dati per la tabella `tbl_profiles_fields`
+-- Dumping data for table `tbl_profiles_fields`
 --
 
 INSERT INTO `tbl_profiles_fields` (`id`, `varname`, `title`, `field_type`, `field_size`, `field_size_min`, `required`, `match`, `range`, `error_message`, `other_validator`, `default`, `widget`, `widgetparams`, `position`, `visible`) VALUES
@@ -286,7 +294,22 @@ INSERT INTO `tbl_profiles_fields` (`id`, `varname`, `title`, `field_type`, `fiel
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_template`
+-- Table structure for table `tbl_section`
+--
+
+CREATE TABLE `tbl_section` (
+  `id` int(11) NOT NULL,
+  `firm_id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL DEFAULT 'unnamed',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
+  `rank` int(11) NOT NULL DEFAULT '1',
+  `color` varchar(6) NOT NULL DEFAULT 'ffffff'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_template`
 --
 
 CREATE TABLE `tbl_template` (
@@ -300,7 +323,7 @@ CREATE TABLE `tbl_template` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_transaction`
+-- Table structure for table `tbl_transaction`
 --
 
 CREATE TABLE `tbl_transaction` (
@@ -310,7 +333,7 @@ CREATE TABLE `tbl_transaction` (
   `event_date` date NOT NULL,
   `description` text NOT NULL,
   `hint` text,
-  `regexps` text,
+  `regexps` text NOT NULL,
   `points` int(11) NOT NULL DEFAULT '10',
   `penalties` int(11) NOT NULL DEFAULT '5',
   `entries` int(11) NOT NULL DEFAULT '1'
@@ -319,7 +342,7 @@ CREATE TABLE `tbl_transaction` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_users`
+-- Table structure for table `tbl_users`
 --
 
 CREATE TABLE `tbl_users` (
@@ -337,7 +360,7 @@ CREATE TABLE `tbl_users` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `tbl_user_oauth`
+-- Table structure for table `tbl_user_oauth`
 --
 
 CREATE TABLE `tbl_user_oauth` (
@@ -349,11 +372,11 @@ CREATE TABLE `tbl_user_oauth` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indici per le tabelle scaricate
+-- Indexes for dumped tables
 --
 
 --
--- Indici per le tabelle `tbl_account`
+-- Indexes for table `tbl_account`
 --
 ALTER TABLE `tbl_account`
   ADD PRIMARY KEY (`id`),
@@ -362,7 +385,7 @@ ALTER TABLE `tbl_account`
   ADD KEY `firm_id` (`firm_id`);
 
 --
--- Indici per le tabelle `tbl_challenge`
+-- Indexes for table `tbl_challenge`
 --
 ALTER TABLE `tbl_challenge`
   ADD PRIMARY KEY (`id`),
@@ -379,7 +402,7 @@ ALTER TABLE `tbl_challenge`
   ADD KEY `session` (`session`);
 
 --
--- Indici per le tabelle `tbl_event`
+-- Indexes for table `tbl_event`
 --
 ALTER TABLE `tbl_event`
   ADD PRIMARY KEY (`id`),
@@ -387,7 +410,7 @@ ALTER TABLE `tbl_event`
   ADD KEY `user_id` (`user_id`);
 
 --
--- Indici per le tabelle `tbl_exercise`
+-- Indexes for table `tbl_exercise`
 --
 ALTER TABLE `tbl_exercise`
   ADD PRIMARY KEY (`id`),
@@ -396,7 +419,7 @@ ALTER TABLE `tbl_exercise`
   ADD KEY `firm_id` (`firm_id`);
 
 --
--- Indici per le tabelle `tbl_firm`
+-- Indexes for table `tbl_firm`
 --
 ALTER TABLE `tbl_firm`
   ADD PRIMARY KEY (`id`),
@@ -406,7 +429,7 @@ ALTER TABLE `tbl_firm`
   ADD KEY `shortcodes` (`shortcodes`);
 
 --
--- Indici per le tabelle `tbl_firm_language`
+-- Indexes for table `tbl_firm_language`
 --
 ALTER TABLE `tbl_firm_language`
   ADD PRIMARY KEY (`firm_id`,`language_id`),
@@ -414,7 +437,7 @@ ALTER TABLE `tbl_firm_language`
   ADD KEY `language_id` (`language_id`);
 
 --
--- Indici per le tabelle `tbl_firm_user`
+-- Indexes for table `tbl_firm_user`
 --
 ALTER TABLE `tbl_firm_user`
   ADD PRIMARY KEY (`firm_id`,`user_id`),
@@ -422,7 +445,7 @@ ALTER TABLE `tbl_firm_user`
   ADD KEY `firm_id` (`firm_id`);
 
 --
--- Indici per le tabelle `tbl_journalentry`
+-- Indexes for table `tbl_journalentry`
 --
 ALTER TABLE `tbl_journalentry`
   ADD PRIMARY KEY (`id`),
@@ -433,23 +456,25 @@ ALTER TABLE `tbl_journalentry`
   ADD KEY `firm_is_confirmed` (`firm_id`,`is_confirmed`),
   ADD KEY `firm_is_closing` (`firm_id`,`is_closing`),
   ADD KEY `is_included` (`is_included`),
-  ADD KEY `transaction_id` (`transaction_id`);
+  ADD KEY `transaction_id` (`transaction_id`),
+  ADD KEY `section_id` (`section_id`),
+  ADD KEY `is_visible` (`is_visible`);
 
 --
--- Indici per le tabelle `tbl_language`
+-- Indexes for table `tbl_language`
 --
 ALTER TABLE `tbl_language`
   ADD PRIMARY KEY (`id`),
   ADD KEY `is_default` (`is_default`);
 
 --
--- Indici per le tabelle `tbl_migration`
+-- Indexes for table `tbl_migration`
 --
 ALTER TABLE `tbl_migration`
   ADD PRIMARY KEY (`version`);
 
 --
--- Indici per le tabelle `tbl_posting`
+-- Indexes for table `tbl_posting`
 --
 ALTER TABLE `tbl_posting`
   ADD PRIMARY KEY (`id`),
@@ -459,27 +484,34 @@ ALTER TABLE `tbl_posting`
   ADD KEY `subchoice` (`subchoice`);
 
 --
--- Indici per le tabelle `tbl_profiles`
+-- Indexes for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
   ADD PRIMARY KEY (`user_id`),
   ADD KEY `email_notices` (`email_notices`);
 
 --
--- Indici per le tabelle `tbl_profiles_fields`
+-- Indexes for table `tbl_profiles_fields`
 --
 ALTER TABLE `tbl_profiles_fields`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indici per le tabelle `tbl_template`
+-- Indexes for table `tbl_section`
+--
+ALTER TABLE `tbl_section`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `firm_id` (`firm_id`);
+
+--
+-- Indexes for table `tbl_template`
 --
 ALTER TABLE `tbl_template`
   ADD PRIMARY KEY (`id`),
   ADD KEY `firm_id` (`firm_id`);
 
 --
--- Indici per le tabelle `tbl_transaction`
+-- Indexes for table `tbl_transaction`
 --
 ALTER TABLE `tbl_transaction`
   ADD PRIMARY KEY (`id`),
@@ -487,7 +519,7 @@ ALTER TABLE `tbl_transaction`
   ADD KEY `event_date` (`event_date`,`rank`);
 
 --
--- Indici per le tabelle `tbl_users`
+-- Indexes for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
   ADD PRIMARY KEY (`id`),
@@ -495,7 +527,7 @@ ALTER TABLE `tbl_users`
   ADD UNIQUE KEY `user_email` (`email`);
 
 --
--- Indici per le tabelle `tbl_user_oauth`
+-- Indexes for table `tbl_user_oauth`
 --
 ALTER TABLE `tbl_user_oauth`
   ADD PRIMARY KEY (`provider`,`identifier`),
@@ -503,86 +535,91 @@ ALTER TABLE `tbl_user_oauth`
   ADD KEY `oauth_user_id` (`user_id`);
 
 --
--- AUTO_INCREMENT per le tabelle scaricate
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT per la tabella `tbl_account`
+-- AUTO_INCREMENT for table `tbl_account`
 --
 ALTER TABLE `tbl_account`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=579927;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=848763;
 --
--- AUTO_INCREMENT per la tabella `tbl_challenge`
+-- AUTO_INCREMENT for table `tbl_challenge`
 --
 ALTER TABLE `tbl_challenge`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=118;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=661;
 --
--- AUTO_INCREMENT per la tabella `tbl_event`
+-- AUTO_INCREMENT for table `tbl_event`
 --
 ALTER TABLE `tbl_event`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=112417;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=275136;
 --
--- AUTO_INCREMENT per la tabella `tbl_exercise`
+-- AUTO_INCREMENT for table `tbl_exercise`
 --
 ALTER TABLE `tbl_exercise`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
--- AUTO_INCREMENT per la tabella `tbl_firm`
+-- AUTO_INCREMENT for table `tbl_firm`
 --
 ALTER TABLE `tbl_firm`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2837;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4205;
 --
--- AUTO_INCREMENT per la tabella `tbl_journalentry`
+-- AUTO_INCREMENT for table `tbl_journalentry`
 --
 ALTER TABLE `tbl_journalentry`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=38636;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57423;
 --
--- AUTO_INCREMENT per la tabella `tbl_language`
+-- AUTO_INCREMENT for table `tbl_language`
 --
 ALTER TABLE `tbl_language`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
--- AUTO_INCREMENT per la tabella `tbl_posting`
+-- AUTO_INCREMENT for table `tbl_posting`
 --
 ALTER TABLE `tbl_posting`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=259201;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=368498;
 --
--- AUTO_INCREMENT per la tabella `tbl_profiles`
+-- AUTO_INCREMENT for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=722;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1253;
 --
--- AUTO_INCREMENT per la tabella `tbl_profiles_fields`
+-- AUTO_INCREMENT for table `tbl_profiles_fields`
 --
 ALTER TABLE `tbl_profiles_fields`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 --
--- AUTO_INCREMENT per la tabella `tbl_template`
+-- AUTO_INCREMENT for table `tbl_section`
+--
+ALTER TABLE `tbl_section`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1694;
+--
+-- AUTO_INCREMENT for table `tbl_template`
 --
 ALTER TABLE `tbl_template`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=553;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=846;
 --
--- AUTO_INCREMENT per la tabella `tbl_transaction`
+-- AUTO_INCREMENT for table `tbl_transaction`
 --
 ALTER TABLE `tbl_transaction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=329;
 --
--- AUTO_INCREMENT per la tabella `tbl_users`
+-- AUTO_INCREMENT for table `tbl_users`
 --
 ALTER TABLE `tbl_users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=722;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1253;
 --
--- Limiti per le tabelle scaricate
+-- Constraints for dumped tables
 --
 
 --
--- Limiti per la tabella `tbl_account`
+-- Constraints for table `tbl_account`
 --
 ALTER TABLE `tbl_account`
   ADD CONSTRAINT `tbl_account_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_challenge`
+-- Constraints for table `tbl_challenge`
 --
 ALTER TABLE `tbl_challenge`
   ADD CONSTRAINT `tbl_challenge_ibfk_1` FOREIGN KEY (`instructor_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
@@ -592,48 +629,59 @@ ALTER TABLE `tbl_challenge`
   ADD CONSTRAINT `tbl_challenge_ibfk_6` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_event`
+-- Constraints for table `tbl_event`
 --
 ALTER TABLE `tbl_event`
   ADD CONSTRAINT `tbl_event_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_event_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_exercise`
+-- Constraints for table `tbl_exercise`
 --
 ALTER TABLE `tbl_exercise`
   ADD CONSTRAINT `tbl_exercise_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_exercise_ibfk_2` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`);
 
 --
--- Limiti per la tabella `tbl_firm_user`
+-- Constraints for table `tbl_firm_user`
 --
 ALTER TABLE `tbl_firm_user`
   ADD CONSTRAINT `tbl_firm_user_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_firm_user_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_journalentry`
+-- Constraints for table `tbl_journalentry`
 --
 ALTER TABLE `tbl_journalentry`
   ADD CONSTRAINT `tbl_journalentry_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE,
-  ADD CONSTRAINT `tbl_journalentry_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `tbl_journalentry_ibfk_2` FOREIGN KEY (`transaction_id`) REFERENCES `tbl_transaction` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `tbl_journalentry_ibfk_3` FOREIGN KEY (`section_id`) REFERENCES `tbl_section` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_posting`
+-- Constraints for table `tbl_posting`
 --
 ALTER TABLE `tbl_posting`
   ADD CONSTRAINT `tbl_posting_ibfk_1` FOREIGN KEY (`account_id`) REFERENCES `tbl_account` (`id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `tbl_posting_ibfk_2` FOREIGN KEY (`journalentry_id`) REFERENCES `tbl_journalentry` (`id`) ON UPDATE CASCADE;
 
 --
--- Limiti per la tabella `tbl_profiles`
+-- Constraints for table `tbl_profiles`
 --
 ALTER TABLE `tbl_profiles`
   ADD CONSTRAINT `user_profile_id` FOREIGN KEY (`user_id`) REFERENCES `tbl_users` (`id`) ON DELETE CASCADE;
 
 --
--- Limiti per la tabella `tbl_transaction`
+-- Constraints for table `tbl_section`
+--
+ALTER TABLE `tbl_section`
+  ADD CONSTRAINT `tbl_section_ibfk_1` FOREIGN KEY (`firm_id`) REFERENCES `tbl_firm` (`id`) ON UPDATE CASCADE;
+
+--
+-- Constraints for table `tbl_transaction`
 --
 ALTER TABLE `tbl_transaction`
   ADD CONSTRAINT `tbl_transaction_ibfk_1` FOREIGN KEY (`exercise_id`) REFERENCES `tbl_exercise` (`id`) ON UPDATE CASCADE;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

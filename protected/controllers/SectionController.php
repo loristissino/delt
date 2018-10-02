@@ -83,7 +83,10 @@ class SectionController extends Controller
 			$model->attributes=$_POST['Section'];
       $model->firm_id = $this->firm->id;
 			if($model->save())
+			{
+				Event::log($this->DEUser, $this->firm->id, Event::FIRM_SECTION_CREATED, array('id'=>$model->id, 'name'=>$model->name));
 				$this->redirect(array('admin','slug'=>$this->firm->slug));
+			}
 		}
     
     $model->rank = Section::model()->maxRank($this->firm->id) + 1;
@@ -110,7 +113,10 @@ class SectionController extends Controller
 		{
 			$model->attributes=$_POST['Section'];
 			if($model->save())
+			{
+				Event::log($this->DEUser, $this->firm->id, Event::FIRM_SECTION_EDITED, array('id'=>$model->id, 'name'=>$model->name));
 				$this->redirect(array('section/admin','slug'=>$this->firm->slug));
+			}
 		}
 
 		$this->render('update',array(
@@ -126,12 +132,14 @@ class SectionController extends Controller
 	public function actionDelete($id)
 	{
     $model = $this->loadModel($id);
-    $firm = $this->loadFirm($model->firm_id);
+    $this->firm = $this->loadFirm($model->firm_id);
     
     try
     {
+			$id = $model->id;
       $model->delete();
-      Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The section has been successfully deleted.'));
+			Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The section has been successfully deleted.'));
+			Event::log($this->DEUser, $this->firm->id, Event::FIRM_SECTION_DELETED, array('id'=>$id));
     }
     catch (Exception $e)
     {
@@ -140,7 +148,7 @@ class SectionController extends Controller
     
 		// if AJAX request (triggered by deletion via admin grid view), we should not redirect the browser
 		if(!isset($_GET['ajax']))
-			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin', 'slug'=>$firm->slug));
+			$this->redirect(isset($_POST['returnUrl']) ? $_POST['returnUrl'] : array('admin', 'slug'=>$this->firm->slug));
 	}
 
 	/**

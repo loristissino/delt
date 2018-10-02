@@ -70,6 +70,9 @@ class Event extends CActiveRecord
   const FIRM_JOURNALENTRIES_DELETED = 2062;
   const FIRM_JOURNAL_CLEARED        = 2064;
   const FIRM_COA_UPDATED            = 2071;
+  const FIRM_SECTION_CREATED        = 2101;
+  const FIRM_SECTION_DELETED        = 2102;
+  const FIRM_SECTION_EDITED         = 2131;
   const EXERCISE_CREATED            = 3001;
   const EXERCISE_DELETED            = 3002;
   const EXERCISE_EDITED             = 3031;
