@@ -125,7 +125,7 @@ class DEUser extends CActiveRecord
     ));
   }
   
-  public function getFirmsAsDataProvider()
+  public function getFirmsAsDataProvider($pageSize=30)
   {
     $sort = new CSort;
     $sort->defaultOrder = 'name ASC';
@@ -144,7 +144,7 @@ class DEUser extends CActiveRecord
         ),
       ),
       'pagination'=>array(
-          'pageSize'=>30,
+          'pageSize'=>$pageSize,
           ),
       'sort'=>$sort,
       )
