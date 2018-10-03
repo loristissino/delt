@@ -46,7 +46,7 @@ class ApiController extends Controller
         'users'=>array('@'),
 	  ),
 	  array('allow',
-        'actions'=>array('firms'),
+        'actions'=>array('firms', 'firm'),
         'users'=>array('*'),
 	  ),
       array('deny',  // deny all users
@@ -71,6 +71,7 @@ class ApiController extends Controller
 			$this->apiuser->is_active = 1;
 			try {
 				$this->apiuser->save();
+				Event::log($this->DEUser, null, Event::APIKEY_ENABLED);
 				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Your API key is "{key}".', array('{key}'=>$this->apiuser->apikey)));
 				$this->redirect('subscribe');
 			}
@@ -96,6 +97,7 @@ class ApiController extends Controller
 			$this->apiuser->is_active = 0;
 			try {
 				$this->apiuser->save(false);
+				Event::log($this->DEUser, null, Event::APIKEY_DISABLED);
 				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'You have successfully unsubscribed from the API service.'));
 			}
 			catch (Exception $e)
@@ -116,22 +118,37 @@ class ApiController extends Controller
 			DELT::object2array($firm, $f, array('name', 'currency'));
 			$result[$firm->slug][]=$f;
 		}
+		Event::log($this->DEUser, null, Event::APIKEY_USED_FIRMS);
 		$this->serveJson($result);
 	}
 
-	public function actionFirm()
+	public function actionFirm($apikey, $slug)
 	{
-		$this->render('firm');
-	}
+		$user = $this->loadUserByApiKey($apikey);
 
+		if (Yii::app()->getRequest()->isPostRequest)
+		{
+			$firm = $this->loadFirmBySlug($slug, true);
+			$fields = array();
+			DELT::array2array($_POST, $fields, array('slug', 'name', 'description'), true);
+			DELT::array2object($fields, $firm, array_keys($fields));
+			try {
+				$firm->save(false);
+				Event::log($this->DEUser, $firm->id, Event::APIKEY_USED_FIRM, $fields);
+				$this->serveJson(array('status'=>'accepted'));
+			}
+			catch (Exception $e){
+				$this->serveJson(array('status'=>'failed'));
+			}
+		}
 
-
-
-
-
-	public function actionAccount()
-	{
-		$this->render('account');
+		$firm = $this->loadFirmBySlug($slug, false);
+		$result = array();
+		DELT::object2array($firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
+		$result['language']=$firm->language->getLocale();
+		$result['owners']=$firm->getOwners(true);
+		Event::log($this->DEUser, $firm->id, Event::APIKEY_USED_FIRM);
+		$this->serveJson($result);
 	}
 
 	public function actionAccounts()
@@ -139,11 +156,15 @@ class ApiController extends Controller
 		$this->render('accounts');
 	}
 
+	public function actionAccount()
+	{
+		$this->render('account');
+	}
+
 	public function actionBalance()
 	{
 		$this->render('balance');
 	}
-
 
 	public function actionIndex()
 	{
@@ -173,7 +194,7 @@ class ApiController extends Controller
    */
   public function loadUserByApiKey($apikey)
   {
-    $model=ApiUser::model()->getUserByApiKey($apikey);
+    $model=ApiUser::model()->getUserByApiKey($apikey, true);
     if($model===null)
       throw new CHttpException(404,'The requested page does not exist.');
     return $model;

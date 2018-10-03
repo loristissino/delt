@@ -238,6 +238,15 @@ class DELT
     }
   }
 
+  public static function array2array($source, &$array, $properties=array(), $removeEmptyItems=false)
+  {
+    $array = array_intersect_key($source, array_flip($properties));
+    if ($removeEmptyItems)
+    {
+      $array = array_filter($array);
+    }
+  }
+
   public static function array2object($array, $object, $properties=array())
   {
     foreach ($properties as $property)
@@ -256,6 +265,9 @@ class DELT
       $target->$property = $source->$property;
     }
   }
+
+
+
   
   public static function sanitizeProperties($object, $properties=array())
   {

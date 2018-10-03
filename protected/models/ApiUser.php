@@ -64,10 +64,15 @@ class ApiUser extends CActiveRecord
 		);
 	}
 
-	public static function getUserByApikey($apikey)
+	public static function getUserByApikey($apikey, $increaseUses = false)
 	{
 		if ($apiuser = ApiUser::model()->findByAttributes(array('apikey'=>$apikey, 'is_active'=>1)))
 		{
+			if ($increaseUses)
+			{
+				$apiuser->uses++;
+				$apiuser->save(false);
+			}
 			return DEUser::model()->findByPK($apiuser->user_id);
 		}
 		return null;

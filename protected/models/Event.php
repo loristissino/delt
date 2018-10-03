@@ -88,6 +88,16 @@ class Event extends CActiveRecord
   const CHALLENGE_COMPLETED         = 4020;
   const CHALLENGE_CHECKED           = 4030;
   const CHALLENGE_DELETED           = 4040;
+  const APIKEY_ENABLED              = 5001;
+  const APIKEY_DISABLED             = 5040;
+  const APIKEY_USED_FIRMS           = 5060;
+  const APIKEY_USED_FIRM            = 5061;
+  const APIKEY_USED_ACCOUNTS        = 5065;
+  const APIKEY_USED_ACCOUNT         = 5066;
+  const APIKEY_USED_BALANCE         = 5070;
+  const APIKEY_USED_JOURNALENTRIES  = 5075;
+  const APIKEY_USED_JOURNALENTRY    = 5076;
+  const APIKEY_USED_LEDGER          = 5080;
   
   /**
    * Returns the static model of the specified AR class.
