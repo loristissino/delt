@@ -286,6 +286,11 @@ class Challenge extends CActiveRecord
   {
     return $this->isStarted() && !$this->isSuspended() && !$this->isCompleted();
   }
+
+  public function isAssigned()
+  {
+    return $this->assigned_at != null;
+  }
   
   public function getLastAction()
   {
