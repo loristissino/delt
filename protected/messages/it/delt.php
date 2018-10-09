@@ -1704,4 +1704,22 @@
   'Section' => 
   'Sezione',
 
+  'Last action' => 
+  'Ultima azione',
+
+  'Show usernames' => 
+  'Mostra i nomi utente',
+
+  'No one invited.' => 
+  'Nessun invitato.',
+
+  'No sessions.' => 
+  'Nessuna sessione.',
+
+  'Create Transactions from Benchmark Firms\'s Journal Entries' => 
+  'Crea le transazioni a partire dalle registrazioni contabili dell\'azienda di riferimento',
+
+  'Proposed Parent Firm' => 
+  'Azienda da duplicare proposta',
+
   );
