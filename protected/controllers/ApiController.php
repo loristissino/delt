@@ -245,18 +245,7 @@ class ApiController extends Controller
 		$result = array();
 		foreach ($this->firm->journalentries as $je)
 		{
-			$v = array();
-			DELT::object2array($je, $v, array('id', 'date', 'description', 'is_closing', 'is_adjustment', 'is_included', 'rank', 'section_id'));
-			$v['postings']=array();
-			foreach ($je->postings as $posting)
-			{
-				$p = array();
-				$p['code']=$posting->account->code;
-				DELT::object2array($posting, $p, array('amount', 'comment', 'subchoice'));
-				$v['postings'][]=$p;
-			}
-			$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $je->id);
-			$result[]=$v;
+			$result[]=$this->_journalentryToArray($je);
 		}
 
 		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRIES);
@@ -304,7 +293,7 @@ class ApiController extends Controller
 					'id'=>$id,
 					'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
 				);
-			
+				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
 				$this->serveJson($result);	
 			}
 			else
@@ -314,7 +303,23 @@ class ApiController extends Controller
 
 		}
 
-		$this->_exitWithError(501, 'Not yet implemented');
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+
+		if (!$id)
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+		$je=Journalentry::model()->findByAttributes(array('id'=>$id, 'firm_id'=>$this->firm->id));
+		if (!$je)
+		{
+			$this->_exitWithError(404, 'Journal entry not found', 5);
+		}
+
+		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
+		$this->serveJson($this->_journalentryToArray($je));
 
 	}
 
@@ -435,7 +440,21 @@ class ApiController extends Controller
 	return false;
   }
 
-
+  private function _journalentryToArray($je)
+  {
+	$v = array();
+	DELT::object2array($je, $v, array('id', 'date', 'description', 'is_closing', 'is_adjustment', 'is_included', 'rank', 'section_id'));
+	$v['postings']=array();
+	foreach ($je->postings as $posting)
+	{
+		$p = array();
+		$p['code']=$posting->account->code;
+		DELT::object2array($posting, $p, array('amount', 'comment', 'subchoice'));
+		$v['postings'][]=$p;
+	}
+	$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $je->id);
+	return $v;
+  }
 
 	
 }
