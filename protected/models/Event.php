@@ -95,6 +95,7 @@ class Event extends CActiveRecord
   const APIKEY_USED_ACCOUNTS        = 5065;
   const APIKEY_USED_ACCOUNT         = 5066;
   const APIKEY_USED_BALANCE         = 5070;
+  const APIKEY_USED_SECTIONS        = 5075;
   const APIKEY_USED_JOURNALENTRIES  = 5075;
   const APIKEY_USED_JOURNALENTRY    = 5076;
   const APIKEY_USED_LEDGER          = 5080;

@@ -19,6 +19,8 @@ class ApiController extends Controller
 {
 	public $apiuser = null;
 
+	private $_error = '';
+
 	// Uncomment the following methods and override them if needed
 
 	/**
@@ -42,11 +44,11 @@ class ApiController extends Controller
   {
     return array(
       array('allow',
-        'actions'=>array('subscribe', 'unsubscribe', 'firms'),
+        'actions'=>array('subscribe', 'unsubscribe'),
         'users'=>array('@'),
 	  ),
 	  array('allow',
-        'actions'=>array('firms', 'firm'),
+        'actions'=>array('firms', 'firm', 'accounts', 'account', 'journalentries', 'journalentry', 'sections'),
         'users'=>array('*'),
 	  ),
       array('deny',  // deny all users
@@ -110,80 +112,215 @@ class ApiController extends Controller
 
 	public function actionFirms($apikey)
 	{
-		$user = $this->loadUserByApiKey($apikey);
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Only GET requests are allowed', 5);
+		}
+
+	    $this->_loadUserByApiKey($apikey);
+		
 		$result = array();
-		foreach ($user->firms as $firm)
+		foreach ($this->DEUser->firms as $firm)
 		{
 			$f = array();
-			DELT::object2array($firm, $f, array('name', 'currency'));
-			$result[$firm->slug][]=$f;
+			DELT::object2array($firm, $f, array('slug', 'name', 'currency'));
+			$f['url']=Yii::app()->getController()->createAbsoluteUrl('/firm/slug/' . $firm->slug);
+			$result[]=$f;
 		}
 		Event::log($this->DEUser, null, Event::APIKEY_USED_FIRMS);
 		$this->serveJson($result);
 	}
 
-	public function actionFirm($apikey, $slug)
+	public function actionFirm($slug, $apikey='')
 	{
-		$user = $this->loadUserByApiKey($apikey);
+		$this->_loadUserByApiKey($apikey);
 
-		if (Yii::app()->getRequest()->isPostRequest)
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->isPutRequest)
 		{
-			$firm = $this->loadFirmBySlug($slug, true);
 			$fields = array();
-			DELT::array2array($_POST, $fields, array('slug', 'name', 'description'), true);
-			DELT::array2object($fields, $firm, array_keys($fields));
+			$values = CJSON::decode(file_get_contents("php://input"), true);
+
+			if (!is_array($values))
+			{
+				$this->_exitWithError(400, 'Bad request');
+			}
+
+			DELT::array2array($values, $fields, array('slug', 'name', 'description', 'currency'), true);
+			DELT::array2object($fields, $this->firm, array_keys($fields));
 			try {
-				$firm->save(false);
-				Event::log($this->DEUser, $firm->id, Event::APIKEY_USED_FIRM, $fields);
+				$this->firm->save(false);
+				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_FIRM, $fields);
 				$this->serveJson(array('status'=>'accepted'));
 			}
 			catch (Exception $e){
-				$this->serveJson(array('status'=>'failed'));
+				$this->_exitWithError(422, 'Invalid data provided');
 			}
+
+		}
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad request');
 		}
 
-		$firm = $this->loadFirmBySlug($slug, false);
+		//$firm = $this->loadFirmBySlug($slug, false);
 		$result = array();
-		DELT::object2array($firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
-		$result['language']=$firm->language->getLocale();
-		$result['owners']=$firm->getOwners(true);
-		Event::log($this->DEUser, $firm->id, Event::APIKEY_USED_FIRM);
+		DELT::object2array($this->firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
+		$result['language']=$this->firm->language->getLocale();
+		$result['owners']=$this->firm->getOwners(true);
+		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_FIRM);
 		$this->serveJson($result);
 	}
 
-	public function actionAccounts()
+	public function actionAccounts($slug, $apikey='')
 	{
-		$this->render('accounts');
+		$this->_loadUserByApiKey($apikey);
+
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+
+		$result = array();
+		foreach ($this->firm->accounts as $account)
+		{
+			$v = array();
+			DELT::object2array($account, $v, array('type', 'code', 'is_selectable', 'position', 'outstanding_balance', 'currentname', 'comment', 'classes'));
+			$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/account/slug/' . $this->firm->slug . '/code/'. $account->code);
+			$result[]=$v;
+		}
+
+		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_ACCOUNTS);
+		$this->serveJson($result);		
+
 	}
 
-	public function actionAccount()
+	public function actionAccount($slug, $code, $apikey='')
 	{
-		$this->render('account');
+		$this->_exitWithError(501, 'Not yet implemented');
 	}
 
-	public function actionBalance()
+	public function actionBalance($slug, $apikey='')
 	{
-		$this->render('balance');
+		$this->_exitWithError(501, 'Not yet implemented');
 	}
 
-	public function actionIndex()
+	public function actionSections($slug, $apikey='')
 	{
-		$this->render('index');
+		$this->_loadUserByApiKey($apikey);
+
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+
+		$result = array();
+		foreach ($this->firm->sections as $section)
+		{
+			$v=array();
+			DELT::object2array($section, $v, array('id', 'name', 'is_visible', 'rank', 'color'));
+			$result[]=$v;
+		}
+
+		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_SECTIONS);
+		$this->serveJson($result);		
 	}
 
-	public function actionJournalentries()
+	public function actionJournalentries($slug, $apikey='')
 	{
-		$this->render('journalentries');
+		$this->_loadUserByApiKey($apikey);
+
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+
+		$result = array();
+		foreach ($this->firm->journalentries as $je)
+		{
+			$v = array();
+			DELT::object2array($je, $v, array('id', 'date', 'description', 'is_closing', 'is_adjustment', 'is_included', 'rank', 'section_id'));
+			$v['postings']=array();
+			foreach ($je->postings as $posting)
+			{
+				$p = array();
+				$p['code']=$posting->account->code;
+				DELT::object2array($posting, $p, array('amount', 'comment', 'subchoice'));
+				$v['postings'][]=$p;
+			}
+			$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $je->id);
+			$result[]=$v;
+		}
+
+		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRIES);
+		$this->serveJson($result);		
 	}
 
-	public function actionJournalentry()
+	public function actionJournalentry($slug, $id=null, $apikey='')
 	{
-		$this->render('journalentry');
+		$this->_loadUserByApiKey($apikey);
+
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->isDeleteRequest)
+		{
+			if (!$id)
+			{
+				$this->_exitWithError(400, 'Bad request');
+			}
+			$je=Journalentry::model()->findByAttributes(array('id'=>$id, 'firm_id'=>$this->firm->id));
+			if (!$je)
+			{
+				$this->_exitWithError(404, 'Journal entry not found', 5);
+			}
+
+			if ($je->safeDelete())
+			{
+				$result=array('status'=>'deleted');
+				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
+				$this->serveJson($result);	
+			}
+			else
+			{
+				$result=array('status'=>'failed');
+				$this->serveJson($result);	
+			}
+		}
+
+		if (Yii::app()->getRequest()->isPostRequest)
+		{
+			$id = $this->_saveJournalEntry(); 
+			if ($id)
+			{
+				$result=array(
+					'status'=>'accepted', 
+					'id'=>$id,
+					'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
+				);
+			
+				$this->serveJson($result);	
+			}
+			else
+			{
+				$this->_exitWithError(400, $this->_error);
+			}
+
+		}
+
+		$this->_exitWithError(501, 'Not yet implemented');
+
 	}
 
-	public function actionLedger()
+	public function actionLedger($slug, $apikey='')
 	{
-		$this->render('ledger');
+		$this->_exitWithError(501, 'Not yet implemented');
 	}
 
   /**
@@ -192,13 +329,113 @@ class ApiController extends Controller
    * @return DEUser the loaded model
    * @throws CHttpException
    */
-  public function loadUserByApiKey($apikey)
+  private function _loadUserByApiKey($apikey)
   {
-    $model=ApiUser::model()->getUserByApiKey($apikey, true);
-    if($model===null)
-      throw new CHttpException(404,'The requested page does not exist.');
-    return $model;
+    $this->DEUser=ApiUser::model()->getUserByApiKey($apikey, true);
+    if($this->DEUser===null)
+      $this->_exitWithError(403,'The provided API key is not valid', 5);
   }
+
+  private function _exitWithError($error_code, $error_message, $sleep_time=0) 
+  {
+	sleep($sleep_time);
+	header($error_message, true, $error_code);
+	$this->serveJson(array('status'=>'failed', 'error'=> $error_message));
+  }
+
+  private function _loadFirmBySlugAndRunChecks($slug)
+  {
+	try {
+		$this->firm = $this->loadFirmBySlug($slug, false);
+	}
+	catch (Exception $e) {
+		$this->_exitWithError(404, 'Firm not found');
+	}
+	
+	if (!$this->firm->isManageableBy($this->DEUser))
+	{
+		$this->_exitWithError(401, 'Firm not manageable');
+	}
+	
+	if ($this->firm->frozen_at)
+	{
+		$this->_exitWithError(409, 'Firm frozen');
+	}
+  }
+
+
+  private function _saveJournalEntry()
+  {
+	$transaction = $this->firm->getDbConnection()->beginTransaction();
+	try {
+		$values = CJSON::decode(file_get_contents("php://input"), true);
+		if (!is_array($values) || !is_array($values['postings']) || sizeof($values['postings'])<2 )
+		{
+			$this->_exitWithError(400, 'Bad request');
+		}
+		$je = new Journalentry();
+		$je->firm_id = $this->firm->id;
+		DELT::array2object($values, $je, array('firm_id', 'date', 'description', 'is_closing', 'is_adjustment', 'section_id'));
+
+		$section = Section::model()->findByAttributes(array('id'=>$je->section_id, 'firm_id'=>$this->firm->id));
+		
+		if(!$section)
+		{
+			$this->_exitWithError(400, 'Invalid section');
+		}
+
+		$je->is_visible = $section->is_visible;
+
+		$je->rank = $je->getCurrentMaxRank() + 1;
+		$je->save();
+
+		// FIXME This could be optized with a query that extracts all the ids at once
+		$totalAmount = 0;
+		$rank = 0;
+
+		foreach($values['postings'] as $p)
+		{
+			$amount = (float)DELT::getValueFromArray($p, 'amount', 0);
+
+			if (!$amount)
+				continue;
+			if ($account = $this->firm->findAccount(DELT::getValueFromArray($p, 'code', null), true, true))
+			{
+				$posting = new Posting();
+				DELT::array2object($p, $posting, array('comment', 'subchoice'));
+				$posting->journalentry_id = $je->id;
+				$posting->amount = $amount;
+				$posting->account_id = $account->id;
+				$posting->rank = ++$rank;
+				$posting->save();
+				$totalAmount +=$amount;
+			}
+		}
+
+		if (!DELT::nearlyZero($totalAmount))
+		{
+			$transaction->rollback();
+			$this->_error = 'Unbalanced postings';
+			return false;
+		}
+		else
+		{
+			$transaction->commit();
+			return $je->id;
+		}
+		
+	}
+	catch (Exception $e)
+	{
+		$this->_error = $e->getMessage();
+		$transaction->rollback();
+		return false;
+	}
+
+	return false;
+  }
+
+
 
 	
 }

@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.9.96';
+    return '1.9.97';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
@@ -234,7 +234,7 @@ class DELT
   {
     foreach ($properties as $property)
     {
-      $array[$property] = $object->$property;
+        $array[$property] = $object->$property;
     }
   }
 
