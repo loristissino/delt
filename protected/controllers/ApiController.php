@@ -22,6 +22,8 @@ class ApiController extends Controller
 
 	private $_error = '';
 
+	public $defaultAction = 'subscribe';
+
 	// Uncomment the following methods and override them if needed
 
 	/**
@@ -71,12 +73,14 @@ class ApiController extends Controller
 			}
 
 			$this->apiuser->apikey=strtoupper(substr(sha1($this->DEUser->id . time() . rand()), 0, 16));
+			$key1 = substr($this->apiuser->apikey, 0, 8);
+			$key2 = substr($this->apiuser->apikey, 8, 8);
 			$this->apiuser->is_active = 1;
 			try {
 				$this->apiuser->save();
 				Event::log($this->DEUser, null, Event::APIKEY_ENABLED);
-				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Your API key is "{key}".', array('{key}'=>$this->apiuser->apikey)));
-				$this->_sendEmail($this->apiuser->apikey);
+				$this->_sendEmail($key2);
+				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The first part of your API key is "{key}".', array('{key}'=>$key1)) . ' ' . Yii::t('delt', 'The second part has been sent you by email.'));
 				$this->redirect('subscribe');
 			}
 			catch (Exception $e)
@@ -521,7 +525,7 @@ class ApiController extends Controller
   private function _sendEmail($key)
   {
 	$subject = Yii::t('delt', 'Your API key is ready');
-	$message = Yii::t('delt', 'You have requested the activation of an API key on {site_name}.\r\nThis is its second part: {key}.',
+	$message = Yii::t('delt', "You have requested the activation of an API key on {site_name}.\r\nThis is its second part: {key}.",
 	array(
 		'{site_name}'=>Yii::app()->name,
 		'{key}'=>$key,
