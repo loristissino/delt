@@ -136,6 +136,7 @@ return array(
     // this is used in contact page
     'adminEmail'=>'webmaster@example.com',
     'tagLine'=>'<p>A wonderful application</p>',
+    'apiEnforceHttps'=>true,
     
     'fixedtimeUrl'=>'http://www.timeanddate.com/worldclock/fixedtime.html?iso=%iso%',
     'fixedtimeOffset'=>3600, // in seconds: CET is 3600

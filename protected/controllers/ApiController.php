@@ -1,5 +1,6 @@
 <?php
 
+require('protected/modules/user/UserModule.php');
 /**
  * ApiController class file.
  *
@@ -30,7 +31,7 @@ class ApiController extends Controller
 	{
 		return array(
 		'accessControl', // perform access control for CRUD operations
-		'postOnly + delete', // we only allow deletion via POST request
+		//'postOnly + subscribe', // we only allow subscription via POST request
 		);
 	}
 
@@ -75,11 +76,12 @@ class ApiController extends Controller
 				$this->apiuser->save();
 				Event::log($this->DEUser, null, Event::APIKEY_ENABLED);
 				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Your API key is "{key}".', array('{key}'=>$this->apiuser->apikey)));
+				$this->_sendEmail($this->apiuser->apikey);
 				$this->redirect('subscribe');
 			}
 			catch (Exception $e)
 			{
-				Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'Your API key could not be activated.'));
+				Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'Your API key could not be activated.'. $e->getMessage()));
 			}
 		}
 
@@ -303,6 +305,26 @@ class ApiController extends Controller
 
 		}
 
+		if (Yii::app()->getRequest()->requestType=='PATCH')
+		{
+			if ($this->_updateJournalEntry($id))
+			{
+				$result=array(
+					'status'=>'updated', 
+					'id'=>$id,
+					'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
+				);
+				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
+				$this->serveJson($result);	
+			}
+			else
+			{
+				$this->_exitWithError(400, $this->_error);
+			}
+
+		}
+
+
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
 			$this->_exitWithError(400, 'Bad request');
@@ -368,6 +390,37 @@ class ApiController extends Controller
 	}
   }
 
+  private function _updateJournalEntry($id)
+  {
+	$je=Journalentry::model()->findByAttributes(array('id'=>$id, 'firm_id'=>$this->firm->id));
+	$values = CJSON::decode(file_get_contents("php://input"), true);
+
+	if (!is_array($values))
+	{
+		$this->_exitWithError(400, 'Bad request');
+	}
+
+	DELT::array2object($values, $je, array('date', 'description', 'is_closing', 'is_adjustment', 'is_included', 'section_id'));
+
+	$section = Section::model()->findByAttributes(array('id'=>$je->section_id, 'firm_id'=>$this->firm->id));
+		
+	if(!$section)
+	{
+		$this->_exitWithError(400, 'Invalid section');
+	}
+
+	$je->is_visible = $section->is_visible;
+
+	try
+	{
+		$je->save();
+		return true;
+	}
+	catch (Exception $e)
+	{
+		return false;
+	}
+  }
 
   private function _saveJournalEntry()
   {
@@ -456,5 +509,24 @@ class ApiController extends Controller
 	return $v;
   }
 
+  public function beforeAction($action)
+	{
+		if (Yii::app()->params['apiEnforceHttps'] && !Yii::app()->getRequest()->getIsSecureConnection())
+		{
+			$this->_exitWithError(403, 'Requests accepted only on HTTPS');
+		}
+		return parent::beforeAction($action);
+	}
+
+  private function _sendEmail($key)
+  {
+	$subject = Yii::t('delt', 'Your API key is ready');
+	$message = Yii::t('delt', 'You have requested the activation of an API key on {site_name}.\r\nThis is its second part: {key}.',
+	array(
+		'{site_name}'=>Yii::app()->name,
+		'{key}'=>$key,
+	));
+	UserModule::sendMail($this->DEUser->email,$subject,$message);
+  }
 	
 }
