@@ -51,7 +51,7 @@ class ApiController extends Controller
         'users'=>array('@'),
 	  ),
 	  array('allow',
-        'actions'=>array('firms', 'firm', 'accounts', 'account', 'journalentries', 'journalentry', 'sections'),
+        'actions'=>array('firms', 'firm', 'accounts', 'account', 'journalentries', 'journalentry', 'sections', 'section'),
         'users'=>array('*'),
 	  ),
       array('deny',  // deny all users
@@ -116,7 +116,7 @@ class ApiController extends Controller
 		$this->redirect('subscribe');
 	}
 
-	public function actionFirms($apikey)
+	public function actionFirms($apikey='')
 	{
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
@@ -130,7 +130,7 @@ class ApiController extends Controller
 		{
 			$f = array();
 			DELT::object2array($firm, $f, array('slug', 'name', 'currency'));
-			$f['url']=Yii::app()->getController()->createAbsoluteUrl('/firm/slug/' . $firm->slug);
+			$f['url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $firm->slug);
 			$result[]=$f;
 		}
 		Event::log($this->DEUser, null, Event::APIKEY_USED_FIRMS);
@@ -158,7 +158,10 @@ class ApiController extends Controller
 			try {
 				$this->firm->save(false);
 				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_FIRM, $fields);
-				$this->serveJson(array('status'=>'accepted'));
+				$this->serveJson(array(
+					'status'=>'accepted',
+					'firm_url'=>Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug),
+				));
 			}
 			catch (Exception $e){
 				$this->_exitWithError(422, 'Invalid data provided');
@@ -175,6 +178,10 @@ class ApiController extends Controller
 		DELT::object2array($this->firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
 		$result['language']=$this->firm->language->getLocale();
 		$result['owners']=$this->firm->getOwners(true);
+		$result['url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug);
+		$result['accounts_url']=Yii::app()->getController()->createAbsoluteUrl('/api/accounts/slug/' . $this->firm->slug);
+		$result['sections_url']=Yii::app()->getController()->createAbsoluteUrl('/api/sections/slug/' . $this->firm->slug);
+		$result['journalentries_url']=Yii::app()->getController()->createAbsoluteUrl('/api/journalentries/slug/' . $this->firm->slug);
 		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_FIRM);
 		$this->serveJson($result);
 	}
@@ -196,6 +203,7 @@ class ApiController extends Controller
 			$v = array();
 			DELT::object2array($account, $v, array('type', 'code', 'is_selectable', 'position', 'outstanding_balance', 'currentname', 'comment', 'classes'));
 			$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/account/slug/' . $this->firm->slug . '/code/'. $account->code);
+			$v['firm_url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug);
 			$result[]=$v;
 		}
 
@@ -230,6 +238,8 @@ class ApiController extends Controller
 		{
 			$v=array();
 			DELT::object2array($section, $v, array('id', 'name', 'is_visible', 'rank', 'color'));
+			$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/section/slug/' . $this->firm->slug . '/id/' . $section->id);
+			$v['firm_url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug);
 			$result[]=$v;
 		}
 
@@ -354,6 +364,12 @@ class ApiController extends Controller
 		$this->_exitWithError(501, 'Not yet implemented');
 	}
 
+	public function actionSection($slug, $id, $apikey='')
+	{
+		$this->_exitWithError(501, 'Not yet implemented');
+	}
+
+
   /**
    * Returns the data model based on the primary key given in the GET variable.
    * If the data model is not found, an HTTP exception will be raised.
@@ -362,6 +378,10 @@ class ApiController extends Controller
    */
   private function _loadUserByApiKey($apikey)
   {
+	// we use the Basic Authorization value from the headers of the request,
+	// if present. Otherwise, the key provided in the URL.
+	$apikey = DELT::getValueFromArray($_SERVER, 'PHP_AUTH_PW', $apikey);
+
     $this->DEUser=ApiUser::model()->getUserByApiKey($apikey, true);
     if($this->DEUser===null)
       $this->_exitWithError(403,'The provided API key is not valid', 5);
@@ -510,6 +530,7 @@ class ApiController extends Controller
 		$v['postings'][]=$p;
 	}
 	$v['url']=Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $je->id);
+	$v['firm_url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug);
 	return $v;
   }
 
