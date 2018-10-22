@@ -414,6 +414,7 @@ class FirmController extends Controller
       }
     }
 
+    $this->firm->firm_parent_slug = $this->firm->parent->slug;
     $this->render('update',array(
       'model'=>$this->firm
     ));

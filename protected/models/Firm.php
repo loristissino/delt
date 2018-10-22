@@ -62,7 +62,9 @@ class Firm extends CActiveRecord
   
   private $_cache = array();
   
-  private $_tempfile; 
+  private $_tempfile;
+
+  public $firm_parent_slug;
   
   /**
    * Returns the static model of the specified AR class.
@@ -111,6 +113,7 @@ class Firm extends CActiveRecord
       array('checked_positions', 'safe'),
       array('shortcodes', 'safe'),
       array('css', 'validateCss'),
+      array('firm_parent_slug', 'validateParent'),
 
       // The following rule is used by search().
       // Please remove those attributes that should not be searched.
@@ -134,6 +137,7 @@ class Firm extends CActiveRecord
       'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
       'sections' => array(self::HAS_MANY, 'Section', 'firm_id', 'order'=>'sections.rank ASC'),
+      'parent' => array(self::BELONGS_TO, 'Firm', 'firm_parent_id'),
     );
   }
 
@@ -160,6 +164,7 @@ class Firm extends CActiveRecord
       'checked_positions'=>Yii::t('delt', 'Checked Positions'),
       'shortcodes'=>Yii::t('delt', 'Short Codes'),
       'css'=>Yii::t('delt', 'CSS'),
+      'firm_parent_slug'=>Yii::t('delt', 'Slug of the Parent Firm'),
     );
   }
 
@@ -252,6 +257,25 @@ class Firm extends CActiveRecord
     }
     $this->currency = strtoupper($this->currency);
   }
+
+  /**
+   * Validates the slug of the parent.
+   */
+  public function validateParent()
+  {
+    $f = self::model()->findByAttributes(array('slug'=>$this->firm_parent_slug));
+    if($f)
+    {
+      $this->firm_parent_id = $f->id;
+    }
+    else
+    {
+      $this->addError('firm_parent_slug', Yii::t('delt', 'A firm with this slug does not exist.'));
+    }
+  }
+
+
+
 
   /**
    * Validates the currency chosen for the firm.

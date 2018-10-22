@@ -309,6 +309,14 @@ $languages_available = Language::model()->findAllSorted();
   <span class="hint"><?php echo Yii::t('delt', 'Custom Cascading Style Sheet code used when the firm is shown.') ?> <?php echo Yii::t('delt', 'It is OK to leave it empty, if you don\'t want any customization.') ?></span>
   </div>
 
+  <div class="row">
+    <?php echo $form->labelEx($model,'firm_parent_slug'); ?>
+    <?php echo $form->textField($model,'firm_parent_slug',array('size'=>32,'maxlength'=>32)); ?>
+    <?php echo $form->error($model,'firm_parent_slug'); ?>
+  <br />
+  <span class="hint"><?php echo Yii::t('delt', 'The slug of the firm this firm was forked from.') ?></span>
+  </div>
+
   </div><!--advanced-->
  
   <div class="row buttons" id="submitDiv">

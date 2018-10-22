@@ -179,6 +179,7 @@ class ApiController extends Controller
 		DELT::object2array($this->firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
 		$result['language']=$this->firm->language->getLocale();
 		$result['owners']=$this->firm->getOwners(true);
+		$result['parent_slug']=$this->firm->parent->slug;
 		$result['url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug);
 		$result['accounts_url']=Yii::app()->getController()->createAbsoluteUrl('/api/accounts/slug/' . $this->firm->slug);
 		$result['sections_url']=Yii::app()->getController()->createAbsoluteUrl('/api/sections/slug/' . $this->firm->slug);
