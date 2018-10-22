@@ -73,7 +73,9 @@ class ApiUser extends CActiveRecord
 				$apiuser->uses++;
 				$apiuser->save(false);
 			}
-			return DEUser::model()->findByPK($apiuser->user_id);
+			$DEUser = DEUser::model()->findByPK($apiuser->user_id);
+			$DEUser->apiuser = $apiuser;
+			return $DEUser;
 		}
 		return null;
 	}

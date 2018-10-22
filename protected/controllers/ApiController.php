@@ -51,7 +51,7 @@ class ApiController extends Controller
         'users'=>array('@'),
 	  ),
 	  array('allow',
-        'actions'=>array('firms', 'firm', 'accounts', 'account', 'journalentries', 'journalentry', 'sections', 'section'),
+        'actions'=>array('user', 'firms', 'firm', 'accounts', 'account', 'journalentries', 'journalentry', 'sections', 'section'),
         'users'=>array('*'),
 	  ),
       array('deny',  // deny all users
@@ -116,11 +116,30 @@ class ApiController extends Controller
 		$this->redirect('subscribe');
 	}
 
+	public function actionUser($apikey='')
+	{
+		if (Yii::app()->getRequest()->requestType!='GET')
+		{
+			$this->_exitWithError(400, 'Bad Request', 'Only GET requests are allowed', 5);
+		}
+	    $this->_loadUserByApiKey($apikey);
+		$result = array();
+		DELT::object2array($this->DEUser, $result, array('username', 'email'));
+
+		$profile=Profile::model()->findByPK($this->DEUser->id);
+		DELT::object2array($profile, $result, array('first_name', 'last_name'));
+
+		$result['api_uses']=$this->DEUser->apiuser->uses;
+
+		Event::log($this->DEUser, null, Event::APIKEY_USED_USER);
+		$this->serveJson($result);
+	}
+
 	public function actionFirms($apikey='')
 	{
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Only GET requests are allowed', 5);
+			$this->_exitWithError(400, 'Bad Request', 'Only GET requests are allowed');
 		}
 
 	    $this->_loadUserByApiKey($apikey);
@@ -129,7 +148,7 @@ class ApiController extends Controller
 		foreach ($this->DEUser->firms as $firm)
 		{
 			$f = array();
-			DELT::object2array($firm, $f, array('slug', 'name', 'currency'));
+			DELT::object2array($firm, $f, array('slug', 'name', 'currency', 'frozen_at'));
 			$f['url']=Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $firm->slug);
 			$result[]=$f;
 		}
@@ -145,12 +164,17 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isPutRequest)
 		{
+			if ($this->firm->frozen_at)
+			{
+				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
+			}
+		
 			$fields = array();
 			$values = CJSON::decode(file_get_contents("php://input"), true);
 
 			if (!is_array($values))
 			{
-				$this->_exitWithError(400, 'Bad request');
+				$this->_exitWithError(400, 'Bad Request', 'Invalid data provided');
 			}
 
 			DELT::array2array($values, $fields, array('slug', 'name', 'description', 'currency'), true);
@@ -165,18 +189,18 @@ class ApiController extends Controller
 				));
 			}
 			catch (Exception $e){
-				$this->_exitWithError(422, 'Invalid data provided');
+				$this->_exitWithError(400, 'Bad Request', 'Invalid data provided');
 			}
 
 		}
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 
 		//$firm = $this->loadFirmBySlug($slug, false);
 		$result = array();
-		DELT::object2array($this->firm, $result, array('slug', 'name', 'description', 'currency', 'create_date'));
+		DELT::object2array($this->firm, $result, array('slug', 'name', 'description', 'currency', 'create_date', 'frozen_at'));
 		$result['language']=$this->firm->language->getLocale();
 		$result['owners']=$this->firm->getOwners(true);
 		$result['parent_slug']=$this->firm->parent->slug;
@@ -196,7 +220,7 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 
 		$result = array();
@@ -216,12 +240,12 @@ class ApiController extends Controller
 
 	public function actionAccount($slug, $code, $apikey='')
 	{
-		$this->_exitWithError(501, 'Not yet implemented');
+		$this->_exitWithError(501, 'Not Implemented');
 	}
 
 	public function actionBalance($slug, $apikey='')
 	{
-		$this->_exitWithError(501, 'Not yet implemented');
+		$this->_exitWithError(501, 'Not Implemented');
 	}
 
 	public function actionSections($slug, $apikey='')
@@ -232,7 +256,7 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 
 		$result = array();
@@ -257,7 +281,7 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 
 		$result = array();
@@ -278,14 +302,19 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isDeleteRequest)
 		{
+			if ($this->firm->frozen_at)
+			{
+				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
+			}
+		
 			if (!$id)
 			{
-				$this->_exitWithError(400, 'Bad request');
+				$this->_exitWithError(400, 'Bad Request');
 			}
 			$je=Journalentry::model()->findByAttributes(array('id'=>$id, 'firm_id'=>$this->firm->id));
 			if (!$je)
 			{
-				$this->_exitWithError(404, 'Journal entry not found', 5);
+				$this->_exitWithError(404, 'Not Found', 'Journal entry not found', 5);
 			}
 
 			if ($je->safeDelete())
@@ -303,6 +332,11 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isPostRequest)
 		{
+			if ($this->firm->frozen_at)
+			{
+				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
+			}
+		
 			$id = $this->_saveJournalEntry(); 
 			if ($id)
 			{
@@ -325,6 +359,11 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType=='PATCH')
 		{
+			if ($this->firm->frozen_at)
+			{
+				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
+			}
+		
 			if ($this->_updateJournalEntry($id))
 			{
 				$result=array(
@@ -337,7 +376,7 @@ class ApiController extends Controller
 			}
 			else
 			{
-				$this->_exitWithError(400, $this->_error);
+				$this->_exitWithError(400, 'Bad Request', $this->_error);
 			}
 
 		}
@@ -345,17 +384,17 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType!='GET')
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 
 		if (!$id)
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request');
 		}
 		$je=Journalentry::model()->findByAttributes(array('id'=>$id, 'firm_id'=>$this->firm->id));
 		if (!$je)
 		{
-			$this->_exitWithError(404, 'Journal entry not found', 5);
+			$this->_exitWithError(404, 'Not Found', 'Journal entry not found', 5);
 		}
 
 		Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
@@ -365,12 +404,12 @@ class ApiController extends Controller
 
 	public function actionLedger($slug, $apikey='')
 	{
-		$this->_exitWithError(501, 'Not yet implemented');
+		$this->_exitWithError(501, 'Not Implemented');
 	}
 
 	public function actionSection($slug, $id, $apikey='')
 	{
-		$this->_exitWithError(501, 'Not yet implemented');
+		$this->_exitWithError(501, 'Not Implemented');
 	}
 
 
@@ -388,14 +427,18 @@ class ApiController extends Controller
 
     $this->DEUser=ApiUser::model()->getUserByApiKey($apikey, true);
     if($this->DEUser===null)
-      $this->_exitWithError(403,'The provided API key is not valid', 5);
+      $this->_exitWithError(403, 'Forbidden', 'The provided API key is not valid', 5);
   }
 
-  private function _exitWithError($http_code, $error_message, $sleep_time=0) 
+  private function _exitWithError($http_code, $error_message, $explanation='', $sleep_time=0) 
   {
 	sleep($sleep_time);
+	if (!$explanation)
+	{
+		$explanation = $error_message;
+	}
 	header('HTTP/1.1 ' . $http_code . ' ' . $error_message, true, $http_code);
-	$this->serveJson(array('http_code'=>$http_code, 'status'=>'failed', 'message'=> $error_message));
+	$this->serveJson(array('http_code'=>$http_code, 'status'=>'failed', 'explanation'=> $explanation));
   }
 
   private function _loadFirmBySlugAndRunChecks($slug)
@@ -404,17 +447,12 @@ class ApiController extends Controller
 		$this->firm = $this->loadFirmBySlug($slug, false);
 	}
 	catch (Exception $e) {
-		$this->_exitWithError(404, 'Firm not found');
+		$this->_exitWithError(404, 'Not Found', 'Firm not found', 5);
 	}
 	
 	if (!$this->firm->isManageableBy($this->DEUser))
 	{
-		$this->_exitWithError(401, 'Firm not manageable');
-	}
-	
-	if ($this->firm->frozen_at)
-	{
-		$this->_exitWithError(409, 'Firm frozen');
+		$this->_exitWithError(403, 'Forbidden', 'Firm not manageable');
 	}
   }
 
@@ -425,7 +463,7 @@ class ApiController extends Controller
 
 	if (!is_array($values))
 	{
-		$this->_exitWithError(400, 'Bad request');
+		$this->_exitWithError(400, 'Bad Request', 'Invalid data provided');
 	}
 
 	DELT::array2object($values, $je, array('date', 'description', 'is_closing', 'is_adjustment', 'is_included', 'section_id'));
@@ -434,7 +472,7 @@ class ApiController extends Controller
 		
 	if(!$section)
 	{
-		$this->_exitWithError(400, 'Invalid section');
+		$this->_exitWithError(400, 'Bad Request', 'Invalid section');
 	}
 
 	$je->is_visible = $section->is_visible;
@@ -457,7 +495,7 @@ class ApiController extends Controller
 		$values = CJSON::decode(file_get_contents("php://input"), true);
 		if (!is_array($values) || !is_array($values['postings']) || sizeof($values['postings'])<2 )
 		{
-			$this->_exitWithError(400, 'Bad request');
+			$this->_exitWithError(400, 'Bad Request', 'Invalid data provided');
 		}
 		$je = new Journalentry();
 		$je->firm_id = $this->firm->id;
@@ -467,7 +505,7 @@ class ApiController extends Controller
 		
 		if(!$section)
 		{
-			$this->_exitWithError(400, 'Invalid section');
+			$this->_exitWithError(400, 'Bad Request', 'Invalid section');
 		}
 
 		$je->is_visible = $section->is_visible;
@@ -542,7 +580,7 @@ class ApiController extends Controller
 	{
 		if (Yii::app()->params['apiEnforceHttps'] && !Yii::app()->getRequest()->getIsSecureConnection())
 		{
-			$this->_exitWithError(403, 'Requests accepted only on HTTPS');
+			$this->_exitWithError(403, 'Forbidden', 'Requests accepted only on HTTPS');
 		}
 		return parent::beforeAction($action);
 	}

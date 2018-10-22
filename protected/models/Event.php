@@ -89,6 +89,7 @@ class Event extends CActiveRecord
   const CHALLENGE_CHECKED           = 4030;
   const CHALLENGE_DELETED           = 4040;
   const APIKEY_ENABLED              = 5001;
+  const APIKEY_USED_USER            = 5002;
   const APIKEY_DISABLED             = 5040;
   const APIKEY_USED_FIRMS           = 5060;
   const APIKEY_USED_FIRM            = 5061;
