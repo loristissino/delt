@@ -200,6 +200,10 @@ class ChallengeController extends Controller
       {
         Event::model()->log($this->DEUser, $model->exercise->firm_id, Event::FIRM_USED_AS_BENCHMARK, array('challenge_id'=>$model->id));
       }
+      if ($action=='completed')
+      {
+        Event::model()->log($this->DEUser, $model->firm_id, Event::FIRM_FROZEN);
+      }
     }
     else
     {

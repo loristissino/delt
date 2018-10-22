@@ -2334,13 +2334,13 @@ class Firm extends CActiveRecord
   public function freeze($DE_user_id)
   {
     $this->frozen_at = new CDbExpression('NOW()');
-    return $this->save();
+    return $this->save(false);
   }
 
   public function unfreeze($DE_user_id)
   {
     $this->frozen_at=null;
-    return $this->save();
+    return $this->save(false);
   }
   
   public function getFrozenAtTimestamp()

@@ -1704,7 +1704,7 @@
   'Section' => 
   'Sezione',
 
-  'Last action' => 
+  'Last Action' => 
   'Ultima azione',
 
   'Show usernames' => 
@@ -1726,7 +1726,7 @@
   'Se insegni, potrebbe interessarti la preparazione di <a href="{url}">esercizi</a>.',
 
   'There is a list of public exercises you can try.' => 
-  'C\'è una list di esercizi che puoi provare.',
+  'C\'è una lista di esercizi che puoi provare.',
 
   'Exercise' => 
   'Esercizio',
@@ -1739,5 +1739,8 @@
 
   'Slug of the Parent Firm' => 
   'Slug dell\'azienda genitore',
+
+  'Started' => 
+  'Iniziata',
 
   );
