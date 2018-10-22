@@ -1735,7 +1735,7 @@
   'Aziende meno recenti…',
 
   'The firm is linked to a challenge that has been marked completed, and the challenge would be invalidated if you unfreeze it.' => 
-  'L\'azienda è collegata ad una sfida che è stata contrassegnata come completata: quest\'ultima verrebbe invalidata in caso di scongelamento.',
+  'L\'azienda è collegata ad una sfida che è stata contrassegnata come completata: quest\'ultima verrebbe invalidata se procedi con lo scongelamento.',
 
   'Slug of the Parent Firm' => 
   'Slug dell\'azienda genitore',
