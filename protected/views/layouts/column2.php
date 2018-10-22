@@ -40,7 +40,7 @@ else
     }
     if (sizeof($this->DEUser->firms)>$max_shown)
     {
-      $this->firmmenu[]=array('label'=>Yii::t('delt', 'Older firms...'), 'url'=>array('/bookkeeping/index', 'list'=>'on'), 'linkOptions'=>array('style'=>'font-style:italic'));
+      $this->firmmenu[]=array('label'=>Yii::t('delt', 'Older firms…'), 'url'=>array('/bookkeeping/index', 'list'=>'on'), 'linkOptions'=>array('style'=>'font-style:italic'));
     }
     
   }

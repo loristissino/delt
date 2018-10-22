@@ -1722,4 +1722,16 @@
   'Proposed Parent Firm' => 
   'Azienda da duplicare proposta',
 
+  'If you are a teacher or an instructor, you might be interested in preparing <a href="{url}">exercises</a>.' => 
+  'Se insegni, potrebbe interessarti la preparazione di <a href="{url}">esercizi</a>.',
+
+  'There is a list of public exercises you can try.' => 
+  'C\'è una list di esercizi che puoi provare.',
+
+  'Exercise' => 
+  'Esercizio',
+
+  'Older firms…' => 
+  'Aziende meno recenti…',
+
   );
