@@ -159,6 +159,7 @@ class ApiController extends Controller
 				$this->firm->save(false);
 				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_FIRM, $fields);
 				$this->serveJson(array(
+					'http_code'=>200,
 					'status'=>'accepted',
 					'firm_url'=>Yii::app()->getController()->createAbsoluteUrl('/api/firm/slug/' . $this->firm->slug),
 				));
@@ -288,13 +289,13 @@ class ApiController extends Controller
 
 			if ($je->safeDelete())
 			{
-				$result=array('status'=>'deleted');
+				$result=array('http_code'=>200, 'status'=>'deleted');
 				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
 				$this->serveJson($result);	
 			}
 			else
 			{
-				$result=array('status'=>'failed');
+				$result=array('http_code'=>500, 'status'=>'failed');
 				$this->serveJson($result);	
 			}
 		}
@@ -305,7 +306,8 @@ class ApiController extends Controller
 			if ($id)
 			{
 				$result=array(
-					'status'=>'accepted', 
+					'http_code'=>201,
+					'status'=>'created', 
 					'id'=>$id,
 					'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
 				);
@@ -387,11 +389,13 @@ class ApiController extends Controller
       $this->_exitWithError(403,'The provided API key is not valid', 5);
   }
 
-  private function _exitWithError($error_code, $error_message, $sleep_time=0) 
+  private function _exitWithError($http_code, $error_message, $sleep_time=0) 
   {
 	sleep($sleep_time);
-	header($error_message, true, $error_code);
-	$this->serveJson(array('status'=>'failed', 'error'=> $error_message));
+	if (!Yii::app()->params['apiAvoidHTTPErrorHeaders']){
+		header($error_message, true, $http_code);
+	}
+	$this->serveJson(array('http_code'=>$http_code, 'status'=>'failed', 'message'=> $error_message));
   }
 
   private function _loadFirmBySlugAndRunChecks($slug)
