@@ -305,6 +305,7 @@ class ApiController extends Controller
 			$id = $this->_saveJournalEntry(); 
 			if ($id)
 			{
+				header('HTTP/1.1 201 Created', true, 201);
 				$result=array(
 					'http_code'=>201,
 					'status'=>'created', 
@@ -392,9 +393,7 @@ class ApiController extends Controller
   private function _exitWithError($http_code, $error_message, $sleep_time=0) 
   {
 	sleep($sleep_time);
-	if (!Yii::app()->params['apiAvoidHTTPErrorHeaders']){
-		header($error_message, true, $http_code);
-	}
+	header('HTTP/1.1 ' . $http_code . ' ' . $error_message, true, $http_code);
 	$this->serveJson(array('http_code'=>$http_code, 'status'=>'failed', 'message'=> $error_message));
   }
 
