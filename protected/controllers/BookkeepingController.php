@@ -368,6 +368,7 @@ class BookkeepingController extends Controller
     if(isset($_POST['JournalentryForm']))
     {
       $journalentryform->attributes=$_POST['JournalentryForm'];
+      $journalentryform->is_adjustment = DELT::getValueFromArray($_POST['JournalentryForm'], 'is_adjustment', 0);
       if(isset($_POST['template']))
       {
         $template= new Template();
@@ -486,6 +487,7 @@ class BookkeepingController extends Controller
     if(isset($_POST['JournalentryForm']))
     {
       $journalentryform->attributes=$_POST['JournalentryForm'];
+      $journalentryform->is_adjustment = DELT::getValueFromArray($_POST['JournalentryForm'], 'is_adjustment', 0);
       $journalentryform->acquireItems($_POST['PostingForm'], false);
       if(isset($_POST['addline']))
       {
