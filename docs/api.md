@@ -24,6 +24,23 @@ The endpoint for the use of the API is __https://learndoubleentry.org/api__.
 
 There are calls to retrieve, update, delete and create resources on the website. It is possible to act only on firms that are owned by the user who is using the API key.
 
+### User
+
+Information about the owner of the API key can be obtained with:
+
+    GET /api/user
+    
+The result is obtained as a JSON-encoded object:
+
+    {
+      "username": "johnd",
+      "email": "johndoe@example.com",
+      "first_name": "John",
+      "last_name": "Doe",
+      "api_uses": 42
+    }
+
+
 ### Firms
 
 The list of owned firms can be obtained with:
