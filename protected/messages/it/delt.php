@@ -1743,4 +1743,10 @@
   'Started' => 
   'Iniziata',
 
+  'This firm cannot be deleted, because it is currently used as benchmark for an exercise.' => 
+  'Quest\'azienda non può essere eliminata, perché è al momento usata come riferimento per un esercizio.',
+
+  'Linked journal entries' => 
+  'Registrazioni contabili collegate',
+
   );
