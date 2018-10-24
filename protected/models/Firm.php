@@ -137,6 +137,7 @@ class Firm extends CActiveRecord
       'templates' => array(self::HAS_MANY, 'Template', 'firm_id', 'order'=>'templates.description ASC'),
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
       'sections' => array(self::HAS_MANY, 'Section', 'firm_id', 'order'=>'sections.rank ASC'),
+      'exercises' => array(self::HAS_MANY, 'Exercise', 'firm_id', 'order'=>'exercises.title ASC'),
       'parent' => array(self::BELONGS_TO, 'Firm', 'firm_parent_id'),
     );
   }
@@ -2029,9 +2030,24 @@ class Firm extends CActiveRecord
    */
   public function softDelete()
   {
+    if ($this->hasExercises())
+    {
+      return false;
+    }
     $this->status=self::STATUS_DELETED;
-    $this->save();
-    return true;
+    try {
+      $this->save(false);
+      return true;
+    }
+    catch (Exception $e)
+    {
+      return false;
+    }
+  }
+
+  public function hasExercises()
+  {
+    return sizeof($this->exercises)>0;
   }
 
   /**

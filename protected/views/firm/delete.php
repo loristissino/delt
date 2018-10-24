@@ -12,20 +12,26 @@ $this->breadcrumbs=array(
 
 <h1><?php echo $model->name ?></h1>
 
-<p>
-<?php echo Yii::t('delt', 'Are you sure you want to delete this firm?') ?> 
-<?php echo Yii::t('delt', 'The action cannot be undone.') ?></p>
+<?php if($model->hasExercises()): ?>
+  <p>
+  <?php echo Yii::t('delt', 'This firm cannot be deleted, because it is currently used as benchmark for an exercise.') ?> 
+  </p>
 
-<?php $form=$this->beginWidget('CActiveForm', array(
-  'id'=>'DeleteFirmForm',
-  'enableAjaxValidation'=>false,
-  'method'=>'POST',
-  'action'=>$this->createUrl('firm/delete', array('slug'=>$model->slug)),
-)); ?>
+<?php else: ?>
+  <p>
+  <?php echo Yii::t('delt', 'Are you sure you want to delete this firm?') ?> 
+  <?php echo Yii::t('delt', 'The action cannot be undone.') ?></p>
 
-<div class="row">
-  <?php echo CHtml::submitButton(Yii::t('delt', 'Delete'), array('name'=>'delete', 'class'=>'dangerous')) ?>
-</div>
+  <?php $form=$this->beginWidget('CActiveForm', array(
+    'id'=>'DeleteFirmForm',
+    'enableAjaxValidation'=>false,
+    'method'=>'POST',
+    'action'=>$this->createUrl('firm/delete', array('slug'=>$model->slug)),
+  )); ?>
 
-<?php $this->endWidget() ?>
+  <div class="row">
+    <?php echo CHtml::submitButton(Yii::t('delt', 'Delete'), array('name'=>'delete', 'class'=>'dangerous')) ?>
+  </div>
 
+  <?php $this->endWidget() ?>
+<?php endif ?>

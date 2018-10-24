@@ -602,7 +602,7 @@ class FirmController extends Controller
       else
       {
         Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'The firm could not be deleted.') . ' ' . Yii::app()->getUser()->getFlash('delt_failure'));
-        $this->redirect(array('/bookkeeping/manage', 'slug'=>$firm->slug));
+        $this->redirect(array('/bookkeeping/manage', 'slug'=>$this->firm->slug));
       }
     }
     
