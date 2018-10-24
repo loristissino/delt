@@ -138,6 +138,7 @@ class Firm extends CActiveRecord
       'language' => array(self::BELONGS_TO, 'Language', 'language_id'),
       'sections' => array(self::HAS_MANY, 'Section', 'firm_id', 'order'=>'sections.rank ASC'),
       'exercises' => array(self::HAS_MANY, 'Exercise', 'firm_id', 'order'=>'exercises.title ASC'),
+      'challenges' => array(self::HAS_MANY, 'Challenge', 'firm_id'),
       'parent' => array(self::BELONGS_TO, 'Firm', 'firm_parent_id'),
     );
   }
@@ -2048,6 +2049,11 @@ class Firm extends CActiveRecord
   public function hasExercises()
   {
     return sizeof($this->exercises)>0;
+  }
+
+  public function hasChallenges()
+  {
+    return sizeof($this->challenges)>0;
   }
 
   /**

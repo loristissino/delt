@@ -18,6 +18,14 @@ $this->breadcrumbs=array(
   </p>
 
 <?php else: ?>
+
+  <?php if($model->hasChallenges()): ?>
+    <p>
+    <?php echo $this->createIcon('bell', Yii::t('delt', 'Linked to a challenge'), array('width'=>16, 'height'=>16, 'title'=>Yii::t('delt', 'Linked to a challenge'))) ?>
+    <?php echo Yii::t('delt', 'This firm is currently linked to a challenge, and the challenge would be invalidated if you delete it.') ?>
+    </p>
+  <?php endif ?>
+
   <p>
   <?php echo Yii::t('delt', 'Are you sure you want to delete this firm?') ?> 
   <?php echo Yii::t('delt', 'The action cannot be undone.') ?></p>
@@ -35,3 +43,6 @@ $this->breadcrumbs=array(
 
   <?php $this->endWidget() ?>
 <?php endif ?>
+
+
+

@@ -1749,4 +1749,10 @@
   'Linked journal entries' => 
   'Registrazioni contabili collegate',
 
+  'Linked to a challenge' => 
+  'Collegata ad una sfida',
+
+  'This firm is currently linked to a challenge, and the challenge would be invalidated if you delete it.' => 
+  'Questa azienda è al momento collegata ad una sfida: la sua eliminazione invaliderebbe quest\'ultima.',
+
   );

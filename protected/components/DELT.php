@@ -18,7 +18,7 @@ class DELT
   
   public static function getVersion()
   {
-    return '1.9.99c';
+    return '1.9.99d';
   }
   
   public static function currency_value($amount, $currency, $with_debit_credit=false, $with_zero=false, $element='', $htmlOptions=array())
