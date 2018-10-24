@@ -46,7 +46,7 @@ class ExerciseController extends Controller
     return array(
     
       array('allow', // allow authenticated user to perform 'create' and 'update' actions
-        'actions'=>array('index', 'invite', 'view', 'solution', 'create', 'update', 'delete', 'report', 'export', 'import', 'createtransactionsfrombenchmark'),
+        'actions'=>array('index', 'invite', 'view', 'solution', 'create', 'update', 'delete', 'report', 'export', 'import', 'createtransactionsfrombenchmark', 'sessions'),
         'users'=>array('@'),
       ),
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
@@ -123,16 +123,16 @@ class ExerciseController extends Controller
    */
   public function actionReport($id, $session="")
   {
-    $model = $this->loadModel($id);
+    $model = $this->loadModel($id, false);
     if ($session)
     {
-      $challenges=$model->getChallenges($session);
+      $challenges=$model->getChallenges($session, $this->DEUser->id);
       $sessions=false;
     }
     else
     {
       $challenges = false;
-      $sessions=$model->getSessions();
+      $sessions=$model->getSessions($this->DEUser->id);
     }
     Event::model()->log($this->DEUser, null, Event::EXERCISE_REPORT, array('exercise_id'=>$model->id, 'session'=>$session));
 
@@ -144,6 +144,14 @@ class ExerciseController extends Controller
     ));
   }
 
+  public function actionSessions()
+  {
+    $sessions_grouped = $this->DEUser->getSessionsGrouped();
+
+    $this->render('sessions',array(
+      'sessions_grouped'=>$sessions_grouped,
+    ));
+  }
 
   /**
    * Creates a new model.
@@ -275,9 +283,9 @@ class ExerciseController extends Controller
    * Invites users to start a challenge based on this exercise.
    * @param integer $id the ID of the model to be updated
    */
-  public function actionInvite($id)
+  public function actionInvite($slug)
   {
-    $model=$this->loadModel($id);
+    $model=$this->loadModelBySlug($slug);
 
     if(Yii::app()->request->getIsPostRequest())
     {
@@ -287,7 +295,7 @@ class ExerciseController extends Controller
 
       $method = $this->_computeMethod($_POST['Exercise']);
       
-      $invited = $model->invite($users, $method, $session);
+      $invited = $model->invite($this->DEUser->id, $users, $method, $session);
       if($invited)
       {
         Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Users invited: {number}.', array('{number}'=>$invited)));
@@ -364,15 +372,24 @@ class ExerciseController extends Controller
    * @return Exercise the loaded model
    * @throws CHttpException
    */
-  public function loadModel($id)
+  public function loadModel($id, $checkOwnership=true)
   {
     $model=Exercise::model()->findByPk($id);
     if($model===null)
       throw new CHttpException(404,'The requested page does not exist.');
-    if($model->user_id!=$this->DEUser->id)
+    if($checkOwnership && $model->user_id!=$this->DEUser->id)
       throw new CHttpException(403, 'You are not allowed to access the requested page.');
     return $model;
   }
+
+  public function loadModelBySlug($slug)
+  {
+    $model=Exercise::model()->findByAttributes(array('slug'=>$slug));
+    if($model===null)
+      throw new CHttpException(404,'The requested page does not exist.');
+    return $model;
+  }
+
 
   /**
    * Performs the AJAX validation.

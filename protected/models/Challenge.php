@@ -92,7 +92,7 @@ class Challenge extends CActiveRecord
   public function relations()
   {
     return array(
-      'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id'),
+      'exercise' => array(self::BELONGS_TO, 'Exercise', 'exercise_id', 'order'=>'title ASC'),
       'instructor' => array(self::BELONGS_TO, 'Users', 'instructor_id'),
       'user' => array(self::BELONGS_TO, 'DEUser', 'user_id'),
       'firm' => array(self::BELONGS_TO, 'Firm', 'firm_id'),
@@ -195,6 +195,16 @@ class Challenge extends CActiveRecord
   {
     $this->getDbCriteria()->mergeWith(array(
         'condition'=>'t.user_id = :user_id',
+        'params'=>array(':user_id'=>$user_id),
+        'order'=>$order,
+    ));
+    return $this;
+  }  
+
+  public function withInstructor($user_id, $order='session ASC')
+  {
+    $this->getDbCriteria()->mergeWith(array(
+        'condition'=>'t.instructor_id = :user_id',
         'params'=>array(':user_id'=>$user_id),
         'order'=>$order,
     ));

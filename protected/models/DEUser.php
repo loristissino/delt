@@ -181,5 +181,30 @@ class DEUser extends CActiveRecord
   {
     return Challenge::model()->forUser($this->id)->started()->suspended(false)->completed(false)->find();
   }
-  
+
+  public function getSessionsGrouped()
+  {
+    $challenges = Challenge::model()->withInstructor($this->id)->with('exercise')->findAll();
+    $result = array();
+    $count = 0;
+    foreach ($challenges as $challenge)
+    {
+      if (!array_key_exists($challenge->exercise_id, $result))
+      {
+        $result[$challenge->exercise_id]=array('title'=>$challenge->exercise->title, 'sessions'=>array());
+      }
+      if (!array_key_exists($challenge->session, $result[$challenge->exercise_id]['sessions']))
+      {
+        $result[$challenge->exercise_id]['sessions'][$challenge->session]=1;
+      }
+      else
+      {
+        $result[$challenge->exercise_id]['sessions'][$challenge->session]++;
+      }
+    }
+
+
+    return $result;
+  }
+  // ($challenge->session)
 }

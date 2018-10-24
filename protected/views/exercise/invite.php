@@ -22,7 +22,7 @@ $this->menu=array(
   'id'=>'exerciseform_'. $model->id,
   'enableAjaxValidation'=>false,
   'method'=>'POST',
-  'action'=>array('invite', 'id'=>$model->id),
+  'action'=>array('invite', 'slug'=>$model->slug),
 )); ?>
 
 

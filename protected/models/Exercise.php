@@ -194,22 +194,27 @@ class Exercise extends CActiveRecord
     );
   }
   
-  public function getChallenges($session)
+  public function getChallenges($session, $instructor_id)
   {
-    return Challenge::model()->ofExercise($this->id)->withSession($session)->findAll();
+    return Challenge::model()->ofExercise($this->id)->withInstructor($instructor_id)->withSession($session)->findAll();
   }
   
-  public function getSessions()
+  public function getSessions($instructor_id=null)
   {
+    if (!$instructor_id)
+    {
+      $instructor_id=$this->user_id;
+    }
     return Yii::app()->db->createCommand()
            ->select('count(*) AS cnt, session')
            ->from('tbl_challenge') 
-           ->group('session') 
+           ->group('session')
            ->where('exercise_id='. $this->id)
+           ->andWhere('instructor_id=:id', array(':id'=>$instructor_id))
            ->queryAll(); 
   }
 
-  public function invite($users=array(), $method=false, $session='')
+  public function invite($instructor_id, $users=array(), $method=false, $session='')
   {
     if ($method===false)
     {
@@ -231,7 +236,7 @@ class Exercise extends CActiveRecord
           $challenge = new Challenge();
           $challenge->setInitialDefaults();
           $challenge->exercise_id = $this->id;
-          $challenge->instructor_id = $this->user_id;
+          $challenge->instructor_id = $instructor_id;
           $challenge->user_id =$DEUser->id;
           $challenge->method = $method;
           $challenge->session = $session;
