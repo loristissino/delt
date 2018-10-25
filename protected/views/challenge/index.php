@@ -42,6 +42,25 @@ $cs->registerScript(
   CClientScript::POS_READY
 );
 
+$cs->registerScript(
+  'button2link',
+  '
+  
+  
+
+  $("#invite_others_button").after("<a id=\"invite_others_link\" href=\"#\">' . Yii::t('delt', 'Invite other users') . '</a>");
+  $("#invite_others_button").hide();
+  $("#invite_others_link").click(function() {
+    var action = $("<input>").attr("type", "hidden").attr("name", "invite_others").val("");
+    $("#choseexerciseform").append($(action)).submit();
+    }
+  );
+    
+  ',
+  CClientScript::POS_READY
+);
+
+
 ?>
 
 <h1><?php echo Yii::t('delt', 'Challenges') ?></h1>
@@ -71,7 +90,9 @@ $cs->registerScript(
     <?php echo CHtml::label('Slug', false) ?>
     <?php echo CHtml::textField('slug', $slug, array('size'=>40, 'value'=>$slug)) ?>
     <?php echo CHtml::submitButton(Yii::t('delt', 'Invite me!'), array('name'=>'getinvited')) ?>
-    <?php //echo CHtml::submitButton(Yii::t('delt', 'Invite other users'), array('name'=>'invite_others')) ?>
+    <?php if (sizeof($this->DEUser->exercises)>0): ?>
+      <?php echo CHtml::submitButton(Yii::t('delt', 'Invite other users'), array('id'=>'invite_others_button', 'name'=>'invite_others')) ?>
+    <?php endif ?>
   </div>
 
 <?php $this->endWidget() ?>

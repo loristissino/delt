@@ -53,7 +53,7 @@ $cs->registerScript(
     <table>
       <tr>
         <th><?php echo Yii::t('delt', 'Firm') ?></th>
-        <th><?php echo Yii::t('delt', 'Owner') ?></th>
+        <th><?php echo Yii::t('delt', 'Student') ?></th>
         <th><?php echo Yii::t('delt', 'Last Action') ?></th>
         <th><?php echo Yii::t('delt', 'Rate') ?></th>
         <?php foreach($model->transactions as $transaction): ?>

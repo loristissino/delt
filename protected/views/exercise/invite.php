@@ -16,6 +16,7 @@ $this->menu=array(
 
 <h1><?php echo Yii::t('delt', 'Invite Users') ?></h1>
 
+<p><?php echo Yii::t('delt', 'Exercise «{name}»', array('{name}'=>$model->title)); ?>
 <div class="form" style="width: 700px">
 
 <?php $form=$this->beginWidget('CActiveForm', array(

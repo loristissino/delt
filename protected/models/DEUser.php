@@ -81,6 +81,7 @@ class DEUser extends CActiveRecord
       'profiles' => array(self::HAS_ONE, 'Profiles', 'user_id'),
       'id0' => array(self::BELONGS_TO, 'Profiles', 'id'),
       'challenges' => array(self::HAS_MANY, 'Challenge', 'user_id'),
+      'exercises' => array(self::HAS_MANY, 'Exercise', 'user_id'),
     );
   }
 

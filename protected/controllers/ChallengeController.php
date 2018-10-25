@@ -162,6 +162,10 @@ class ChallengeController extends Controller
       }
       else
       {
+        if (isset($_POST['invite_others']))
+        {
+          $this->redirect(array('exercise/invite', 'slug'=>$slug));
+        }
         if ($exercise->invite(null, array($this->DEUser->username), false, ''))
         {
           Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Congratulations!') . ' ' . Yii::t('delt', 'You have been successfully invited.'));
