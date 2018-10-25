@@ -162,7 +162,7 @@ class ChallengeController extends Controller
       }
       else
       {
-        if ($exercise->invite(array($this->DEUser->username), false, ''))
+        if ($exercise->invite(null, array($this->DEUser->username), false, ''))
         {
           Yii::app()->user->setFlash('delt_success', Yii::t('delt', 'Congratulations!') . ' ' . Yii::t('delt', 'You have been successfully invited.'));
         }

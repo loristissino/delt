@@ -71,6 +71,7 @@ $cs->registerScript(
     <?php echo CHtml::label('Slug', false) ?>
     <?php echo CHtml::textField('slug', $slug, array('size'=>40, 'value'=>$slug)) ?>
     <?php echo CHtml::submitButton(Yii::t('delt', 'Invite me!'), array('name'=>'getinvited')) ?>
+    <?php //echo CHtml::submitButton(Yii::t('delt', 'Invite other users'), array('name'=>'invite_others')) ?>
   </div>
 
 <?php $this->endWidget() ?>

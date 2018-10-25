@@ -216,6 +216,12 @@ class Exercise extends CActiveRecord
 
   public function invite($instructor_id, $users=array(), $method=false, $session='')
   {
+
+    if (!$instructor_id)
+    {
+      $instructor_id = $this->user_id;
+    }
+
     if ($method===false)
     {
       $method = $this->method; // we use the default set in Exercise

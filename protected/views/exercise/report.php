@@ -22,7 +22,7 @@ $this->layout = '//layouts/column1_menu_below';
 
 $this->menu=array(
   array('label'=>Yii::t('delt', 'View Exercise'), 'url'=>array('view', 'id'=>$model->id)),
-  array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'id'=>$model->id)),
+  array('label'=>Yii::t('delt', 'Invite Users'), 'url'=>array('invite', 'slug'=>$model->slug)),
 );
 
 $cs = Yii::app()->getClientScript();
