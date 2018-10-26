@@ -340,6 +340,11 @@ class ChallengeController extends Controller
    */
   public function actionIndex($exercise='')
   {
+    if (!$this->DEUser->canAcceptChallenges())
+    {
+      $this->render('missing_profile');
+    }
+
     $dataProvider=Challenge::model()->getChallengesForUser($this->DEUser->id);
     $this->render('index',array(
       'dataProvider'=>$dataProvider,

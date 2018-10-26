@@ -1755,4 +1755,31 @@
   'This firm is currently linked to a challenge, and the challenge would be invalidated if you delete it.' => 
   'Questa azienda è al momento collegata ad una sfida: la sua eliminazione invaliderebbe quest\'ultima.',
 
+  'Student' => 
+  'Studente',
+
+  'Invite other users' => 
+  'Invita altri utenti',
+
+  'Sorry, you cannot accept challenges if your <a href="{url}">profile</a> is not complete.' => 
+  'Purtroppo, non è possibile accettare sfide se il proprio <a href="{url}">profilo</a> non è completo.',
+
+  'There is not such an exercise. Wrong slug?' => 
+  'Esercizio non trovato. Slug sbagliato?',
+
+  'Congratulations!' => 
+  'Congratulazioni!',
+
+  'You have been successfully invited.' => 
+  'L\'invito ha avuto buon fine.',
+
+  'The exercise «{title}» is already in your list.' => 
+  'L\'esercizio «{title}» è già nella tua lista.',
+
+  'Something went wrong with the requested change.' => 
+  'La richiesta di modifica non è andata a buon fine.',
+
+  'The challenge could not be deleted.' => 
+  'La sfida non è stata eliminata a causa di qualche problema.',
+
   );

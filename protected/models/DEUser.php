@@ -167,6 +167,11 @@ class DEUser extends CActiveRecord
       return $u->profile;
     }
   }
+
+  public function canAcceptChallenges()
+  {
+    return (($this->status > 0) && $this->profile->first_name && $this->profile->last_name);
+  }
   
   public function canCreateFirms()
   {
