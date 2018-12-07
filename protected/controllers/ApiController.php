@@ -501,11 +501,23 @@ class ApiController extends Controller
 		$je->firm_id = $this->firm->id;
 		DELT::array2object($values, $je, array('firm_id', 'date', 'description', 'is_closing', 'is_adjustment', 'section_id'));
 
-		$section = Section::model()->findByAttributes(array('id'=>$je->section_id, 'firm_id'=>$this->firm->id));
+		if($je->section_id)
+		{
+			// if we are given a section, we try to use that one
+			$section = Section::model()->findByAttributes(array('id'=>$je->section_id, 'firm_id'=>$this->firm->id));
+		}
+		else
+		{
+			// otherwise, we just use the section with the lowest rank
+			$section = $this->firm->sections[0];
+			$je->section_id = $section->id;
+		}
 		
 		if(!$section)
 		{
-			$this->_exitWithError(400, 'Bad Request', 'Invalid section');
+			$this->_error = 'Invalid section';
+			$transaction->rollback();
+			return false;
 		}
 
 		$je->is_visible = $section->is_visible;
@@ -515,15 +527,17 @@ class ApiController extends Controller
 
 		// FIXME This could be optized with a query that extracts all the ids at once
 		$totalAmount = 0;
+		$postingsNo = 0;
 		$rank = 0;
 
 		foreach($values['postings'] as $p)
 		{
 			$amount = (float)DELT::getValueFromArray($p, 'amount', 0);
 
+			$code = DELT::getValueFromArray($p, 'code', null);
 			if (!$amount)
 				continue;
-			if ($account = $this->firm->findAccount(DELT::getValueFromArray($p, 'code', null), true, true))
+			if ($account = $this->firm->findAccount($code, true, true))
 			{
 				$posting = new Posting();
 				DELT::array2object($p, $posting, array('comment', 'subchoice'));
@@ -532,11 +546,18 @@ class ApiController extends Controller
 				$posting->account_id = $account->id;
 				$posting->rank = ++$rank;
 				$posting->save();
-				$totalAmount +=$amount;
+				$totalAmount += $amount;
+				$postingsNo++;
+			}
+			else
+			{
+				$this->_error = 'Invalid account: ' . $code;
+				$transaction->rollback();
+				return false;
 			}
 		}
 
-		if (!DELT::nearlyZero($totalAmount))
+		if ($postingsNo<2 || !DELT::nearlyZero($totalAmount))
 		{
 			$transaction->rollback();
 			$this->_error = 'Unbalanced postings';
