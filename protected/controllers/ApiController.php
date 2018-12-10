@@ -240,6 +240,32 @@ class ApiController extends Controller
 
 	public function actionAccount($slug, $code, $apikey='')
 	{
+		$this->_loadUserByApiKey($apikey);
+		$this->_loadFirmBySlugAndRunChecks($slug);
+
+		if (Yii::app()->getRequest()->requestType=='PATCH')
+		{
+			if ($this->firm->frozen_at)
+			{
+				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
+			}
+		
+			if ($this->_updateAccount($code))
+			{
+				$result=array(
+					'status'=>'updated', 
+					'code'=>$code,
+					'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/code/'. $code)
+				);
+				Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_ACCOUNT);
+				$this->serveJson($result);	
+			}
+			else
+			{
+				$this->_exitWithError(400, 'Bad Request', $this->_error);
+			}
+		}
+
 		$this->_exitWithError(501, 'Not Implemented');
 	}
 
@@ -480,6 +506,29 @@ class ApiController extends Controller
 	try
 	{
 		$je->save();
+		return true;
+	}
+	catch (Exception $e)
+	{
+		return false;
+	}
+  }
+
+  private function _updateAccount($code)
+  {
+	$account=Account::model()->findByAttributes(array('code'=>$code, 'firm_id'=>$this->firm->id));
+	$values = CJSON::decode(file_get_contents("php://input"), true);
+
+	if (!is_array($values))
+	{
+		$this->_exitWithError(400, 'Bad Request', 'Invalid data provided');
+	}
+
+	DELT::array2object($values, $account, array('comment'));
+
+	try
+	{
+		$account->save();
 		return true;
 	}
 	catch (Exception $e)
