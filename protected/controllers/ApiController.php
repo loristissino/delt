@@ -22,6 +22,8 @@ class ApiController extends Controller
 
 	private $_error = '';
 
+	private $_privilegedKey = false;
+
 	public $defaultAction = 'subscribe';
 
 	// Uncomment the following methods and override them if needed
@@ -72,15 +74,14 @@ class ApiController extends Controller
 				$this->apiuser->user_id = $this->DEUser->id;
 			}
 
-			$this->apiuser->apikey=strtoupper(substr(sha1($this->DEUser->id . time() . rand()), 0, 16));
-			$key1 = substr($this->apiuser->apikey, 0, 8);
-			$key2 = substr($this->apiuser->apikey, 8, 8);
+			$this->apiuser->apikey=strtoupper(substr(sha1($this->DEUser->id . time() . rand()), 0, 32));
+			
 			$this->apiuser->is_active = 1;
 			try {
 				$this->apiuser->save();
 				Event::log($this->DEUser, null, Event::APIKEY_ENABLED);
-				$this->_sendEmail($key2);
-				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'The first part of your API key is "{key}".', array('{key}'=>$key1)) . ' ' . Yii::t('delt', 'The second part has been sent you by email.'));
+				$this->_sendEmail();
+				Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'Your API key has been successfully generated.'));
 				$this->redirect('subscribe');
 			}
 			catch (Exception $e)
@@ -122,7 +123,12 @@ class ApiController extends Controller
 		{
 			$this->_exitWithError(400, 'Bad Request', 'Only GET requests are allowed', 5);
 		}
-	    $this->_loadUserByApiKey($apikey);
+		$this->_loadUserByApiKey($apikey);
+		if (!$this->_privilegedKey)
+		{
+			$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+		}
+
 		$result = array();
 		DELT::object2array($this->DEUser, $result, array('username', 'email'));
 
@@ -143,6 +149,10 @@ class ApiController extends Controller
 		}
 
 	    $this->_loadUserByApiKey($apikey);
+		if (!$this->_privilegedKey)
+		{
+			$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+		}
 		
 		$result = array();
 		foreach ($this->DEUser->firms as $firm)
@@ -164,6 +174,10 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isPutRequest)
 		{
+			if (!$this->_privilegedKey)
+			{
+				$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+			}
 			if ($this->firm->frozen_at)
 			{
 				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
@@ -245,6 +259,10 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType=='PATCH')
 		{
+			if (!$this->_privilegedKey)
+			{
+				$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+			}
 			if ($this->firm->frozen_at)
 			{
 				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
@@ -328,6 +346,10 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isDeleteRequest)
 		{
+			if (!$this->_privilegedKey)
+			{
+				$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+			}
 			if ($this->firm->frozen_at)
 			{
 				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
@@ -358,6 +380,10 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->isPostRequest)
 		{
+			if (!$this->_privilegedKey)
+			{
+				$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+			}
 			if ($this->firm->frozen_at)
 			{
 				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
@@ -385,6 +411,10 @@ class ApiController extends Controller
 
 		if (Yii::app()->getRequest()->requestType=='PATCH')
 		{
+			if (!$this->_privilegedKey)
+			{
+				$this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+			}
 			if ($this->firm->frozen_at)
 			{
 				$this->_exitWithError(409, 'Conflict', 'Firm frozen');
@@ -453,7 +483,11 @@ class ApiController extends Controller
 
     $this->DEUser=ApiUser::model()->getUserByApiKey($apikey, true);
     if($this->DEUser===null)
-      $this->_exitWithError(403, 'Forbidden', 'The provided API key is not valid', 5);
+	  $this->_exitWithError(403, 'Forbidden', 'The provided API key is not valid', 5);
+	  
+	if(strlen($apikey)==32){
+		$this->_privilegedKey = true;
+	}
   }
 
   private function _exitWithError($http_code, $error_message, $explanation='', $sleep_time=0) 
@@ -655,13 +689,12 @@ class ApiController extends Controller
 		return parent::beforeAction($action);
 	}
 
-  private function _sendEmail($key)
+  private function _sendEmail()
   {
 	$subject = Yii::t('delt', 'Your API key is ready');
-	$message = Yii::t('delt', "You have requested the activation of an API key on {site_name}.\r\nThis is its second part: {key}.",
+	$message = Yii::t('delt', "You have requested the activation of an API key on {site_name}.",
 	array(
 		'{site_name}'=>Yii::app()->name,
-		'{key}'=>$key,
 	));
 	UserModule::sendMail($this->DEUser->email,$subject,$message);
   }

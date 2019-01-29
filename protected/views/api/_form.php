@@ -16,6 +16,10 @@
 
 <?php else: ?>
   <p><?php echo Yii::t('delt', 'Your API key is active.') ?></p>
+  <ul>
+    <li><?php echo Yii::t('delt', 'Basic usage key:') ?> <tt style="font-weight: bold"><?php echo $this->apiuser->getBasicKey() ?></tt> </li>
+    <li><?php echo Yii::t('delt', 'Privileged key:') ?>  <tt style="font-weight: bold"><?php echo $this->apiuser->getPrivilegedKey() ?></tt></li>
+  </ul>
   <?php $form=$this->beginWidget('CActiveForm', array(
     'id'=>'ApiKeyForm',
     'enableAjaxValidation'=>false,

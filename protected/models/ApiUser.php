@@ -32,7 +32,7 @@ class ApiUser extends CActiveRecord
 		return array(
 			array('user_id, apikey', 'required'),
 			array('user_id, uses, is_active', 'numerical', 'integerOnly'=>true),
-			array('apikey', 'length', 'max'=>16),
+			array('apikey', 'length', 'max'=>32),
 			// The following rule is used by search().
 			// @todo Please remove those attributes that should not be searched.
 			array('user_id, apikey, uses, is_active', 'safe', 'on'=>'search'),
@@ -66,7 +66,22 @@ class ApiUser extends CActiveRecord
 
 	public static function getUserByApikey($apikey, $increaseUses = false)
 	{
-		if ($apiuser = ApiUser::model()->findByAttributes(array('apikey'=>$apikey, 'is_active'=>1)))
+		$length = strlen($apikey);
+		if (!($length==16 || $length ==32))
+		{
+			return null;
+		}
+		$criteria = new CDbCriteria( array(
+			'condition' => "apikey LIKE :match",        
+			'params'    => array(':match' => "$apikey%") 
+		) );
+		$criteria->mergeWith(array(
+			'condition'=>'is_active=1'
+		));
+
+		$apiuser = ApiUser::model()->find($criteria);
+
+		if ($apiuser)
 		{
 			if ($increaseUses)
 			{
@@ -106,6 +121,14 @@ class ApiUser extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	public function getBasicKey(){
+		return substr($this->apikey, 0, 16);
+	}
+
+	public function getPrivilegedKey(){
+		return $this->apikey;
 	}
 
 	/**
