@@ -135,6 +135,9 @@ return array(
   'params'=>array(
     // this is used in contact page
     'adminEmail'=>'webmaster@example.com',
+    'emailService'=>'https://www.example.com/mailservice/', // a service that accepts a JSON file with the data needed for the email
+    'emailApikey'=>'some_key_needed',
+
     'tagLine'=>'<p>A wonderful application</p>',
     'apiEnforceHttps'=>true,
     

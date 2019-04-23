@@ -283,6 +283,7 @@ class UserModule extends CWebModule
 	 * Send mail method
 	 */
 	public static function sendMail($email,$subject,$message) {
+        /*
     	$adminEmail = Yii::app()->params['adminEmail'];
 	    $headers = "MIME-Version: 1.0\r\nFrom: $adminEmail\r\nReply-To: $adminEmail\r\nContent-Type: text/html; charset=utf-8";
       
@@ -296,8 +297,53 @@ class UserModule extends CWebModule
       $message = str_replace("\n", "\r\n", $message);
       
       return mail($email,'=?UTF-8?B?'.base64_encode($subject).'?=',$message,$headers);
-	}
-	
+      
+       */
+       
+       $apikey = Yii::app()->params['emailApikey'];
+       $emailService = Yii::app()->params['emailService'];
+       
+       echo $apikey;
+       echo $emailService;
+       
+       $message = wordwrap($message, 70);
+       $message = str_replace("\n.", "\n..", $message);
+       $message = str_replace("\n", "\r\n", $message);
+       
+       $data = array(
+            'apikey'=>$apikey,
+            'recipientName'=>'',
+            'recipientEmail'=>$email,
+            'subject'=>'=?UTF-8?B?'.base64_encode($subject).'?=',
+            'body'=>$message,
+       );
+       
+       $payload = json_encode($data);
+         
+       // Prepare new cURL resource
+       $ch = curl_init($emailService);
+       curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+       curl_setopt($ch, CURLINFO_HEADER_OUT, true);
+       curl_setopt($ch, CURLOPT_POST, true);
+       curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
+         
+        // Set HTTP Header for POST request 
+       curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($payload))
+       );
+         
+       // Submit the POST request
+       $result = curl_exec($ch);
+       
+       // Close cURL session handle
+       curl_close($ch);
+       
+       $r=json_decode($result);
+       return $r->status=='OK';
+              
+    }
+
 	/**
 	 * Return safe user data.
 	 * @param user id not required
