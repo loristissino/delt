@@ -232,6 +232,7 @@ class Controller extends CController
    */  
   public function serveJson($object)
   {
+    header("Access-Control-Allow-Origin: *");
     $this->serveContent('application/json', CJSON::encode($object));
   }
 
