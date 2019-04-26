@@ -471,17 +471,20 @@ class ApiController extends Controller
 
 
     /**
-    * Returns the data model based on the primary key given in the GET variable.
-    * If the data model is not found, an HTTP exception will be raised.
+    * Returns the user based on the api key provided, either in the X-API-Key header 
+    * or in the URL.
     * @return DEUser the loaded model
     * @throws CHttpException
     */
     private function _loadUserByApiKey($apikey)
     {
-        // we use the Basic Authorization value from the headers of the request,
-        // if present. Otherwise, the key provided in the URL.
-        $apikey = DELT::getValueFromArray($_SERVER, 'PHP_AUTH_PW', $apikey);
-
+        // We use the extra header X-ApiKey for the value of the API key.
+        // If it is not provided, we look for the Basic Authorization value 
+        // from the headers of the request.
+        // Otherwise, we use the key provided in the URL.
+        
+        $apikey = DELT::getValueFromArray($_SERVER, 'HTTP_X_APIKEY', DELT::getValueFromArray($_SERVER, 'PHP_AUTH_PW', $apikey));
+        
         $this->DEUser=ApiUser::model()->getUserByApiKey($apikey, true);
         if($this->DEUser===null)
             $this->_exitWithError(403, 'Forbidden', 'The provided API key is not valid', 5);
