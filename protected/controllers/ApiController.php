@@ -324,6 +324,37 @@ class ApiController extends Controller
 
         $this->_loadFirmBySlugAndRunChecks($slug);
 
+        if (Yii::app()->getRequest()->isPostRequest)
+        {
+            if (!$this->_privilegedKey)
+            {
+                $this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
+            }
+            if ($this->firm->frozen_at)
+            {
+                $this->_exitWithError(409, 'Conflict', 'Firm frozen');
+            }
+        
+            $id = $this->_saveJournalEntry(); 
+            if ($id)
+            {
+                header('HTTP/1.1 201 Created', true, 201);
+                $result=array(
+                    'http_code'=>201,
+                    'status'=>'created', 
+                    'id'=>$id,
+                    'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
+                );
+                Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
+                $this->serveJson($result);  
+            }
+            else
+            {
+                $this->_exitWithError(400, $this->_error);
+            }
+
+        }
+
         if (Yii::app()->getRequest()->requestType!='GET')
         {
             $this->_exitWithError(400, 'Bad Request');
@@ -377,37 +408,6 @@ class ApiController extends Controller
                 $result=array('http_code'=>500, 'status'=>'failed');
                 $this->serveJson($result);  
             }
-        }
-
-        if (Yii::app()->getRequest()->isPostRequest)
-        {
-            if (!$this->_privilegedKey)
-            {
-                $this->_exitWithError(403, 'Forbidden', 'The provided key does not grant the needed privileges.', 2);
-            }
-            if ($this->firm->frozen_at)
-            {
-                $this->_exitWithError(409, 'Conflict', 'Firm frozen');
-            }
-        
-            $id = $this->_saveJournalEntry(); 
-            if ($id)
-            {
-                header('HTTP/1.1 201 Created', true, 201);
-                $result=array(
-                    'http_code'=>201,
-                    'status'=>'created', 
-                    'id'=>$id,
-                    'url'=>Yii::app()->getController()->createAbsoluteUrl('/api/journalentry/slug/' . $this->firm->slug . '/id/'. $id)
-                );
-                Event::log($this->DEUser, $this->firm->id, Event::APIKEY_USED_JOURNALENTRY);
-                $this->serveJson($result);  
-            }
-            else
-            {
-                $this->_exitWithError(400, $this->_error);
-            }
-
         }
 
         if (Yii::app()->getRequest()->requestType=='PATCH')
