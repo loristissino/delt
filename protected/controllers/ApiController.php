@@ -103,7 +103,7 @@ class ApiController extends Controller
         }
         if (Yii::app()->getRequest()->isPostRequest)
         {
-            $this->apiuser->apikey='';
+            $this->apiuser->apikey=null;
             $this->apiuser->is_active = 0;
             try {
                 $this->apiuser->save(false);
@@ -112,7 +112,7 @@ class ApiController extends Controller
             }
             catch (Exception $e)
             {
-                Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'A problem occurred with your API key.'));
+                Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'A problem occurred with your API key.') . ' ' . $e->getMessage());
             }
         }
         $this->redirect('subscribe');
