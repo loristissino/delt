@@ -264,7 +264,7 @@ class FirmsCommand extends CConsoleCommand
         $this->maildata[$user->username]['firms'][] = array('firm'=>$firm->name, 'slug'=>$firm->slug);
     }
     
-    return true; //$firm->save(false);
+    return $firm->save(false);
   }
   
   /*
