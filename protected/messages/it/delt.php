@@ -1781,5 +1781,8 @@
 
   'The challenge could not be deleted.' => 
   'La sfida non è stata eliminata a causa di qualche problema.',
+  
+  'The contact form has been disabled. If you need information, please write an email to {email}.' =>
+  'Il modulo per il contatto è stato disabilitato. Se hai bisogno di informazioni, invia un\'email a {email}.',
 
   );

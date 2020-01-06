@@ -9,7 +9,7 @@ if($this->DEUser)
 $mainmenu_items=array(
         array('label'=>Yii::t('delt', 'Home'), 'url'=>array('/site/'. Yii::app()->language . '/index')),
         array('label'=>Yii::t('delt','About'), 'url'=>array('/site/'. Yii::app()->language . '/about')),
-        array('label'=>Yii::t('delt','Contact'), 'url'=>array('/site/contact')),
+        // array('label'=>Yii::t('delt','Contact'), 'url'=>array('/site/contact')),
         array('label'=>Yii::t('delt','Blog'), 'url'=>Yii::app()->params['blog'], 'visible'=>Yii::app()->params['blog']!=''),
         array('label'=>Yii::t('delt','Bookkeeping/Accounting'), 'url'=>array('/bookkeeping/index'), 'visible'=>!Yii::app()->user->isGuest),
         array('label'=>Yii::t('delt','Challenges'), 'url'=>array('/challenge/index'), 'visible'=>!Yii::app()->user->isGuest),

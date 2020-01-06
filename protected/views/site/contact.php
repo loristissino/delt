@@ -11,6 +11,12 @@ $this->breadcrumbs=array(
 
 <h1><?php echo Yii::t('delt', 'Contact Us') ?></h1>
 
+<p>
+<?php echo Yii::t('delt', 'The contact form has been disabled. If you need information, please write an email to {email}.', array('{email}'=>Yii::app()->params['adminEmail'])) ?>
+</p>
+
+<?php /*
+
 <?php if(Yii::app()->user->hasFlash('contact')): ?>
 
 <div class="flash-success">
@@ -90,4 +96,6 @@ $this->breadcrumbs=array(
 
 </div><!-- form -->
 
+
 <?php endif; ?>
+*/ ?>
