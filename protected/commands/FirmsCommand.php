@@ -22,6 +22,8 @@ class FirmsCommand extends CConsoleCommand
 {
   private $benchmarks;
   
+  private $maildata = array();
+  
   public function actionIndex()
   {
     $firms=Firm::model()->findAll();
@@ -81,6 +83,13 @@ class FirmsCommand extends CConsoleCommand
       $this->setStaleStatusIfNeeded($firm, $reference_date);
       echo "\n";
     }
+    
+    if (sizeof($this->maildata)) {
+        $filename = 'messages' . date("Y-m-d-his") . '.json';
+        file_put_contents($filename, json_encode($this->maildata));
+        echo "Written file for email warnings: $filename\n";
+    }
+    
   }
   
   public function actionDeleteExtraStale()
@@ -247,7 +256,15 @@ class FirmsCommand extends CConsoleCommand
   protected function markStale($firm)
   {
     $firm->status = Firm::STATUS_STALE;
-    return $firm->save(false);
+    
+    foreach($firm->getOwners() as $fu) {
+        $user = DEUser::model()->findByPK($fu->user_id);
+        echo "\nMAILTO" . $user->username . ' ' . $user->email;
+        $this->maildata[$user->username]['email'] = $user->email;
+        $this->maildata[$user->username]['firms'][] = array('firm'=>$firm->name, 'slug'=>$firm->slug);
+    }
+    
+    return true; //$firm->save(false);
   }
   
   /*
