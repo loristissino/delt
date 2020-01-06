@@ -302,10 +302,7 @@ class UserModule extends CWebModule
        
        $apikey = Yii::app()->params['emailApikey'];
        $emailService = Yii::app()->params['emailService'];
-       
-       echo $apikey;
-       echo $emailService;
-       
+              
        $message = wordwrap($message, 70);
        $message = str_replace("\n.", "\n..", $message);
        $message = str_replace("\n", "\r\n", $message);
