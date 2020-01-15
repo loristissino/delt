@@ -5,7 +5,7 @@ class User extends CActiveRecord
 	const STATUS_NOACTIVE=0;
 	const STATUS_ACTIVE=1;
 	const STATUS_BANNED=-1;
-  const STATUS_WAITING=-2;
+    const STATUS_WAITING=-2;
 	
 	//TODO: Delete for next version (backward compatibility)
 	const STATUS_BANED=-1;
@@ -117,6 +117,9 @@ class User extends CActiveRecord
             ),
             'banned'=>array(
                 'condition'=>'status='.self::STATUS_BANNED,
+            ),
+            'older24h'=>array(
+                'condition'=>'create_at < ' . date("'Y-m-d'", time()-24*60*60),
             ),
             'superuser'=>array(
                 'condition'=>'superuser=1',

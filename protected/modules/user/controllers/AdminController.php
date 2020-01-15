@@ -25,7 +25,7 @@ class AdminController extends Controller
 	{
 		return array(
 			array('allow', // allow admin user to perform 'admin' and 'delete' actions
-				'actions'=>array('admin','delete','create','update','view'),
+				'actions'=>array('admin','delete','create','update','view','notactivated'),
 				'users'=>UserModule::getAdmins(),
 			),
 			array('deny',  // deny all users
@@ -162,6 +162,26 @@ class AdminController extends Controller
 			throw new CHttpException(400,'Invalid request. Please do not repeat this request again.');
 	}
 	
+    public function actionNotactivated()
+    {
+        
+        $users = User::model()->notactive()->older24h()->findAll();
+        
+        if(Yii::app()->getRequest()->isPostRequest)
+        {
+            foreach($users as $user) {
+                Profile::model()->deleteByPK($user->id);
+                Event::model()->deleteAllByAttributes(array('user_id'=>$user->id));
+                $user->delete();
+            }
+            $this->redirect(array('notactivated'));
+        }
+        
+        $this->render('notactivated',array(
+            'users'=>$users
+		));
+    }
+    
 	/**
      * Performs the AJAX validation.
      * @param CModel the model to be validated

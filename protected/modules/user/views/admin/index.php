@@ -9,6 +9,7 @@ $this->menu=array(
     array('label'=>UserModule::t('Manage Users'), 'url'=>array('admin')),
     array('label'=>UserModule::t('Manage Profile Field'), 'url'=>array('profileField/admin')),
     array('label'=>UserModule::t('List User'), 'url'=>array('/user')),
+    array('label'=>UserModule::t('Not Activated'), 'url'=>array('notactivated')),
 );
 
 Yii::app()->clientScript->registerScript('search', "
