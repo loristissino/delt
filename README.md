@@ -67,6 +67,17 @@ Most of the German L10N work has been done in 2017 by some students of ITSSE "Ma
 * Giovanni Zanardo
 * Chiara Zoia
 
+Some other students contributed in the year 2019, coordinated by prof. Federico Collaoni:
+
+* Cristian B.
+* Andrea C.
+* Lorenzo D.
+* Marco G.
+* Sofia M.
+* Thomas P.
+* Alessia T.
+
+
 ## Online version
 
 DELT is currently used online at http://learndoubleentry.org
