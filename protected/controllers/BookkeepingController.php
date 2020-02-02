@@ -618,6 +618,20 @@ class BookkeepingController extends Controller
         }
        }
 
+      elseif($op=='clone')
+      {
+        $affected_rows = $this->firm->cloneSelectedJournalentries($_POST['id']);
+        if($affected_rows==0)
+        {
+          Yii::app()->getUser()->setFlash('delt_failure', Yii::t('delt', 'No journal entry has been cloned.'));  // this shouldn't happen
+        }
+        else
+        {
+          Event::log($this->DEUser, $this->firm->id, Event::FIRM_JOURNALENTRY_CREATED, array('ids'=>$ids));
+          Yii::app()->getUser()->setFlash('delt_success', Yii::t('delt', 'One journal entry has been cloned. | {n} journal entries have been cloned.', $affected_rows));
+        }
+      }
+
       elseif($op=='tisv')
       {
         $affected_rows = $this->firm->toggleStatementVisibilityOfSelectedJournalentries($_POST['id']);
