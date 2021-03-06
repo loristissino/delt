@@ -170,6 +170,7 @@ class AdminController extends Controller
         if(Yii::app()->getRequest()->isPostRequest)
         {
             foreach($users as $user) {
+                FirmUser::model()->deleteAllByAttributes(array('user_id'=>$user->id));
                 Profile::model()->deleteByPK($user->id);
                 Event::model()->deleteAllByAttributes(array('user_id'=>$user->id));
                 $user->delete();
