@@ -114,6 +114,7 @@ $this->widget('zii.widgets.grid.CGridView', array(
     $items = array(
         array('label'=>Yii::t('delt','include'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'include'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Include the selected journal entries in computations'))),
         array('label'=>Yii::t('delt','exclude'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'exclude'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Exclude the selected journal entries from computations'))),
+        array('label'=>Yii::t('delt','clone'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'clone'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Make a copy of the selected journal entries'))),
         array('label'=>Yii::t('delt','toggle in-statement visibility'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'tisv'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Toggle the visibility of the selected journal entries in the preparation of the statements'))),
         array('label'=>Yii::t('delt','swap positions'),'url'=>array('bookkeeping/updateJournal', 'slug'=>$model->slug, 'op'=>'swap'), 'linkOptions'=>array('title'=>Yii::t('delt', 'Swap the positions of the selected journal entries (choose only two entries for this to work)'))),
     );

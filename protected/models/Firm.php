@@ -1686,6 +1686,22 @@ class Firm extends CActiveRecord
   }
 
   /**
+   * Clones the specified journal entries.
+   * @param array $ids the ids of the journal entries to clone
+   * @return integer the number of journal entries cloned
+   */
+  public function cloneSelectedJournalentries($ids=array())
+  {
+    $journalentries=$this->_findJournalentries($ids);
+    $number=sizeof($journalentries);
+    foreach($journalentries as $journalentry)
+    {
+      $journalentry->cloneEntry();
+    }
+    return $number;
+  }
+
+  /**
    * Connects the specified journal entries to a transaction from a challenge.
    * @param array $ids the ids of the journal entries to connect to the transaction
    * @param integer $transaction_id the id of the transaction to connect the entries to

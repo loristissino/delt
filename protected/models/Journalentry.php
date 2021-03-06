@@ -232,6 +232,36 @@ class Journalentry extends CActiveRecord
     }
     
   }
+
+  public function cloneEntry()
+  {
+    $newentry = new Journalentry();
+    DELT::object2object($this, $newentry, array('firm_id', 'date', 'description', 'is_confirmed', 'is_closing', 'is_adjustment', 'is_included', 'is_visible', 'transaction_id', 'section_id'));
+    
+    $newentry->rank = $this->getCurrentMaxRank() + 1;
+      
+    $transaction=$this->getDbConnection()->beginTransaction();
+    
+    try
+    {
+      $newentry->save(false);
+      foreach($this->postings as $posting) {
+        $newposting = new Posting();
+        DELT::array2object($posting, $newposting, array('account_id', 'amount', 'comment', 'subchoice', 'rank'));
+        $newposting->journalentry_id = $newentry->id;
+        $newposting->save(false);
+      }
+      
+      $transaction->commit();
+      return true;
+    }
+    catch(Exception $e)
+    {
+      $transaction->rollback();
+      return false;
+    }
+      
+  }
   
   public function toggleInStatementVisibility()
   {

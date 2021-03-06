@@ -1784,5 +1784,17 @@
   
   'The contact form has been disabled. If you need information, please write an email to {email}.' =>
   'Il modulo per il contatto è stato disabilitato. Se hai bisogno di informazioni, invia un\'email a {email}.',
+  
+  'clone' =>
+  'clona',
+  
+  'Make a copy of the selected journal entries' =>
+  'Crea una copia delle registrazioni contabili selezionate',
+
+  'No journal entry has been cloned.' =>
+  'Nessuna registrazione è stata duplicata.',
+
+  'One journal entry has been cloned. | {n} journal entries have been cloned.' =>
+  'Una registrazione è stata duplicata. | {n} registrazioni sono state duplicate.',
 
   );
