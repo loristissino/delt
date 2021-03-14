@@ -2088,7 +2088,7 @@ class Firm extends CActiveRecord
     $transaction = $this->getDbConnection()->beginTransaction();
     try
     {
-      if(sizeof(Event::model()->findByAttributes(array('firm_id'=>$this->id))))
+      if(sizeof(Event::model()->findAllByAttributes(array('firm_id'=>$this->id))))
       {
         $this->slug = substr('~' . md5($this->id), 0, 32);
         $exit = $this->status = self::STATUS_CLEARED;
