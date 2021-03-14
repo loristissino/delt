@@ -66,10 +66,7 @@ class UsersCommand extends CConsoleCommand
     $user = DEUser::model()->findByAttributes(array('username'=>$username));
     if ($user)
     {
-      $user->status=User::STATUS_BANNED;
-      $user->save();
-      Event::log($user, null, Event::USER_BANNED_BY_ADMINS);
-      echo $username . " banned\n";
+        $this->_banUser($user);
     }
   }
 
@@ -92,6 +89,32 @@ class UsersCommand extends CConsoleCommand
         }
       }
     }
+  }
+  
+  public function actionFindFormMessageSenders($ban=0)
+  {
+      // we find users that sent a message with the contact form without having prepared a journal entry
+      $users=DEUser::model()->findAll();
+      foreach($users as $user)
+      {
+          if (sizeof(Event::model()->findAllByAttributes(array('user_id'=>$user->id, 'action'=>Event::SITE_CONTACT_FORM)))>0
+            and
+          sizeof(Event::model()->findAllByAttributes(array('user_id'=>$user->id, 'action'=>Event::FIRM_JOURNALENTRY_CREATED)))==0
+          ) {
+              echo sprintf("%d: %s\n", $user->id, $user->username);
+              if ($ban==1) {
+                $this->_banUser($user);
+              }
+          }
+      }
+  }
+  
+  protected function _banUser($user)
+  {
+      $user->status=User::STATUS_BANNED;
+      $user->save();
+      Event::log($user, null, Event::USER_BANNED_BY_ADMINS);
+      echo $user->username . " banned\n";
   }
 
 }
