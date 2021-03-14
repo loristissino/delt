@@ -43,7 +43,7 @@ class UsersCommand extends CConsoleCommand
     {
       if ($user->status>0)
       {
-        $profile=Profile::model()->findByPK($user->id);
+        $profile=$this->_getProfile($user->id);
         $name = $profile->getFullName();
         if ($name=='[Incognito user]')
         {
@@ -108,6 +108,18 @@ class UsersCommand extends CConsoleCommand
           }
       }
   }
+
+  public function actionFindApiUsers()
+  {
+      $users=DEUser::model()->findAll();
+      foreach($users as $user)
+      {
+          if (sizeof(Event::model()->findAllByAttributes(array('user_id'=>$user->id, 'action'=>Event::APIKEY_ENABLED)))>0) {
+              $profile = $this->_getProfile($user);
+              echo sprintf("%d: %s (%s)\n", $user->id, $user->username, $profile->getFullName());
+          }
+      }
+  }
   
   protected function _banUser($user)
   {
@@ -115,6 +127,11 @@ class UsersCommand extends CConsoleCommand
       $user->save();
       Event::log($user, null, Event::USER_BANNED_BY_ADMINS);
       echo $user->username . " banned\n";
+  }
+  
+  protected function _getProfile($user)
+  {
+      return Profile::model()->findByPK($user->id);
   }
 
 }
