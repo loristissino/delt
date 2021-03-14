@@ -162,6 +162,36 @@ class UsersCommand extends CConsoleCommand
           }
       }
   }
+
+  public function actionUpdateAllowedFirmsField($username, $number){
+      return $this->_updateField($username, $number, 'allowed_firms');
+  }
+
+  public function actionUpdateIsBloggerField($username, $is_blogger){
+      return $this->_updateField($username, $is_blogger, 'is_blogger');
+  }
+
+  public function _updateField($username, $value, $field){
+    $user = DEUser::model()->findByAttributes(array('username'=>$username));
+    if ($user)
+    {
+        $profile=$this->_getProfile($user);
+        $oldvalue=$profile->attributes[$field];
+        if ($value!=$oldvalue) {
+            $profile->setAttributes(array($field=>$value));
+            $profile->save();
+            echo sprintf("%s: %s set to %d.\n", $field, $username, $value); 
+        }
+        else {
+            echo sprintf("%s: Unchanged.\n", $username);
+        }
+        return true;
+    }
+    else {
+        echo sprintf("%s: Not found.\n", $username);
+        return false;
+    }
+  }
   
   protected function _banUser($user)
   {
