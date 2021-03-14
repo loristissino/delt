@@ -20,6 +20,8 @@
 
 // the following lines is required on tuxfamily because of the way files are organized there
 require_once('modules/user/models/User.php');
+require_once('modules/user/models/Profile.php');
+require_once('modules/user/UserModule.php');
 
 class UsersCommand extends CConsoleCommand
 {
@@ -106,6 +108,45 @@ class UsersCommand extends CConsoleCommand
                 $this->_banUser($user);
               }
           }
+      }
+  }
+  
+  public function actionCreateUser($username, $email, $password, $firstname="", $lastname="", $school=""){
+      $user = new DEUser();
+      $user->username=$username;
+      $user->email=$email;
+      $user->password=UserModule::createPassword($password);
+      $user->status = User::STATUS_ACTIVE;
+      $user->create_at = new CDbExpression('NOW()');
+      $user->superuser=0;
+      
+      $us = $user->save();
+      $profile = new Profile();
+      $profile->user_id = $user->id;
+      $profile->attributes = array(
+        'first_name' => $firstname,
+        'last_name' => $lastname,
+        'school' => $school,
+        'terms' => true,
+        //'language'=>'en',
+        'allowed_firms'=>20,
+      );
+      $ps = $profile->save(false);
+      if ($us and $ps) {
+          Event::model()->log($user, null, Event::USER_CREATED_BY_ADMIN, array(
+            'user'=>array_diff_key(
+              $user->attributes,
+              array('id'=>true, 'create_at'=>true, 'lastvisit_at'=>true, 'password'=>true, 'activkey'=>true)
+              ), 
+            'profile'=>array_diff_key(
+              $profile->attributes,
+              array('terms'=>true, 'remote_addr'=>true, 'usercode'=>true)
+              ),
+          ));      
+         echo sprintf("created: %d\n", $user->id);
+      } 
+      else {
+          echo "not created\n";
       }
   }
 

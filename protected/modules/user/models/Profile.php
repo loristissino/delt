@@ -199,11 +199,16 @@ class Profile extends UActiveRecord
 	}
   
   public function beforeSave() {
-    if(!in_array($this->language, array_keys(Yii::app()->params['available_languages'])))
+    if(!Yii::app()->params['available_languages'] or !in_array($this->language, array_keys(Yii::app()->params['available_languages'])))
     {
       $this->language = '';
     }
-    Yii::app()->getUser()->setState('language', $this->language);
+    try {
+        Yii::app()->setState('language', $this->language);
+    }
+    catch(Exception $e) {
+        // nothing, only for CLI
+    }
     return parent::beforeSave();
   }
   

@@ -37,6 +37,7 @@ class Event extends CActiveRecord
   const USER_SIGNED_UP              = 1001;
   const USER_ACTIVATED_ACCOUNT      = 1002;
   const USER_SIGNED_UP_SOCIAL       = 1003;
+  const USER_CREATED_BY_ADMIN       = 1004;
   const USER_LOGGED_IN              = 1010;
   const USER_LOGGED_IN_SOCIAL       = 1011;
   const USER_LOGGED_OUT             = 1012;
