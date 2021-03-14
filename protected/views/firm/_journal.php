@@ -14,7 +14,9 @@
   <tr id="entry<?php echo ++$n ?>" <?php if($excluded) echo 'class="excluded"' ?>>
     <td class="firstjournalentryrow"><?php echo CHtml::link($n, '#entry'. $n, array('class'=>'hiddenlink')) ?></td>
     <td class="firstjournalentryrow">
-      <?php echo Yii::app()->dateFormatter->formatDateTime($posting->journalentry->date, 'short', null) ?>
+        <span style="text-decoration-line: underline; text-decoration-style: solid; text-decoration-color: #<?php echo $posting->journalentry->section->color ?>; text-decoration-thickness: 5px" title="<?php echo $posting->journalentry->section->name ?>">
+        <?php echo Yii::app()->dateFormatter->formatDateTime($posting->journalentry->date, 'short', null) ?>
+        </span>
     </td>
     <td class="journaldescription firstjournalentryrow">
       <?php echo $editjournalentry ? 
