@@ -18,7 +18,8 @@
  * see http://www.yiiframework.com/doc/guide/1.1/en/topics.console
 */
 
-// the following lines is required on tuxfamily because of the way files are organized there
+// the following lines are required on tuxfamily because of the way files are organized there
+require_once('modules/user/components/UActiveRecord.php');
 require_once('modules/user/models/User.php');
 require_once('modules/user/models/Profile.php');
 require_once('modules/user/UserModule.php');
