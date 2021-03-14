@@ -10,6 +10,7 @@ $this->breadcrumbs=array(
 $this->menu=array(
   array('label'=>'List Event', 'url'=>array('index')),
   array('label'=>'Create Event', 'url'=>array('create')),
+  array('label'=>'Delete Old', 'url'=>array('deleteOld')),
 );
 
 Yii::app()->clientScript->registerScript('search', "

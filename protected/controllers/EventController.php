@@ -44,7 +44,7 @@ class EventController extends Controller
   {
     return array(
       array('allow', // allow admin user to perform 'admin' and 'delete' actions
-        'actions'=>array('admin','delete','index','view'),
+        'actions'=>array('admin','delete','index','view','deleteOld'),
 //        'users'=>array('admin'),
         'expression'=>'DEUser::model()->findByPK($user->id)->superuser==1',
         // we should use RBAC here... see http://www.yiiframework.com/doc/guide/1.1/en/topics.auth
@@ -114,6 +114,24 @@ class EventController extends Controller
       'model'=>$model,
     ));
   }
+
+  public function actionDeleteOld()
+  {
+    $date = date('Y-m-d', time()-2*24*3600);  // a couple of days ago...
+    
+    if(Yii::app()->getRequest()->isPostRequest){
+        $sql = "DELETE FROM tbl_event where action < 1000 and happened_at < '$date'";
+        Yii::app()->db->createCommand($sql)->execute();
+        $this->redirect(array('deleteOld'));
+    }
+    
+    $sql = "SELECT COUNT(*) FROM tbl_event where action < 1000 and happened_at < '$date'";
+    $number = Yii::app()->db->createCommand($sql)->queryScalar();
+    $this->render('deleteOld', array(
+        'number'=>$number,
+    ));
+  }
+
 
   /**
    * Returns the data model based on the primary key given in the GET variable.
