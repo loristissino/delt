@@ -205,6 +205,30 @@ class FirmsCommand extends CConsoleCommand
     echo "fixed!\n";
   }
 
+  public function actionChangeOwnership($oldUserId, $newUserId)
+  {
+      echo "Firms:\n";
+      foreach (FirmUser::model()->findAllByAttributes(array('user_id'=>$oldUserId)) as $fu) {
+          $firm = Firm::model()->findByPk($fu->firm_id);
+          $fu->user_id = $newUserId;
+          $fu->save();
+          echo "-" . $firm->name . "\n";
+      }
+      echo "\nExercises:\n";
+      foreach (Exercise::model()->findAllByAttributes(array('user_id'=>$oldUserId)) as $exercise) {
+          $exercise->user_id = $newUserId;
+          $exercise->save();
+          echo "- " . $exercise->title . "\n";
+      }
+      echo "\nChallenges:\n";
+      foreach (Challenge::model()->findAllByAttributes(array('instructor_id'=>$oldUserId)) as $challenge) {
+          $challenge->instructor_id = $newUserId;
+          $challenge->save();
+          $user = DEUser::model()->findByPK($challenge->user_id);
+          echo "- " . $user->username. "\n";
+      }
+  }
+
   protected function setStaleStatusIfNeeded($firm, $reference_date)
   {    
     if ($firm->status == Firm::STATUS_STALE)
@@ -266,6 +290,7 @@ class FirmsCommand extends CConsoleCommand
     
     return $firm->save(false);
   }
+  
   
   /*
   public function actionCreateSections()
